@@ -32,7 +32,7 @@ namespace sdk_examples.V2
             Console.WriteLine("Look up account transactions(limit 10): " + transInfos.ToJson());
 
             System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
-            var appsInfo = await searchApi.ApplicationsAsync(null,null, 10,null);
+            var appsInfo = await searchApi.ApplicationsAsync(limit: 10);
             Console.WriteLine("Search for application(limit 10): " + appsInfo.ToJson());
 
             var appIndex = appsInfo.Applications.FirstOrDefault()?.Id;
@@ -44,7 +44,7 @@ namespace sdk_examples.V2
             }
 
             System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
-            var assetsInfo = await searchApi.AssetsAsync(null, 10,null,null,null, "LAT",null);
+            var assetsInfo = await searchApi.AssetsAsync(limit: 10, unit: "LAT");
             Console.WriteLine("Search for assets" + assetsInfo.ToJson());
 
             var assetIndex = assetsInfo.Assets.FirstOrDefault().Index;
