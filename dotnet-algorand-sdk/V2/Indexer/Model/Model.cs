@@ -148,7 +148,7 @@ namespace Algorand.V2.Indexer.Model
 
         /// <summary>\[voteKD\] Number of subkeys in each batch of participation keys.</summary>
         [Newtonsoft.Json.JsonProperty("vote-key-dilution")] //, Required = Newtonsoft.Json.Required.Always)]
-        public int VoteKeyDilution { get; set; }
+        public ulong VoteKeyDilution { get; set; }
 
         /// <summary>\[voteLst\] Last round for which this participation is valid.</summary>
         [Newtonsoft.Json.JsonProperty("vote-last-valid")] //, Required = Newtonsoft.Json.Required.Always)]
@@ -168,11 +168,11 @@ namespace Algorand.V2.Indexer.Model
     {
         /// <summary>\[nui\] num of uints.</summary>
         [Newtonsoft.Json.JsonProperty("num-uint")] //, Required = Newtonsoft.Json.Required.Always)]
-        public int NumUint { get; set; }
+        public ulong NumUint { get; set; }
 
         /// <summary>\[nbs\] num of byte slices.</summary>
         [Newtonsoft.Json.JsonProperty("num-byte-slice")] //, Required = Newtonsoft.Json.Required.Always)]
-        public int NumByteSlice { get; set; }
+        public ulong NumByteSlice { get; set; }
 
 
     }
@@ -237,7 +237,7 @@ namespace Algorand.V2.Indexer.Model
     {
         /// <summary>\[tt\] value type.</summary>
         [Newtonsoft.Json.JsonProperty("type")] //, Required = Newtonsoft.Json.Required.Always)]
-        public int Type { get; set; }
+        public ulong Type { get; set; }
 
         /// <summary>\[tb\] bytes value.</summary>
         [Newtonsoft.Json.JsonProperty("bytes")] //, Required = Newtonsoft.Json.Required.Always)]
@@ -257,7 +257,7 @@ namespace Algorand.V2.Indexer.Model
     {
         /// <summary>\[appidx\] application index.</summary>
         [Newtonsoft.Json.JsonProperty("id")] //, Required = Newtonsoft.Json.Required.Always)]
-        public int Id { get; set; }
+        public ulong Id { get; set; }
 
         /// <summary>Whether or not this application is currently deleted.</summary>
         [Newtonsoft.Json.JsonProperty("deleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -339,7 +339,7 @@ namespace Algorand.V2.Indexer.Model
     {
         /// <summary>unique asset identifier</summary>
         [Newtonsoft.Json.JsonProperty("index")] //, Required = Newtonsoft.Json.Required.Always)]
-        public int Index { get; set; }
+        public ulong Index { get; set; }
 
         /// <summary>Whether or not this asset is currently deleted.</summary>
         [Newtonsoft.Json.JsonProperty("deleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -420,7 +420,7 @@ namespace Algorand.V2.Indexer.Model
         /// <summary>\[dc\] The number of digits to use after the decimal point when displaying this asset. If 0, the asset is not divisible. If 1, the base unit of the asset is in tenths. If 2, the base unit of the asset is in hundredths, and so on. This value must be between 0 and 19 (inclusive).</summary>
         [Newtonsoft.Json.JsonProperty("decimals")] //, Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Range(0, 19)]
-        public int Decimals { get; set; }
+        public ulong Decimals { get; set; }
 
         /// <summary>\[df\] Whether holdings of this asset are frozen by default.</summary>
         [Newtonsoft.Json.JsonProperty("default-frozen", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -509,7 +509,7 @@ namespace Algorand.V2.Indexer.Model
 
         /// <summary>\[ts\] Block creation timestamp in seconds since eposh</summary>
         [Newtonsoft.Json.JsonProperty("timestamp")] //, Required = Newtonsoft.Json.Required.Always)]
-        public int Timestamp { get; set; }
+        public ulong Timestamp { get; set; }
 
         /// <summary>\[txns\] list of transactions corresponding to a given round.</summary>
         [Newtonsoft.Json.JsonProperty("transactions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -759,7 +759,7 @@ namespace Algorand.V2.Indexer.Model
     {
         /// <summary>\[at\] delta action.</summary>
         [Newtonsoft.Json.JsonProperty("action")] //, Required = Newtonsoft.Json.Required.Always)]
-        public int Action { get; set; }
+        public ulong Action { get; set; }
 
         /// <summary>\[bs\] bytes value.</summary>
         [Newtonsoft.Json.JsonProperty("bytes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]

@@ -182,14 +182,14 @@ namespace Algorand.V2.Algod
         /// <param name="application_id">An application identifier</param>
         /// <returns>Application information</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Application> ApplicationsAsync(int application_id);
+        System.Threading.Tasks.Task<Application> ApplicationsAsync(ulong application_id);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get application information.</summary>
         /// <param name="application_id">An application identifier</param>
         /// <returns>Application information</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Application> ApplicationsAsync(int application_id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Application> ApplicationsAsync(ulong application_id, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Get asset information.</summary>
         /// <param name="asset_id">An asset identifier</param>
@@ -1565,7 +1565,7 @@ namespace Algorand.V2.Algod
         /// <param name="application_id">An application identifier</param>
         /// <returns>Application information</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Application> ApplicationsAsync(int application_id)
+        public System.Threading.Tasks.Task<Application> ApplicationsAsync(ulong application_id)
         {
             return ApplicationsAsync(application_id, System.Threading.CancellationToken.None);
         }
@@ -1575,7 +1575,7 @@ namespace Algorand.V2.Algod
         /// <param name="application_id">An application identifier</param>
         /// <returns>Application information</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Application> ApplicationsAsync(int application_id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Application> ApplicationsAsync(ulong application_id, System.Threading.CancellationToken cancellationToken)
         {
             if (application_id == null)
                 throw new System.ArgumentNullException("application_id");

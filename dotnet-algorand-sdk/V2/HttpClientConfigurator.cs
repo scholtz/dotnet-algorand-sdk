@@ -12,8 +12,17 @@ namespace Algorand.V2
         {
             var _httpClient = new HttpClient();
 
-            if (host.Contains("algorand.api.purestake.io") || host.Contains("bsngate.com/api"))
-                tokenHeader = "X-API-Key";
+            if (string.IsNullOrEmpty(tokenHeader))
+            {
+                if (host.Contains("algorand.api.purestake.io") || host.Contains("bsngate.com/api"))
+                {
+                    tokenHeader = "X-API-Key";
+                }
+                else
+                {
+                    tokenHeader = "X-Algo-API-Token";
+                }
+            }
 
             if (tokenHeader != null && tokenHeader.Length > 0)
                 _httpClient.DefaultRequestHeaders.Add(tokenHeader, token);

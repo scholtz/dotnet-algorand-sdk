@@ -148,7 +148,7 @@ namespace Algorand.V2.Algod.Model
     {
         /// <summary>unique asset identifier</summary>
         [Newtonsoft.Json.JsonProperty("index", Required = Newtonsoft.Json.Required.Always)]
-        public int Index { get; set; }
+        public ulong Index { get; set; }
 
         [Newtonsoft.Json.JsonProperty("params", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -205,7 +205,7 @@ namespace Algorand.V2.Algod.Model
         /// <summary>\[dc\] The number of digits to use after the decimal point when displaying this asset. If 0, the asset is not divisible. If 1, the base unit of the asset is in tenths. If 2, the base unit of the asset is in hundredths, and so on. This value must be between 0 and 19 (inclusive).</summary>
         [Newtonsoft.Json.JsonProperty("decimals", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Range(0, 19)]
-        public int Decimals { get; set; }
+        public ulong Decimals { get; set; }
 
         /// <summary>\[df\] Whether holdings of this asset are frozen by default.</summary>
         [Newtonsoft.Json.JsonProperty("default-frozen", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -264,11 +264,11 @@ namespace Algorand.V2.Algod.Model
     {
         /// <summary>\[nui\] num of uints.</summary>
         [Newtonsoft.Json.JsonProperty("num-uint", Required = Newtonsoft.Json.Required.Always)]
-        public int NumUint { get; set; }
+        public ulong NumUint { get; set; }
 
         /// <summary>\[nbs\] num of byte slices.</summary>
         [Newtonsoft.Json.JsonProperty("num-byte-slice", Required = Newtonsoft.Json.Required.Always)]
-        public int NumByteSlice { get; set; }
+        public ulong NumByteSlice { get; set; }
 
 
     }
@@ -363,7 +363,7 @@ namespace Algorand.V2.Algod.Model
     {
         /// <summary>\[tt\] value type. Value `1` refers to **bytes**, value `2` refers to **uint**</summary>
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
-        public int Type { get; set; }
+        public ulong Type { get; set; }
 
         /// <summary>\[tb\] bytes value.</summary>
         [Newtonsoft.Json.JsonProperty("bytes", Required = Newtonsoft.Json.Required.Always)]
@@ -420,7 +420,7 @@ namespace Algorand.V2.Algod.Model
     {
         /// <summary>\[at\] delta action.</summary>
         [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.Always)]
-        public int Action { get; set; }
+        public ulong Action { get; set; }
 
         /// <summary>\[bs\] bytes value.</summary>
         [Newtonsoft.Json.JsonProperty("bytes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -493,11 +493,11 @@ namespace Algorand.V2.Algod.Model
     {
         /// <summary>Line number</summary>
         [Newtonsoft.Json.JsonProperty("line", Required = Newtonsoft.Json.Required.Always)]
-        public int Line { get; set; }
+        public ulong Line { get; set; }
 
         /// <summary>Program counter</summary>
         [Newtonsoft.Json.JsonProperty("pc", Required = Newtonsoft.Json.Required.Always)]
-        public int Pc { get; set; }
+        public ulong Pc { get; set; }
 
         [Newtonsoft.Json.JsonProperty("stack", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -614,7 +614,7 @@ namespace Algorand.V2.Algod.Model
         public string Source { get; set; }
 
         [Newtonsoft.Json.JsonProperty("txn-index", Required = Newtonsoft.Json.Required.Always)]
-        public int TxnIndex { get; set; }
+        public ulong TxnIndex { get; set; }
 
         [Newtonsoft.Json.JsonProperty("app-index", Required = Newtonsoft.Json.Required.Always)]
         public ulong AppIndex { get; set; }
@@ -761,7 +761,7 @@ namespace Algorand.V2.Algod.Model
 
         /// <summary>Total number of transactions in the pool.</summary>
         [Newtonsoft.Json.JsonProperty("total-transactions", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalTransactions { get; set; }
+        public ulong TotalTransactions { get; set; }
 
 
     }
@@ -796,7 +796,7 @@ namespace Algorand.V2.Algod.Model
 
         /// <summary>Index of the transaction in the block's payset.</summary>
         [Newtonsoft.Json.JsonProperty("idx", Required = Newtonsoft.Json.Required.Always)]
-        public int Idx { get; set; }
+        public ulong Idx { get; set; }
 
 
     }

@@ -1,3 +1,10 @@
+# WARNING - Current documentation is out of date. 
+
+A project to update this repo to bring it in line with Algorand's strategy for maintaining core SDKs is about to commence. Documentation will be updated as part of that.  
+
+Please see the sdk-examples V2 folder for new usage.
+
+
 # Dotnet Algorand SDK
 
 The SDK version 0.2 add the support of Algorand Api 2.0 and the Indexer Api.
