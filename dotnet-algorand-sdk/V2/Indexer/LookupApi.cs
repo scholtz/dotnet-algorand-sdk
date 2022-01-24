@@ -467,11 +467,11 @@ namespace Algorand.V2.Indexer
             }
             if (before_time != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("before-time") + "=").Append(System.Uri.EscapeDataString(before_time.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("before-time") + "=").Append(System.Uri.EscapeDataString(before_time.Value.ToString("o", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (after_time != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("after-time") + "=").Append(System.Uri.EscapeDataString(after_time.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("after-time") + "=").Append(System.Uri.EscapeDataString(after_time.Value.ToString("o", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (currency_greater_than != null)
             {
@@ -1130,11 +1130,11 @@ namespace Algorand.V2.Indexer
             }
             if (before_time != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("before-time") + "=").Append(System.Uri.EscapeDataString(before_time.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("before-time") + "=").Append(System.Uri.EscapeDataString(before_time.Value.ToString("o", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (after_time != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("after-time") + "=").Append(System.Uri.EscapeDataString(after_time.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("after-time") + "=").Append(System.Uri.EscapeDataString(after_time.Value.ToString("o", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (currency_greater_than != null)
             {
