@@ -80,7 +80,6 @@ namespace Algorand.V2.Algod
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.14.5.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class CommonApi : ICommonApi
     {
-        private string _baseUrl = "http://localhost/";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
@@ -95,12 +94,6 @@ namespace Algorand.V2.Algod
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -126,7 +119,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task HealthAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/health");
+            urlBuilder_.Append("/health");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -196,7 +189,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task MetricsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/metrics");
+            urlBuilder_.Append("/metrics");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -272,7 +265,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<string> GenesisAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/genesis");
+            urlBuilder_.Append("/genesis");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -348,7 +341,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<string> Swagger_jsonAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/swagger.json");
+            urlBuilder_.Append("/swagger.json");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -422,7 +415,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<Version> VersionsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/versions");
+            urlBuilder_.Append("/versions");
 
             var client_ = _httpClient;
             var disposeClient_ = false;

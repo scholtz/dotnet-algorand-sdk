@@ -10,13 +10,13 @@ namespace sdk_examples.V2
     {
         public  async Task Main(string[] args)
         {
-            string ALGOD_API_ADDR = "https://testnet-algorand.api.purestake.io/idx2";
-            string ALGOD_API_TOKEN = "GeHdp7CCGt7ApLuPNppXN4LtrW07Mm1kaFNJ5Ovr";
+            string ALGOD_API_ADDR = "https://mainnet-algorand.api.purestake.io/idx2/";
+            string ALGOD_API_TOKEN = "HFoxXc2sQf7ut4bAVmfg0adKQ6RRqTCi6nEg0YIs";
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-            LookupApi lookupApi = new LookupApi(httpClient) { BaseUrl = ALGOD_API_ADDR };
-            SearchApi searchApi = new SearchApi(httpClient) { BaseUrl = ALGOD_API_ADDR };
-            CommonApi commonApi = new CommonApi(httpClient) { BaseUrl = ALGOD_API_ADDR };
+            LookupApi lookupApi = new LookupApi(httpClient);
+            SearchApi searchApi = new SearchApi(httpClient);
+            CommonApi commonApi = new CommonApi(httpClient);
 
             //AlgodApi algodApiInstance = new AlgodApi(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             var health = await commonApi.HealthAsync();

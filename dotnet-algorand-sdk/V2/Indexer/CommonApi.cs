@@ -36,7 +36,6 @@ namespace Algorand.V2.Indexer
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.14.5.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class CommonApi : ICommonApi
     {
-        private string _baseUrl = "https://example.com";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
@@ -52,12 +51,6 @@ namespace Algorand.V2.Indexer
             
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -83,7 +76,7 @@ namespace Algorand.V2.Indexer
         public async System.Threading.Tasks.Task<HealthCheck> HealthAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/health");
+            urlBuilder_.Append("/health");
 
             var client_ = _httpClient;
             var disposeClient_ = false;

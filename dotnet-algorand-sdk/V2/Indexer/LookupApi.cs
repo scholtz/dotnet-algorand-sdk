@@ -217,7 +217,6 @@ namespace Algorand.V2.Indexer
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.14.5.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class LookupApi : ILookupApi
     {
-        private string _baseUrl = "https://example.com";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
@@ -232,12 +231,6 @@ namespace Algorand.V2.Indexer
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -270,7 +263,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("account_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/accounts/{account-id}?");
+            urlBuilder_.Append("/v2/accounts/{account-id}?");
             urlBuilder_.Replace("{account-id}", System.Uri.EscapeDataString(ConvertToString(account_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (round != null)
             {
@@ -423,7 +416,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("account_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/accounts/{account-id}/transactions?");
+            urlBuilder_.Append("/v2/accounts/{account-id}/transactions?");
             urlBuilder_.Replace("{account-id}", System.Uri.EscapeDataString(ConvertToString(account_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (limit != null)
             {
@@ -584,7 +577,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("application_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/applications/{application-id}?");
+            urlBuilder_.Append("/v2/applications/{application-id}?");
             urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(application_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (include_all != null)
             {
@@ -699,7 +692,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("application_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/applications/{application-id}/logs?");
+            urlBuilder_.Append("/v2/applications/{application-id}/logs?");
             urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(application_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (limit != null)
             {
@@ -804,7 +797,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("asset_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/assets/{asset-id}?");
+            urlBuilder_.Append("/v2/assets/{asset-id}?");
             urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(asset_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (include_all != null)
             {
@@ -929,7 +922,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("asset_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/assets/{asset-id}/balances?");
+            urlBuilder_.Append("/v2/assets/{asset-id}/balances?");
             urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(asset_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (include_all != null)
             {
@@ -1090,7 +1083,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("asset_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/assets/{asset-id}/transactions?");
+            urlBuilder_.Append("/v2/assets/{asset-id}/transactions?");
             urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(asset_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (limit != null)
             {
@@ -1259,7 +1252,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("round_number");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/blocks/{round-number}");
+            urlBuilder_.Append("/v2/blocks/{round-number}");
             urlBuilder_.Replace("{round-number}", System.Uri.EscapeDataString(ConvertToString(round_number, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -1357,7 +1350,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("txid");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/transactions/{txid}");
+            urlBuilder_.Append("/v2/transactions/{txid}");
             urlBuilder_.Replace("{txid}", System.Uri.EscapeDataString(ConvertToString(txid, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;

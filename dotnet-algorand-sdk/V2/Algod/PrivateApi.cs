@@ -75,7 +75,6 @@ namespace Algorand.V2.Algod
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.14.5.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class PrivateApi : IPrivateApi
     {
-        private string _baseUrl = "http://localhost/";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
@@ -90,12 +89,6 @@ namespace Algorand.V2.Algod
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -133,7 +126,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("address");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/register-participation-keys/{address}?");
+            urlBuilder_.Append("/v2/register-participation-keys/{address}?");
             urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
             if (fee != null)
             {
@@ -223,7 +216,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<object> ShutdownAsync(int? timeout, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/shutdown?");
+            urlBuilder_.Append("/v2/shutdown?");
             if (timeout != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("timeout") + "=").Append(System.Uri.EscapeDataString(ConvertToString(timeout, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -308,7 +301,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("catchpoint");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/catchup/{catchpoint}");
+            urlBuilder_.Append("/v2/catchup/{catchpoint}");
             urlBuilder_.Replace("{catchpoint}", System.Uri.EscapeDataString(ConvertToString(catchpoint, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -429,7 +422,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("catchpoint");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/catchup/{catchpoint}");
+            urlBuilder_.Append("/v2/catchup/{catchpoint}");
             urlBuilder_.Replace("{catchpoint}", System.Uri.EscapeDataString(ConvertToString(catchpoint, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
