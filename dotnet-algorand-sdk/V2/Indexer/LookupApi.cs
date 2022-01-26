@@ -56,7 +56,7 @@ namespace Algorand.V2.Indexer
         /// <param name="rekey_to">Include results which include the rekey-to field.</param>
         /// <returns>(empty)</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response4> TransactionsGetAsync(string account_id, int ? limit = null, string next = null, string note_prefix = null, TxType? tx_type = null, SigType? sig_type = null, string txid = null, ulong? round = null, ulong? min_round = null, ulong? max_round = null, int? asset_id = null, System.DateTimeOffset? before_time = null, System.DateTimeOffset? after_time = null, ulong? currency_greater_than = null, ulong? currency_less_than = null, bool? rekey_to = null);
+        System.Threading.Tasks.Task<Response4> TransactionsGetAsync(string account_id, int? limit = null, string next = null, string note_prefix = null, TxType? tx_type = null, SigType? sig_type = null, string txid = null, ulong? round = null, ulong? min_round = null, ulong? max_round = null, int? asset_id = null, System.DateTimeOffset? before_time = null, System.DateTimeOffset? after_time = null, ulong? currency_greater_than = null, ulong? currency_less_than = null, bool? rekey_to = null);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <param name="limit">Maximum number of results to return. There could be additional pages even if the limit is not reached.</param>
@@ -460,11 +460,11 @@ namespace Algorand.V2.Indexer
             }
             if (before_time != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("before-time") + "=").Append(System.Uri.EscapeDataString(before_time.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("before-time") + "=").Append(System.Uri.EscapeDataString(before_time.Value.ToString("o", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (after_time != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("after-time") + "=").Append(System.Uri.EscapeDataString(after_time.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("after-time") + "=").Append(System.Uri.EscapeDataString(after_time.Value.ToString("o", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (currency_greater_than != null)
             {
@@ -1123,11 +1123,11 @@ namespace Algorand.V2.Indexer
             }
             if (before_time != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("before-time") + "=").Append(System.Uri.EscapeDataString(before_time.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("before-time") + "=").Append(System.Uri.EscapeDataString(before_time.Value.ToString("o", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (after_time != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("after-time") + "=").Append(System.Uri.EscapeDataString(after_time.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("after-time") + "=").Append(System.Uri.EscapeDataString(after_time.Value.ToString("o", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (currency_greater_than != null)
             {
