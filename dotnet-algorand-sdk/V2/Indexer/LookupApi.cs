@@ -263,7 +263,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("account_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/accounts/{account-id}?");
+            urlBuilder_.Append("v2/accounts/{account-id}?");
             urlBuilder_.Replace("{account-id}", System.Uri.EscapeDataString(ConvertToString(account_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (round != null)
             {
@@ -416,7 +416,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("account_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/accounts/{account-id}/transactions?");
+            urlBuilder_.Append("v2/accounts/{account-id}/transactions?");
             urlBuilder_.Replace("{account-id}", System.Uri.EscapeDataString(ConvertToString(account_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (limit != null)
             {
@@ -577,7 +577,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("application_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/applications/{application-id}?");
+            urlBuilder_.Append("v2/applications/{application-id}?");
             urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(application_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (include_all != null)
             {
@@ -692,7 +692,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("application_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/applications/{application-id}/logs?");
+            urlBuilder_.Append("v2/applications/{application-id}/logs?");
             urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(application_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (limit != null)
             {
@@ -797,7 +797,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("asset_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/assets/{asset-id}?");
+            urlBuilder_.Append("v2/assets/{asset-id}?");
             urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(asset_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (include_all != null)
             {
@@ -922,7 +922,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("asset_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/assets/{asset-id}/balances?");
+            urlBuilder_.Append("v2/assets/{asset-id}/balances?");
             urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(asset_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (include_all != null)
             {
@@ -1083,7 +1083,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("asset_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/assets/{asset-id}/transactions?");
+            urlBuilder_.Append("v2/assets/{asset-id}/transactions?");
             urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(asset_id, System.Globalization.CultureInfo.InvariantCulture)));
             if (limit != null)
             {
@@ -1252,7 +1252,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("round_number");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/blocks/{round-number}");
+            urlBuilder_.Append("v2/blocks/{round-number}");
             urlBuilder_.Replace("{round-number}", System.Uri.EscapeDataString(ConvertToString(round_number, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -1350,7 +1350,7 @@ namespace Algorand.V2.Indexer
                 throw new System.ArgumentNullException("txid");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/transactions/{txid}");
+            urlBuilder_.Append("v2/transactions/{txid}");
             urlBuilder_.Replace("{txid}", System.Uri.EscapeDataString(ConvertToString(txid, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;

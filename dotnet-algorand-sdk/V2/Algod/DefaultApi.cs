@@ -279,7 +279,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("address");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/accounts/{address}?");
+            urlBuilder_.Append("v2/accounts/{address}?");
             urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
             if (format != null)
             {
@@ -400,7 +400,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("address");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/accounts/{address}/transactions/pending?");
+            urlBuilder_.Append("v2/accounts/{address}/transactions/pending?");
             urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
             if (max != null)
             {
@@ -533,7 +533,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("round");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/blocks/{round}?");
+            urlBuilder_.Append("v2/blocks/{round}?");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
             if (format != null)
             {
@@ -668,7 +668,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("txid");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/blocks/{round}/transactions/{txid}/proof?");
+            urlBuilder_.Append("v2/blocks/{round}/transactions/{txid}/proof?");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{txid}", System.Uri.EscapeDataString(ConvertToString(txid, System.Globalization.CultureInfo.InvariantCulture)));
             if (format != null)
@@ -791,7 +791,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<Response4> SupplyAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/ledger/supply");
+            urlBuilder_.Append("v2/ledger/supply");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -875,7 +875,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<NodeStatusResponse> StatusAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/status");
+            urlBuilder_.Append("v2/status");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -974,7 +974,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("round");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/status/wait-for-block-after/{round}");
+            urlBuilder_.Append("v2/status/wait-for-block-after/{round}");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -1096,7 +1096,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("rawtxn");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/transactions");
+            urlBuilder_.Append("v2/transactions");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1215,7 +1215,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<TransactionParametersResponse> ParamsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/transactions/params");
+            urlBuilder_.Append("v2/transactions/params");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1325,7 +1325,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<Response> PendingGetAsync(int? max, Format? format, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/transactions/pending?");
+            urlBuilder_.Append("v2/transactions/pending?");
             if (max != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("max") + "=").Append(System.Uri.EscapeDataString(ConvertToString(max, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1457,7 +1457,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("txid");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/transactions/pending/{txid}?");
+            urlBuilder_.Append("v2/transactions/pending/{txid}?");
             urlBuilder_.Replace("{txid}", System.Uri.EscapeDataString(ConvertToString(txid, System.Globalization.CultureInfo.InvariantCulture)));
             if (format != null)
             {
@@ -1574,7 +1574,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("application_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/applications/{application-id}");
+            urlBuilder_.Append("v2/applications/{application-id}");
             urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(application_id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -1696,7 +1696,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("asset_id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/assets/{asset-id}");
+            urlBuilder_.Append("v2/assets/{asset-id}");
             urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(asset_id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -1818,7 +1818,7 @@ namespace Algorand.V2.Algod
                 throw new System.ArgumentNullException("source");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/teal/compile");
+            urlBuilder_.Append("v2/teal/compile");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1935,7 +1935,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<DryrunResponse> DryrunAsync(DryrunRequest request, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/teal/dryrun");
+            urlBuilder_.Append("v2/teal/dryrun");
 
             var client_ = _httpClient;
             var disposeClient_ = false;

@@ -76,7 +76,7 @@ namespace Algorand.V2.Indexer
         public async System.Threading.Tasks.Task<HealthCheck> HealthAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/health");
+            urlBuilder_.Append("health");
 
             var client_ = _httpClient;
             var disposeClient_ = false;

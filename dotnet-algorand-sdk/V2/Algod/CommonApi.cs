@@ -119,7 +119,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task HealthAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/health");
+            urlBuilder_.Append("health");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -189,7 +189,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task MetricsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/metrics");
+            urlBuilder_.Append("metrics");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -265,7 +265,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<string> GenesisAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/genesis");
+            urlBuilder_.Append("genesis");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -341,7 +341,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<string> Swagger_jsonAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/swagger.json");
+            urlBuilder_.Append("swagger.json");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -415,7 +415,7 @@ namespace Algorand.V2.Algod
         public async System.Threading.Tasks.Task<Version> VersionsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/versions");
+            urlBuilder_.Append("versions");
 
             var client_ = _httpClient;
             var disposeClient_ = false;

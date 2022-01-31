@@ -199,7 +199,7 @@ namespace Algorand.V2.Indexer
         public async System.Threading.Tasks.Task<Response> AccountsAsync(System.Threading.CancellationToken cancellationToken, ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/accounts?");
+            urlBuilder_.Append("v2/accounts?");
             if (asset_id != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("asset-id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(asset_id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -338,7 +338,7 @@ namespace Algorand.V2.Indexer
         public async System.Threading.Tasks.Task<Response2> ApplicationsAsync(System.Threading.CancellationToken cancellationToken, ulong? application_id = null, bool? include_all = null, int? limit = null, string next = null)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/applications?");
+            urlBuilder_.Append("v2/applications?");
             if (application_id != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("application-id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(application_id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -453,7 +453,7 @@ namespace Algorand.V2.Indexer
         public async System.Threading.Tasks.Task<Response3> AssetsAsync(System.Threading.CancellationToken cancellationToken, bool? include_all = null, int? limit = null, string next = null, string creator = null, string name = null, string unit = null, ulong? asset_id = null)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/assets?");
+            urlBuilder_.Append("v2/assets?");
             if (include_all != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("include-all") + "=").Append(System.Uri.EscapeDataString(ConvertToString(include_all, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -618,7 +618,7 @@ namespace Algorand.V2.Indexer
         public async System.Threading.Tasks.Task<Response4> TransactionsAsync(System.Threading.CancellationToken cancellationToken, int? limit = null, string next = null, string note_prefix = null, TxType? tx_type = null, SigType? sig_type = null, string txid = null, ulong? round = null, ulong? min_round = null, ulong? max_round = null, ulong? asset_id = null, System.DateTimeOffset? before_time = null, System.DateTimeOffset? after_time = null, ulong? currency_greater_than = null, ulong? currency_less_than = null, string address = null, AddressRole? address_role = null, bool? exclude_close_to = null, bool? rekey_to = null, ulong? application_id = null)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("/v2/transactions?");
+            urlBuilder_.Append("v2/transactions?");
             if (limit != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("limit") + "=").Append(System.Uri.EscapeDataString(ConvertToString(limit, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
