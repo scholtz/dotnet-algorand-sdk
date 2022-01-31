@@ -20,6 +20,7 @@ AVM 1.0 , Indexer 2.8 branch and Algo rel/stable branch (Nov 2021)</PackageRelea
     <FileVersion>0.2.1.0</FileVersion>
     <Copyright></Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
