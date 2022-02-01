@@ -6,11 +6,13 @@ using System.Text;
 
 namespace Algorand.V2
 {
-    public  class HttpClientConfigurator
+    public class HttpClientConfigurator
     {
         public static HttpClient ConfigureHttpClient(string host, string token, string tokenHeader = "", int timeout = -1)
         {
-            var _httpClient = new HttpClient();
+            HttpClient _httpClient = new HttpClient();
+
+            _httpClient.BaseAddress = new Uri(host);
 
             if (string.IsNullOrEmpty(tokenHeader))
             {
@@ -30,7 +32,6 @@ namespace Algorand.V2
             _httpClient.Timeout = timeout > 0 ? (TimeSpan.FromMilliseconds((double)timeout)) : Timeout.InfiniteTimeSpan;
 
             return _httpClient;
-
         }
     }
 }

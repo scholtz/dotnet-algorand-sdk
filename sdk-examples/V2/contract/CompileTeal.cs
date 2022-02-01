@@ -19,7 +19,7 @@ namespace sdk_examples.V2.contract
 
             string ALGOD_API_TOKEN = args[1];
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-            DefaultApi algodApiInstance = new DefaultApi(httpClient) { BaseUrl = ALGOD_API_ADDR };
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
             
             // read file - int 1
             byte[] data = File.ReadAllBytes("V2\\contract\\sample.teal");
