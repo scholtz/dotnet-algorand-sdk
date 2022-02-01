@@ -28,7 +28,7 @@ namespace sdk_examples.V2
             string ALGOD_API_TOKEN = args[1];
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-            DefaultApi algodApiInstance = new DefaultApi(httpClient) { BaseUrl = ALGOD_API_ADDR };
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
             // Shown for demonstration purposes. NEVER reveal secret mnemonics in practice.
             // These three accounts are for testing purposes
