@@ -1,8 +1,15 @@
 # WARNING - Current documentation is out of date. 
 
-A project to update this repo to bring it in line with Algorand's strategy for maintaining core SDKs is about to commence. Documentation will be updated as part of that.  
+A project to update this repo to bring it in line with Algorand's strategy for maintaining core SDKs will commence in April 2022. 
 
-Please see the sdk-examples V2 folder for new usage.
+Documentation will be updated as part of that.  
+
+**IMPORTANT: Please see the sdk-examples V2 folder for new usage.**
+
+**INSTALLATION** : The new NUGET location is https://www.nuget.org/packages/Algorand2/
+
+
+
 
 
 # Dotnet Algorand SDK

@@ -12,7 +12,7 @@
     <Product>Algorand .NET SDK 2</Product>
     <PackageProjectUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</PackageProjectUrl>
     <PackageLicenseUrl></PackageLicenseUrl>
-    <Description>Algorand SDK for .Net</Description>
+    <Description>Algorand SDK for .Net 2</Description>
     <PackageReleaseNotes>The Algorand SDK.
 AVM 1.0 , Indexer 2.8 branch and Algo rel/stable branch (Nov 2021)</PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
@@ -21,6 +21,7 @@ AVM 1.0 , Indexer 2.8 branch and Algo rel/stable branch (Nov 2021)</PackageRelea
     <Copyright></Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</RepositoryUrl>
+    <PackageId>Algorand2</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
