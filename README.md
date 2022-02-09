@@ -8,6 +8,10 @@ Documentation will be updated as part of that.
 
 **INSTALLATION** : The new NUGET location is https://www.nuget.org/packages/Algorand2/
 
+Also note: when specifying the Host in HttpClientConfigurator, a trailing slash is automatically added to that host so that relative URIs can be combined with it correctly.
+If you are using DI to inject the HttpClient then the base URL should use a trailing slash (eg ps2/ on purestake) as according to https://datatracker.ietf.org/doc/html/rfc3986
+and HttpClient documentation remarks.
+
 
 
 
