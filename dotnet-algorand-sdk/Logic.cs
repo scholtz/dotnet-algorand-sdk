@@ -176,7 +176,7 @@ namespace Algorand
             }
             size += result.length;
 
-            return new IntConstBlock(size, new List<int>(result.value));
+            return new IntConstBlock(size, new List<int> { result.value });
         }
 
         protected static ByteConstBlock ReadPushByteOp(byte[] program, int pc)
