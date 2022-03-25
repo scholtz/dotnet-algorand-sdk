@@ -781,23 +781,13 @@ namespace Algorand.V2.Indexer.Model
         public StateSchema(ulong? numUint = 0, ulong? numByteSlice = 0)
         {
             // to ensure "numByteSlice" is required (not null)
-            if (numByteSlice == null)
-            {
-                throw new InvalidDataException("numByteSlice is a required property for StateSchema and cannot be null");
-            }
-            else
-            {
+            
                 this.NumByteSlice = numByteSlice;
-            }
-            // to ensure "numUint" is required (not null)
-            if (numUint == null)
-            {
-                throw new InvalidDataException("numUint is a required property for StateSchema and cannot be null");
-            }
-            else
-            {
+            
+          
+           
                 this.NumUint = numUint;
-            }
+            
         }
         /// <summary>Maximum number of TEAL uints that may be stored in the key/value store.</summary>
         [Newtonsoft.Json.JsonProperty("nui", DefaultValueHandling = DefaultValueHandling.Ignore)] //, Required = Newtonsoft.Json.Required.Always)]
