@@ -242,13 +242,9 @@ namespace Algorand.V2.Indexer
             }
             if (exclude != null)
             {
-                System.Console.WriteLine(exclude);
-                System.Console.WriteLine(System.Uri.EscapeDataString(ConvertToString(exclude, System.Globalization.CultureInfo.InvariantCulture)));
                 urlBuilder_.Append(System.Uri.EscapeDataString("exclude") + "=").Append(System.Uri.EscapeDataString(ConvertToString(exclude, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
-
-            System.Console.WriteLine(urlBuilder_.ToString());
 
             var client_ = _httpClient;
             var disposeClient_ = false;
