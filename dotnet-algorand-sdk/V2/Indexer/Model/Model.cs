@@ -1611,6 +1611,28 @@ namespace Algorand.V2.Indexer.Model
 
     }
 
+    public enum ExcludeType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"all")]
+        All = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"assets")]
+        Assets = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"created-assets")]
+        CreatedAssets = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"app-local-state")]
+        AppsLocalState = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"created-apps")]
+        CreatedApps = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"none")]
+        None = 5,
+
+    }
+
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.14.5.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class ApiException : System.Exception
     {

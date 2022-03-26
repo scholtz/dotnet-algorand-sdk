@@ -30,9 +30,10 @@ namespace Algorand.V2.Indexer
         /// <param name="auth_addr">Include accounts configured to use this spending key.</param>
         /// <param name="round">Include results for the specified round. For performance reasons, this parameter may be disabled on some configurations.</param>
         /// <param name="application_id">Application ID</param>
+        /// <param name="exclude">Exclude additional items such as asset holdings, application local data stored for this account, asset parameters created by this account, and application parameters created by this account.</param>"
         /// <returns>(empty)</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response> AccountsAsync(ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null);
+        System.Threading.Tasks.Task<Response> AccountsAsync(ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null, ExcludeType[] exclude = null);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <param name="asset_id">Asset ID</param>
@@ -44,9 +45,10 @@ namespace Algorand.V2.Indexer
         /// <param name="auth_addr">Include accounts configured to use this spending key.</param>
         /// <param name="round">Include results for the specified round. For performance reasons, this parameter may be disabled on some configurations.</param>
         /// <param name="application_id">Application ID</param>
+        /// <param name="exclude">Exclude additional items such as asset holdings, application local data stored for this account, asset parameters created by this account, and application parameters created by this account.</param>"
         /// <returns>(empty)</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response> AccountsAsync(System.Threading.CancellationToken cancellationToken, ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null);
+        System.Threading.Tasks.Task<Response> AccountsAsync(System.Threading.CancellationToken cancellationToken, ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null, ExcludeType[] exclude = null);
 
         /// <param name="application_id">Application ID</param>
         /// <param name="include_all">Include all items including closed accounts, deleted applications, destroyed assets, opted-out asset holdings, and closed-out application localstates.</param>
@@ -179,7 +181,7 @@ namespace Algorand.V2.Indexer
         /// <param name="application_id">Application ID</param>
         /// <returns>(empty)</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response> AccountsAsync(ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null)
+        public System.Threading.Tasks.Task<Response> AccountsAsync(ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null, ExcludeType[] exclude = null)
         {
             return AccountsAsync(System.Threading.CancellationToken.None, asset_id, limit, next, currency_greater_than, include_all, currency_less_than, auth_addr, round, application_id);
         }
@@ -196,7 +198,7 @@ namespace Algorand.V2.Indexer
         /// <param name="application_id">Application ID</param>
         /// <returns>(empty)</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Response> AccountsAsync(System.Threading.CancellationToken cancellationToken, ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null)
+        public async System.Threading.Tasks.Task<Response> AccountsAsync(System.Threading.CancellationToken cancellationToken, ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null, ExcludeType[] exclude = null)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/accounts?");
@@ -235,6 +237,10 @@ namespace Algorand.V2.Indexer
             if (application_id != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("application-id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(application_id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (exclude != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("exclude") + "=").Append(System.Uri.EscapeDataString(ConvertToString(exclude, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
 
