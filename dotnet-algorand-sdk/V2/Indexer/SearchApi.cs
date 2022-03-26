@@ -179,6 +179,7 @@ namespace Algorand.V2.Indexer
         /// <param name="auth_addr">Include accounts configured to use this spending key.</param>
         /// <param name="round">Include results for the specified round. For performance reasons, this parameter may be disabled on some configurations.</param>
         /// <param name="application_id">Application ID</param>
+        /// <param name="exclude">Exclude additional items such as asset holdings, application local data stored for this account, asset parameters created by this account, and application parameters created by this account.</param>"
         /// <returns>(empty)</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Response> AccountsAsync(ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null, ExcludeType[] exclude = null)
@@ -196,6 +197,7 @@ namespace Algorand.V2.Indexer
         /// <param name="auth_addr">Include accounts configured to use this spending key.</param>
         /// <param name="round">Include results for the specified round. For performance reasons, this parameter may be disabled on some configurations.</param>
         /// <param name="application_id">Application ID</param>
+        /// <param name="exclude">Exclude additional items such as asset holdings, application local data stored for this account, asset parameters created by this account, and application parameters created by this account.</param>"
         /// <returns>(empty)</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Response> AccountsAsync(System.Threading.CancellationToken cancellationToken, ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null, ExcludeType[] exclude = null)

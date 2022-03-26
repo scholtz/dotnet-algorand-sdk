@@ -24,17 +24,19 @@ namespace Algorand.V2.Indexer
         /// <param name="account_id">account string</param>
         /// <param name="round">Include results for the specified round.</param>
         /// <param name="include_all">Include all items including closed accounts, deleted applications, destroyed assets, opted-out asset holdings, and closed-out application localstates.</param>
+        /// <param name="exclude">Exclude additional items such as asset holdings, application local data stored for this account, asset parameters created by this account, and application parameters created by this account.</param>"
         /// <returns>(empty)</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response6> AccountsAsync(string account_id, ulong? round = null, bool? include_all = null);
+        System.Threading.Tasks.Task<Response6> AccountsAsync(string account_id, ulong? round = null, bool? include_all = null, ExcludeType[] exclude = null);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <param name="account_id">account string</param>
         /// <param name="round">Include results for the specified round.</param>
         /// <param name="include_all">Include all items including closed accounts, deleted applications, destroyed assets, opted-out asset holdings, and closed-out application localstates.</param>
+        /// <param name="exclude">Exclude additional items such as asset holdings, application local data stored for this account, asset parameters created by this account, and application parameters created by this account.</param>"
         /// <returns>(empty)</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response6> AccountsAsync(System.Threading.CancellationToken cancellationToken, string account_id, ulong? round = null, bool? include_all = null);
+        System.Threading.Tasks.Task<Response6> AccountsAsync(System.Threading.CancellationToken cancellationToken, string account_id, ulong? round = null, bool? include_all = null, ExcludeType[] exclude = null);
 
         /// <param name="limit">Maximum number of results to return. There could be additional pages even if the limit is not reached.</param>
         /// <param name="next">The next page of results. Use the next token provided by the previous results.</param>
@@ -244,20 +246,22 @@ namespace Algorand.V2.Indexer
         /// <param name="account_id">account string</param>
         /// <param name="round">Include results for the specified round.</param>
         /// <param name="include_all">Include all items including closed accounts, deleted applications, destroyed assets, opted-out asset holdings, and closed-out application localstates.</param>
+        /// <param name="exclude">Exclude additional items such as asset holdings, application local data stored for this account, asset parameters created by this account, and application parameters created by this account.</param>"
         /// <returns>(empty)</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response6> AccountsAsync(string account_id, ulong? round = null, bool? include_all = null)
+        public System.Threading.Tasks.Task<Response6> AccountsAsync(string account_id, ulong? round = null, bool? include_all = null, ExcludeType[] exclude = null)
         {
-            return AccountsAsync(System.Threading.CancellationToken.None, account_id, round, include_all);
+            return AccountsAsync(System.Threading.CancellationToken.None, account_id, round, include_all, exclude);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <param name="account_id">account string</param>
         /// <param name="round">Include results for the specified round.</param>
         /// <param name="include_all">Include all items including closed accounts, deleted applications, destroyed assets, opted-out asset holdings, and closed-out application localstates.</param>
+        /// <param name="exclude">Exclude additional items such as asset holdings, application local data stored for this account, asset parameters created by this account, and application parameters created by this account.</param>"
         /// <returns>(empty)</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Response6> AccountsAsync(System.Threading.CancellationToken cancellationToken, string account_id, ulong? round = null, bool? include_all = null)
+        public async System.Threading.Tasks.Task<Response6> AccountsAsync(System.Threading.CancellationToken cancellationToken, string account_id, ulong? round = null, bool? include_all = null, ExcludeType[] exclude = null)
         {
             if (account_id == null)
                 throw new System.ArgumentNullException("account_id");
