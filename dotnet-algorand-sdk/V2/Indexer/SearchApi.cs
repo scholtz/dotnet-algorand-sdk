@@ -183,7 +183,7 @@ namespace Algorand.V2.Indexer
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Response> AccountsAsync(ulong? asset_id = null, int? limit = null, string next = null, ulong? currency_greater_than = null, bool? include_all = null, ulong? currency_less_than = null, string auth_addr = null, ulong? round = null, ulong? application_id = null, ExcludeType[] exclude = null)
         {
-            return AccountsAsync(System.Threading.CancellationToken.None, asset_id, limit, next, currency_greater_than, include_all, currency_less_than, auth_addr, round, application_id);
+            return AccountsAsync(System.Threading.CancellationToken.None, asset_id, limit, next, currency_greater_than, include_all, currency_less_than, auth_addr, round, application_id, exclude);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -240,9 +240,13 @@ namespace Algorand.V2.Indexer
             }
             if (exclude != null)
             {
+                System.Console.WriteLine(exclude);
+                System.Console.WriteLine(System.Uri.EscapeDataString(ConvertToString(exclude, System.Globalization.CultureInfo.InvariantCulture)));
                 urlBuilder_.Append(System.Uri.EscapeDataString("exclude") + "=").Append(System.Uri.EscapeDataString(ConvertToString(exclude, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
+
+            System.Console.WriteLine(urlBuilder_.ToString());
 
             var client_ = _httpClient;
             var disposeClient_ = false;

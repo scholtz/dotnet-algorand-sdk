@@ -1622,7 +1622,7 @@ namespace Algorand.V2.Indexer.Model
         [System.Runtime.Serialization.EnumMember(Value = @"created-assets")]
         CreatedAssets = 2,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"app-local-state")]
+        [System.Runtime.Serialization.EnumMember(Value = @"apps-local-state")]
         AppsLocalState = 3,
 
         [System.Runtime.Serialization.EnumMember(Value = @"created-apps")]
