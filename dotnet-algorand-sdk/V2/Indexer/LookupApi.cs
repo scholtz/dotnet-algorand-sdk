@@ -277,6 +277,10 @@ namespace Algorand.V2.Indexer
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("include-all") + "=").Append(System.Uri.EscapeDataString(ConvertToString(include_all, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
+            if (exclude != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("exclude") + "=").Append(System.Uri.EscapeDataString(ConvertToString(exclude, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             urlBuilder_.Length--;
 
             var client_ = _httpClient;
