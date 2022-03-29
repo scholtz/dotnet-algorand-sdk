@@ -13,6 +13,20 @@ namespace Algorand.V2
             HttpClient _httpClient = new HttpClient();
 
             _httpClient.BaseAddress = new Uri(host);
+            if (!_httpClient.BaseAddress.IsAbsoluteUri)
+            {
+                throw new ArgumentException("Host must be an absolute path.");
+            }
+            else
+            {
+                if (!_httpClient.BaseAddress.AbsolutePath.EndsWith("/"))
+                {
+                    UriBuilder uriBuilder = new UriBuilder(_httpClient.BaseAddress);
+                    uriBuilder.Path = _httpClient.BaseAddress.AbsolutePath + "/";
+                    _httpClient.BaseAddress = uriBuilder.Uri;
+                }
+            }
+            
 
             if (string.IsNullOrEmpty(tokenHeader))
             {

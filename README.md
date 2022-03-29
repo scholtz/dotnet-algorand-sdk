@@ -1,8 +1,19 @@
 # WARNING - Current documentation is out of date. 
 
-A project to update this repo to bring it in line with Algorand's strategy for maintaining core SDKs is about to commence. Documentation will be updated as part of that.  
+A project to update this repo to bring it in line with Algorand's strategy for maintaining core SDKs will commence in April 2022. 
 
-Please see the sdk-examples V2 folder for new usage.
+Documentation will be updated as part of that.  
+
+**IMPORTANT: Please see the sdk-examples V2 folder for new usage.**
+
+**INSTALLATION** : The new NUGET location is https://www.nuget.org/packages/Algorand2/
+
+Also note: when specifying the Host in HttpClientConfigurator, a trailing slash is automatically added to that host so that relative URIs can be combined with it correctly.
+If you are using DI to inject the HttpClient then the base URL should use a trailing slash (eg ps2/ on purestake) as according to https://datatracker.ietf.org/doc/html/rfc3986
+and HttpClient documentation remarks.
+
+
+
 
 
 # Dotnet Algorand SDK
@@ -169,25 +180,25 @@ var address = "KV2XGKMXGYJ6PWYQA5374BYIQBL3ONRMSIARPCFCJEAMAHQEVYPB7PL3KU";
 var acctInfo = indexer.LookupAccountByID(address);
 Console.WriteLine("Look up account by id: " + acctInfo.ToJson());
 
-System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
+System.Threading.Thread.Sleep(1200); //test in purestake, limit 1 req/sec
 var transInfos = indexer.LookupAccountTransactions(address, 10);
 Console.WriteLine("Look up account transactions(limit 10): " + transInfos.ToJson());
 
-System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
+System.Threading.Thread.Sleep(1200); //test in purestake, limit 1 req/sec
 var appsInfo = indexer.SearchForApplications(limit: 10);
 Console.WriteLine("Search for application(limit 10): " + appsInfo.ToJson());
 
 var appIndex = appsInfo.Applications[0].Id;
-System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
+System.Threading.Thread.Sleep(1200); //test in purestake, limit 1 req/sec
 var appInfo = indexer.LookupApplicationByID(appIndex);
 Console.WriteLine("Look up application by id: " + appInfo.ToJson());
 
-System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
+System.Threading.Thread.Sleep(1200); //test in purestake, limit 1 req/sec
 var assetsInfo = indexer.SearchForAssets(limit: 10, unit: "LAT");
 Console.WriteLine("Search for assets" + assetsInfo.ToJson());
 
 var assetIndex = assetsInfo.Assets[0].Index;
-System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
+System.Threading.Thread.Sleep(1200); //test in purestake, limit 1 req/sec
 var assetInfo = indexer.LookupAssetByID(assetIndex);
 Console.WriteLine("Look up asset by id:" + assetInfo.ToJson());
 ```

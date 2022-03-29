@@ -24,7 +24,7 @@ namespace sdk_examples.V2.contract
             // read file - int 1
             byte[] data = File.ReadAllBytes("V2\\contract\\sample.teal");
             CompileResponse response;
-            using (var datams = new MemoryStream())
+            using (var datams = new MemoryStream(data))
             {
                  response = await algodApiInstance.CompileAsync(datams);
             }
