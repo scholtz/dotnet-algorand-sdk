@@ -40,7 +40,7 @@ namespace Algorand.V2.Algod
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>A potentially truncated list of transactions currently in the node's transaction pool. You can compute whether or not the list is truncated if the number of elements in the **top-transactions** array is fewer than **total-transactions**.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response> PendingGetAsync(string address, int? max, Format? format);
+        System.Threading.Tasks.Task<PendingTransactions> PendingGetAsync(string address, int? max, Format? format);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get a list of unconfirmed transactions currently in the transaction pool by address.</summary>
@@ -49,14 +49,14 @@ namespace Algorand.V2.Algod
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>A potentially truncated list of transactions currently in the node's transaction pool. You can compute whether or not the list is truncated if the number of elements in the **top-transactions** array is fewer than **total-transactions**.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response> PendingGetAsync(string address, int? max, Format? format, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<PendingTransactions> PendingGetAsync(string address, int? max, Format? format, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Get the block for the given round.</summary>
         /// <param name="round">The round from which to fetch block information.</param>
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>Encoded block object.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response2> BlocksAsync(ulong round, Format? format);
+        System.Threading.Tasks.Task<CertifiedBlock> BlocksAsync(ulong round, Format? format);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get the block for the given round.</summary>
@@ -64,7 +64,7 @@ namespace Algorand.V2.Algod
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>Encoded block object.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response2> BlocksAsync(ulong round, Format? format, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<CertifiedBlock> BlocksAsync(ulong round, Format? format, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Get a Merkle proof for a transaction in a block.</summary>
         /// <param name="round">The round in which the transaction appears.</param>
@@ -143,7 +143,7 @@ namespace Algorand.V2.Algod
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>A potentially truncated list of transactions currently in the node's transaction pool. You can compute whether or not the list is truncated if the number of elements in the **top-transactions** array is fewer than **total-transactions**.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response> PendingGetAsync(int? max, Format? format);
+        System.Threading.Tasks.Task<PendingTransactions> PendingGetAsync(int? max, Format? format);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get a list of unconfirmed transactions currently in the transaction pool.</summary>
@@ -151,7 +151,7 @@ namespace Algorand.V2.Algod
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>A potentially truncated list of transactions currently in the node's transaction pool. You can compute whether or not the list is truncated if the number of elements in the **top-transactions** array is fewer than **total-transactions**.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response> PendingGetAsync(int? max, Format? format, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<PendingTransactions> PendingGetAsync(int? max, Format? format, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Get a specific pending transaction.</summary>
         /// <param name="txid">A transaction id</param>
@@ -382,7 +382,7 @@ namespace Algorand.V2.Algod
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>A potentially truncated list of transactions currently in the node's transaction pool. You can compute whether or not the list is truncated if the number of elements in the **top-transactions** array is fewer than **total-transactions**.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response> PendingGetAsync(string address, int? max, Format? format)
+        public System.Threading.Tasks.Task<PendingTransactions> PendingGetAsync(string address, int? max, Format? format)
         {
             return PendingGetAsync(address, max, format, System.Threading.CancellationToken.None);
         }
@@ -394,7 +394,7 @@ namespace Algorand.V2.Algod
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>A potentially truncated list of transactions currently in the node's transaction pool. You can compute whether or not the list is truncated if the number of elements in the **top-transactions** array is fewer than **total-transactions**.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Response> PendingGetAsync(string address, int? max, Format? format, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<PendingTransactions> PendingGetAsync(string address, int? max, Format? format, System.Threading.CancellationToken cancellationToken)
         {
             if (address == null)
                 throw new System.ArgumentNullException("address");
@@ -444,7 +444,7 @@ namespace Algorand.V2.Algod
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<PendingTransactions>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -516,7 +516,7 @@ namespace Algorand.V2.Algod
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>Encoded block object.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response2> BlocksAsync(ulong round, Format? format)
+        public System.Threading.Tasks.Task<CertifiedBlock> BlocksAsync(ulong round, Format? format)
         {
             return BlocksAsync(round, format, System.Threading.CancellationToken.None);
         }
@@ -527,7 +527,7 @@ namespace Algorand.V2.Algod
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>Encoded block object.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Response2> BlocksAsync(ulong round, Format? format, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CertifiedBlock> BlocksAsync(ulong round, Format? format, System.Threading.CancellationToken cancellationToken)
         {
             if (round == null)
                 throw new System.ArgumentNullException("round");
@@ -574,7 +574,7 @@ namespace Algorand.V2.Algod
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response2>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<CertifiedBlock>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1311,7 +1311,7 @@ namespace Algorand.V2.Algod
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>A potentially truncated list of transactions currently in the node's transaction pool. You can compute whether or not the list is truncated if the number of elements in the **top-transactions** array is fewer than **total-transactions**.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response> PendingGetAsync(int? max, Format? format)
+        public System.Threading.Tasks.Task<PendingTransactions> PendingGetAsync(int? max, Format? format)
         {
             return PendingGetAsync(max, format, System.Threading.CancellationToken.None);
         }
@@ -1322,7 +1322,7 @@ namespace Algorand.V2.Algod
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
         /// <returns>A potentially truncated list of transactions currently in the node's transaction pool. You can compute whether or not the list is truncated if the number of elements in the **top-transactions** array is fewer than **total-transactions**.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Response> PendingGetAsync(int? max, Format? format, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<PendingTransactions> PendingGetAsync(int? max, Format? format, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/transactions/pending?");
@@ -1368,7 +1368,7 @@ namespace Algorand.V2.Algod
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<PendingTransactions>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
