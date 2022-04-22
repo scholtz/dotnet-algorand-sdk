@@ -4,7 +4,8 @@ using System.ComponentModel;
 
 namespace Algorand.V2.Algod.Model
 {
-    [JsonConverter(typeof(JsonPathConverter))]
+    [JsonConverter(typeof(JsonPathConverter))] //TODO - make this a JsonPathConverterForPending/Raw/IndexerTransaction and make it check if 
+    //the TXN property is there.
     public abstract class Transaction
     {
 
@@ -14,10 +15,6 @@ namespace Algorand.V2.Algod.Model
          */
         #region Sent Transaction Properties
       
-
-       
-
-
         /// <summary>The round where this transaction was confirmed, if present.</summary>
         [JsonProperty("confirmed-round", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         private ulong? confirmedRound { set { ConfirmedRound = value; } }
@@ -57,24 +54,34 @@ namespace Algorand.V2.Algod.Model
 
 
         [JsonProperty(PropertyName = "snd")]
-        public Address sender = new Address();
-        //@JsonProperty("fee")
+        public Address Sender = new Address();
+       
+        [JsonProperty("sender")] //, Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        private Address sender { set { Sender = value; } }
+
+        
         [JsonProperty(PropertyName = "fee")]
         [DefaultValue(0)]
-        public ulong? fee = 0;
-        //@JsonProperty("fv")
+        public ulong? Fee = 0;
+  
+
         [JsonProperty(PropertyName = "fv")]
         [DefaultValue(0)]
-        public ulong? firstValid = 0;
-        //@JsonProperty("lv")
+        public ulong? FirstValid = 0;
+        [JsonProperty("first-valid")] //, Required = Newtonsoft.Json.Required.Always)]
+        private ulong? firstValid { set { FirstValid = value; } }
+
         [JsonProperty(PropertyName = "lv")]
         [DefaultValue(0)]
-        public ulong? lastValid = 0;
-        //@JsonProperty("note")
+        public ulong? LastValid = 0;
+        [JsonProperty("last-valid")] //, Required = Newtonsoft.Json.Required.Always)]
+        private ulong lastValid { set { LastValid = value; } }
+
         [JsonIgnore]
         private byte[] _note;
         [JsonProperty(PropertyName = "note")]
-        public byte[] note
+        public byte[] Note
         {
             get
             {
@@ -89,15 +96,29 @@ namespace Algorand.V2.Algod.Model
 
         [JsonProperty(PropertyName = "gen")]
         [DefaultValue("")]
-        public string genesisID = "";
+        public string GenesisID = "";
+        /// <summary>\[gen\] genesis block ID.</summary>
+        [JsonProperty("genesis-id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        private string genesisId { set { GenesisID = value; } }
+
+
         [JsonProperty(PropertyName = "gh")]
-        public Digest genesisHash = new Digest();
+        public Digest GenesisHash = new Digest();
+
+        [JsonProperty("genesis-hash", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Digest genesisHash { set { GenesisHash = value; } }
+
+
         [JsonProperty(PropertyName = "grp")]
-        public Digest group = new Digest();
+        public Digest Group = new Digest();
+        [JsonProperty("group", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Digest group { set { Group = value; } } //this might need Digest being defined as a type in the json, for codegen
+
+
         [JsonIgnore]
         private byte[] _lease;
         [JsonProperty(PropertyName = "lx")]
-        public byte[] lease
+        public byte[] Lease
         {
             get
             {
@@ -109,10 +130,14 @@ namespace Algorand.V2.Algod.Model
                     _lease = value;
             }
         }
+        [JsonProperty("lease", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public byte[] lease { set { Lease = value; } }
+
         [JsonProperty("rekey")]
         public Address RekeyTo = new Address();
-
-            
+        
+        [JsonProperty("rekey-to", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Address rekeyTo { set { RekeyTo = value; } }
 
         public bool Committed => ConfirmedRound.HasValue && ConfirmedRound > 0;
     }

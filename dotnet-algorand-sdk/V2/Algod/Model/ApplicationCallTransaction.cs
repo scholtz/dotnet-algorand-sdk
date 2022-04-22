@@ -58,7 +58,6 @@ namespace Algorand.V2.Algod.Model
         private ulong? applicationIndex { set { ApplicationId = value; } }
 
 
-        // ***
 
 
         /// <summary>\[ld\] Local state key/value changes for the application being executed by this transaction.</summary>
