@@ -11,14 +11,14 @@ namespace Algorand.V2.Algod.Model
 
         [JsonProperty(PropertyName = "xaid")]
         [DefaultValue(0)]
-        public ulong? xferAsset = 0;
+        public ulong? XferAsset = 0;
 
       
         /// <summary>
         /// The receiver of the transfer.
         /// </summary>
         [JsonProperty(PropertyName = "arcv")]
-        public Address assetReceiver = new Address();
+        public Address AssetReceiver = new Address();
 
  
     }

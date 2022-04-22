@@ -11,7 +11,7 @@ namespace Algorand.V2.Algod.Model
 
         [JsonProperty(PropertyName = "xaid")]
         [DefaultValue(0)]
-        public ulong? xferAsset = 0;
+        public ulong? XferAsset = 0;
 
         /// <summary>
         /// The amount of asset to transfer. A zero amount transferred to self
@@ -19,7 +19,7 @@ namespace Algorand.V2.Algod.Model
         /// </summary>
         [JsonProperty(PropertyName = "aamt")]
         [DefaultValue(0)]
-        public ulong? assetAmount = 0;
+        public ulong? AssetAmount = 0;
 
         /// <summary>
         /// The sender of the transfer.  If this is not a zero value, the real
@@ -27,13 +27,13 @@ namespace Algorand.V2.Algod.Model
         /// this is the zero value, the asset is sent from the transaction's Sender.
         /// </summary>
         [JsonProperty(PropertyName = "asnd")]
-        public Address assetSender = new Address();
+        public Address AssetSender = new Address();
 
         /// <summary>
         /// The receiver of the transfer.
         /// </summary>
         [JsonProperty(PropertyName = "arcv")]
-        public Address assetReceiver = new Address();
+        public Address AssetReceiver = new Address();
 
         /// <summary>
         /// Indicates that the asset should be removed from the account's Assets map,
@@ -41,6 +41,19 @@ namespace Algorand.V2.Algod.Model
         /// It's always valid to transfer remaining asset holdings to the AssetID account.
         /// </summary>
         [JsonProperty(PropertyName = "aclose")]
-        public Address assetCloseTo = new Address();
+        public Address AssetCloseTo = new Address();
+
+
+        /// <summary>The number of the asset's unit that were transferred to the close-to address.</summary>
+        [JsonProperty("asset-closing-amount", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        private ulong? assetClosingAmount_pending { set { AssetClosingAmount = value; } }
+
+        /// <summary>The number of the asset's unit that were transferred to the close-to address.</summary>
+        [JsonProperty("asset-clawback-transaction.asset-closing-amount", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        private ulong? assetClosingAmount_indexer { set { AssetClosingAmount = value; } }
+
+
+        [JsonIgnore]
+        public ulong? AssetClosingAmount { get; private set; }
     }
 }

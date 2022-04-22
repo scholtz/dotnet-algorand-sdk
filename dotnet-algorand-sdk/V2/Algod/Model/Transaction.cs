@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Algorand.Internal.Json;
+using Newtonsoft.Json;
 using System.ComponentModel;
 
 namespace Algorand.V2.Algod.Model
 {
+    [JsonConverter(typeof(JsonPathConverter))]
     public abstract class Transaction
     {
 
@@ -11,36 +13,10 @@ namespace Algorand.V2.Algod.Model
          * Transaction type.
          */
         #region Sent Transaction Properties
-        /// <summary>The asset index if the transaction was found and it created an asset.</summary>
-        [JsonProperty("asset-index", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ulong? assetIndex { set { AssetIndex = value; } }
-        [JsonIgnore]
-        public ulong? AssetIndex { get; private set; }
+      
 
+       
 
-        /// <summary>The application index if the transaction was found and it created an application.</summary>
-        [JsonProperty("application-index", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ulong? applicationIndex { set { ApplicationIndex = value; } }
-        [JsonIgnore]
-        public ulong? ApplicationIndex { get; private set; }
-
-        /// <summary>Rewards in microalgos applied to the close remainder to account.</summary>
-        [JsonProperty("close-rewards", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ulong? closeRewards { set { CloseRewards = value;  } }
-        [JsonIgnore]
-        public ulong? CloseRewards { get; private set; }
-
-        /// <summary>Closing amount for the transaction.</summary>
-        [JsonProperty("closing-amount", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ulong? closingAmount { set { ClosingAmount = value; } }
-        [JsonIgnore]
-        public ulong? ClosingAmount { get; private set; }
-
-        /// <summary>The number of the asset's unit that were transferred to the close-to address.</summary>
-        [JsonProperty("asset-closing-amount", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ulong? assetClosingAmount { set { AssetClosingAmount = value; } }
-        [JsonIgnore]
-        public ulong? AssetClosingAmount { get; private set; }
 
         /// <summary>The round where this transaction was confirmed, if present.</summary>
         [JsonProperty("confirmed-round", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
@@ -56,6 +32,9 @@ namespace Algorand.V2.Algod.Model
         [JsonIgnore]
         public string PoolError { get; private set; }
 
+
+        //TODO - Are rewards only payment txn ?
+
         /// <summary>Rewards in microalgos applied to the receiver account.</summary>
         [JsonProperty("receiver-rewards", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         private ulong? receiverRewards { set { ReceiverRewards = value; } }
@@ -68,26 +47,9 @@ namespace Algorand.V2.Algod.Model
         [JsonIgnore]
         public ulong? SenderRewards { get; private set; }
 
-        /// <summary>\[ld\] Local state key/value changes for the application being executed by this transaction.</summary>
-        [JsonProperty("local-state-delta", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private System.Collections.Generic.ICollection<AccountStateDelta> localStateDelta { set { LocalStateDelta = value; } }
-        public System.Collections.Generic.ICollection<AccountStateDelta> LocalStateDelta { get; private set; }
+        //endtodo
 
-        /// <summary>\[gd\] Global state key/value changes for the application being executed by this transaction.</summary>
-        [JsonProperty("global-state-delta", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private StateDelta globalStateDelta { get; set; }
-        [JsonIgnore]
-        public StateDelta GlobalStateDelta { get; private set; }
-
-        /// <summary>\[lg\] Logs for the application being executed by this transaction.</summary>
-        [JsonProperty("logs", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<byte[]> logs { get; set; }
-        public System.Collections.Generic.ICollection<byte[]> Logs { get; private set; }
-
-        /// <summary>Inner transactions produced by application execution.</summary>
-        [JsonProperty("inner-txns", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private System.Collections.Generic.ICollection<Transaction> innerTxns { get; set; }
-        public System.Collections.Generic.ICollection<Transaction> InnerTxns { get; set; }
+     
 
         #endregion
 

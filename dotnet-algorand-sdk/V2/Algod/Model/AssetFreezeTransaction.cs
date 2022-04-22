@@ -11,12 +11,12 @@ namespace Algorand.V2.Algod.Model
         private readonly string type = "afrz";
 
         [JsonProperty(PropertyName = "fadd")]
-        public Address freezeTarget = new Address();
+        public Address FreezeTarget = new Address();
         [JsonProperty(PropertyName = "faid")]
         [DefaultValue(0)]
-        public ulong? assetFreezeID = 0;
+        public ulong? AssetFreezeID = 0;
         [JsonProperty(PropertyName = "afrz")]
         [DefaultValue(false)]
-        public bool freezeState = false;
+        public bool FreezeState = false;
     }
 }
