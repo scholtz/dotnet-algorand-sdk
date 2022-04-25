@@ -16,9 +16,18 @@ namespace Algorand.V2.Algod.Model
         [JsonProperty(PropertyName = "apid")]
         [DefaultValue(0)]
         public ulong? ApplicationId = 0;
+        [JsonProperty("application-index", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        private ulong? applicationIndex_pending { set { ApplicationId = value; } }
+
+
+
+
+        //TODO - why Indexer model - change this
+        //TODO - add Transaction at all into the Algod API spec 
 
         [JsonProperty(PropertyName = "apan")]
-        public V2.Indexer.Model.OnCompletion OnCompletion = V2.Indexer.Model.OnCompletion.Noop;
+        public V2.Indexer.Model.OnCompletion OnCompletion = V2.Indexer.Model.OnCompletion.Noop; 
+
 
 
         [JsonProperty(PropertyName = "apat")]
@@ -53,33 +62,34 @@ namespace Algorand.V2.Algod.Model
         public ulong? extraProgramPages = 0;
 
 
-        /// <summary>The application index if the transaction was found and it created an application.</summary>
-        [JsonProperty("application-index", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ulong? applicationIndex { set { ApplicationId = value; } }
+
 
 
 
 
         /// <summary>\[ld\] Local state key/value changes for the application being executed by this transaction.</summary>
+        [JsonIgnore]
+        public ICollection<AccountStateDelta> LocalStateDelta { get; private set; }
+        
         [JsonProperty("local-state-delta", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private System.Collections.Generic.ICollection<AccountStateDelta> localStateDelta_pending { set { LocalStateDelta = value; } }
-        public System.Collections.Generic.ICollection<AccountStateDelta> LocalStateDelta { get; private set; }
+        private ICollection<AccountStateDelta> localStateDelta_pending { set { LocalStateDelta = value; } }
 
-        /// <summary>\[gd\] Global state key/value changes for the application being executed by this transaction.</summary>
-        [JsonProperty("global-state-delta", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private StateDelta globalStateDelta_pending { get; set; }
         [JsonIgnore]
         public StateDelta GlobalStateDelta { get; private set; }
-
+        /// <summary>\[gd\] Global state key/value changes for the application being executed by this transaction.</summary>
+        [JsonProperty("global-state-delta", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        private StateDelta globalStateDelta_pending { set { GlobalStateDelta = value; } }
+        
         /// <summary>\[lg\] Logs for the application being executed by this transaction.</summary>
-        [JsonProperty("logs", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        public ICollection<byte[]> logs_pending { get; set; }
         public ICollection<byte[]> Logs { get; private set; }
+        [JsonProperty("logs", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        private ICollection<byte[]> logs_pending { set { Logs = value; } }
 
+        public ICollection<Transaction> InnerTxns { get; private set; }
         /// <summary>Inner transactions produced by application execution.</summary>
         [JsonProperty("inner-txns", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         private ICollection<Transaction> innerTxns_pending { get; set; }
-        public ICollection<Transaction> InnerTxns { get; set; }
+    
 
     }
 }

@@ -30,8 +30,6 @@ namespace Algorand.V2.Algod.Model
         public string PoolError { get; private set; }
 
 
-        //TODO - Are rewards only payment txn ?
-
         /// <summary>Rewards in microalgos applied to the receiver account.</summary>
         [JsonProperty("receiver-rewards", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         private ulong? receiverRewards { set { ReceiverRewards = value; } }
@@ -44,21 +42,23 @@ namespace Algorand.V2.Algod.Model
         [JsonIgnore]
         public ulong? SenderRewards { get; private set; }
 
-        //endtodo
+        /// <summary>Rewards in microalgos applied to the close remainder to account.</summary>
+        [JsonProperty("close-rewards", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        private ulong? closeRewards { set { CloseRewards = value; } }
+        [JsonIgnore]
+        public ulong? CloseRewards { get; private set; }
 
-     
+
 
         #endregion
 
-       
+
 
 
         [JsonProperty(PropertyName = "snd")]
         public Address Sender = new Address();
        
-        [JsonProperty("sender")] //, Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        private Address sender { set { Sender = value; } }
+
 
         
         [JsonProperty(PropertyName = "fee")]
@@ -69,14 +69,12 @@ namespace Algorand.V2.Algod.Model
         [JsonProperty(PropertyName = "fv")]
         [DefaultValue(0)]
         public ulong? FirstValid = 0;
-        [JsonProperty("first-valid")] //, Required = Newtonsoft.Json.Required.Always)]
-        private ulong? firstValid { set { FirstValid = value; } }
+
 
         [JsonProperty(PropertyName = "lv")]
         [DefaultValue(0)]
         public ulong? LastValid = 0;
-        [JsonProperty("last-valid")] //, Required = Newtonsoft.Json.Required.Always)]
-        private ulong lastValid { set { LastValid = value; } }
+
 
         [JsonIgnore]
         private byte[] _note;
@@ -97,22 +95,17 @@ namespace Algorand.V2.Algod.Model
         [JsonProperty(PropertyName = "gen")]
         [DefaultValue("")]
         public string GenesisID = "";
-        /// <summary>\[gen\] genesis block ID.</summary>
-        [JsonProperty("genesis-id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        private string genesisId { set { GenesisID = value; } }
+
 
 
         [JsonProperty(PropertyName = "gh")]
         public Digest GenesisHash = new Digest();
 
-        [JsonProperty("genesis-hash", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Digest genesisHash { set { GenesisHash = value; } }
 
 
         [JsonProperty(PropertyName = "grp")]
         public Digest Group = new Digest();
-        [JsonProperty("group", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Digest group { set { Group = value; } } //this might need Digest being defined as a type in the json, for codegen
+
 
 
         [JsonIgnore]
@@ -130,14 +123,12 @@ namespace Algorand.V2.Algod.Model
                     _lease = value;
             }
         }
-        [JsonProperty("lease", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public byte[] lease { set { Lease = value; } }
+
 
         [JsonProperty("rekey")]
         public Address RekeyTo = new Address();
         
-        [JsonProperty("rekey-to", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Address rekeyTo { set { RekeyTo = value; } }
+
 
         public bool Committed => ConfirmedRound.HasValue && ConfirmedRound > 0;
     }

@@ -48,11 +48,6 @@ namespace Algorand.V2.Algod.Model
         [JsonProperty("asset-closing-amount", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         private ulong? assetClosingAmount_pending { set { AssetClosingAmount = value; } }
 
-        /// <summary>The number of the asset's unit that were transferred to the close-to address.</summary>
-        [JsonProperty("asset-clawback-transaction.asset-closing-amount", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ulong? assetClosingAmount_indexer { set { AssetClosingAmount = value; } }
-
-
         [JsonIgnore]
         public ulong? AssetClosingAmount { get; private set; }
     }

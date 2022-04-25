@@ -17,9 +17,6 @@ namespace Algorand.V2.Algod.Model
         [DefaultValue(0)]
         public ulong? AssetIndex = 0;
 
-        /// <summary>The asset index if the transaction was found and it created an asset.</summary>
-        [JsonProperty("asset-config-transaction.asset-index", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ulong? assetIndex_indexer { set { AssetIndex = value; } }
 
         /// <summary>The asset index if the transaction was found and it created an asset.</summary>
         [JsonProperty("asset-index", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]

@@ -13,6 +13,12 @@ namespace Algorand.Internal.Json
         public override object ReadJson(JsonReader reader, Type objectType,
                                         object existingValue, JsonSerializer serializer)
         {
+            //TODO - this is the crux - if we can specify a property of a PendingTransactionResponse
+            // as being [JsonConverter(MessagePack))] or something, and if that subfield is decoded first,
+            // then we can map a private field to the child path, eg: txn.something, txn.somethingelse
+
+            //TODO - try the above 1st thing.
+
             JObject jo = JObject.Load(reader);
             object targetObj = Activator.CreateInstance(objectType);
 

@@ -22,15 +22,9 @@ namespace Algorand.V2.Algod.Model
 
         [JsonProperty(PropertyName = "close")]
         public Address CloseRemainderTo = new Address();
-        /// <summary>Rewards in microalgos applied to the close remainder to account.</summary>
-        [JsonProperty("payment-transaction.close-remainder-to", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ulong? closeRemainderTo_indexer { set { CloseRewards = value; } }
-
-        /// <summary>Rewards in microalgos applied to the close remainder to account.</summary>
-        [JsonProperty("close-rewards", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ulong? closeRewards { set { CloseRewards = value; } }
-        [JsonIgnore]
-        public ulong? CloseRewards { get; private set; }
+      
+        
+  
 
         /// <summary>Closing amount for the transaction.</summary>
         [JsonProperty("closing-amount", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
