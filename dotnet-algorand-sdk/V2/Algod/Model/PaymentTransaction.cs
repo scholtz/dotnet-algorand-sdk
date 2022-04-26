@@ -22,9 +22,6 @@ namespace Algorand.V2.Algod.Model
 
         [JsonProperty(PropertyName = "close")]
         public Address CloseRemainderTo = new Address();
-      
-        
-  
 
         /// <summary>Closing amount for the transaction.</summary>
         [JsonProperty("closing-amount", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]

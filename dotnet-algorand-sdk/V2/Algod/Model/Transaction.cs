@@ -1,10 +1,10 @@
-﻿using Algorand.Internal.Json;
+﻿
 using Newtonsoft.Json;
 using System.ComponentModel;
 
 namespace Algorand.V2.Algod.Model
 {
-    [JsonConverter(typeof(JsonPathConverter))] //TODO - make this a JsonPathConverterForPending/Raw/IndexerTransaction and make it check if 
+  
     //the TXN property is there.
     public abstract class Transaction
     {
