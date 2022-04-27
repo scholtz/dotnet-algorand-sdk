@@ -4,36 +4,25 @@ using System.ComponentModel;
 
 namespace Algorand.V2.Algod.Model
 {
-    public class AssetTransferTransaction : Transaction
+    public abstract class AssetTransferTransaction : AssetMovementsTransaction
     {
-        [JsonProperty(PropertyName = "type")]
-        private readonly string type = "axfer";
+    
 
-
-        [JsonProperty(PropertyName = "xaid")]
-        [DefaultValue(0)]
-        public ulong? XferAsset = 0;
 
         /// <summary>
         /// The amount of asset to transfer. A zero amount transferred to self
         /// allocates that asset in the account's Assets map.
         /// </summary>
-        [JsonProperty(PropertyName = "aamt")]
+        [JsonProperty(PropertyName = "aamt", Required = Required.Always)]
         [DefaultValue(0)]
         public ulong? AssetAmount = 0;
 
-        /// <summary>
-        /// The sender of the transfer.  If this is not a zero value, the real
-        /// transaction sender must be the Clawback address from the AssetParams. If
-        /// this is the zero value, the asset is sent from the transaction's Sender.
-        /// </summary>
-        [JsonProperty(PropertyName = "asnd")]
-        public Address AssetSender = new Address();
+    
 
         /// <summary>
         /// The receiver of the transfer.
         /// </summary>
-        [JsonProperty(PropertyName = "arcv")]
+        [JsonProperty(PropertyName = "arcv", Required = Required.Always)]
         public Address AssetReceiver = new Address();
 
         /// <summary>
@@ -41,7 +30,7 @@ namespace Algorand.V2.Algod.Model
         /// and specifies where the remaining asset holdings should be transferred.
         /// It's always valid to transfer remaining asset holdings to the AssetID account.
         /// </summary>
-        [JsonProperty(PropertyName = "aclose")]
+        [JsonProperty(PropertyName = "aclose", Required = Required.Always)]
         public Address AssetCloseTo = new Address();
 
 

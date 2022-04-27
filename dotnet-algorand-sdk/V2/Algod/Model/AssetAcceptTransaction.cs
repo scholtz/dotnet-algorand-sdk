@@ -3,21 +3,13 @@ using System.ComponentModel;
 
 namespace Algorand.V2.Algod.Model
 {
-    public class AssetAcceptTransaction : Transaction
+    public class AssetAcceptTransaction : AssetMovementsTransaction
     {
-        [JsonProperty(PropertyName = "type")]
-        private readonly string type = "axfer";
-
-
-        [JsonProperty(PropertyName = "xaid")]
-        [DefaultValue(0)]
-        public ulong? XferAsset = 0;
-
-      
+ 
         /// <summary>
         /// The receiver of the transfer.
         /// </summary>
-        [JsonProperty(PropertyName = "arcv")]
+        [JsonProperty(PropertyName = "arcv", Required = Required.Always)]
         public Address AssetReceiver = new Address();
 
  

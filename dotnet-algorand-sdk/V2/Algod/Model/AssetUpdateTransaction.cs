@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Algorand.V2.Algod.Model
@@ -11,6 +12,7 @@ namespace Algorand.V2.Algod.Model
         public AssetParams AssetParams = new AssetParams();
 
         [JsonProperty(PropertyName = "caid", Required = Required.Always)]
+        [DefaultValue(0)]
         public  ulong AssetIndex = 0;
 
         /// <summary>The asset index if the transaction was found and it created an asset.</summary>
