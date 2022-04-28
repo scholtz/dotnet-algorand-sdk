@@ -2,23 +2,21 @@
 
 
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Algorand.V2.Algod.Model { 
+namespace Algorand.V2.Algod.Model
+{
 
     public abstract class ApplicationCreateTransaction : ApplicationCallTransaction
     {
 
-
-
         [JsonProperty(PropertyName = "apan")]
         [DefaultValue(V2.Indexer.Model.OnCompletion.Noop)]
-        public V2.Indexer.Model.OnCompletion OnCompletion = V2.Indexer.Model.OnCompletion.Noop; 
-        
+        public V2.Indexer.Model.OnCompletion OnCompletion = V2.Indexer.Model.OnCompletion.Noop;
+
         [JsonProperty(PropertyName = "apap")]
         public TEALProgram ApprovalProgram = null;
-        
+
         [JsonProperty(PropertyName = "apsu")]
         public TEALProgram ClearStateProgram = null;
 
@@ -31,6 +29,8 @@ namespace Algorand.V2.Algod.Model {
         [JsonProperty(PropertyName = "apep")]
         [DefaultValue(0)]
         public ulong? ExtraProgramPages = 0;
+
+      
 
 
 
