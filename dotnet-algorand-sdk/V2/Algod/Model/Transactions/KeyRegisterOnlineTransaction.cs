@@ -19,7 +19,7 @@ namespace Algorand.V2.Algod.Model
         /// selectionPK is the VRF public key used in key registration transactions
         /// </summary>
         [JsonProperty(PropertyName = "selkey")]
-        public VRFPublicKey selectionPK = new VRFPublicKey();
+        public VRFPublicKey SelectionPK = new VRFPublicKey();
         /// <summary>
         /// voteFirst is the first round this keyreg tx is valid for
         /// </summary>

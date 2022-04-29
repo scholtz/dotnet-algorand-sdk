@@ -27,11 +27,11 @@ namespace Algorand.V2.Algod.Model
         public V2.Indexer.Model.StateSchema GlobalStateSchema = new V2.Indexer.Model.StateSchema();
 
         [JsonProperty(PropertyName = "apls")]
-        public V2.Indexer.Model.StateSchema localStateSchema = new V2.Indexer.Model.StateSchema();
+        public V2.Indexer.Model.StateSchema LocalStateSchema = new V2.Indexer.Model.StateSchema();
 
         [JsonProperty(PropertyName = "apep")]
         [DefaultValue(0)]
-        public ulong? extraProgramPages = 0;
+        public ulong? ExtraProgramPages = 0;
 
 
 

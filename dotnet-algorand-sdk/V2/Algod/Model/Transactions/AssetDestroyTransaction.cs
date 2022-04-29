@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace Algorand.V2.Algod.Model
 {
-    public class AssetDestroyTransaction
+    public class AssetDestroyTransaction : AssetConfigurationTransaction
     {
         [JsonProperty(PropertyName = "caid", Required = Required.Always)]
         [DefaultValue(0)]
