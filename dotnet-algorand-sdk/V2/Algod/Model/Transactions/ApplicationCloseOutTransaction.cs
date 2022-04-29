@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace Algorand.V2.Algod.Model { 
 
-    public abstract class ApplicationCloseOutTransaction : ApplicationCallTransaction
+    public  class ApplicationCloseOutTransaction : ApplicationCallTransaction
     {
 
 

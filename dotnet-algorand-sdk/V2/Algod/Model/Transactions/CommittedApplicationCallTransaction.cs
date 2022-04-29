@@ -5,8 +5,11 @@ using System.Text;
 
 namespace Algorand.V2.Algod.Model
 {
-    internal class CommittedApplicationCallTransaction : CommittedTransaction<ApplicationCallTransaction>    
+    internal abstract class CommittedApplicationCallTransaction : CommittedTransaction
     {
+
+        protected CommittedApplicationCallTransaction(ApplicationCallTransaction tx) : base(tx) { }
+
         /// <summary>\[ld\] Local state key/value changes for the application being executed by this transaction.</summary>
         [JsonIgnore]
         public ICollection<AccountStateDelta> LocalStateDelta { get; private set; }
@@ -25,9 +28,9 @@ namespace Algorand.V2.Algod.Model
         [JsonProperty("logs", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         private ICollection<byte[]> logs { set { Logs = value; } }
 
-        public ICollection<CommittedTransaction<Transaction>> InnerTxns { get; private set; }
+        public ICollection<CommittedApplicationCallTransaction> InnerTxns { get; private set; }
         /// <summary>Inner transactions produced by application execution.</summary>
         [JsonProperty("inner-txns", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ICollection<CommittedTransaction<Transaction>> innerTxns { set { InnerTxns = value; } }
+        private ICollection<CommittedApplicationCallTransaction> innerTxns { set { InnerTxns = value; } }
     }
 }

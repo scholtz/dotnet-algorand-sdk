@@ -1,192 +1,235 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
   <Class Name="Algorand.V2.Algod.Model.ApplicationCallTransaction">
-    <Position X="13" Y="5.25" Width="2.25" />
+    <Position X="13.5" Y="17" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAABAACAACAAAgAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\ApplicationCallTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.ApplicationClearStateTransaction">
-    <Position X="6.25" Y="8.5" Width="2.5" />
+    <Position X="6.75" Y="20.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\ApplicationClearStateTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.ApplicationCloseOutTransaction">
-    <Position X="12.75" Y="8.5" Width="2.5" />
+    <Position X="13.25" Y="20.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\ApplicationCloseOutTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.ApplicationCreateTransaction">
-    <Position X="16" Y="8.5" Width="2.5" />
+    <Position X="16.5" Y="20.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAiAAAAAAAAAAEAAAAAAAAAEAAAACAAACAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\ApplicationCreateTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.ApplicationDeleteTransaction">
-    <Position X="19.25" Y="8.5" Width="2.5" />
+    <Position X="19.75" Y="20.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\ApplicationDeleteTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.ApplicationNoopTransaction">
-    <Position X="22.5" Y="8.5" Width="2.5" />
+    <Position X="23" Y="20.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\ApplicationNoopTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.ApplicationOptInTransaction">
-    <Position X="3" Y="8.5" Width="2.5" />
+    <Position X="3.5" Y="20.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\ApplicationOptInTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.ApplicationUpdateTransaction">
-    <Position X="9.5" Y="8.5" Width="2.5" />
+    <Position X="10" Y="20.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAiAAAAAAAAAAEQAAAAAAAAEAAAACAAACAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\ApplicationUpdateTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.AssetAcceptTransaction">
-    <Position X="30.75" Y="7.75" Width="2" />
+    <Position X="31.25" Y="19.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\AssetAcceptTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.AssetClawbackTransaction">
-    <Position X="33.5" Y="7.75" Width="2" />
+    <Position X="34" Y="19.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAgAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\AssetClawbackTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.AssetConfigurationTransaction">
-    <Position X="42" Y="5.25" Width="2.25" />
+    <Position X="42.5" Y="17" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\AssetConfigurationTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.AssetCreateTransaction">
-    <Position X="41.75" Y="7.25" Width="2.25" />
+    <Position X="42.25" Y="19" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\AssetCreateTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.AssetDestroyTransaction">
-    <Position X="39" Y="7.25" Width="2" />
+    <Position X="39.5" Y="19" Width="2" />
     <TypeIdentifier>
       <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\AssetDestroyTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.AssetFreezeTransaction">
-    <Position X="25.75" Y="5.25" Width="2" />
+    <Position X="26.25" Y="17" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAgAAACAAQAAAAAABAAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\AssetFreezeTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.AssetMovementsTransaction">
-    <Position X="33.5" Y="5.25" Width="2" />
+    <Position X="34" Y="17" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAgAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\AssetMovementsTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.AssetTransferTransaction">
-    <Position X="36.25" Y="7.75" Width="2" />
+    <Position X="36.75" Y="19.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAAAAAAAAAAAACAAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\AssetTransferTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.AssetUpdateTransaction">
-    <Position X="44.75" Y="7.25" Width="2.25" />
+    <Position X="45.25" Y="19" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\AssetUpdateTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.CommittedApplicationCallTransaction">
-    <Position X="12.75" Y="15.25" Width="4.25" />
+    <Position X="16" Y="5.75" Width="4.25" />
     <TypeIdentifier>
       <HashCode>ABAAAAAQAAAQEAABEAAAAQAAAAAAAAAAAAAQAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\CommittedApplicationCallTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Algorand.V2.Algod.Model.CommittedAssetCreateTransaction" Collapsed="true">
-    <Position X="1.25" Y="15.25" Width="3" />
+  <Class Name="Algorand.V2.Algod.Model.CommittedAssetCreateTransaction">
+    <Position X="2.25" Y="5.75" Width="3" />
     <TypeIdentifier>
       <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\CommittedAssetCreateTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.CommittedAssetTransferTransaction">
-    <Position X="5" Y="15.25" Width="3" />
+    <Position X="6" Y="5.75" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\CommittedAssetTransferTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Algorand.V2.Algod.Model.CommittedTransaction&lt;T&gt;">
-    <Position X="8" Y="11.5" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAwAAAEIAAABAAAAAAAYBAAAGAAAAAAAAAAABAA=</HashCode>
-      <FileName>V2\Algod\Model\Transactions\CommittedTransaction.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Algorand.V2.Algod.Model.KeyRegisterOfflineTransaction">
-    <Position X="47.75" Y="7.25" Width="2.25" />
+    <Position X="48.25" Y="19" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\KeyRegisterOfflineTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.KeyRegisterOnlineTransaction">
-    <Position X="50.75" Y="7.25" Width="2.5" />
+    <Position X="51.25" Y="19" Width="2.5" />
     <TypeIdentifier>
       <HashCode>IAAAAAIAAAAAAQgAAAAAAAIAAAAAAAAAAAAAAAgAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\KeyRegisterOnlineTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.KeyRegistrationTransaction">
-    <Position X="49.5" Y="5.25" Width="2.25" />
+    <Position X="50" Y="17" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\KeyRegistrationTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.Transaction">
-    <Position X="27.25" Y="0.5" Width="1.75" />
+    <Position X="27.75" Y="12.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAQBkAAAAAAAAAgQAAAAAAACAAAAAABgABAAEkIAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\Transaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.Transactions.CommittedApplicationCreateTransaction">
-    <Position X="8.75" Y="15.25" Width="3.25" />
+    <Position X="9.75" Y="9.75" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\CommittedApplicationCreateTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.V2.Algod.Model.PaymentTransaction">
-    <Position X="28.5" Y="5.25" Width="1.5" />
+    <Position X="29" Y="17" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAIAAAAAAAAAAAAAAAEAACAAACVgAAAAAAAAAAACAA=</HashCode>
       <FileName>V2\Algod\Model\Transactions\PaymentTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Algorand.V2.Algod.Model.CommittedTransaction">
+    <Position X="13.25" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AACAAAgAAAEIAAABAAAAAAAYBAAAGAAAAAABAAAAhAA=</HashCode>
+      <FileName>V2\Algod\Model\Transactions\CommittedTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Algorand.V2.Algod.Model.Transactions.CommittedApplicationClearStateTransaction">
+    <Position X="13.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>V2\Algod\Model\Transactions\CommittedApplicationClearStateTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Algorand.V2.Algod.Model.Transactions.CommittedApplicationCloseOutTransaction">
+    <Position X="18.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>V2\Algod\Model\Transactions\CommittedApplicationCloseOutTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Algorand.V2.Algod.Model.Transactions.CommittedApplicationDeleteTransaction">
+    <Position X="22.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>V2\Algod\Model\Transactions\CommittedApplicationDeleteTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Algorand.V2.Algod.Model.Transactions.CommittedApplicationNoopTransaction">
+    <Position X="25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>V2\Algod\Model\Transactions\CommittedApplicationNoopTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Algorand.V2.Algod.Model.Transactions.CommittedApplicationOptInTransaction">
+    <Position X="16" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>V2\Algod\Model\Transactions\CommittedApplicationOptInTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Algorand.V2.Algod.Model.Transactions.CommittedApplicationUpdateTransaction">
+    <Position X="20.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>V2\Algod\Model\Transactions\CommittedApplicationUpdateTransaction.cs</FileName>
+      <NewMemberFileName>V2\Algod\Model\Transactions\CommittedApplicationOptInTransaction.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

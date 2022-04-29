@@ -6,8 +6,11 @@ using System.Text;
 
 namespace Algorand.V2.Algod.Model
 {
-    internal class CommittedAssetCreateTransaction : CommittedTransaction<AssetTransferTransaction>
+    internal class CommittedAssetCreateTransaction : CommittedTransaction
     {
+
+        public CommittedAssetCreateTransaction() : base(new AssetCreateTransaction()) { }
+
         /// <summary>The number of the asset's unit that were transferred to the close-to address..</summary>
         [JsonProperty("asset-index", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(0)]

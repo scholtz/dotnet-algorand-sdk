@@ -6,9 +6,10 @@ using System.Text;
 
 namespace Algorand.V2.Algod.Model.Transactions
 {
-    internal class CommittedApplicationCreateTransaction : CommittedTransaction<ApplicationCreateTransaction>
+    internal class CommittedApplicationCreateTransaction :  CommittedApplicationCallTransaction 
     {
-       
+
+        public CommittedApplicationCreateTransaction() : base(new ApplicationCreateTransaction()) { }
 
         /// <summary>The round where this transaction was confirmed, if present.</summary>
         [JsonProperty("application-index", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]

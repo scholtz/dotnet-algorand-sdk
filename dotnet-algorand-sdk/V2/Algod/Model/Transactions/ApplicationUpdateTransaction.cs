@@ -7,7 +7,7 @@ using System.ComponentModel;
 namespace Algorand.V2.Algod.Model
 {
 
-    public abstract class ApplicationUpdateTransaction : ApplicationCallTransaction
+    public  class ApplicationUpdateTransaction : ApplicationCallTransaction
     {
 
         [JsonProperty(PropertyName = "apid")]

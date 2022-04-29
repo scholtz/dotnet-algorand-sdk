@@ -6,8 +6,10 @@ using System.Text;
 
 namespace Algorand.V2.Algod.Model
 {
-    internal class CommittedAssetTransferTransaction : CommittedTransaction<AssetTransferTransaction>
+    internal class CommittedAssetTransferTransaction : CommittedTransaction
     {
+        public CommittedAssetTransferTransaction() : base(new AssetTransferTransaction())  {   }
+
         /// <summary>The number of the asset's unit that were transferred to the close-to address..</summary>
         [JsonProperty("asset-closing-amount", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(0)]

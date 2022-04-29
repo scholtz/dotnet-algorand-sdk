@@ -4,14 +4,15 @@ using Newtonsoft.Json;
 using System.ComponentModel;
 namespace Algorand.V2.Algod.Model
 {
-    public class CommittedTransaction<T> where T:Transaction 
+    public abstract class CommittedTransaction 
     {
         [JsonProperty("txn")]
-        public T Txn { get; set; }
+        private Transaction transaction { set { Transaction = value; } }
+        [JsonIgnore]
+        public Transaction Transaction { get; private set; }
 
-        #region Sent Transaction Properties
-       
-   
+        public bool FullyCommitted => (ConfirmedRound ?? 0 ) > 0;
+
         /// <summary>The round where this transaction was confirmed, if present.</summary>
         [JsonProperty("confirmed-round", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         private ulong? confirmedRound { set { ConfirmedRound = value; } }
@@ -45,8 +46,7 @@ namespace Algorand.V2.Algod.Model
         [JsonIgnore]
         public ulong? CloseRewards { get; private set; }
 
+        protected CommittedTransaction(Transaction tx) { }
 
-
-        #endregion
     }
 }
