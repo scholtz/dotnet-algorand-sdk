@@ -8,7 +8,7 @@ namespace Algorand.V2.Algod.Model
 {
     public class KeyRegisterOnlineTransaction : KeyRegistrationTransaction
     {
-        
+
         /// <summary>
         /// VotePK is the participation public key used in key registration transactions
         /// </summary>

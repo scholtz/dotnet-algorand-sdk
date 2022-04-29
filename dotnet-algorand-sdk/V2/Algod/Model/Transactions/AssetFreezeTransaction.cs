@@ -8,7 +8,7 @@ namespace Algorand.V2.Algod.Model
     public class AssetFreezeTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
-        private readonly string type = "afrz";
+        private string type => "afrz";
 
         [JsonProperty(PropertyName = "fadd", Required = Required.Always)]
         public Address FreezeTarget = new Address();

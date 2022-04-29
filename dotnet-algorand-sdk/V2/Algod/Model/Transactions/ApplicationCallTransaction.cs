@@ -10,7 +10,7 @@ namespace Algorand.V2.Algod.Model {
     public abstract class ApplicationCallTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type")]
-        private readonly string type = "appl";
+        private string type => "appl";
 
 
 

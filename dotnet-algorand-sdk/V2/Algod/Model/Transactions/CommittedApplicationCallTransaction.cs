@@ -28,6 +28,6 @@ namespace Algorand.V2.Algod.Model
         public ICollection<CommittedTransaction<Transaction>> InnerTxns { get; private set; }
         /// <summary>Inner transactions produced by application execution.</summary>
         [JsonProperty("inner-txns", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ICollection<Transaction> innerTxns { get; set; }
+        private ICollection<CommittedTransaction<Transaction>> innerTxns { set { InnerTxns = value; } }
     }
 }

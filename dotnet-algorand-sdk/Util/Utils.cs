@@ -23,7 +23,7 @@ namespace Algorand
         /// <param name="txID">transaction ID</param>
         /// <param name="timeout">how many rounds do you wish to check pending transactions for</param>
         /// <returns>The pending transaction response</returns>
-        public static async Task<V2.Algod.Model.PendingTransactionResponse> WaitTransactionToComplete(V2.Algod.DefaultApi instance, string txID, ulong timeout = 3) 
+        public static async Task<V2.Algod.Model.Transaction> WaitTransactionToComplete(V2.Algod.DefaultApi instance, string txID, ulong timeout = 3) 
         {
 
             if (instance == null || txID == null || txID.Length == 0 || timeout < 0)

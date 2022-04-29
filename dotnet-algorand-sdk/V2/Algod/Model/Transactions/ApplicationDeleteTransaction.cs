@@ -2,14 +2,13 @@
 
 
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Algorand.V2.Algod.Model { 
+namespace Algorand.V2.Algod.Model
+{
 
     public abstract class ApplicationDeleteTransaction : ApplicationCallTransaction
     {
-   
 
         [JsonProperty(PropertyName = "apid")]
         [DefaultValue(0)]
@@ -17,14 +16,14 @@ namespace Algorand.V2.Algod.Model {
 
 
         [JsonProperty(PropertyName = "apan")]
-        public V2.Indexer.Model.OnCompletion OnCompletion = V2.Indexer.Model.OnCompletion.Delete; 
+        public V2.Indexer.Model.OnCompletion OnCompletion => V2.Indexer.Model.OnCompletion.Delete;
 
 
-    
 
 
-       
-    
+
+
+
 
     }
 }

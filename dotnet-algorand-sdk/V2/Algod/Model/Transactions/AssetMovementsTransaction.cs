@@ -7,7 +7,7 @@ namespace Algorand.V2.Algod.Model
     public abstract class AssetMovementsTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type",Required =Required.Always)]
-        private readonly string type = "axfer";
+        private string type => "axfer";
 
 
         [JsonProperty(PropertyName = "xaid", Required = Required.Always)]

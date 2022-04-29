@@ -9,16 +9,9 @@ namespace Algorand.V2.Algod.Model
     public abstract class Transaction
     {
 
-
-       
-
-
-
         [JsonProperty(PropertyName = "snd")]
         public Address Sender = new Address();
        
-
-
         
         [JsonProperty(PropertyName = "fee")]
         [DefaultValue(0)]

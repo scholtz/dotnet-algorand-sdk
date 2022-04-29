@@ -2,10 +2,10 @@
 
 
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Algorand.V2.Algod.Model { 
+namespace Algorand.V2.Algod.Model
+{
 
     public abstract class ApplicationOptInTransaction : ApplicationCallTransaction
     {
@@ -15,9 +15,9 @@ namespace Algorand.V2.Algod.Model {
         public ulong? ApplicationId = 0;
 
         [JsonProperty(PropertyName = "apan")]
-        public V2.Indexer.Model.OnCompletion OnCompletion = V2.Indexer.Model.OnCompletion.Optin; 
+        public V2.Indexer.Model.OnCompletion OnCompletion => V2.Indexer.Model.OnCompletion.Optin;
 
-          
+
 
     }
 }
