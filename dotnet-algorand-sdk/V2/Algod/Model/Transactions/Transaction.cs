@@ -5,9 +5,11 @@ using System.ComponentModel;
 namespace Algorand.V2.Algod.Model
 {
   
-    //the TXN property is there.
+
     public abstract class Transaction
     {
+        private const ulong MIN_TX_FEE_UALGOS = 1000;
+
 
         [JsonProperty(PropertyName = "snd")]
         public Address Sender = new Address();
@@ -81,9 +83,22 @@ namespace Algorand.V2.Algod.Model
         public Address RekeyTo = new Address();
 
 
+        /// <summary>
+        /// Sets the transaction fee according to suggestedFeePerByte * estimateTxSize.
+        /// </summary>
+        /// <param name="tx">transaction to populate fee field</param>
+        /// <param name="suggestedFeePerByte">suggestedFee given by network</param>
+        public static void SetFeeByFeePerByte(Transaction tx, ulong? suggestedFeePerByte)
+        {
+            ulong? newFee = suggestedFeePerByte * (ulong)EstimatedEncodedSize(tx);
+            if (newFee < MIN_TX_FEE_UALGOS)
+            {
+                newFee = MIN_TX_FEE_UALGOS;
+            }
+            tx.fee = newFee;
+        }
 
 
 
-      
     }
 }

@@ -81,63 +81,7 @@ namespace Algorand
             return microAlgos / 1000000.0;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <param name="amount"></param>
-        /// <param name="message"></param>
-        /// <param name="fee"></param>
-        /// <param name="lastRound"></param>
-        /// <param name="genesisId"></param>
-        /// <param name="genesishashb64"></param>
-        /// <returns></returns>
-        public static Transaction GetPaymentTransactionWithInfo(Address from, Address to, ulong? amount, string message, 
-            ulong? fee, ulong? lastRound, string genesisId, string genesishashb64)
-        {
-            var tx = GetPaymentTransactionWithFlatFee(from, to, amount, message, fee, lastRound, genesisId, genesishashb64);
-            Account.SetFeeByFeePerByte(tx, fee);
-            return tx;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <param name="amount"></param>
-        /// <param name="message"></param>
-        /// <param name="flatFee"></param>
-        /// <param name="lastRound"></param>
-        /// <param name="genesisId"></param>
-        /// <param name="genesishashb64"></param>
-        /// <returns></returns>
-        public static Transaction GetPaymentTransactionWithFlatFee(Address from, Address to, ulong? amount, string message,
-            ulong? flatFee, ulong? lastRound, string genesisId, string genesishashb64)
-        {
-            var notes = message is null ? null : Encoding.UTF8.GetBytes(message);
-            var tx = new Transaction(from, flatFee, lastRound, lastRound + 1000,
-                    notes, amount, to, genesisId, new Digest(genesishashb64));
-            return tx;
-        }
-
-        /// <summary>
-        /// Get a payment transaction
-        /// </summary>
-        /// <param name="from">from address</param>
-        /// <param name="to">to address</param>
-        /// <param name="amount">amount(Unit:MicroAlgo)</param>
-        /// <param name="message">message</param>
-        /// <param name="trans">Transaction Params(use AlgodApi.TransactionParams() function to get the params)</param>
-        /// <returns>payment transaction</returns>
-        public static Transaction GetPaymentTransaction(Address from, Address to, ulong? amount, string message, 
-            TransactionParametersResponse trans)
-        {
-            if (trans is null)
-                throw new Exception("The Transaction Params can not be null!");
-            return GetPaymentTransactionWithInfo(from, to, amount, message,
-                (ulong?)trans.Fee, (ulong?)trans.LastRound, trans.GenesisId, Convert.ToBase64String(trans.GenesisHash));
-        }
+       
         /// <summary>
         /// Generate a 32 bytes string for asset metadata hash
         /// </summary>

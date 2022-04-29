@@ -24,48 +24,8 @@ namespace Algorand
         public Type type = Type.Default;
 
      
-        public Transaction(Address fromAddr, Address toAddr, ulong? fee, ulong? amount, ulong? firstRound,
-            ulong? lastRound) : this(fromAddr, fee, firstRound, lastRound, null, amount, toAddr, "", new Digest()) { }
-
-        public Transaction(Address fromAddr, Address toAddr, ulong? fee, ulong? amount, ulong? firstRound, ulong? lastRound,
-                           string genesisID, Digest genesisHash) : this(fromAddr, fee, firstRound, lastRound, null, amount,
-                               toAddr, genesisID, genesisHash)
-        { }
-        public Transaction() { }
-        /// <summary>
-        /// Create a payment transaction. Make sure to sign with a suggested fee.
-        /// </summary>
-        /// <param name="fromAddr">source address</param>
-        /// <param name="toAddr">destination address</param>
-        /// <param name="amount">amount to send</param>
-        /// <param name="firstRound">first valid round</param>
-        /// <param name="lastRound">last valid round</param>
-        /// <param name="genesisID">genesis id</param>
-        /// <param name="genesisHash">genesis hash</param>
-        public Transaction(Address fromAddr, Address toAddr, ulong? amount, ulong? firstRound, ulong? lastRound, string genesisID, Digest genesisHash) :
-            this(fromAddr, 0, firstRound, lastRound, null, amount, toAddr, genesisID, genesisHash)
-        { }
-
-        public Transaction(Address sender, ulong? fee, ulong? firstValid, ulong? lastValid, byte[] note, ulong? amount,
-            Address receiver, string genesisID, Digest genesisHash) : this(sender, fee, firstValid, lastValid, note,
-                genesisID, genesisHash, amount, receiver, new Address())
-        { }
-
-        public Transaction(Address sender, ulong? fee, ulong? firstValid, ulong? lastValid, byte[] note, String genesisID, Digest genesisHash,
-                           ulong? amount, Address receiver, Address closeRemainderTo)
-        {
-            this.type = Type.Payment;
-            if (sender != null) this.sender = sender;
-            if (fee != null) this.fee = fee;
-            if (firstValid != null) this.firstValid = firstValid;
-            if (lastValid != null) this.lastValid = lastValid;
-            if (note != null && note.Length > 0) this.note = note;
-            if (genesisID != null) this.genesisID = genesisID;
-            if (genesisHash != null) this.genesisHash = genesisHash;
-            if (amount != null) this.amount = amount;
-            if (receiver != null) this.receiver = receiver;
-            if (closeRemainderTo != null) this.closeRemainderTo = closeRemainderTo;
-        }
+      
+     
         /// <summary>
         /// Create a key registration transaction. No field can be null except the note field.
         /// </summary>

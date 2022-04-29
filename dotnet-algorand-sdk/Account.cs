@@ -25,7 +25,7 @@ namespace Algorand
         private const int SK_SIZE_BITS = SK_SIZE * 8;
         private static readonly byte[] BID_SIGN_PREFIX = Encoding.UTF8.GetBytes("aB");
         private static readonly byte[] BYTES_SIGN_PREFIX = Encoding.UTF8.GetBytes("MX");
-        private const ulong MIN_TX_FEE_UALGOS = 1000;
+
         private static readonly byte[] PROGDATA_SIGN_PREFIX = Encoding.UTF8.GetBytes("ProgData");
         /// <summary>
         /// Rebuild the account from private key
@@ -173,20 +173,7 @@ namespace Algorand
             Signature bidSig = RawSignBytes(prefixEncodedBid.ToArray());
             return new SignedBid(bid, bidSig);
         }
-        /// <summary>
-        /// Sets the transaction fee according to suggestedFeePerByte * estimateTxSize.
-        /// </summary>
-        /// <param name="tx">transaction to populate fee field</param>
-        /// <param name="suggestedFeePerByte">suggestedFee given by network</param>
-        static public void SetFeeByFeePerByte(Transaction tx, ulong? suggestedFeePerByte)
-        {
-            ulong? newFee = suggestedFeePerByte * (ulong)EstimatedEncodedSize(tx);
-            if (newFee < MIN_TX_FEE_UALGOS)
-            {
-                newFee = MIN_TX_FEE_UALGOS;
-            }
-            tx.fee = newFee;
-        }
+       
         /// <summary>
         /// EstimateEncodedSize returns the estimated encoded size of the transaction including the signature.
         /// This function is useful for calculating the fee from suggested fee per byte.
