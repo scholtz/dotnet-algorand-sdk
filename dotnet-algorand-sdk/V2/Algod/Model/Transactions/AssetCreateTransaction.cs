@@ -8,6 +8,6 @@ namespace Algorand.V2.Algod.Model
         [JsonProperty(PropertyName = "apar",Required =Required.Always)]
         public AssetParams AssetParams = new AssetParams();
 
-
+       
     }
 }

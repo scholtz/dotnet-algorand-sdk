@@ -71,7 +71,7 @@ namespace Algorand.V2.Algod.Model
         /// <param name="message">message</param>
         /// <param name="trans">Transaction Params(use AlgodApi.TransactionParams() function to get the params)</param>
         /// <returns>payment transaction</returns>
-        public static Transaction GetPaymentTransactionFromNetworkTransactionParameters(Address from, Address to, ulong amount, string message, TransactionParametersResponse trans)
+        public static PaymentTransaction GetPaymentTransactionFromNetworkTransactionParameters(Address from, Address to, ulong amount, string message, TransactionParametersResponse trans)
         {
             if (trans is null) throw new Exception("The Transaction Params can not be null!");
             return GetPaymentTransactionWithSuggestedFee(from, to, amount, message, trans.Fee, trans.LastRound, trans.GenesisId, Convert.ToBase64String(trans.GenesisHash));

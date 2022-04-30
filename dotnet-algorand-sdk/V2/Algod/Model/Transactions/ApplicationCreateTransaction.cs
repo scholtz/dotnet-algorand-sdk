@@ -11,8 +11,8 @@ namespace Algorand.V2.Algod.Model
     {
 
         [JsonProperty(PropertyName = "apan")]
-        [DefaultValue(V2.Indexer.Model.OnCompletion.Noop)]
-        public V2.Indexer.Model.OnCompletion OnCompletion => V2.Indexer.Model.OnCompletion.Noop;
+        [DefaultValue(OnCompletion.Noop)]
+        public OnCompletion OnCompletion => OnCompletion.Noop;
 
         [JsonProperty(PropertyName = "apap", Required = Required.Always)]
         public TEALProgram ApprovalProgram = null;

@@ -16,7 +16,7 @@ namespace Algorand.V2.Algod.Model
 
 
         [JsonProperty(PropertyName = "apan")]
-        public V2.Indexer.Model.OnCompletion OnCompletion => V2.Indexer.Model.OnCompletion.Delete;
+        public OnCompletion OnCompletion => OnCompletion.Delete;
 
 
 

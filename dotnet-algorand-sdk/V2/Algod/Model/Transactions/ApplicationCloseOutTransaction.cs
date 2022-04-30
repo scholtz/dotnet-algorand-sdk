@@ -16,7 +16,7 @@ namespace Algorand.V2.Algod.Model {
         public ulong? ApplicationId = 0;
        
         [JsonProperty(PropertyName = "apan")]
-        public V2.Indexer.Model.OnCompletion OnCompletion => V2.Indexer.Model.OnCompletion.Closeout; 
+        public OnCompletion OnCompletion => OnCompletion.Closeout; 
 
 
 

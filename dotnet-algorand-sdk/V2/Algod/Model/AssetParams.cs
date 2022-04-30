@@ -12,12 +12,12 @@
     {
         /// <summary>\[c\] Address of account used to clawback holdings of this asset.  If empty, clawback is not permitted.</summary>
         [Newtonsoft.Json.JsonProperty("clawback", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Clawback { get; set; }
+        public Address Clawback { get; set; }
 
         /// <summary>The address that created this asset. This is the address where the parameters for this asset can be found, and also the address where unwanted asset units can be sent in the worst case.</summary>
         [Newtonsoft.Json.JsonProperty("creator", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Creator { get; set; }
+        
+        public Address Creator { get; set; } 
 
         /// <summary>\[dc\] The number of digits to use after the decimal point when displaying this asset. If 0, the asset is not divisible. If 1, the base unit of the asset is in tenths. If 2, the base unit of the asset is in hundredths, and so on. This value must be between 0 and 19 (inclusive).</summary>
         [Newtonsoft.Json.JsonProperty("decimals", Required = Newtonsoft.Json.Required.Always)]
@@ -30,11 +30,11 @@
 
         /// <summary>\[f\] Address of account used to freeze holdings of this asset.  If empty, freezing is not permitted.</summary>
         [Newtonsoft.Json.JsonProperty("freeze", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Freeze { get; set; }
+        public Address Freeze { get; set; }
 
         /// <summary>\[m\] Address of account used to manage the keys of this asset and to destroy it.</summary>
         [Newtonsoft.Json.JsonProperty("manager", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Manager { get; set; }
+        public Address Manager { get; set; }
 
         /// <summary>\[am\] A commitment to some unspecified asset metadata. The format of this metadata is up to the application.</summary>
         [Newtonsoft.Json.JsonProperty("metadata-hash", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -50,7 +50,7 @@
 
         /// <summary>\[r\] Address of account holding reserve (non-minted) units of this asset.</summary>
         [Newtonsoft.Json.JsonProperty("reserve", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Reserve { get; set; }
+        public Address Reserve { get; set; }
 
         /// <summary>\[t\] The total number of units of this asset.</summary>
         [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.Always)]

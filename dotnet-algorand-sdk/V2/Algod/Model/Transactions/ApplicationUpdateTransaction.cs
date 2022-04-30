@@ -15,7 +15,7 @@ namespace Algorand.V2.Algod.Model
         public ulong? ApplicationId = 0;
 
         [JsonProperty(PropertyName = "apan")]
-        public V2.Indexer.Model.OnCompletion OnCompletion => V2.Indexer.Model.OnCompletion.Update;
+        public OnCompletion OnCompletion => OnCompletion.Update;
 
         [JsonProperty(PropertyName = "apap")]
         public TEALProgram ApprovalProgram = null;
@@ -24,10 +24,10 @@ namespace Algorand.V2.Algod.Model
         public TEALProgram ClearStateProgram = null;
 
         [JsonProperty(PropertyName = "apgs")]
-        public V2.Indexer.Model.StateSchema GlobalStateSchema = new V2.Indexer.Model.StateSchema();
+        public StateSchema GlobalStateSchema = new StateSchema();
 
         [JsonProperty(PropertyName = "apls")]
-        public V2.Indexer.Model.StateSchema LocalStateSchema = new V2.Indexer.Model.StateSchema();
+        public StateSchema LocalStateSchema = new StateSchema();
 
         [JsonProperty(PropertyName = "apep")]
         [DefaultValue(0)]
