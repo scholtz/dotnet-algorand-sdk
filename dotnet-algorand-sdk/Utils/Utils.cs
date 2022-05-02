@@ -114,7 +114,7 @@ namespace Algorand.Utils
 
         private static void ValidateAsset(V2.Algod.Model.AssetParams asset)
         {
-            if (asset.Creator is null || asset.Creator == "") throw new ArgumentException("The sender must be specified.");
+            if (asset.Creator is null ) throw new ArgumentException("The sender must be specified.");
             else if (!Address.IsValid(asset.Creator)) throw new ArgumentException("The sender address is not valid.");
             
             if (asset.Name is null || asset.Name == "") throw new ArgumentException("The asset name must be specified.");
