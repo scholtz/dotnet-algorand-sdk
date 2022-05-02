@@ -1,6 +1,10 @@
-﻿using Org.BouncyCastle.Crypto;
+﻿using Algorand.Utils;
+using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.Pkcs;
+using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using System;
 using System.Collections.Generic;
@@ -34,6 +38,7 @@ namespace Algorand.Crypto
 
         public KeyPair(SecureRandom random)
         {
+            //TODO - test
             Ed25519KeyPairGenerator keyPairGenerator = new Ed25519KeyPairGenerator();
             keyPairGenerator.Init(new Ed25519KeyGenerationParameters(random));
             Pair = keyPairGenerator.GenerateKeyPair();
@@ -41,11 +46,6 @@ namespace Algorand.Crypto
             ed25519PublicKey = Pair.Public as Ed25519PublicKeyParameters;
             ClearTextPrivateKey = ed25519PrivateKey.GetEncoded(); 
 
-          
- 
-
-
-            this.Address = new Address(raw);
         }
 
         public byte[] ClearTextPrivateKey { get; private set; }
@@ -73,6 +73,16 @@ namespace Algorand.Crypto
         }
 
         public AsymmetricCipherKeyPair Pair { get; private set; }
+
+        public string ToMnemonic()
+        {
+            PrivateKeyInfo privateKeyInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(this.Pair.Private);
+            byte[] X509enc = privateKeyInfo.ToAsn1Object().GetEncoded();
+            PrivateKeyInfo pkinfo = PrivateKeyInfo.GetInstance(X509enc);
+            var keyOcts = pkinfo.ParsePrivateKey();
+            byte[] res = Asn1OctetString.GetInstance(keyOcts).GetOctets();
+            return Mnemonic.FromKey(res);
+        }
     }
     
 }

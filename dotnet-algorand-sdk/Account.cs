@@ -27,29 +27,7 @@ namespace Algorand
 
 
 
-        /// <summary>
-        /// Get the public key
-        /// </summary>
-        /// <returns>public key</returns>
-        public Ed25519PublicKeyParameters GetEd25519PublicKey()
-        {
-            return new Ed25519PublicKeyParameters(this.GetClearTextPublicKey(), 0);
-        }
-
-        /// <summary>
-        /// Converts the 32 byte private key to a 25 word mnemonic, including a checksum.
-        /// Refer to the mnemonic package for additional documentation.
-        /// </summary>
-        /// <returns>return string a 25 word mnemonic</returns>
-        public string ToMnemonic()
-        {
-            PrivateKeyInfo privateKeyInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(this.privateKeyPair.Private);
-            byte[] X509enc = privateKeyInfo.ToAsn1Object().GetEncoded();
-            PrivateKeyInfo pkinfo = PrivateKeyInfo.GetInstance(X509enc);
-            var keyOcts = pkinfo.ParsePrivateKey();
-            byte[] res = Asn1OctetString.GetInstance(keyOcts).GetOctets();
-            return Mnemonic.FromKey(res);
-        }
+    
 
         /// <summary>
         /// Sign a transaction with this account

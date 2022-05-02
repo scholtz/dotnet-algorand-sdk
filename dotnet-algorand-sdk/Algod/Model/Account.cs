@@ -152,6 +152,10 @@ namespace Algorand.V2.Algod.Model
 
         }
 
+        public string ToMnemonic()
+        {
+            return KeyPair.ToMnemonic();
+        }
 
 
 
