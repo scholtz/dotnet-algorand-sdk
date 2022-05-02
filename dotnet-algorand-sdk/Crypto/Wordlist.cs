@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Algorand
+namespace Algorand.Utils
 {
     /// <summary>
     /// mnemonic word list

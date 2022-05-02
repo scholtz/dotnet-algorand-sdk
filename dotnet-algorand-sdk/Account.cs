@@ -18,98 +18,14 @@ namespace Algorand
     /// </summary>
     public class Account
     {
-        private AsymmetricCipherKeyPair privateKeyPair;
-        public Address Address { get; private set; }
-        private const int PK_SIZE = 32;
-        private const int SK_SIZE = 32;
-        private const int SK_SIZE_BITS = SK_SIZE * 8;
-        private static readonly byte[] BID_SIGN_PREFIX = Encoding.UTF8.GetBytes("aB");
-        private static readonly byte[] BYTES_SIGN_PREFIX = Encoding.UTF8.GetBytes("MX");
+        
+        
 
-        private static readonly byte[] PROGDATA_SIGN_PREFIX = Encoding.UTF8.GetBytes("ProgData");
-        /// <summary>
-        /// Rebuild the account from private key
-        /// </summary>
-        /// <param name="privateKey">Private Key</param>
-        /// <returns>the rebuilded account</returns>
-        public static Account AccountFromPrivateKey(byte[] privateKey)
-        {
-            if(privateKey.Length != SK_SIZE)            
-                throw new ArgumentException("Incorrect private key length");
-            
-            var privateKeyRebuild = new Ed25519PrivateKeyParameters(privateKey, 0);
-            var publicKeyRebuild = privateKeyRebuild.GeneratePublicKey();
-            var act = new Account
-            {
-                privateKeyPair = new AsymmetricCipherKeyPair(publicKeyRebuild, privateKeyRebuild),
-            };
-            act.Address = new Address(act.GetClearTextPublicKey());
-            return act;
-        }
-        /// <summary>
-        /// get clear text private key
-        /// </summary>
-        /// <returns>the private key as length 32 byte array.</returns>
-        public byte[] GetClearTextPrivateKey()
-        {
-            var privateKey = privateKeyPair.Private as Ed25519PrivateKeyParameters;
+    
+       
+      
 
-            byte[] b = privateKey.GetEncoded(); // X.509 prepended with ASN.1 prefix
 
-            if (b.Length != SK_SIZE)
-            {
-                throw new Exception("Generated private key is the wrong size");
-            }
-            return b;
-        }
-        /// <summary>
-        /// Generate a newc account, random account.
-        /// </summary>
-        public Account()
-        {
-            CreateAccountFromRandom(new SecureRandom());
-        }
-        /// <summary>
-        /// Generate a newc account with seed(master derivation key)
-        /// </summary>
-        /// <param name="seed">seed(master derivation key)</param>
-        public Account(byte[] seed)
-        {
-            // seed here corresponds to rfc8037 private key, corresponds to seed in go impl
-            // BC for instance takes the seed as private key straight up
-            CreateAccountFromRandom(new FixedSecureRandom(seed));
-        }
-        /// <summary>
-        /// Create a new account with mnemonic
-        /// </summary>
-        /// <param name="mnemonic">the mnemonic</param>
-        public Account(string mnemonic) : this(Mnemonic.ToKey(mnemonic)) { }
-
-        private void CreateAccountFromRandom(SecureRandom srandom)
-        {
-            Ed25519KeyPairGenerator keyPairGenerator = new Ed25519KeyPairGenerator();
-            keyPairGenerator.Init(new Ed25519KeyGenerationParameters(srandom));
-            this.privateKeyPair = keyPairGenerator.GenerateKeyPair();
-            byte[] raw = this.GetClearTextPublicKey();
-            this.Address = new Address(raw);
-        }
-
-        /// <summary>
-        /// Convenience method for getting the underlying public key for raw operations.
-        /// </summary>
-        /// <returns>the public key as length 32 byte array.</returns>
-        public byte[] GetClearTextPublicKey()
-        {
-            var publicKey = privateKeyPair.Public as Ed25519PublicKeyParameters;
-
-            byte[] b = publicKey.GetEncoded(); // X.509 prepended with ASN.1 prefix
-
-            if (b.Length != PK_SIZE)
-            {
-                throw new Exception("Generated public key is the wrong size");
-            }
-            return b;
-        }
 
         /// <summary>
         /// Get the public key
@@ -160,19 +76,7 @@ namespace Algorand
             SetFeeByFeePerByte(tx, feePerByte);
             return this.SignTransaction(tx);
         }
-        /// <summary>
-        /// Sign a bid with this account
-        /// </summary>
-        /// <param name="bid">the bid to sign</param>
-        /// <returns>signed bid</returns>
-        public SignedBid SignBid(Bid bid)
-        {
-            byte[] encodedBid = Encoder.EncodeToMsgPack(bid);
-            List<byte> prefixEncodedBid = new List<byte>(BID_SIGN_PREFIX);
-            prefixEncodedBid.AddRange(encodedBid);
-            Signature bidSig = RawSignBytes(prefixEncodedBid.ToArray());
-            return new SignedBid(bid, bidSig);
-        }
+       
        
         /// <summary>
         /// EstimateEncodedSize returns the estimated encoded size of the transaction including the signature.

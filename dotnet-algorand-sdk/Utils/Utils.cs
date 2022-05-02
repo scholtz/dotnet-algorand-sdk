@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Algorand
+namespace Algorand.Utils
 {
     /// <summary>
     /// Convenience methods for algorand sdk.

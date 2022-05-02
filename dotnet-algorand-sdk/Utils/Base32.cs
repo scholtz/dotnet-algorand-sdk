@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Algorand
+namespace Algorand.Utils
 {
     internal static class Base32
     {
@@ -41,17 +41,7 @@ namespace Algorand
             return result;
         }
 
-        //public static string EncodeAsBase32String(this string input, bool addPadding = true)
-        //{
-        //    if (string.IsNullOrEmpty(input))
-        //    {
-        //        return string.Empty;
-        //    }
-
-        //    var bytes = Encoding.UTF8.GetBytes(input);
-        //    var result = bytes.ToBase32String(addPadding);
-        //    return result;
-        //}
+   
         /// <summary>
         /// Converts a Base32 string into the corresponding byte array, using 5 bits per character.
         /// </summary>

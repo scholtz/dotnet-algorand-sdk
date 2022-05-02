@@ -2,7 +2,7 @@
 using Org.BouncyCastle.Crypto.Parameters;
 using System;
 
-namespace Algorand
+namespace Algorand.Utils
 {
     public class BytesConverter : JsonConverter
     {

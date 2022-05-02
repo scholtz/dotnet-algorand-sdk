@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Algorand
+namespace Algorand.Utils
 {
     /// <summary>
     /// Provides an easy way to create mnemonics from 32-byte length keys.
@@ -14,6 +14,9 @@ namespace Algorand
         private const int MNEM_LEN_WORDS = 25; // includes checksum word
         private const int PADDING_ZEROS = BITS_PER_WORD - ((KEY_LEN_BYTES * 8) % BITS_PER_WORD);
         private const char MNEMONIC_DELIM = ' ';
+
+
+
 
         // on set up, verify expected relationship between constants
         static Mnemonic()

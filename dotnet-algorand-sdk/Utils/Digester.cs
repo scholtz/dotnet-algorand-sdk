@@ -1,6 +1,6 @@
 ﻿using Org.BouncyCastle.Crypto.Digests;
 
-namespace Algorand
+namespace Algorand.Utils
 {
     internal class Digester
     {

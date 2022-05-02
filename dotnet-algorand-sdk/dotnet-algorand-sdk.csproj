@@ -26,12 +26,6 @@ AVM 1.0 , Indexer 2.8 branch and Algo rel/stable branch (Nov 2021)</PackageRelea
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="V2\Client\**" />
-    <EmbeddedResource Remove="V2\Client\**" />
-    <None Remove="V2\Client\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="langspec.json" />
     <None Include="..\LICENSE">
       <Pack>True</Pack>

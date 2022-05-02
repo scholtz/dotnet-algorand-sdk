@@ -8,10 +8,10 @@ using Org.BouncyCastle.Crypto.Parameters;
 using System.IO;
 using Newtonsoft.Msgpack;
 
-namespace Algorand
+namespace Algorand.Utils
 {
     /// <summary>
-    /// Convenience method for serializing and deserializing arbitrary objects to json or msgpack.
+    /// Convenience class for serializing and deserializing arbitrary objects to json or msgpack.
     /// </summary>
     public static class Encoder
     {        

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Algorand
+namespace Algorand.Utils
 {
     internal class JavaHelper<T>
     {

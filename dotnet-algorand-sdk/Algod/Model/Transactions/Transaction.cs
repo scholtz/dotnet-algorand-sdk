@@ -1,5 +1,7 @@
 ﻿
+using Algorand.Utils;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Algorand.V2.Algod.Model
@@ -9,6 +11,7 @@ namespace Algorand.V2.Algod.Model
     public abstract class Transaction
     {
         private const ulong MIN_TX_FEE_UALGOS = 1000;
+        private static readonly byte[] TX_SIGN_PREFIX = Encoding.UTF8.GetBytes("TX");
 
 
         [JsonProperty(PropertyName = "snd")]
@@ -95,9 +98,38 @@ namespace Algorand.V2.Algod.Model
             {
                 newFee = MIN_TX_FEE_UALGOS;
             }
-            tx.fee = newFee;
+            tx.Fee = newFee;
         }
 
+        /// <summary>
+        /// Return encoded representation of the transaction with a prefix
+        /// suitable for signing
+        /// </summary>
+        /// <returns></returns>
+        public byte[] BytesToSign()
+        {
+            byte[] encodedTx = Encoder.EncodeToMsgPack(this);
+            var retList = new List<byte>();
+            retList.AddRange(TX_SIGN_PREFIX);
+            retList.AddRange(encodedTx);
+            return retList.ToArray();
+        }
+        /// <summary>
+        /// Return transaction ID as Digest
+        /// </summary>
+        /// <returns></returns>
+        public Digest RawTxID()
+        {
+            return new Digest(Digester.Digest(this.BytesToSign()));
+        }
+        /// <summary>
+        /// Return transaction ID as string
+        /// </summary>
+        /// <returns></returns>
+        public string TxID()
+        {
+            return Base32.EncodeToString(this.RawTxID().Bytes, false);
+        }
 
 
     }
