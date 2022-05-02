@@ -4,12 +4,14 @@ using Newtonsoft.Json;
 using System.ComponentModel;
 namespace Algorand.V2.Algod.Model
 {
-    public abstract class CommittedTransaction 
+
+
+    public  class CommittedTransaction 
     {
         [JsonProperty("txn")]
-        private Transaction transaction { set { Transaction = value; } }
+        private SignedTransaction transaction { set { Transaction = value; } }
         [JsonIgnore]
-        public Transaction Transaction { get; private set; }
+        public SignedTransaction Transaction { get; private set; }
 
         public bool FullyCommitted => (ConfirmedRound ?? 0 ) > 0;
 

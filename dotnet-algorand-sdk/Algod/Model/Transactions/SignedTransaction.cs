@@ -80,5 +80,13 @@ namespace Algorand.V2.Algod.Model
         {
             return base.GetHashCode();
         }
+
+        public Transaction Transaction
+        {
+            get => default;
+            set
+            {
+            }
+        }
     }
 }
