@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Crypto.Parameters;
 using System.Text;
+using Algorand.Utils;
 
 namespace Algorand
 {
@@ -204,6 +205,87 @@ namespace Algorand
                 
             }
         }
+
+        /// <summary>
+        /// Sign LogicSig with account's secret key
+        /// </summary>
+        /// <param name="lsig">LogicsigSignature to sign</param>
+        /// <returns>LogicsigSignature with updated signature</returns>
+        public void Sign(Account signingAccount)
+        {
+            byte[] bytesToSign = BytesToSign();
+            this.sig = signingAccount.SignRawBytes(bytesToSign);
+            
+            
+        }
+
+
+        public void SignLogicsig(Account signingAccount, MultisigAddress ma)
+        {
+            var pk = signingAccount.KeyPair.PublicKey;
+            int pkIndex = -1;
+            for (int i = 0; i < ma.publicKeys.Count; i++)
+            {
+                if (Enumerable.SequenceEqual(pk.GetEncoded(), ma.publicKeys[i].GetEncoded()))
+                {
+                    pkIndex = i;
+                    break;
+                }
+            }
+
+            if (pkIndex == -1)
+            {
+                throw new ArgumentException("Multisig account does not contain this secret key");
+            }
+            // now, create the multisignature
+            byte[] bytesToSign = BytesToSign();
+            Signature sig = signingAccount.SignRawBytes(bytesToSign);
+            MultisigSignature mSig = new MultisigSignature(ma.version, ma.threshold);
+            for (int i = 0; i < ma.publicKeys.Count; i++)
+            {
+                if (i == pkIndex)
+                {
+                    mSig.subsigs.Add(new MultisigSubsig(pk, sig));
+                }
+                else
+                {
+                    mSig.subsigs.Add(new MultisigSubsig(ma.publicKeys[i]));
+                }
+            }
+            msig = mSig;
+       
+        }
+
+        /// <summary>
+        /// Appends a signature to multisig logic signed transaction
+        /// </summary>
+        /// <param name="lsig">LogicsigSignature append to</param>
+        /// <returns>LogicsigSignature</returns>
+        public void AppendToLogicsig(LogicsigSignature lsig, Account signingAccount)
+        {
+            var pk = signingAccount.KeyPair.PublicKey;
+            int pkIndex = -1;
+            for (int i = 0; i < lsig.msig.subsigs.Count; i++)
+            {
+                MultisigSubsig subsig = lsig.msig.subsigs[i];
+                if (Enumerable.SequenceEqual(subsig.key.GetEncoded(), pk.GetEncoded()))
+                {
+                    pkIndex = i;
+                }
+            }
+            if (pkIndex == -1)
+            {
+                throw new ArgumentException("Multisig account does not contain this secret key");
+            }
+            // now, create the multisignature
+            byte[] bytesToSign = lsig.BytesToSign();
+            Signature sig = signingAccount.SignRawBytes(bytesToSign);
+            lsig.msig.subsigs[pkIndex] = new MultisigSubsig(pk, sig);
+ 
+        }
+
+
+
 
         private static bool NullCheck(object o1, object o2)
         {

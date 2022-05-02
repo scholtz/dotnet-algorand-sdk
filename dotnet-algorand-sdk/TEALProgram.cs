@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Algorand.Utils;
+using Newtonsoft.Json;
 using System;
 
 namespace Algorand
@@ -49,5 +50,17 @@ namespace Algorand
         /// </summary>
         /// <param name="base64String">base64String</param>
         public TEALProgram(string base64String) : this(Convert.FromBase64String(base64String)) { }
+
+        /// <summary>
+        /// Creates Signature compatible with ed25519verify TEAL opcode from data and program bytes
+        /// </summary>
+        /// <param name="data">data byte[]</param>
+        /// <param name="program">program byte[]</param>
+        /// <returns>Signature</returns>
+        public Signature Sign(byte[] data,Account signingAccount)
+        {
+            LogicsigSignature lsig = new LogicsigSignature(program);
+            return signingAccount.TealSign(data, lsig.Address);
+        }
     }
 }

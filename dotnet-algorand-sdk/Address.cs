@@ -5,7 +5,7 @@ using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Crypto.Parameters;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-
+using Algorand.Utils;
 
 namespace Algorand
 {
@@ -83,6 +83,8 @@ namespace Algorand
                 throw new ArgumentException("The address is not valid");
             }
         }
+
+
 
         private byte[] GetAdressBytes(string encodedAddr)
         {

@@ -5,12 +5,15 @@ namespace Algorand.V2.Algod.Model
 {
     using Algorand.Crypto;
     using Algorand.Utils;
+    using Algorand.Utils.Crypto;
     using Newtonsoft.Json;
     using Org.BouncyCastle.Crypto;
     using Org.BouncyCastle.Crypto.Generators;
     using Org.BouncyCastle.Crypto.Parameters;
+    using Org.BouncyCastle.Crypto.Signers;
     using Org.BouncyCastle.Security;
     using System;
+    using System.Collections.Generic;
     using System.Text;
     using System = global::System;
     /// <summary>Account information at a given round.
@@ -158,8 +161,37 @@ namespace Algorand.V2.Algod.Model
         }
 
 
+        public Signature SignRawBytes(byte[] bytes)
+        {
+            var signer = new Ed25519Signer();
+            signer.Init(true, KeyPair.Pair.Private);
+            signer.BlockUpdate(bytes, 0, bytes.Length);
+            byte[] signature = signer.GenerateSignature();
+            return new Signature(signature);
+        }
 
+        public Signature SignBytes(byte[] bytes) 
+        {
+            List<byte> retByte = new List<byte>();
+            retByte.AddRange(BYTES_SIGN_PREFIX);
+            retByte.AddRange(bytes);
+            return SignRawBytes(retByte.ToArray());
+        }
 
+        /// <summary>
+        /// Creates Signature compatible with ed25519verify TEAL opcode from data and contract address(program hash).
+        /// </summary>
+        /// <param name="data">data byte[]</param>
 
+        /// <returns>Signature</returns>
+        public Signature TealSign(byte[] data, Address contractAddress)
+        {
+            byte[] rawAddress = contractAddress.Bytes;
+            List<byte> baos = new List<byte>();
+            baos.AddRange(PROGDATA_SIGN_PREFIX);
+            baos.AddRange(rawAddress);
+            baos.AddRange(data);
+            return SignRawBytes(baos.ToArray());
+        }
     }
 }

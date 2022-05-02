@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Algorand.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 

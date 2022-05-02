@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Algorand.Utils;
 using Newtonsoft.Json;
 
 namespace Algorand
