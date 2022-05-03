@@ -26,7 +26,10 @@ namespace Algorand.V2.Algod.Model {
         [JsonProperty(PropertyName = "apas")]
         public List<ulong> ForeignAssets = new List<ulong>();
 
-      
+        public bool ShouldSerializeAccounts() { return Accounts?.Count > 0; }
+        public bool ShouldSerializeApplicationArgs() { return ApplicationArgs?.Count > 0; }
+        public bool ShouldSerializeForeignApps() { return ForeignApps?.Count > 0; }
+        public bool ShouldSerializeForeignAssets() { return ForeignAssets?.Count > 0; }
 
 
 

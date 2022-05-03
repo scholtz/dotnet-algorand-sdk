@@ -69,16 +69,18 @@ namespace Algorand
         private static byte[] LOGIC_PREFIX = Encoding.UTF8.GetBytes("Program");//.getBytes(StandardCharsets.UTF_8);
 
         [JsonProperty(PropertyName = "l")]
-        public byte[] logic;
+        public byte[] Logic;
 
         [JsonProperty(PropertyName = "arg")]
-        public List<byte[]> args;
+        public List<byte[]> Args;
+
+        public bool ShouldSerializeArgs() => Args?.Count > 0;
 
         [JsonProperty(PropertyName = "sig")]
-        public Signature sig;
+        public Signature Sig;
 
         [JsonProperty(PropertyName = "msig")]
-        public MultisigSignature msig;
+        public MultisigSignature Msig;
 
         /// <summary>
         /// LogicsigSignature
@@ -94,25 +96,25 @@ namespace Algorand
             [JsonProperty("sig")] byte[] sig = null,
             [JsonProperty("msig")] MultisigSignature msig = null)
         {
-            this.logic = JavaHelper<byte[]>.RequireNotNull(logic, "program must not be null");
-            this.args = args;
+            this.Logic = JavaHelper<byte[]>.RequireNotNull(logic, "program must not be null");
+            this.Args = args;
 
-            if (!Logic.CheckProgram(this.logic, this.args))
+            if (!Algorand.Logic.CheckProgram(this.Logic, this.Args))
                 throw new Exception("program verified failed!");
 
             if (sig != null)
             {
-                this.sig = new Signature(sig);
+                this.Sig = new Signature(sig);
             }
-            this.msig = msig;
+            this.Msig = msig;
         }
         /// <summary>
         /// Uninitialized object used for serializer to ignore default values.
         /// </summary>
         public LogicsigSignature()
         {
-            this.logic = null;
-            this.args = null;
+            this.Logic = null;
+            this.Args = null;
         }
         /// <summary>
         /// alculate escrow address from logic sig program
@@ -141,7 +143,7 @@ namespace Algorand
         public byte[] BytesToSign()
         {
             List<byte> prefixedEncoded = new List<byte>(LOGIC_PREFIX);
-            prefixedEncoded.AddRange(this.logic);
+            prefixedEncoded.AddRange(this.Logic);
             return prefixedEncoded.ToArray();
         }
         /// <summary>
@@ -151,11 +153,11 @@ namespace Algorand
         /// <returns>bool</returns>
         public bool Verify(Address address)
         {
-            if (this.logic == null)
+            if (this.Logic == null)
             {
                 return false;
             }
-            else if (this.sig != null && this.msig != null)
+            else if (this.Sig != null && this.Msig != null)
             {
                 return false;
             }
@@ -163,14 +165,14 @@ namespace Algorand
             {
                 try
                 {
-                    Logic.CheckProgram(this.logic, this.args);
+                    Algorand.Logic.CheckProgram(this.Logic, this.Args);
                 }
                 catch (Exception)
                 {
                     return false;
                 }
 
-                if (this.sig == null && this.msig == null)
+                if (this.Sig == null && this.Msig == null)
                 {
                     try
                     {
@@ -182,7 +184,7 @@ namespace Algorand
                     }
                 }                
                 
-                if (this.sig != null)
+                if (this.Sig != null)
                 {
                     try
                     {
@@ -190,7 +192,7 @@ namespace Algorand
                         var signer = new Ed25519Signer();
                         signer.Init(false, pk); //false代表用于VerifySignature
                         signer.BlockUpdate(this.BytesToSign(), 0, this.BytesToSign().Length);
-                        return signer.VerifySignature(this.sig.Bytes);
+                        return signer.VerifySignature(this.Sig.Bytes);
                     }
                     catch (Exception err)
                     {
@@ -200,7 +202,7 @@ namespace Algorand
                 }
                 else
                 {
-                    return this.msig.Verify(this.BytesToSign());
+                    return this.Msig.Verify(this.BytesToSign());
                 }
                 
             }
@@ -214,7 +216,7 @@ namespace Algorand
         public void Sign(Account signingAccount)
         {
             byte[] bytesToSign = BytesToSign();
-            this.sig = signingAccount.SignRawBytes(bytesToSign);
+            this.Sig = signingAccount.SignRawBytes(bytesToSign);
             
             
         }
@@ -245,14 +247,14 @@ namespace Algorand
             {
                 if (i == pkIndex)
                 {
-                    mSig.subsigs.Add(new MultisigSubsig(pk, sig));
+                    mSig.Subsigs.Add(new MultisigSubsig(pk, sig));
                 }
                 else
                 {
-                    mSig.subsigs.Add(new MultisigSubsig(ma.publicKeys[i]));
+                    mSig.Subsigs.Add(new MultisigSubsig(ma.publicKeys[i]));
                 }
             }
-            msig = mSig;
+            Msig = mSig;
        
         }
 
@@ -265,9 +267,9 @@ namespace Algorand
         {
             var pk = signingAccount.KeyPair.PublicKey;
             int pkIndex = -1;
-            for (int i = 0; i < lsig.msig.subsigs.Count; i++)
+            for (int i = 0; i < lsig.Msig.Subsigs.Count; i++)
             {
-                MultisigSubsig subsig = lsig.msig.subsigs[i];
+                MultisigSubsig subsig = lsig.Msig.Subsigs[i];
                 if (Enumerable.SequenceEqual(subsig.key.GetEncoded(), pk.GetEncoded()))
                 {
                     pkIndex = i;
@@ -280,7 +282,7 @@ namespace Algorand
             // now, create the multisignature
             byte[] bytesToSign = lsig.BytesToSign();
             Signature sig = signingAccount.SignRawBytes(bytesToSign);
-            lsig.msig.subsigs[pkIndex] = new MultisigSubsig(pk, sig);
+            lsig.Msig.Subsigs[pkIndex] = new MultisigSubsig(pk, sig);
  
         }
 
@@ -306,17 +308,17 @@ namespace Algorand
         public override bool Equals(object obj)
         {
             if (obj is LogicsigSignature actual)
-                if((this.logic is null && actual.logic is null) || (!(this.logic is null || actual.logic is null) && Enumerable.SequenceEqual(this.logic, actual.logic)))                
-                    if ((this.sig is null && actual.sig is null) || this.sig.Equals(actual.sig))
-                        if ((this.msig is null && actual.msig is null) || this.msig.Equals(actual.msig))
-                            if ((this.args is null && actual.args is null) || ArgsEqual(this.args, actual.args))
+                if((this.Logic is null && actual.Logic is null) || (!(this.Logic is null || actual.Logic is null) && Enumerable.SequenceEqual(this.Logic, actual.Logic)))                
+                    if ((this.Sig is null && actual.Sig is null) || this.Sig.Equals(actual.Sig))
+                        if ((this.Msig is null && actual.Msig is null) || this.Msig.Equals(actual.Msig))
+                            if ((this.Args is null && actual.Args is null) || ArgsEqual(this.Args, actual.Args))
                                 return true;
             return false;            
         }
 
         public override int GetHashCode()
         {
-            return this.logic.GetHashCode() + this.args.GetHashCode() + this.sig.GetHashCode() + this.msig.GetHashCode();
+            return this.Logic.GetHashCode() + this.Args.GetHashCode() + this.Sig.GetHashCode() + this.Msig.GetHashCode();
         }
 
         private static bool ArgsEqual(List<byte[]> args1, List<byte[]> args2)
@@ -345,13 +347,16 @@ namespace Algorand
     public class MultisigSignature
     {
         [JsonProperty(PropertyName = "v")]
-        public int version;
+        public int Version;
 
         [JsonProperty(PropertyName = "thr")]
-        public int threshold;
+        public int Threshold;
 
         [JsonProperty(PropertyName = "subsig")]
-        public List<MultisigSubsig> subsigs;
+        public List<MultisigSubsig> Subsigs;
+
+        public bool ShouldSerializeSubsigs() => Subsigs?.Count > 0;
+
         /// <summary>
         /// create a multisig signature.
         /// </summary>
@@ -364,17 +369,17 @@ namespace Algorand
             [JsonProperty(PropertyName = "thr")] int threshold,
             [JsonProperty(PropertyName = "subsig")] List<MultisigSubsig> subsigs = null)
         {
-            this.version = version;
-            this.threshold = threshold;
+            this.Version = version;
+            this.Threshold = threshold;
             if (subsigs is null)
-                this.subsigs = new List<MultisigSubsig>();
+                this.Subsigs = new List<MultisigSubsig>();
             else
-                this.subsigs = subsigs;
+                this.Subsigs = subsigs;
         }
 
         public MultisigSignature()
         {
-            this.subsigs = new List<MultisigSubsig>();
+            this.Subsigs = new List<MultisigSubsig>();
         }
         /// <summary>
         /// Performs signature verification
@@ -383,9 +388,9 @@ namespace Algorand
         /// <returns>bool</returns>
         public bool Verify(byte[] message)
         {
-            if (this.version == 1 && this.threshold > 0 && this.subsigs.Count != 0)
+            if (this.Version == 1 && this.Threshold > 0 && this.Subsigs.Count != 0)
             {
-                if (this.threshold > this.subsigs.Count)
+                if (this.Threshold > this.Subsigs.Count)
                 {
                     return false;
                 }
@@ -394,9 +399,9 @@ namespace Algorand
                     int verifiedCount = 0;
                     Signature emptySig = new Signature();
 
-                    for (int i = 0; i < this.subsigs.Count; ++i)
+                    for (int i = 0; i < this.Subsigs.Count; ++i)
                     {
-                        MultisigSubsig subsig = subsigs[i];
+                        MultisigSubsig subsig = Subsigs[i];
                         if (!subsig.sig.Equals(emptySig))
                         {
                             try
@@ -418,7 +423,7 @@ namespace Algorand
                         }
                     }
 
-                    if (verifiedCount < this.threshold)
+                    if (verifiedCount < this.Threshold)
                     {
                         return false;
                     }
@@ -438,14 +443,14 @@ namespace Algorand
         {
             if (obj is MultisigSignature actual)
             {
-                if (this.version == actual.version && this.threshold == actual.threshold && Enumerable.SequenceEqual(this.subsigs, actual.subsigs))
+                if (this.Version == actual.Version && this.Threshold == actual.Threshold && Enumerable.SequenceEqual(this.Subsigs, actual.Subsigs))
                     return true;
             }
             return false;
         }
         public override int GetHashCode()
         {
-            return this.version.GetHashCode() + this.threshold.GetHashCode() + this.subsigs.GetHashCode();
+            return this.Version.GetHashCode() + this.Threshold.GetHashCode() + this.Subsigs.GetHashCode();
         }
     }
     /// <summary>
@@ -455,6 +460,7 @@ namespace Algorand
     public class MultisigSubsig
     {
         [JsonProperty(PropertyName = "pk")]
+        [JsonConverter(typeof(BytesConverter))]
         public Ed25519PublicKeyParameters key;
 
         [JsonProperty(PropertyName = "s")]

@@ -21,10 +21,10 @@ namespace Algorand.V2.Algod.Model
         public TEALProgram ClearStateProgram = null;
 
         [JsonProperty(PropertyName = "apgs",Required =Required.Always)]
-        public StateSchema GlobalStateSchema = new StateSchema();
+        public StateSchema GlobalStateSchema;
 
         [JsonProperty(PropertyName = "apls", Required = Required.Always)]
-        public StateSchema LocalStateSchema = new StateSchema();
+        public StateSchema LocalStateSchema;
 
         [JsonProperty(PropertyName = "apep")]
         [DefaultValue(0)]

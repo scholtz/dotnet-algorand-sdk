@@ -18,23 +18,23 @@ namespace Algorand.V2.Algod.Model
         public OnCompletion OnCompletion => OnCompletion.Update;
 
         [JsonProperty(PropertyName = "apap")]
-        public TEALProgram ApprovalProgram = null;
+        public TEALProgram ApprovalProgram;
 
         [JsonProperty(PropertyName = "apsu")]
-        public TEALProgram ClearStateProgram = null;
+        public TEALProgram ClearStateProgram;
 
         [JsonProperty(PropertyName = "apgs")]
-        public StateSchema GlobalStateSchema = new StateSchema();
+        public StateSchema GlobalStateSchema;
 
         [JsonProperty(PropertyName = "apls")]
-        public StateSchema LocalStateSchema = new StateSchema();
+        public StateSchema LocalStateSchema;
 
         [JsonProperty(PropertyName = "apep")]
         [DefaultValue(0)]
         public ulong? ExtraProgramPages = 0;
 
 
-
+        public bool ShouldSerializeExtraProgramPages () => ExtraProgramPages!=null && ExtraProgramPages != 0;
 
 
 

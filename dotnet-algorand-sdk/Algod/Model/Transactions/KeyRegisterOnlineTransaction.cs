@@ -13,13 +13,13 @@ namespace Algorand.V2.Algod.Model
         /// VotePK is the participation public key used in key registration transactions
         /// </summary>
         [JsonProperty(PropertyName = "votekey")]
-        public ParticipationPublicKey VotePK = new ParticipationPublicKey();
+        public ParticipationPublicKey VotePK;
 
         /// <summary>
         /// selectionPK is the VRF public key used in key registration transactions
         /// </summary>
         [JsonProperty(PropertyName = "selkey")]
-        public VRFPublicKey SelectionPK = new VRFPublicKey();
+        public VRFPublicKey SelectionPK;
         /// <summary>
         /// voteFirst is the first round this keyreg tx is valid for
         /// </summary>

@@ -24,10 +24,10 @@ namespace test
             Address sender = new Address(programHash);
 
             LogicsigSignature lsig = new LogicsigSignature(program);
-            Assert.AreEqual(lsig.logic, program);
-            Assert.IsNull(lsig.args);
-            Assert.IsNull(lsig.sig);
-            Assert.IsNull(lsig.msig);
+            Assert.AreEqual(lsig.Logic, program);
+            Assert.IsNull(lsig.Args);
+            Assert.IsNull(lsig.Sig);
+            Assert.IsNull(lsig.Msig);
             bool verified = lsig.Verify(sender);
             Assert.IsTrue(verified);
             Assert.AreEqual(lsig.ToAddress(), sender);
@@ -38,10 +38,10 @@ namespace test
             args.Add(arg2);
 
             lsig = new LogicsigSignature(program, args);
-            Assert.AreEqual(lsig.logic, program);
-            Assert.AreEqual(lsig.args, args);
-            Assert.IsNull(lsig.sig);
-            Assert.IsNull(lsig.msig);
+            Assert.AreEqual(lsig.Logic, program);
+            Assert.AreEqual(lsig.Args, args);
+            Assert.IsNull(lsig.Sig);
+            Assert.IsNull(lsig.Msig);
             verified = lsig.Verify(sender);
             Assert.IsTrue(verified);
             Assert.AreEqual(lsig.ToAddress(), sender);
@@ -75,12 +75,12 @@ namespace test
             LogicsigSignature lsig = new LogicsigSignature(program);
             Account account = new Account();
             lsig = account.SignLogicsig(lsig);
-            Assert.AreEqual(lsig.logic, program);
-            Assert.IsNull(lsig.args);
-            Assert.AreNotEqual(lsig.sig, new Signature());
-            Assert.IsNotNull(lsig.sig);
+            Assert.AreEqual(lsig.Logic, program);
+            Assert.IsNull(lsig.Args);
+            Assert.AreNotEqual(lsig.Sig, new Signature());
+            Assert.IsNotNull(lsig.Sig);
 
-            Assert.IsNull(lsig.msig);
+            Assert.IsNull(lsig.Msig);
             bool verified = lsig.Verify(account.Address);
             Assert.IsTrue(verified);
 
@@ -114,11 +114,11 @@ namespace test
 
             LogicsigSignature lsig = new LogicsigSignature(program);
             lsig = acc1.SignLogicsig(lsig, ma);
-            Assert.AreEqual(lsig.logic, program);
-            Assert.IsNull(lsig.args);
-            Assert.IsNull(lsig.sig);
-            Assert.AreNotEqual(lsig.msig, new MultisigSignature());
-            Assert.IsNotNull(lsig.msig);
+            Assert.AreEqual(lsig.Logic, program);
+            Assert.IsNull(lsig.Args);
+            Assert.IsNull(lsig.Sig);
+            Assert.AreNotEqual(lsig.Msig, new MultisigSignature());
+            Assert.IsNotNull(lsig.Msig);
 
             var verified = lsig.Verify(ma.ToAddress());
             Assert.IsFalse(verified);
@@ -135,14 +135,14 @@ namespace test
             // Add a single signature and ensure it fails
             LogicsigSignature lsig1 = new LogicsigSignature(program);
             lsig1 = account.SignLogicsig(lsig1);
-            lsig.sig = lsig1.sig;
+            lsig.Sig = lsig1.Sig;
             verified = lsig.Verify(ma.ToAddress());
             Assert.IsFalse(verified);
             verified = lsig.Verify(account.Address);
             Assert.IsFalse(verified);
 
             // Remove and ensure it still works
-            lsig.sig = null;
+            lsig.Sig = null;
             verified = lsig.Verify(ma.ToAddress());
             Assert.IsTrue(verified);
 

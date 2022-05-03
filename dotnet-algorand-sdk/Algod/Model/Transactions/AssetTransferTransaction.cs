@@ -23,7 +23,7 @@ namespace Algorand.V2.Algod.Model
         /// The receiver of the transfer.
         /// </summary>
         [JsonProperty(PropertyName = "arcv", Required = Required.Always)]
-        public Address AssetReceiver = new Address();
+        public Address AssetReceiver;
 
         /// <summary>
         /// Indicates that the asset should be removed from the account's Assets map,
@@ -31,7 +31,7 @@ namespace Algorand.V2.Algod.Model
         /// It's always valid to transfer remaining asset holdings to the AssetID account.
         /// </summary>
         [JsonProperty(PropertyName = "aclose", Required = Required.Always)]
-        public Address AssetCloseTo = new Address();
+        public Address AssetCloseTo;
 
 
         

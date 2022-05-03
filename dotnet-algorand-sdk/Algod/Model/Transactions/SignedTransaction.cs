@@ -1,5 +1,5 @@
 ﻿
-#nullable enable
+
 
 using Algorand.Utils;
 using Newtonsoft.Json;
@@ -23,7 +23,7 @@ namespace Algorand.V2.Algod.Model
         public LogicsigSignature? LSig;
 
         [JsonProperty(PropertyName = "sgnr")]
-        public Address AuthAddr = new Address();
+        public Address AuthAddr;
         public void SetAuthAddr(byte[] sigAddr)
         {
             AuthAddr = new Address(sigAddr);
@@ -32,27 +32,9 @@ namespace Algorand.V2.Algod.Model
         [JsonIgnore]
         public string transactionID = "";
 
-        public SignedTransaction(Transaction tx, Signature sig, MultisigSignature mSig, LogicsigSignature lSig, string transactionID)
-        {
-            this.Tx = tx;
-            this.MSig = mSig;
-            this.Sig = sig;
-            this.LSig = lSig;
-            this.TransactionID = transactionID;
-        }
+    
 
-        public SignedTransaction(Transaction tx, Signature sig, string txId) :
-            this(tx, sig, new MultisigSignature(), new LogicsigSignature(), txId)
-        { }
-
-        public SignedTransaction(Transaction tx, MultisigSignature mSig, string txId) :
-            this(tx, new Signature(), mSig, new LogicsigSignature(), txId)
-        { }
-
-        public SignedTransaction(Transaction tx, LogicsigSignature lSig, string txId) :
-            this(tx, new Signature(), new MultisigSignature(), lSig, txId)
-        { }
-
+    
         public SignedTransaction() { }
 
         [JsonConstructor]
@@ -63,7 +45,7 @@ namespace Algorand.V2.Algod.Model
             if (msig != null) MSig = msig;
             if (lsig != null) LSig = lsig;
             if (sgnr != null) AuthAddr = new Address(sgnr);
-            // don't recover the txid yet
+      
         }
 
 
@@ -84,15 +66,15 @@ namespace Algorand.V2.Algod.Model
             {
                 // check that multisig parameters match
                 SignedTransaction tx = txs[i];
-                if (tx.MSig.version != merged.MSig.version ||
-                        tx.MSig.threshold != merged.MSig.threshold)
+                if (tx.MSig.Version != merged.MSig.Version ||
+                        tx.MSig.Threshold != merged.MSig.Threshold)
                 {
                     throw new ArgumentException("transaction msig parameters do not match");
                 }
-                for (int j = 0; j < tx.MSig.subsigs.Count; j++)
+                for (int j = 0; j < tx.MSig.Subsigs.Count; j++)
                 {
-                    MultisigSubsig myMsig = merged.MSig.subsigs[j];
-                    MultisigSubsig theirMsig = tx.MSig.subsigs[j];
+                    MultisigSubsig myMsig = merged.MSig.Subsigs[j];
+                    MultisigSubsig theirMsig = tx.MSig.Subsigs[j];
                     if (!theirMsig.key.Equals(myMsig.key))
                     {
                         throw new ArgumentException("transaction msig public keys do not match");
@@ -106,7 +88,7 @@ namespace Algorand.V2.Algod.Model
                     {
                         throw new ArgumentException("transaction msig has mismatched signatures");
                     }
-                    merged.MSig.subsigs[j] = myMsig;
+                    merged.MSig.Subsigs[j] = myMsig;
                 }
             }
             return merged;

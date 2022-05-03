@@ -11,7 +11,7 @@ namespace Algorand.V2.Algod.Model
         private string type => "afrz";
 
         [JsonProperty(PropertyName = "fadd", Required = Required.Always)]
-        public Address FreezeTarget = new Address();
+        public Address FreezeTarget;
         [JsonProperty(PropertyName = "faid", Required = Required.Always)]
         [DefaultValue(0)]
         public ulong? AssetFreezeID = 0;

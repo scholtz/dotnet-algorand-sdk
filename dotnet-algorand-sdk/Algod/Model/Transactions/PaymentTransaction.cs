@@ -20,10 +20,10 @@ namespace Algorand.V2.Algod.Model
         private ulong? amount { set { Amount = value; } }
 
         [JsonProperty(PropertyName = "rcv")]
-        public Address Receiver = new Address();
+        public Address Receiver;
 
         [JsonProperty(PropertyName = "close")]
-        public Address CloseRemainderTo = new Address();
+        public Address CloseRemainderTo;
 
 
         /// <summary>Closing amount for the transaction.</summary>

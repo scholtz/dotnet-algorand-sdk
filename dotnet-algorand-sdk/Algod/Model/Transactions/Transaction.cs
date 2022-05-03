@@ -18,7 +18,7 @@ namespace Algorand.V2.Algod.Model
 
 
         [JsonProperty(PropertyName = "snd")]
-        public Address Sender = new Address();
+        public Address Sender;
        
         
         [JsonProperty(PropertyName = "fee")]
@@ -52,6 +52,9 @@ namespace Algorand.V2.Algod.Model
             }
         }
 
+        //used by newtonsoft
+        public bool ShouldSerializeNote() { return Note?.Length > 0; }
+
         [JsonProperty(PropertyName = "gen")]
         [DefaultValue("")]
         public string GenesisID = "";
@@ -59,12 +62,12 @@ namespace Algorand.V2.Algod.Model
 
 
         [JsonProperty(PropertyName = "gh")]
-        public Digest GenesisHash = new Digest();
+        public Digest GenesisHash;
 
 
 
         [JsonProperty(PropertyName = "grp")]
-        public Digest Group = new Digest();
+        public Digest Group;
 
 
 
@@ -84,9 +87,10 @@ namespace Algorand.V2.Algod.Model
             }
         }
 
+        public bool ShouldSerializeLease() { return Lease?.Length > 0; }
 
         [JsonProperty("rekey")]
-        public Address RekeyTo = new Address();
+        public Address RekeyTo;
 
 
         /// <summary>
@@ -195,11 +199,11 @@ namespace Algorand.V2.Algod.Model
             {
                 if (i == myI)
                 {
-                    mSig.subsigs.Add(new MultisigSubsig(signingAccount.KeyPair.PublicKey, txSig.Sig));
+                    mSig.Subsigs.Add(new MultisigSubsig(signingAccount.KeyPair.PublicKey, txSig.Sig));
                 }
                 else
                 {
-                    mSig.subsigs.Add(new MultisigSubsig(from.publicKeys[i]));
+                    mSig.Subsigs.Add(new MultisigSubsig(from.publicKeys[i]));
                 }
             }
             return new SignedTransaction(this, mSig, txSig.transactionID);

@@ -6,7 +6,7 @@ namespace Algorand.V2.Algod.Model
     internal class AssetUpdateTransaction : AssetConfigurationTransaction
     {
         [JsonProperty(PropertyName = "apar", Required = Required.Always)]
-        public AssetParams AssetParams = new AssetParams();
+        public AssetParams AssetParams;
 
         [JsonProperty(PropertyName = "caid", Required = Required.Always)]
         [DefaultValue(0)]

@@ -20,13 +20,13 @@ namespace Algorand.V2.Algod.Model
         /// this is the zero value, the asset is sent from the transaction's Sender.
         /// </summary>
         [JsonProperty(PropertyName = "asnd", Required = Required.Always)]
-        public Address AssetSender = new Address();
+        public Address AssetSender;
 
         /// <summary>
         /// The receiver of the transfer.
         /// </summary>
         [JsonProperty(PropertyName = "arcv", Required = Required.Always)]
-        public Address AssetReceiver = new Address();
+        public Address AssetReceiver;
 
        
     }

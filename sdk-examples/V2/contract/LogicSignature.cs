@@ -29,7 +29,7 @@ namespace sdk_examples.V2.contract
             // sign the logic signaure with an account sk
             // 这里操作的意义是账号1批准逻辑签名可以操纵我的账号
             acct1.SignLogicsig(lsig);
-            var contractSig = Convert.ToBase64String(lsig.sig.Bytes);
+            var contractSig = Convert.ToBase64String(lsig.Sig.Bytes);
             var acct1Address = acct1.Address.ToString();
 
             //第二步，另一个账号，只用contractSig就可以对acct1中进行符合智能合约逻辑的操作
