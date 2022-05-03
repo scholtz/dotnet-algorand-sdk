@@ -1,4 +1,5 @@
 ﻿using Algorand.Utils;
+using Algorand.V2.Algod.Model;
 using Newtonsoft.Json;
 using System;
 

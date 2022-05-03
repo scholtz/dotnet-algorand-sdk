@@ -1,5 +1,6 @@
 ﻿
 using Algorand.Utils;
+using JsonSubTypes;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,9 @@ using System.Text;
 
 namespace Algorand.V2.Algod.Model
 {
-  
 
+    [JsonConverter(typeof(JsonSubtypes), "type")]
+    [JsonSubtypes.KnownSubType(typeof(ApplicationCallTransaction), "appl")]
     public abstract class Transaction
     {
         private const ulong MIN_TX_FEE_UALGOS = 1000;
@@ -142,9 +144,9 @@ namespace Algorand.V2.Algod.Model
         {
             byte[] prefixEncodedTx = BytesToSign();
             Signature txSig = signingAccount.SignRawBytes(prefixEncodedTx);
-            var stx = new SignedTransaction(this, txSig, TxID());
+            var stx = new SignedTransaction(this, txSig);
             if (!Sender.Equals(signingAccount.Address))
-                stx.authAddr = signingAccount.Address;
+                stx.AuthAddr = signingAccount.Address;
             
             return stx;
         }
@@ -167,7 +169,7 @@ namespace Algorand.V2.Algod.Model
             {
                 throw new ArgumentException("verification failed");
             }
-            return new SignedTransaction(this, lsig, TxID());
+            return new SignedTransaction(this,null, null, lsig,null);
         }
 
         public SignedTransaction Sign(MultisigAddress from, Account signingAccount)
@@ -206,7 +208,7 @@ namespace Algorand.V2.Algod.Model
                     mSig.Subsigs.Add(new MultisigSubsig(from.publicKeys[i]));
                 }
             }
-            return new SignedTransaction(this, mSig, txSig.transactionID);
+            return new SignedTransaction(this, null,mSig,null,null);
         }
 
 
@@ -216,7 +218,7 @@ namespace Algorand.V2.Algod.Model
         {
             Account acc = new Account();
             return Utils.Encoder.EncodeToMsgPack(
-                new SignedTransaction(this, acc.SignRawBytes(BytesToSign()), TxID())).Length;
+                new SignedTransaction(this, acc.SignRawBytes(BytesToSign()))).Length;
         }
 
 

@@ -27,7 +27,6 @@ namespace Algorand.Utils
             JsonSerializer serializer = new JsonSerializer()
             {
                 DefaultValueHandling = DefaultValueHandling.Ignore,
-                ContractResolver = AlgorandContractResolver.Instance,
                 Formatting = Formatting.None
             };
 

@@ -10,6 +10,8 @@ namespace Algorand.V2.Algod.Model
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class SignedTransaction
     {
+        //TODO hgi & hgh flags
+        
         [JsonProperty(PropertyName = "txn")]
         public Transaction Tx;
 
@@ -46,6 +48,13 @@ namespace Algorand.V2.Algod.Model
             if (lsig != null) LSig = lsig;
             if (sgnr != null) AuthAddr = new Address(sgnr);
       
+        }
+
+        public SignedTransaction(Transaction txn,Signature sig)
+        {
+            if (txn != null) Tx = txn;
+            if (sig != null) Sig = sig;
+
         }
 
 

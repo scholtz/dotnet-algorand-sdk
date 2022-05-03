@@ -16,7 +16,9 @@
 
 namespace Algorand.V2.Algod
 {
+    using Algorand.Utils;
     using Algorand.V2.Algod.Model;
+    using System.Collections.Generic;
     using System = global::System;
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.14.5.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial interface IDefaultApi
@@ -118,14 +120,14 @@ namespace Algorand.V2.Algod
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <returns>Transaction ID of the submission.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(System.IO.Stream rawtxn);
+        System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(List<SignedTransaction> signedTransactions);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Broadcasts a raw transaction to the network.</summary>
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <returns>Transaction ID of the submission.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(System.IO.Stream rawtxn, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(List<SignedTransaction> signedTransactions, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Get parameters for constructing a new transaction</summary>
         /// <returns>TransactionParams contains the parameters that help a client construct a new transaction.</returns>
@@ -163,7 +165,7 @@ namespace Algorand.V2.Algod
         /// <br/>
         /// <br/>Or the transaction may have happened sufficiently long ago that the node no longer remembers it, and this will return an error.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PendingTransactionResponse> PendingGetAsync(string txid, Format? format);
+        System.Threading.Tasks.Task<CommittedTransaction> PendingGetAsync(string txid, Format? format);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get a specific pending transaction.</summary>
@@ -176,7 +178,7 @@ namespace Algorand.V2.Algod
         /// <br/>
         /// <br/>Or the transaction may have happened sufficiently long ago that the node no longer remembers it, and this will return an error.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PendingTransactionResponse> PendingGetAsync(string txid, Format? format, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<CommittedTransaction> PendingGetAsync(string txid, Format? format, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Get application information.</summary>
         /// <param name="application_id">An application identifier</param>
@@ -1080,7 +1082,7 @@ namespace Algorand.V2.Algod
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <returns>Transaction ID of the submission.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(System.IO.Stream rawtxn)
+        public System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(List<SignedTransaction> rawtxn)
         {
             return TransactionsAsync(rawtxn, System.Threading.CancellationToken.None);
         }
@@ -1090,7 +1092,7 @@ namespace Algorand.V2.Algod
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <returns>Transaction ID of the submission.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(System.IO.Stream rawtxn, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(List<SignedTransaction> rawtxn, System.Threading.CancellationToken cancellationToken)
         {
             if (rawtxn == null)
                 throw new System.ArgumentNullException("rawtxn");
@@ -1435,7 +1437,7 @@ namespace Algorand.V2.Algod
         /// <br/>
         /// <br/>Or the transaction may have happened sufficiently long ago that the node no longer remembers it, and this will return an error.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<PendingTransactionResponse> PendingGetAsync(string txid, Format? format)
+        public System.Threading.Tasks.Task<CommittedTransaction> PendingGetAsync(string txid, Format? format)
         {
             return PendingGetAsync(txid, format, System.Threading.CancellationToken.None);
         }
@@ -1451,7 +1453,7 @@ namespace Algorand.V2.Algod
         /// <br/>
         /// <br/>Or the transaction may have happened sufficiently long ago that the node no longer remembers it, and this will return an error.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<PendingTransactionResponse> PendingGetAsync(string txid, Format? format, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CommittedTransaction> PendingGetAsync(string txid, Format? format, System.Threading.CancellationToken cancellationToken)
         {
             if (txid == null)
                 throw new System.ArgumentNullException("txid");
@@ -1497,7 +1499,7 @@ namespace Algorand.V2.Algod
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<PendingTransactionResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<CommittedTransaction>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);

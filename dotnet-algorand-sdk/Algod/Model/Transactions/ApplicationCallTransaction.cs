@@ -1,11 +1,15 @@
 ﻿
 
 
+using JsonSubTypes;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Algorand.V2.Algod.Model { 
+namespace Algorand.V2.Algod.Model {
+
+    [JsonConverter(typeof(JsonSubtypes), "OnCompletion")]
+    [JsonSubtypes.KnownSubType(typeof(ApplicationClearStateTransaction), OnCompletion.Clear)]
 
     public abstract class ApplicationCallTransaction : Transaction
     {

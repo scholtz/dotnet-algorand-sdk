@@ -1,10 +1,8 @@
 ﻿using Algorand;
 using NUnit.Framework;
 using Org.BouncyCastle.Crypto.Parameters;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using Encoder = Algorand.Encoder;
+using Encoder = Algorand.Utils.Encoder;
 
 namespace test
 {

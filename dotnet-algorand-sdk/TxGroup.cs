@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Algorand.Utils;
+using Algorand.V2.Algod.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -81,7 +83,7 @@ namespace Algorand
 
             for (int i = 0; i < txns.Length; ++i)
             {
-                if (address == null || address.ToString() == "" || address == txns[i].sender)
+                if (address == null || address.ToString() == "" || address == txns[i].Sender)
                 {
                     Transaction tx = txns[i];
                     tx.AssignGroupID(gid);
