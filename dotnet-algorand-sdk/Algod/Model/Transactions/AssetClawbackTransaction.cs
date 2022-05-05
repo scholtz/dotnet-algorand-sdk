@@ -12,7 +12,7 @@ namespace Algorand.Algod.Model
         /// </summary>
         [JsonProperty(PropertyName = "aamt", Required = Required.Always)]
         [DefaultValue(0)]
-        public ulong? AssetAmount = 0;
+        public ulong AssetAmount = 0;
 
         /// <summary>
         /// The sender of the transfer.  If this is not a zero value, the real

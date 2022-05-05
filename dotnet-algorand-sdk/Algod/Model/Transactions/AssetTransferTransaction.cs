@@ -1,9 +1,14 @@
 ﻿
+using JsonSubTypes;
 using Newtonsoft.Json;
 using System.ComponentModel;
 
 namespace Algorand.Algod.Model
 {
+
+    [JsonConverter(typeof(JsonSubtypes))]
+    [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetClawbackTransaction), "asnd")]
+    [JsonSubtypes.FallBackSubType(typeof(AssetTransferTransaction))]
     public class AssetTransferTransaction : AssetMovementsTransaction
     {
     
@@ -15,7 +20,7 @@ namespace Algorand.Algod.Model
         /// </summary>
         [JsonProperty(PropertyName = "aamt", Required = Required.Always)]
         [DefaultValue(0)]
-        public ulong? AssetAmount = 0;
+        public ulong AssetAmount = 0;
 
     
 
@@ -30,7 +35,7 @@ namespace Algorand.Algod.Model
         /// and specifies where the remaining asset holdings should be transferred.
         /// It's always valid to transfer remaining asset holdings to the AssetID account.
         /// </summary>
-        [JsonProperty(PropertyName = "aclose", Required = Required.Always)]
+        [JsonProperty(PropertyName = "aclose")]
         public Address AssetCloseTo;
 
 

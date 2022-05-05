@@ -81,7 +81,6 @@ namespace SerialisationTests
             ApplicationCreateTransaction txn = new ApplicationCreateTransaction()
             {
  
- 
                 ApprovalProgram = new Algorand.TEALProgram("BEAB"),
                 ClearStateProgram = new Algorand.TEALProgram("BEAB"),
                 GlobalStateSchema = new StateSchema(),
@@ -124,7 +123,7 @@ namespace SerialisationTests
             var txnJson = Encoder.EncodeToJson(txn);
 
             var transaction = JsonConvert.DeserializeObject<Transaction>(txnJson);
-            Assert.IsInstanceOfType(transaction, typeof(ApplicationDeleteTransaction));
+            Assert.IsInstanceOfType(transaction, typeof(ApplicationNoopTransaction));
         }
 
     }

@@ -32,7 +32,7 @@ namespace Algorand.Algod.Model
         [JsonIgnore]
         public ulong? ClosingAmount { get; private set; }
 
-
+        public PaymentTransaction() { }
 
 
         /// <summary>

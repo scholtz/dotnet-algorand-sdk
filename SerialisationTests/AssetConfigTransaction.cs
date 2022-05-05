@@ -13,7 +13,7 @@ namespace SerialisationTests
         {
             AssetCreateTransaction txn = new AssetCreateTransaction()
             {
-                AssetParams = new AssetParams() 
+                AssetParams = new AssetParams() { Creator=new Algorand.Address(), Decimals=1,Total=1}
 
             };
 
@@ -31,14 +31,14 @@ namespace SerialisationTests
             AssetUpdateTransaction txn = new AssetUpdateTransaction()
             {
                 AssetIndex = 2,
-                AssetParams = new AssetParams()
+                AssetParams = new AssetParams() { Creator = new Algorand.Address(), Decimals = 1, Total = 1 }
             };
 
 
             var txnJson = Encoder.EncodeToJson(txn);
 
             var transaction = JsonConvert.DeserializeObject<Transaction>(txnJson);
-            Assert.IsInstanceOfType(transaction, typeof(AssetClawbackTransaction));
+            Assert.IsInstanceOfType(transaction, typeof(AssetUpdateTransaction));
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace SerialisationTests
         {
             AssetDestroyTransaction txn = new AssetDestroyTransaction()
             {
-                AssetParams=null,
+  
                 AssetIndex = 2
             };
 

@@ -6,10 +6,9 @@ using System.ComponentModel;
 namespace Algorand.Algod.Model
 {
 
-    [JsonConverter(typeof(JsonSubtypes), "aamt")]
-    [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetClawbackTransaction), "asnd")]
-    [JsonSubtypes.KnownSubType(typeof(AssetAcceptTransaction), "0")]
-    [JsonSubtypes.FallBackSubType(typeof(AssetTransferTransaction))]
+    [JsonConverter(typeof(JsonSubtypes))]
+    [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetTransferTransaction), "aamt")]
+    [JsonSubtypes.FallBackSubType(typeof(AssetAcceptTransaction))]
 
     public abstract class AssetMovementsTransaction : Transaction
     {

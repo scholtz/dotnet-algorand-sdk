@@ -1,13 +1,14 @@
 ﻿
 
 
+using Algorand.Utils;
 using Newtonsoft.Json;
 using System.ComponentModel;
 
 namespace Algorand.Algod.Model
 {
 
-    public  class ApplicationCreateTransaction : ApplicationCallTransaction
+    public  class ApplicationCreateTransaction : ApplicationNoopTransaction
     {
 
         [JsonProperty(PropertyName = "apan")]
@@ -15,9 +16,11 @@ namespace Algorand.Algod.Model
         public OnCompletion OnCompletion => OnCompletion.Noop;
 
         [JsonProperty(PropertyName = "apap", Required = Required.Always)]
+        [JsonConverter(typeof(BytesConverter))]
         public TEALProgram ApprovalProgram = null;
 
         [JsonProperty(PropertyName = "apsu", Required = Required.Always)]
+        [JsonConverter(typeof(BytesConverter))]
         public TEALProgram ClearStateProgram = null;
 
         [JsonProperty(PropertyName = "apgs",Required =Required.Always)]

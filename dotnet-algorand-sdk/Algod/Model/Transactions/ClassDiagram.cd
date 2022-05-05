@@ -22,21 +22,21 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.Algod.Model.ApplicationCreateTransaction">
-    <Position X="15.25" Y="12.5" Width="2.5" />
+    <Position X="21.75" Y="15.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAiAAAAAAAAAAEAAAAAAAAAEAAAACAAACAAAAAAA=</HashCode>
       <FileName>Algod\Model\Transactions\ApplicationCreateTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.Algod.Model.ApplicationDeleteTransaction">
-    <Position X="18.5" Y="12.5" Width="2.5" />
+    <Position X="15" Y="12.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Algod\Model\Transactions\ApplicationDeleteTransaction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Algorand.Algod.Model.ApplicationNoopTransaction">
-    <Position X="21.75" Y="12.5" Width="2.5" />
+    <Position X="18" Y="12.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Algod\Model\Transactions\ApplicationNoopTransaction.cs</FileName>

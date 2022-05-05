@@ -14,7 +14,7 @@ namespace SerialisationTests
             AssetAcceptTransaction txn = new AssetAcceptTransaction()
             {
                 AssetReceiver = new Algorand.Address(),
-
+                XferAsset=2
             };
 
            
@@ -33,7 +33,7 @@ namespace SerialisationTests
                 AssetReceiver = new Algorand.Address(),
                 AssetAmount = 5,
                 AssetSender = new Algorand.Address(),
-
+                XferAsset = 2
             };
 
 
@@ -50,7 +50,7 @@ namespace SerialisationTests
             {
                 AssetReceiver = new Algorand.Address(),
                 AssetAmount = 5,
-          
+                XferAsset = 2
 
             };
 

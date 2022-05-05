@@ -4,13 +4,13 @@ using System.ComponentModel;
 
 namespace Algorand.Algod.Model
 {
-    [JsonConverter(typeof(JsonSubtypes), "apar")]
-    [JsonSubtypes.KnownSubType(typeof(AssetDestroyTransaction), null)]
-    [JsonSubtypes.FallBackSubType(typeof(AssetUpdateTransaction))]
+    [JsonConverter(typeof(JsonSubtypes))]
+    [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetUpdateTransaction),"apar")]
+    [JsonSubtypes.FallBackSubType(typeof(AssetDestroyTransaction))]
 
     public class AssetUpdateTransaction : AssetConfigurationTransaction
     {
-        [JsonProperty(PropertyName = "apar", Required = Required.Always)]
+        [JsonProperty(PropertyName = "apar")]
         public AssetParams AssetParams;
 
         [JsonProperty(PropertyName = "caid", Required = Required.Always)]

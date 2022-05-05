@@ -44,9 +44,58 @@ namespace Algorand.Utils
                 
                 if (bytes != null && bytes.Length > 0) return new Address(bytes);
                 else return new Address();
-            } else
-                return new object();
-            //throw new NotImplementedException();
+            } else if (objectType == typeof( TEALProgram))
+            {
+                byte[] bytes;
+                switch (reader.Value)
+                {
+                    case byte[] b:
+                        {
+                            bytes = b;
+                            break;
+                        }
+                    case string s:
+                        {
+                            bytes = Convert.FromBase64String(s);
+                            break;
+                        }
+                    default:
+                        bytes = null;
+                        break;
+                }
+
+                if (bytes != null && bytes.Length > 0) return new TEALProgram(bytes);
+                else return new TEALProgram();
+            }
+            else if (objectType == typeof(Digest))
+            {
+                byte[] bytes;
+                switch (reader.Value)
+                {
+                    case byte[] b:
+                        {
+                            bytes = b;
+                            break;
+                        }
+                    case string s:
+                        {
+                            bytes = Convert.FromBase64String(s);
+                            break;
+                        }
+                    default:
+                        bytes = null;
+                        break;
+                }
+
+                if (bytes != null && bytes.Length > 0) return new Digest(bytes);
+                else return new Digest();
+            }
+            else 
+
+
+
+            return new object();
+
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
