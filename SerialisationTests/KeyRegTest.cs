@@ -20,6 +20,8 @@ namespace SerialisationTests
             var txnJson = Encoder.EncodeToJson(txn);
 
             var transaction = JsonConvert.DeserializeObject<Transaction>(txnJson);
+
+            Assert.IsInstanceOfType(transaction, typeof(KeyRegisterOnlineTransaction));
         }
 
         [TestMethod]
@@ -30,6 +32,8 @@ namespace SerialisationTests
             var txnJson = Encoder.EncodeToJson(txn);
 
             var transaction = JsonConvert.DeserializeObject<Transaction>(txnJson);
+
+            Assert.IsInstanceOfType(transaction, typeof(KeyRegisterOfflineTransaction));
         }
     }
 }

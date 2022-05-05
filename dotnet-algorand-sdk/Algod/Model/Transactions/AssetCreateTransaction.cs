@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace Algorand.Algod.Model
 {
-    internal class AssetCreateTransaction : AssetConfigurationTransaction
+    public class AssetCreateTransaction : AssetConfigurationTransaction
     {
         [JsonProperty(PropertyName = "apar",Required =Required.Always)]
         public AssetParams AssetParams;

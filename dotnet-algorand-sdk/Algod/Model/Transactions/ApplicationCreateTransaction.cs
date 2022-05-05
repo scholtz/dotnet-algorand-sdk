@@ -11,7 +11,7 @@ namespace Algorand.Algod.Model
     {
 
         [JsonProperty(PropertyName = "apan")]
-        [DefaultValue(OnCompletion.Noop)]
+
         public OnCompletion OnCompletion => OnCompletion.Noop;
 
         [JsonProperty(PropertyName = "apap", Required = Required.Always)]

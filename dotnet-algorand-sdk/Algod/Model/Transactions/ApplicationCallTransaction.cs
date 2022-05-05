@@ -13,9 +13,9 @@ namespace Algorand.Algod.Model {
     [JsonSubtypes.KnownSubType(typeof(ApplicationOptInTransaction), OnCompletion.Optin)]
     [JsonSubtypes.KnownSubType(typeof(ApplicationUpdateTransaction), OnCompletion.Update)]
     [JsonSubtypes.KnownSubType(typeof(ApplicationCloseOutTransaction), OnCompletion.Closeout)]
-    [JsonSubtypes.KnownSubType(typeof(ApplicationNoopTransaction), OnCompletion.Noop)]
-    [JsonSubtypes.KnownSubTypeWithProperty(typeof(ApplicationCreateTransaction), "ApprovalProgram")]
-    [JsonSubtypes.KnownSubTypeWithProperty(typeof(ApplicationCreateTransaction), "ClearStateProgram")]
+    [JsonSubtypes.KnownSubTypeWithProperty(typeof(ApplicationCreateTransaction), "apap")]  //TODO - this does not appear to work in combo with "apan" above.
+    [JsonSubtypes.KnownSubTypeWithProperty(typeof(ApplicationCreateTransaction), "apsu")]
+    [JsonSubtypes.FallBackSubType(typeof(ApplicationNoopTransaction))]
 
 
     public abstract  class ApplicationCallTransaction : Transaction
