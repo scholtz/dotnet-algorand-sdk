@@ -1,9 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using JsonSubTypes;
+using Newtonsoft.Json;
 using System.ComponentModel;
 
 namespace Algorand.Algod.Model
 {
-    internal class AssetUpdateTransaction : AssetConfigurationTransaction
+    [JsonConverter(typeof(JsonSubtypes), "apar")]
+    [JsonSubtypes.KnownSubType(typeof(AssetDestroyTransaction), null)]
+    [JsonSubtypes.FallBackSubType(typeof(AssetUpdateTransaction))]
+
+    public class AssetUpdateTransaction : AssetConfigurationTransaction
     {
         [JsonProperty(PropertyName = "apar", Required = Required.Always)]
         public AssetParams AssetParams;

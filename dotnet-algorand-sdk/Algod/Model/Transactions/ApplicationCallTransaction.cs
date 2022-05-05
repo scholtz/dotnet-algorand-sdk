@@ -10,6 +10,13 @@ namespace Algorand.Algod.Model {
 
     [JsonConverter(typeof(JsonSubtypes), "apan")]
     [JsonSubtypes.KnownSubType(typeof(ApplicationClearStateTransaction), OnCompletion.Clear)]
+    [JsonSubtypes.KnownSubType(typeof(ApplicationOptInTransaction), OnCompletion.Optin)]
+    [JsonSubtypes.KnownSubType(typeof(ApplicationUpdateTransaction), OnCompletion.Update)]
+    [JsonSubtypes.KnownSubType(typeof(ApplicationCloseOutTransaction), OnCompletion.Closeout)]
+    [JsonSubtypes.KnownSubType(typeof(ApplicationNoopTransaction), OnCompletion.Noop)]
+    [JsonSubtypes.KnownSubTypeWithProperty(typeof(ApplicationCreateTransaction), "ApprovalProgram")]
+    [JsonSubtypes.KnownSubTypeWithProperty(typeof(ApplicationCreateTransaction), "ClearStateProgram")]
+
 
     public abstract  class ApplicationCallTransaction : Transaction
     {

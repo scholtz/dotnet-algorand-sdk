@@ -14,7 +14,10 @@ namespace Algorand.Algod.Model
     [JsonConverter(typeof(JsonSubtypes), "type")]
     [JsonSubtypes.KnownSubType(typeof(ApplicationCallTransaction), "appl")]
     [JsonSubtypes.KnownSubType(typeof(KeyRegistrationTransaction), "keyreg")]
-    
+    [JsonSubtypes.KnownSubType(typeof(PaymentTransaction), "pay")]
+    [JsonSubtypes.KnownSubType(typeof(AssetFreezeTransaction), "afrz")]
+    [JsonSubtypes.KnownSubType(typeof(AssetMovementsTransaction), "axfer")]
+    [JsonSubtypes.KnownSubType(typeof(AssetConfigurationTransaction), "acfg")]
 
     public abstract class Transaction
     {
