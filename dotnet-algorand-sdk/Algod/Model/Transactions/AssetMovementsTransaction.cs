@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.ComponentModel;
 
-namespace Algorand.V2.Algod.Model
+namespace Algorand.Algod.Model
 {
     public abstract class AssetMovementsTransaction : Transaction
     {

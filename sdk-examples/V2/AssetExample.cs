@@ -1,7 +1,7 @@
 ﻿using Algorand;
 using Algorand.V2;
 using Algorand.V2.Algod;
-using Algorand.V2.Algod.Model;
+using Algorand.Algod.Model;
 using System;
 using System.Linq;
 using System.Text;
@@ -160,7 +160,7 @@ namespace sdk_examples.V2
             signedTx = acct3.SignTransaction(tx);
             // send the transaction to the network and
             // wait for the transaction to be confirmed
-            Algorand.V2.Algod.Model.Account act = null;
+            Algorand.Algod.Model.Account act = null;
             try
             {
                 var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);

@@ -1,4 +1,4 @@
-﻿namespace Algorand.V2.Algod.Model
+﻿namespace Algorand.Algod.Model
 {
     using System = global::System;
     /// <summary>AccountParticipation describes the parameters used by this account in consensus protocol.</summary>

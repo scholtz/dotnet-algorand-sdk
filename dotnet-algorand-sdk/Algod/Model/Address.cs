@@ -187,7 +187,7 @@ namespace Algorand
         /// <returns>The address corresponding to that application's escrow account.</returns>
         public static Address ForApplication(ulong appID) //throws NoSuchAlgorithmException, IOException
         {
-            var buffer=Utils.CombineBytes(APP_ID_PREFIX, appID.ToBigEndianBytes());
+            var buffer=Utils.Utils.CombineBytes(APP_ID_PREFIX, appID.ToBigEndianBytes());
             return new Address(Digester.Digest(buffer));
         }
 }

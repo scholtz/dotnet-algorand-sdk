@@ -7,7 +7,7 @@ using Newtonsoft.Json.Serialization;
 using Org.BouncyCastle.Crypto.Parameters;
 using System.IO;
 using Newtonsoft.Msgpack;
-using Algorand.V2.Algod.Model;
+using Algorand.Algod.Model;
 
 namespace Algorand.Utils
 {

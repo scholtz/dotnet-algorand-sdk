@@ -5,7 +5,7 @@ using Algorand.Utils;
 using Newtonsoft.Json;
 using System;
 
-namespace Algorand.V2.Algod.Model
+namespace Algorand.Algod.Model
 {
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class SignedTransaction
@@ -16,13 +16,13 @@ namespace Algorand.V2.Algod.Model
         public Transaction Tx;
 
         [JsonProperty(PropertyName = "sig")]
-        public Signature? Sig; 
+        public Signature Sig; 
 
         [JsonProperty(PropertyName = "msig")]
-        public MultisigSignature? MSig;
+        public MultisigSignature MSig;
 
         [JsonProperty(PropertyName = "lsig")]
-        public LogicsigSignature? LSig;
+        public LogicsigSignature LSig;
 
         [JsonProperty(PropertyName = "sgnr")]
         public Address AuthAddr;

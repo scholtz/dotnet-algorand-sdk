@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Text;
 
-namespace Algorand.V2.Algod.Model
+namespace Algorand.Algod.Model
 {
     public class PaymentTransaction : Transaction
     {
@@ -94,7 +94,7 @@ namespace Algorand.V2.Algod.Model
         {
             var tx = new PaymentTransaction(from, to, amount, message, 0, lastRound, genesisId, genesishashb64);
 
-            SetFeeByFeePerByte(tx, suggestedFeePerByte);
+            tx.SetFeeByFeePerByte( suggestedFeePerByte);
             return tx;
         }
 

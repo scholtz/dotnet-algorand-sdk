@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Algorand.V2.Algod.Model
+namespace Algorand.Algod.Model
 {
     using System = global::System;
 

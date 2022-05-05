@@ -1,5 +1,5 @@
 ﻿using Algorand.Utils;
-using Algorand.V2.Algod.Model;
+using Algorand.Algod.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -86,7 +86,7 @@ namespace Algorand
                 if (address == null || address.ToString() == "" || address == txns[i].Sender)
                 {
                     Transaction tx = txns[i];
-                    tx.AssignGroupID(gid);
+                    tx.Group = gid;
                     result.Add(tx);
                 }
             }
@@ -102,7 +102,7 @@ namespace Algorand
         /// </summary>
         /// <returns>bytes</returns>
         private byte[] BytesToSign() {
-            byte[] encodedTx = Encoder.EncodeToMsgPack(this);
+            byte[] encodedTx = Utils.Encoder.EncodeToMsgPack(this);
             byte[] prefixEncodedTx = JavaHelper<byte>.ArrayCopyOf(TG_PREFIX, TG_PREFIX.Length + encodedTx.Length);
             JavaHelper<byte>.SystemArrayCopy(encodedTx, 0, prefixEncodedTx, TG_PREFIX.Length, encodedTx.Length);
             return prefixEncodedTx;

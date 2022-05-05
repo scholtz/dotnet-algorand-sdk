@@ -1,5 +1,5 @@
 ﻿
-namespace Algorand.V2.Algod.Model
+namespace Algorand.Algod.Model
 {
     using System = global::System;
 

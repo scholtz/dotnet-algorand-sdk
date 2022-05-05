@@ -5,7 +5,7 @@ using Algorand.Client;
 using System;
 using Account = Algorand.Account;
 using Algorand.V2.Algod;
-using Algorand.V2.Algod.Model;
+using Algorand.Algod.Model;
 using System.Threading.Tasks;
 
 namespace sdk_examples.V2
@@ -38,7 +38,7 @@ namespace sdk_examples.V2
                 Console.WriteLine("Online Algorand Supply: " + supply.OnlineMoney);
  
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling algod#getSupply:" + e.Message);
             }
@@ -55,7 +55,7 @@ namespace sdk_examples.V2
                 Console.WriteLine("Lastround: " + trans.LastRound.ToString());
                 Console.WriteLine("Block txns: " + block.Block.ToString());
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling algod#getSupply:" + e.Message);
             }
@@ -65,7 +65,7 @@ namespace sdk_examples.V2
             {
                 transParams = await algodApiInstance.ParamsAsync();                
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 throw new Exception("Could not get params", e);
             }
@@ -83,7 +83,7 @@ namespace sdk_examples.V2
                 var resp = await Utils.WaitTransactionToComplete(algodApiInstance, id.TxId);
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 // This is generally expected, but should give us an informative error message.
                 Console.WriteLine("Exception when calling algod#rawTransaction: " + e.Message);

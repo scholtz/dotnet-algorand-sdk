@@ -12,10 +12,10 @@
 #pragma warning disable 8073 // Disable "CS8073 The result of the expression is always 'false' since a value of type 'T' is never equal to 'null' of type 'T?'"
 #pragma warning disable 3016 // Disable "CS3016 Arrays as attribute arguments is not CLS-compliant"
 
-namespace Algorand.V2.Indexer
+namespace Algorand.Indexer
 {
     using System = global::System;
-    using Algorand.V2.Indexer.Model;
+    using Algorand.Indexer.Model;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.14.5.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial interface ICommonApi

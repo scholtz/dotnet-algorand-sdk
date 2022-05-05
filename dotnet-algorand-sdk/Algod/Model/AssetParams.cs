@@ -1,4 +1,4 @@
-﻿namespace Algorand.V2.Algod.Model
+﻿namespace Algorand.Algod.Model
 {
     using System = global::System;
     /// <summary>AssetParams specifies the parameters for an asset.

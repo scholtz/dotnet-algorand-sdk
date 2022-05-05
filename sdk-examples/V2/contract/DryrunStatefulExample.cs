@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using Algorand.V2.Algod.Model;
+using Algorand.Algod.Model;
 using Account = Algorand.Account;
 using System.Runtime.InteropServices;
 using Algorand.V2.Algod;
@@ -119,7 +119,7 @@ namespace sdk_examples.V2.contract
                 // clears local storage
                 await ClearApp(client, user, appid);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 throw new Exception("Could not get params", e);
             }
@@ -139,7 +139,7 @@ namespace sdk_examples.V2.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
                 Console.WriteLine("Close out Application ID is: " + appId);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -157,7 +157,7 @@ namespace sdk_examples.V2.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
                 Console.WriteLine("Updated the application ID is: " + appid);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -170,7 +170,7 @@ namespace sdk_examples.V2.contract
             {
                 var transParams = await client.ParamsAsync();
                 var tx = Utils.GetApplicationCreateTransaction(creator.Address, approvalProgram, clearProgram,
-                new Algorand.V2.Indexer.Model.StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes }, new Algorand.V2.Indexer.Model.StateSchema() { NumUint = localInts, NumByteSlice = localBytes }, transParams);
+                new Algorand.Indexer.Model.StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes }, new Algorand.Indexer.Model.StateSchema() { NumUint = localInts, NumByteSlice = localBytes }, transParams);
                 var signedTx = creator.SignTransaction(tx);
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
@@ -178,7 +178,7 @@ namespace sdk_examples.V2.contract
                 Console.WriteLine("Application ID is: " + resp.ApplicationIndex);
                 return resp.ApplicationIndex;
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
                 return null;
@@ -197,7 +197,7 @@ namespace sdk_examples.V2.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
                 Console.WriteLine("Optin to Application ID: " + (resp.Txn as JObject)["txn"]["apid"]);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -217,7 +217,7 @@ namespace sdk_examples.V2.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
                 Console.WriteLine("Success deleted the application " + (resp.Txn as JObject)["txn"]["apid"]);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -237,7 +237,7 @@ namespace sdk_examples.V2.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
                 Console.WriteLine("Success cleared the application " + (resp.Txn as JObject)["txn"]["apid"]);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -292,7 +292,7 @@ namespace sdk_examples.V2.contract
                     Console.WriteLine("    Local state: " + resp.LocalStateDelta.ToString());
                 }
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -317,7 +317,7 @@ namespace sdk_examples.V2.contract
             File.WriteAllBytes("./V2/contract/" + filePath, data);
         }
 
-        static DryrunRequest DryrunDrr(SignedTransaction signTx, TEALProgram program, Algorand.V2.Algod.Model.Account cr, Algorand.V2.Algod.Model.Account usr)
+        static DryrunRequest DryrunDrr(SignedTransaction signTx, TEALProgram program, Algorand.Algod.Model.Account cr, Algorand.Algod.Model.Account usr)
         {
             var sources = new List<DryrunSource>();
 
@@ -328,7 +328,7 @@ namespace sdk_examples.V2.contract
             var drr = new DryrunRequest()
             {
                 Txns = new List<SignedTransaction>() { signTx },
-                Accounts = new List<Algorand.V2.Algod.Model.Account>() { cr, usr },
+                Accounts = new List<Algorand.Algod.Model.Account>() { cr, usr },
                 Sources = sources
             };
             return drr;

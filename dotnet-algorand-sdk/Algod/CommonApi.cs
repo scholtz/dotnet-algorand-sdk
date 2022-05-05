@@ -14,9 +14,9 @@
 
 
 
-namespace Algorand.V2.Algod
+namespace Algorand.Algod
 {
-    using Algorand.V2.Algod.Model;
+    using Algorand.Algod.Model;
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.14.5.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))")]

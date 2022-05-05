@@ -22,7 +22,7 @@ namespace sdk_examples.V2.contract
             var toAddress = new Address("7XVBE6T6FMUR6TI2XGSVSOPJHKQE2SDVPMFA3QUZNWM7IY6D4K2L23ZN2A");
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
-            Algorand.V2.Algod.Model.TransactionParametersResponse transParams;
+            Algorand.Algod.Model.TransactionParametersResponse transParams;
             try
             {
                 transParams =await algodApiInstance.ParamsAsync();

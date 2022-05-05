@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Text;
 
-namespace Algorand.V2
+namespace Algorand
 {
     public class HttpClientConfigurator
     {

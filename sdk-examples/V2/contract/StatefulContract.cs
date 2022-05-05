@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Account = Algorand.Account;
 using System.Text;
 using Algorand.V2.Algod;
-using Algorand.V2.Algod.Model;
+using Algorand.Algod.Model;
 using System.Threading.Tasks;
 
 namespace sdk_examples.V2.contract
@@ -139,7 +139,7 @@ namespace sdk_examples.V2.contract
 
                 Console.WriteLine("You have successefully arrived the end of this test, please press and key to exist.");
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 // This is generally expected, but should give us an informative error message.
                 Console.WriteLine("Exception when calling algod#sendTransaction: " + e.Message);
@@ -160,7 +160,7 @@ namespace sdk_examples.V2.contract
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
                 Console.WriteLine("Application ID is: " + appId);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -181,7 +181,7 @@ namespace sdk_examples.V2.contract
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
                 Console.WriteLine("Application ID is: " + appid);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -194,7 +194,7 @@ namespace sdk_examples.V2.contract
             {
                 var transParams = await client.ParamsAsync();
                 var tx = Utils.GetApplicationCreateTransaction(creator.Address, approvalProgram, clearProgram,
-                    new Algorand.V2.Indexer.Model.StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes }, new Algorand.V2.Indexer.Model.StateSchema() { NumUint = localInts, NumByteSlice = localBytes }, transParams);
+                    new Algorand.Indexer.Model.StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes }, new Algorand.Indexer.Model.StateSchema() { NumUint = localInts, NumByteSlice = localBytes }, transParams);
                 var signedTx = creator.SignTransaction(tx);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
 
@@ -204,7 +204,7 @@ namespace sdk_examples.V2.contract
                 Console.WriteLine("Application ID is: " + resp.ApplicationIndex.ToString());
                 return resp.ApplicationIndex;
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
                 return null;
@@ -226,7 +226,7 @@ namespace sdk_examples.V2.contract
                 Console.WriteLine(string.Format("Address {0} optin to Application({1})",
                     sender.Address.ToString(), (resp.Txn as JObject)["txn"]["apid"]));
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -246,7 +246,7 @@ namespace sdk_examples.V2.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
                 Console.WriteLine("Success deleted the application " + (resp.Txn as JObject)["txn"]["apid"]);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -266,7 +266,7 @@ namespace sdk_examples.V2.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
                 Console.WriteLine("Success cleared the application " + (resp.Txn as JObject)["txn"]["apid"]);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -307,7 +307,7 @@ namespace sdk_examples.V2.contract
                     Console.WriteLine(outStr);
                 }
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }

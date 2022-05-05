@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Algorand.V2;
 using Algorand.V2.Algod;
-using Algorand.V2.Algod.Model;
+using Algorand.Algod.Model;
 
 namespace sdk_examples.V2.contract
 {

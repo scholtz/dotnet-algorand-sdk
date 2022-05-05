@@ -1,5 +1,5 @@
 ﻿
-namespace Algorand.V2.Algod.Model
+namespace Algorand.Algod.Model
 {
 
     /* DESIGN - Block as an entity was missing from Algod but it was visible in Indexer

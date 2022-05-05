@@ -6,7 +6,7 @@ using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Crypto.Parameters;
 using System.Text;
 using Algorand.Utils;
-using Algorand.V2.Algod.Model;
+using Algorand.Algod.Model;
 
 namespace Algorand
 {

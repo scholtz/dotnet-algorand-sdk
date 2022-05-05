@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace Algorand.V2.Algod.Model
+namespace Algorand.Algod.Model
 {
     public abstract class KeyRegistrationTransaction : Transaction
     {

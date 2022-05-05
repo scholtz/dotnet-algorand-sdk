@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 using System.ComponentModel;
 
-namespace Algorand.V2.Algod.Model { 
+namespace Algorand.Algod.Model { 
 
     public  class ApplicationClearStateTransaction : ApplicationCallTransaction
     {

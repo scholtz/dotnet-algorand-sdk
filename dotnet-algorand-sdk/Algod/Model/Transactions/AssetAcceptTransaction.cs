@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Algorand.V2.Algod.Model
+namespace Algorand.Algod.Model
 {
     public class AssetAcceptTransaction : AssetMovementsTransaction
     {

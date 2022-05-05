@@ -1,5 +1,5 @@
 ﻿
-using Algorand.V2.Algod.Model;
+using Algorand.Algod.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,14 +23,14 @@ namespace Algorand.Utils
         /// <param name="txID">transaction ID</param>
         /// <param name="timeout">how many rounds do you wish to check pending transactions for</param>
         /// <returns>The pending transaction response</returns>
-        public static async Task<V2.Algod.Model.Transaction> WaitTransactionToComplete(V2.Algod.DefaultApi instance, string txID, ulong timeout = 3) 
+        public static async Task<Algod.Model.CommittedTransaction> WaitTransactionToComplete(Algod.DefaultApi instance, string txID, ulong timeout = 3) 
         {
 
             if (instance == null || txID == null || txID.Length == 0 || timeout < 0)
             {
                 throw new ArgumentException("Bad arguments for waitForConfirmation.");
             }
-            V2.Algod.Model.NodeStatusResponse nodeStatusResponse = await instance.StatusAsync();            
+            NodeStatusResponse nodeStatusResponse = await instance.StatusAsync();            
             var startRound = nodeStatusResponse.LastRound + 1;
             var currentRound = startRound;
             while (currentRound < (startRound + timeout))
@@ -64,12 +64,12 @@ namespace Algorand.Utils
         /// <param name="instance"></param>
         /// <param name="signedTx"></param>
         /// <returns></returns>
-        public static async Task<V2.Algod.Model.PostTransactionsResponse> SubmitTransaction(V2.Algod.DefaultApi instance, SignedTransaction signedTx) //throws Exception
+        public static async Task<PostTransactionsResponse> SubmitTransaction(Algod.DefaultApi instance, SignedTransaction signedTx) //throws Exception
         {
             byte[] encodedTxBytes = Encoder.EncodeToMsgPack(signedTx);
             using (MemoryStream ms = new MemoryStream(encodedTxBytes))
             {
-                return await instance.TransactionsAsync(ms);
+                return await instance.TransactionsAsync(new List<SignedTransaction> { signedTx });
             }
         }
         public static ulong AlgosToMicroalgos(double algos)
@@ -109,13 +109,10 @@ namespace Algorand.Utils
     
 
       
-
-    
-
-        private static void ValidateAsset(V2.Algod.Model.AssetParams asset)
+        private static void ValidateAsset(AssetParams asset)
         {
             if (asset.Creator is null ) throw new ArgumentException("The sender must be specified.");
-            else if (!Address.IsValid(asset.Creator)) throw new ArgumentException("The sender address is not valid.");
+         
             
             if (asset.Name is null || asset.Name == "") throw new ArgumentException("The asset name must be specified.");
             
@@ -125,16 +122,12 @@ namespace Algorand.Utils
             if (asset.Total is null || asset.Total < 1) throw new ArgumentException("The total number of the asset must be specified and bigger than zero.");
             
             if (asset.Manager is null) asset.Manager = asset.Creator;
-            else if (asset.Manager != "" && !Address.IsValid(asset.Manager)) throw new ArgumentException("The manager address is not valid.");
             
             if (asset.Reserve is null) asset.Reserve = asset.Manager;
-            else if (asset.Reserve != "" && !Address.IsValid(asset.Reserve)) throw new ArgumentException("The reserve address is not valid.");
             
             if (asset.Freeze is null) asset.Freeze = asset.Manager;
-            else if (asset.Freeze != "" && !Address.IsValid(asset.Freeze)) throw new ArgumentException("The freeze address is not valid.");
-            
+             
             if (asset.Clawback is null) asset.Clawback = asset.Manager;
-            else if (asset.Clawback != "" && !Address.IsValid(asset.Clawback)) throw new ArgumentException("The clawback address is not valid.");
             
             if (asset.MetadataHash is null || asset.MetadataHash.Length == 0)
                 asset.MetadataHash = Encoding.UTF8.GetBytes(GetRandomAssetMetaHash());//auto generate metahash by sdk
@@ -152,9 +145,9 @@ namespace Algorand.Utils
     
       
      
-        public async static Task<V2.Algod.Model.DryrunResponse> GetDryrunResponse(V2.Algod.DefaultApi client, SignedTransaction stxn, byte[] source = null)
+        public async static Task<Algod.Model.DryrunResponse> GetDryrunResponse(Algod.DefaultApi client, SignedTransaction stxn, byte[] source = null)
         {
-            List<V2.Algod.Model.DryrunSource> sources = new List<V2.Algod.Model.DryrunSource>();
+            List<DryrunSource> sources = new List<DryrunSource>();
             List<SignedTransaction> stxns = new List<SignedTransaction>();
             //compiled 
             if (source is null)
@@ -164,13 +157,13 @@ namespace Algorand.Utils
             // source
             else
             {
-                sources.Add(new V2.Algod.Model.DryrunSource(){
+                sources.Add(new Algod.Model.DryrunSource(){
                     FieldName= "lsig",
                     Source= Encoding.UTF8.GetString(source), TxnIndex= 0 });
                 stxns.Add(stxn);
             }
             if (sources.Count < 1) sources = null;
-            return await client.DryrunAsync(new V2.Algod.Model.DryrunRequest() { Txns = stxns, Sources = sources });
+            return await client.DryrunAsync(new DryrunRequest() { Txns = stxns, Sources = sources });
         }
 
         internal static byte[] CombineBytes(byte[] b1, byte[] b2)

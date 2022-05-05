@@ -49,7 +49,7 @@ namespace sdk_examples.V2.contract
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
-            Algorand.V2.Algod.Model.TransactionParametersResponse transParams;
+            Algorand.Algod.Model.TransactionParametersResponse transParams;
             try
             {
                 transParams = await algodApiInstance.ParamsAsync();

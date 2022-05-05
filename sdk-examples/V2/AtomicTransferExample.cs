@@ -2,7 +2,7 @@
 using Algorand.Client;
 using Algorand.V2;
 using Algorand.V2.Algod;
-using Algorand.V2.Algod.Model;
+using Algorand.Algod.Model;
 
 using System;
 using System.Collections.Generic;
@@ -28,12 +28,12 @@ namespace sdk_examples.V2
             Algorand.Account src = new Algorand.Account(SRC_ACCOUNT);
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
-            Algorand.V2.Algod.Model.TransactionParametersResponse transParams;
+            Algorand.Algod.Model.TransactionParametersResponse transParams;
             try
             {
                 transParams = await algodApiInstance.ParamsAsync();
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 throw new Exception("Could not get params", e);
             }
@@ -63,7 +63,7 @@ namespace sdk_examples.V2
                 Console.WriteLine("Confirmed Round is: " + 
                     Utils.WaitTransactionToComplete(algodApiInstance, id.TxId).Result.ConfirmedRound);
             }
-            catch (Algorand.V2.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 // This is generally expected, but should give us an informative error message.
                 Console.WriteLine("Exception when calling algod#rawTransaction: " + e.Message);
