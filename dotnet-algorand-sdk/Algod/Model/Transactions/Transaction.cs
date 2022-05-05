@@ -13,6 +13,9 @@ namespace Algorand.Algod.Model
 
     [JsonConverter(typeof(JsonSubtypes), "type")]
     [JsonSubtypes.KnownSubType(typeof(ApplicationCallTransaction), "appl")]
+    [JsonSubtypes.KnownSubType(typeof(KeyRegistrationTransaction), "keyreg")]
+    
+
     public abstract class Transaction
     {
         private const ulong MIN_TX_FEE_UALGOS = 1000;

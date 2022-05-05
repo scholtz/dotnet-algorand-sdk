@@ -1,9 +1,10 @@
 using Algorand;
+using Algorand.Algod.Model;
 using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Text;
-using Encoder = Algorand.Encoder;
+using Encoder = Algorand.Utils.Encoder;
 
 namespace test
 {

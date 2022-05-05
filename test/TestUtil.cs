@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Encoder = Algorand.Encoder;
+using Encoder = Algorand.Utils.Encoder;
 
 namespace test
 {

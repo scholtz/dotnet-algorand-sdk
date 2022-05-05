@@ -1,8 +1,7 @@
 using Algorand;
 using NUnit.Framework;
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using Algorand.Utils;
 
 namespace test
 {

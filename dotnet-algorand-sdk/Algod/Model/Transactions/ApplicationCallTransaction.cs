@@ -8,10 +8,10 @@ using System.ComponentModel;
 
 namespace Algorand.Algod.Model {
 
-    [JsonConverter(typeof(JsonSubtypes), "OnCompletion")]
+    [JsonConverter(typeof(JsonSubtypes), "apan")]
     [JsonSubtypes.KnownSubType(typeof(ApplicationClearStateTransaction), OnCompletion.Clear)]
 
-    public abstract class ApplicationCallTransaction : Transaction
+    public abstract  class ApplicationCallTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type")]
         private string type => "appl";
