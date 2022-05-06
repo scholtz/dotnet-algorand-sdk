@@ -1,4 +1,5 @@
 using Algorand;
+using Algorand.Utils;
 using NUnit.Framework;
 using System;
 
@@ -69,9 +70,7 @@ namespace test
                 }
                 var ex = Assert.Throws<ArgumentException>(() => { Mnemonic.ToKey(corruptedMn); });
                 Assert.AreEqual("checksum failed to validate", ex.Message);
-                //    Assert.AreEqualThrownBy(()->Mnemonic.toKey())
-                //.isInstanceOf(GeneralSecurityException.class)
-                //        .hasMessage();
+           
             }
         }
 

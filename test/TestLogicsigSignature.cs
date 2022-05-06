@@ -1,4 +1,5 @@
 ﻿using Algorand;
+using Algorand.Algod.Model;
 using NUnit.Framework;
 using Org.BouncyCastle.Crypto.Parameters;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ namespace test
 
             LogicsigSignature lsig = new LogicsigSignature(program);
             Account account = new Account();
-            lsig = account.SignLogicsig(lsig);
+            lsig.SignLogicsig(account);
             Assert.AreEqual(lsig.Logic, program);
             Assert.IsNull(lsig.Args);
             Assert.AreNotEqual(lsig.Sig, new Signature());
@@ -111,7 +112,7 @@ namespace test
             Account account = new Account();
 
             LogicsigSignature lsig = new LogicsigSignature(program);
-            lsig = acc1.SignLogicsig(lsig, ma);
+            lsig.SignLogicsig(acc1, ma);
             Assert.AreEqual(lsig.Logic, program);
             Assert.IsNull(lsig.Args);
             Assert.IsNull(lsig.Sig);
@@ -122,17 +123,14 @@ namespace test
             Assert.IsFalse(verified);
 
             LogicsigSignature lsigLambda = lsig;
-            //Assert.AreEqualThrownBy(()->account.appendToLogicsig(lsigLambda))
-            //        .isInstanceOf(IllegalArgumentException.class)
-            //                .hasMessage("Multisig account does not contain this secret key");
-
-            lsig = acc2.AppendToLogicsig(lsig);
+            
+            lsig.AppendToLogicsig(lsig, acc2);
             verified = lsig.Verify(ma.ToAddress());
             Assert.IsTrue(verified);
 
             // Add a single signature and ensure it fails
             LogicsigSignature lsig1 = new LogicsigSignature(program);
-            lsig1 = account.SignLogicsig(lsig1);
+            lsig1.SignLogicsig( account);
             lsig.Sig = lsig1.Sig;
             verified = lsig.Verify(ma.ToAddress());
             Assert.IsFalse(verified);

@@ -100,7 +100,7 @@ namespace Algorand
             this.Logic = JavaHelper<byte[]>.RequireNotNull(logic, "program must not be null");
             this.Args = args;
 
-            if (!Algorand.Logic.CheckProgram(this.Logic, this.Args))
+            if (!Algorand.Utils.Logic.CheckProgram(this.Logic, this.Args))
                 throw new Exception("program verified failed!");
 
             if (sig != null)
@@ -166,7 +166,7 @@ namespace Algorand
             {
                 try
                 {
-                    Algorand.Logic.CheckProgram(this.Logic, this.Args);
+                    Algorand.Utils.Logic.CheckProgram(this.Logic, this.Args);
                 }
                 catch (Exception)
                 {
@@ -222,6 +222,18 @@ namespace Algorand
             
         }
 
+        /// <summary>
+        /// Sign LogicSig with account's secret key
+        /// </summary>
+        /// <param name="lsig">LogicsigSignature to sign</param>
+        /// <returns>LogicsigSignature with updated signature</returns>
+        public void SignLogicsig(Account signingAccount)
+        {
+            byte[] bytesToSign = BytesToSign();
+            Signature sig = signingAccount.SignRawBytes(bytesToSign);
+            Sig = sig;
+            
+        }
 
         public void SignLogicsig(Account signingAccount, MultisigAddress ma)
         {

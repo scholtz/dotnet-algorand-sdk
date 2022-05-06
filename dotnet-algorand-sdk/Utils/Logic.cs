@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using Algorand.Utils;
 
-namespace Algorand
+namespace Algorand.Utils
 {
     /// <summary>
     /// Logic class provides static checkProgram function that can be used for client-side program validation for size and execution cost.
