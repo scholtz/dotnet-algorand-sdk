@@ -79,7 +79,7 @@ namespace sdk_examples
             var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(src.Address, new Address(DEST_ADDR), amount, "pay message", transParams);
             var signedTx = tx.Sign(src);
 
-            Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
+            Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
             // send the transaction to the network
             try
@@ -92,7 +92,7 @@ namespace sdk_examples
             catch (ApiException<ErrorResponse> e)
             {
                 // This is generally expected, but should give us an informative error message.
-                Console.WriteLine("Exception when calling algod#rawTransaction: " + e.Result);
+                Console.WriteLine("Exception when calling algod#rawTransaction: " + e.Result.Message);
             }
             Console.WriteLine("You have successefully arrived the end of this test, please press and key to exist.");
         }

@@ -161,7 +161,7 @@ namespace sdk_examples.contract
 
 
                 var signedTx = tx.Sign(sender);
-                Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
+                Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
@@ -194,7 +194,7 @@ namespace sdk_examples.contract
                 };
 
                 var signedTx = tx.Sign(creator);
-                Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
+                Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
@@ -230,7 +230,7 @@ namespace sdk_examples.contract
                 };
 
                 var signedTx = tx.Sign(creator);
-                Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
+                Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
@@ -263,7 +263,7 @@ namespace sdk_examples.contract
 
 
                 var signedTx = tx.Sign(sender);
-                Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
+                Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
@@ -295,7 +295,7 @@ namespace sdk_examples.contract
 
 
                 var signedTx = tx.Sign(sender);
-                Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
+                Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
@@ -325,7 +325,7 @@ namespace sdk_examples.contract
                 };
                 
                 var signedTx = tx.Sign(sender);
-                Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
+                Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
@@ -357,7 +357,7 @@ namespace sdk_examples.contract
                 };
 
                 var signedTx = tx.Sign(sender);
-                Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
+                Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);

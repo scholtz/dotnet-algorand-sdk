@@ -66,11 +66,9 @@ namespace Algorand.Utils
         /// <returns></returns>
         public static async Task<PostTransactionsResponse> SubmitTransaction(Algod.DefaultApi instance, SignedTransaction signedTx) //throws Exception
         {
-            byte[] encodedTxBytes = Encoder.EncodeToMsgPack(signedTx);
-            using (MemoryStream ms = new MemoryStream(encodedTxBytes))
-            {
+                    
                 return await instance.TransactionsAsync(new List<SignedTransaction> { signedTx });
-            }
+         
         }
         public static ulong AlgosToMicroalgos(double algos)
         {

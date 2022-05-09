@@ -26,12 +26,12 @@ namespace Algorand.Algod.Model
         /// <summary>\[prev\] Previous block hash.</summary>
         [Newtonsoft.Json.JsonProperty("prev")] //, Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public byte[] PreviousBlockHash { get; set; }
+        public string PreviousBlockHash { get; set; }
 
         /// <summary>\[fees\] accepts transaction fees, it can only spend to the incentive pool.</summary>
         [Newtonsoft.Json.JsonProperty("fees")] //, Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string FeeSink { get; set; }
+        public Address FeeSink { get; set; }
 
         /// <summary>\[rwcalr\] number of leftover MicroAlgos after the distribution of rewards-rate MicroAlgos for every reward unit in the next round.</summary>
         [Newtonsoft.Json.JsonProperty("rwcalcr")] //, Required = Newtonsoft.Json.Required.Always)]

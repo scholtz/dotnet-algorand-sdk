@@ -31,8 +31,6 @@ namespace Algorand.Algod.Model
             AuthAddr = new Address(sigAddr);
         }
 
-        [JsonIgnore]
-        public string transactionID = "";
 
     
 

@@ -27,6 +27,7 @@ namespace Algorand.Utils
             JsonSerializer serializer = new JsonSerializer()
             {
                 DefaultValueHandling = DefaultValueHandling.Ignore,
+                ContractResolver= new OrderedContractResolver(),
                 Formatting = Formatting.None
             };
 
@@ -91,7 +92,16 @@ namespace Algorand.Utils
         public static string EncodeToHexStr(byte[] bytes)
         {
             return BitConverter.ToString(bytes, 0).Replace("-", string.Empty).ToLower();
-        }        
+        }
+
+        public static byte[] HexStringToByteArray(string hex)
+        {
+            int n = hex.Length;
+            byte[] bytes = new byte[n / 2];
+            for (int i = 0; i < n; i += 2)
+                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+            return bytes;
+        }
 
         /// <summary>
         /// Convenience method to get a value as a big-endian byte array
@@ -108,5 +118,11 @@ namespace Algorand.Utils
         }
     }
 
-  
+    public class OrderedContractResolver : DefaultContractResolver
+    {
+        protected override System.Collections.Generic.IList<JsonProperty> CreateProperties(System.Type type, MemberSerialization memberSerialization)
+        {
+            return base.CreateProperties(type, memberSerialization).OrderBy(p => p.PropertyName).ToList();
+        }
+    }
 }

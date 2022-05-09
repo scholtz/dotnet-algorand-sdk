@@ -70,7 +70,7 @@ namespace Algorand.Algod.Model
         public string GenesisID = "";
 
 
-
+      
         [JsonProperty(PropertyName = "gh")]
         public Digest GenesisHash;
 

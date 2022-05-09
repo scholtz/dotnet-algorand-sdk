@@ -59,7 +59,14 @@ namespace Algorand.Algod.Model
             Amount = amount;
             Receiver = to;
             GenesisID = genesisId;
-            GenesisHash = new Digest(genesishashb64);
+
+            if (String.IsNullOrWhiteSpace(genesishashb64)) {
+                GenesisHash = null;
+            }
+            else
+            {
+                GenesisHash = new Digest(genesishashb64);
+            }
         }
 
         /// <summary>
