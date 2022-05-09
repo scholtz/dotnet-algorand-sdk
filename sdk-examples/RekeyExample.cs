@@ -1,9 +1,10 @@
 ﻿using Algorand;
-using Algorand.V2;
-using Algorand.V2.Algod;
+using Algorand.Algod;
+using Algorand.Algod.Model;
+using Algorand.Utils;
 using System;
 using System.Threading.Tasks;
-using Account = Algorand.Account;
+
 
 namespace sdk_examples.V2
 {
@@ -43,20 +44,21 @@ namespace sdk_examples.V2
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
-            var trans = await algodApiInstance.ParamsAsync();   
+            var trans = await algodApiInstance.ParamsAsync();
             Console.WriteLine("Lastround: " + trans.LastRound.ToString());
 
-            
+
             bool firstRun = false;
 
             if (firstRun)
             {
-                ulong? amount = 0;
+                ulong amount = 0;
                 //opt-in send tx to same address as sender and use 0 for amount w rekey account to account 1
-                var tx = Utils.GetPaymentTransaction(account3.Address, account3.Address, amount, "pay message", trans);
+                var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(account3.Address, account3.Address, amount, "pay message", trans);
                 tx.RekeyTo = account1.Address;
 
-                var signedTx = account3.SignTransaction(tx);
+                var signedTx = tx.Sign(account3);
+                
                 // send the transaction to the network and
                 // wait for the transaction to be confirmed
                 try
@@ -76,13 +78,14 @@ namespace sdk_examples.V2
                 }
             }
 
-            var act = await algodApiInstance.AccountsAsync(account3.Address.ToString(),null);
+            var act = await algodApiInstance.AccountsAsync(account3.Address.ToString(), null);
             Console.WriteLine(act);
 
-            ulong? amount2 = 1000000;
-            var tx2 = Utils.GetPaymentTransaction(account3.Address, account2.Address, amount2, "pay message", trans);
+            ulong amount2 = 1000000;
+
+            var tx2 = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(account3.Address, account2.Address, amount2, "pay message", trans);
             tx2.RekeyTo = account1.Address;
-            var signedTx2 = account1.SignTransaction(tx2);
+            var signedTx2 = tx2.Sign(account1);
             try
             {
                 var id = await Utils.SubmitTransaction(algodApiInstance, signedTx2);

@@ -2,8 +2,7 @@
 using System.Threading.Tasks;
 using Algorand;
 using Algorand.Algod;
-
-using Account = Algorand.Model.Account;
+using Algorand.Algod.Model;
 
 namespace sdk_examples.V2
 {

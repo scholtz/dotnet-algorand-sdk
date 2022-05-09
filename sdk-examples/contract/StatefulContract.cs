@@ -1,22 +1,20 @@
 ﻿using Algorand;
-
-using Algorand.V2;
-using System;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-
-using Account = Algorand.Account;
-using System.Text;
-using Algorand.V2.Algod;
+using Algorand.Algod;
 using Algorand.Algod.Model;
+using Algorand.Utils;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
+
 
 namespace sdk_examples.V2.contract
 {
     class StatefulContract
     {
-        public  async Task Main(params string[] args)
+        public async Task Main(params string[] args)
         {
             string ALGOD_API_ADDR = args[0];
             if (ALGOD_API_ADDR.IndexOf("//") == -1)
@@ -84,8 +82,8 @@ namespace sdk_examples.V2.contract
             {
                 approvalProgramRefactored = await client.CompileAsync(datams);
             }
-         
-           
+
+
 
             try
             {
@@ -150,8 +148,19 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationCloseTransaction(sender.Address, (ulong?)appId, transParams);
-                var signedTx = sender.SignTransaction(tx);
+                var tx = new ApplicationCloseOutTransaction()
+                {
+                    Sender = sender.Address,
+                    ApplicationId = appId,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                };
+
+
+                var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
@@ -171,8 +180,20 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationUpdateTransaction(creator.Address, (ulong?)appid, approvalProgram, clearProgram, transParams);
-                var signedTx = creator.SignTransaction(tx);
+                var tx = new ApplicationUpdateTransaction()
+                {
+                    Sender = creator.Address,
+                    ApplicationId = appid,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApprovalProgram = approvalProgram,
+                    ClearStateProgram = clearProgram
+                };
+
+                var signedTx = tx.Sign(creator);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
@@ -181,7 +202,7 @@ namespace sdk_examples.V2.contract
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
                 Console.WriteLine("Application ID is: " + appid);
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -193,14 +214,27 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationCreateTransaction(creator.Address, approvalProgram, clearProgram,
-                    new Algorand.Indexer.Model.StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes }, new Algorand.Indexer.Model.StateSchema() { NumUint = localInts, NumByteSlice = localBytes }, transParams);
-                var signedTx = creator.SignTransaction(tx);
+
+                var tx = new ApplicationCreateTransaction()
+                {
+                    Sender = creator.Address,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApprovalProgram = approvalProgram,
+                    ClearStateProgram = clearProgram,
+                    GlobalStateSchema = new StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes },
+                    LocalStateSchema = new StateSchema() { NumUint = localInts, NumByteSlice = localBytes }
+                };
+
+                var signedTx = tx.Sign(creator);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as CommittedApplicationCreateTransaction;
                 Console.WriteLine("Application ID is: " + resp.ApplicationIndex.ToString());
                 return resp.ApplicationIndex;
             }
@@ -216,15 +250,26 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationOptinTransaction(sender.Address, (ulong?)applicationId, transParams);
-                var signedTx = sender.SignTransaction(tx);
+                var tx = new ApplicationOptInTransaction()
+                {
+                    Sender = sender.Address,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApplicationId = applicationId
+                };
+
+
+                var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as CommittedApplicationCallTransaction;
                 Console.WriteLine(string.Format("Address {0} optin to Application({1})",
-                    sender.Address.ToString(), (resp.Txn as JObject)["txn"]["apid"]));
+                    sender.Address.ToString(), (resp.Transaction.Tx as ApplicationOptInTransaction).ApplicationId));
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -237,14 +282,25 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationDeleteTransaction(sender.Address, (ulong?)applicationId, transParams);
-                var signedTx = sender.SignTransaction(tx);
+                var tx = new ApplicationDeleteTransaction()
+                {
+                    Sender = sender.Address,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApplicationId = applicationId
+                };
+
+
+                var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
-                Console.WriteLine("Success deleted the application " + (resp.Txn as JObject)["txn"]["apid"]);
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as CommittedApplicationCallTransaction;
+                Console.WriteLine("Success deleted the application " + (resp.Transaction.Tx as ApplicationDeleteTransaction).ApplicationId);
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -257,14 +313,24 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationClearTransaction(sender.Address, (ulong?)applicationId, transParams);
-                var signedTx = sender.SignTransaction(tx);
+                var tx = new ApplicationClearStateTransaction()
+                {
+                    Sender = sender.Address,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApplicationId = applicationId.Value,
+                };
+                
+                var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
-                Console.WriteLine("Success cleared the application " + (resp.Txn as JObject)["txn"]["apid"]);
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as CommittedApplicationCallTransaction;
+                Console.WriteLine("Success cleared the application " + (resp.Transaction.Tx as ApplicationClearStateTransaction).ApplicationId);
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -277,21 +343,33 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationCallTransaction(sender.Address, (ulong?)applicationId, transParams, args);
-                var signedTx = sender.SignTransaction(tx);
+
+                var tx = new ApplicationNoopTransaction()
+                {
+                    Sender = sender.Address,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApplicationId = applicationId.Value,
+                    ApplicationArgs = args
+                };
+
+                var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as CommittedApplicationCallTransaction;
                 Console.WriteLine("Confirmed at round: " + resp.ConfirmedRound);
-                Console.WriteLine(string.Format("Call Application({0}) success.", 
-                    (resp.Txn as JObject)["txn"]["apid"]));
-                //System.out.println("Called app-id: " + pTrx.txn.tx.applicationId);
+                Console.WriteLine(string.Format("Call Application({0}) success.",
+                    (resp.Transaction.Tx as ApplicationNoopTransaction).ApplicationId));
+                
                 if (resp.GlobalStateDelta != null)
                 {
                     var outStr = "    Global state: ";
-                    foreach(var v in resp.GlobalStateDelta)
+                    foreach (var v in resp.GlobalStateDelta)
                     {
                         outStr += v.ToString();
                     }
@@ -300,7 +378,7 @@ namespace sdk_examples.V2.contract
                 if (resp.LocalStateDelta != null)
                 {
                     var outStr = "    Local state: ";
-                    foreach(var v in resp.LocalStateDelta)
+                    foreach (var v in resp.LocalStateDelta)
                     {
                         outStr += v.ToString();
                     }
@@ -315,7 +393,7 @@ namespace sdk_examples.V2.contract
 
         static public async Task ReadLocalState(DefaultApi client, Account account, ulong? appId)
         {
-            var acctResponse = await client.AccountsAsync(account.Address.ToString(),null);
+            var acctResponse = await client.AccountsAsync(account.Address.ToString(), null);
             var applicationLocalState = acctResponse.AppsLocalState;
             foreach (var state in applicationLocalState)
             {
@@ -333,9 +411,9 @@ namespace sdk_examples.V2.contract
 
         static public async Task ReadGlobalState(DefaultApi client, Account account, ulong? appId)
         {
-            var acctResponse = await client.AccountsAsync(account.Address.ToString(),null);
+            var acctResponse = await client.AccountsAsync(account.Address.ToString(), null);
             var createdApplications = acctResponse.CreatedApps;
-            foreach( var app in createdApplications)
+            foreach (var app in createdApplications)
             {
                 if (app.Id == appId)
                 {
@@ -343,7 +421,7 @@ namespace sdk_examples.V2.contract
                     foreach (var v in app.Params.GlobalState)
                     {
                         outStr += v.ToString();
-                    }                    
+                    }
                     Console.WriteLine(outStr);
                 }
             }

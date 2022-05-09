@@ -1,5 +1,5 @@
-﻿using Algorand.V2;
-using Algorand.V2.Indexer;
+﻿using Algorand;
+using Algorand.Indexer;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ namespace sdk_examples.V2
 {
     public class IndexerExamples
     {
-        public  async Task Main(string[] args)
+        public async Task Main(string[] args)
         {
             string ALGOD_API_ADDR = "https://testnet-algorand.api.purestake.io/idx2/";
             string ALGOD_API_TOKEN = "GeHdp7CCGt7ApLuPNppXN4LtrW07Mm1kaFNJ5Ovr";
@@ -21,12 +21,12 @@ namespace sdk_examples.V2
             //AlgodApi algodApiInstance = new AlgodApi(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             var health = await commonApi.HealthAsync();
             Console.WriteLine("Make Health Check: " + health.ToJson());
-            
+
             System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
             var address = "KV2XGKMXGYJ6PWYQA5374BYIQBL3ONRMSIARPCFCJEAMAHQEVYPB7PL3KU";
             var acctInfo = await lookupApi.AccountsAsync(address);
             Console.WriteLine("Look up account by id: " + acctInfo.ToJson());
-            
+
             System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
             var transInfos = await lookupApi.TransactionsGetAsync(address, limit: 10);
             Console.WriteLine("Look up account transactions(limit 10): " + transInfos.ToJson());
@@ -48,11 +48,11 @@ namespace sdk_examples.V2
             Console.WriteLine("Search for assets" + assetsInfo.ToJson());
 
             var assetIndex = assetsInfo.Assets.FirstOrDefault().Index;
-           
+
             System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
             var assetInfo = await lookupApi.AssetsAsync(assetIndex);
             Console.WriteLine("Look up asset by id:" + assetInfo.ToJson());
-            
+
             Console.WriteLine("You have successefully arrived the end of this test, please press and key to exist.");
             Console.ReadKey();
         }

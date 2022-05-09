@@ -171,7 +171,7 @@ namespace Algorand.Algod.Model
             return Sign(signingAccount);
         }
 
-        public SignedTransaction Sign(LogicsigSignature lsig, Account signingAccount)
+        public SignedTransaction Sign(LogicsigSignature lsig)
         {
             if (!lsig.Verify(Sender))
             {

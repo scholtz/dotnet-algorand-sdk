@@ -1,7 +1,8 @@
 ﻿using Algorand;
+using Algorand.Algod;
+using Algorand.Algod.Model;
 using Algorand.Client;
-using Algorand.V2;
-using Algorand.V2.Algod;
+using Algorand.Utils;
 using System;
 using System.Threading.Tasks;
 
@@ -22,12 +23,12 @@ namespace sdk_examples.V2.contract
             var toAddress = new Address("7XVBE6T6FMUR6TI2XGSVSOPJHKQE2SDVPMFA3QUZNWM7IY6D4K2L23ZN2A");
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
-            Algorand.Algod.Model.TransactionParametersResponse transParams;
+            TransactionParametersResponse transParams;
             try
             {
-                transParams =await algodApiInstance.ParamsAsync();
+                transParams = await algodApiInstance.ParamsAsync();
             }
-            catch (ApiException e)
+            catch (Algorand.Algod.Model.ApiException e)
             {
                 throw new Exception("Could not get params", e);
             }
@@ -36,9 +37,8 @@ namespace sdk_examples.V2.contract
             LogicsigSignature lsig = new LogicsigSignature(program, null);
             Console.WriteLine("Escrow address: " + lsig.Address.ToString());
 
-            var tx = Utils.GetPaymentTransaction(lsig.Address, toAddress, 10000000, "draw algo from contract", transParams);
-          
-            if (!lsig.Verify(tx.sender))
+            var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(lsig.Address, toAddress, 10000000, "draw algo from contract", transParams);
+            if (!lsig.Verify(tx.Sender))
             {
                 string msg = "Verification failed";
                 Console.WriteLine(msg);
@@ -47,13 +47,13 @@ namespace sdk_examples.V2.contract
             {
                 try
                 {
-                    SignedTransaction signedTx = Account.SignLogicsigTransaction(lsig, tx);                    
+                    SignedTransaction signedTx = tx.Sign(lsig);
                     var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
                     Console.WriteLine("Successfully sent tx logic sig tx id: " + id);
                     Console.WriteLine("Confirmed Round is: " +
                         Utils.WaitTransactionToComplete(algodApiInstance, id.TxId).Result.ConfirmedRound);
                 }
-                catch (ApiException e)
+                catch (Algorand.Algod.Model.ApiException e)
                 {
                     // This is generally expected, but should give us an informative error message.
                     Console.WriteLine("Exception when calling algod#sendTransaction: " + e.Message);

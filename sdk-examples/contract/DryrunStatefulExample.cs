@@ -1,15 +1,14 @@
 ﻿using Algorand;
-using Algorand.Client;
-using Algorand.V2;
-using System;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+using Algorand.Algod;
 using Algorand.Algod.Model;
-using Account = Algorand.Account;
+using Algorand.Utils;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
-using Algorand.V2.Algod;
 using System.Threading.Tasks;
+
 
 namespace sdk_examples.V2.contract
 {
@@ -25,7 +24,8 @@ namespace sdk_examples.V2.contract
             string ALGOD_API_TOKEN = args[1];
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             var client = new DefaultApi(httpClient);
-            //// TODO: REMOVE:
+
+            
             string creatorMnemonic = "benefit once mutual legal marble hurdle dress toe fuel country prepare canvas barrel divide major square name captain calm flock crumble receive economy abandon power";
             //string userMnemonic = "pledge become mouse fantasy matrix bunker ask tissue prepare vocal unit patient cliff index train network intact company across stage faculty master mom abstract above";
 
@@ -61,14 +61,13 @@ namespace sdk_examples.V2.contract
                 // transfer to creator and user
                 var transParams = await client.ParamsAsync();
                 var amount = Utils.AlgosToMicroalgos(1);
-                var tx = Utils.GetPaymentTransaction(admin.Address, creator.Address, amount, "", transParams);
-                var signedTx = admin.SignTransaction(tx);
+                var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(admin.Address, creator.Address, amount, "", transParams);
+                var signedTx = tx.Sign(admin);
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
                 Console.WriteLine("Transfer to creator at round: " + resp.ConfirmedRound);
-
-                tx = Utils.GetPaymentTransaction(admin.Address, user.Address, amount, "", transParams);
-                signedTx = admin.SignTransaction(tx);
+                tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(admin.Address, user.Address, amount, "", transParams);
+                signedTx = tx.Sign(admin);
                 id = await Utils.SubmitTransaction(client, signedTx);
                 resp = await Utils.WaitTransactionToComplete(client, id.TxId);
                 Console.WriteLine("Transfer to user at round: " + resp.ConfirmedRound);
@@ -89,7 +88,7 @@ namespace sdk_examples.V2.contract
                 await ReadGlobalState(client, creator, appid);
 
                 // update application
-                await UpdateApp(client, creator, appid,
+                await UpdateApp(client, creator, appid.Value,
                     new TEALProgram(approval_program_refactored_compiled.Result),
                     new TEALProgram(clear_program_compiled.Result));
 
@@ -107,7 +106,7 @@ namespace sdk_examples.V2.contract
                 await OptIn(client, user, appid);
 
                 //call application with arguments
-                await  CallApp(client, creator, user, appid, null,
+                await CallApp(client, creator, user, appid, null,
                     new TEALProgram(approval_program_refactored_compiled.Result), "V2/contract/hello_world_updated.teal");
 
                 // delete application
@@ -132,8 +131,18 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationCloseTransaction(sender.Address, appId, transParams);
-                var signedTx = sender.SignTransaction(tx);
+                var tx = new ApplicationCloseOutTransaction()
+                {
+                    Sender = sender.Address,
+                    ApplicationId = appId,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                };
+
+                var signedTx = tx.Sign(sender);
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
@@ -145,13 +154,26 @@ namespace sdk_examples.V2.contract
             }
         }
 
-        private async static Task UpdateApp(DefaultApi client, Account creator, ulong? appid, TEALProgram approvalProgram, TEALProgram clearProgram)
+        private async static Task UpdateApp(DefaultApi client, Account creator, ulong appid, TEALProgram approvalProgram, TEALProgram clearProgram)
         {
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationUpdateTransaction(creator.Address, (ulong?)appid, approvalProgram, clearProgram, transParams);
-                var signedTx = creator.SignTransaction(tx);
+
+                var tx = new ApplicationUpdateTransaction()
+                {
+                    Sender = creator.Address,
+                    ApplicationId = appid,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApprovalProgram = approvalProgram,
+                    ClearStateProgram = clearProgram
+                };
+
+                var signedTx = tx.Sign(creator);
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
@@ -169,18 +191,32 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationCreateTransaction(creator.Address, approvalProgram, clearProgram,
-                new Algorand.Indexer.Model.StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes }, new Algorand.Indexer.Model.StateSchema() { NumUint = localInts, NumByteSlice = localBytes }, transParams);
-                var signedTx = creator.SignTransaction(tx);
+                var tx = new ApplicationCreateTransaction()
+                {
+                    Sender = creator.Address,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApprovalProgram = approvalProgram,
+                    ClearStateProgram = clearProgram,
+                    GlobalStateSchema= new StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes },
+                    LocalStateSchema = new StateSchema() { NumUint = localInts, NumByteSlice = localBytes }
+                };
+
+
+                var signedTx = tx.Sign(creator);
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as CommittedApplicationCreateTransaction;
+                
                 Console.WriteLine("Application ID is: " + resp.ApplicationIndex);
                 return resp.ApplicationIndex;
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
             {
-                Console.WriteLine("Exception when calling create application: " + e.Message);
+                Console.WriteLine("Exception when calling create application: " + e.Response);
                 return null;
             }
         }
@@ -190,12 +226,24 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationOptinTransaction(sender.Address, (ulong?)applicationId, transParams);
-                var signedTx = sender.SignTransaction(tx);
+
+                var tx = new ApplicationOptInTransaction()
+                {
+                    Sender = sender.Address,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApplicationId = applicationId
+                };
+                
+                var signedTx = tx.Sign(sender);
                 var id = await Utils.SubmitTransaction(client, signedTx);
+
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
-                Console.WriteLine("Optin to Application ID: " + (resp.Txn as JObject)["txn"]["apid"]);
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as CommittedApplicationCallTransaction;
+                Console.WriteLine("Optin to Application ID: " + (resp.Transaction.Tx as ApplicationOptInTransaction).ApplicationId);
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -208,14 +256,26 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationDeleteTransaction(sender.Address, applicationId, transParams);
-                var signedTx = sender.SignTransaction(tx);
+                var tx = new ApplicationDeleteTransaction()
+                {
+                    Sender = sender.Address,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApplicationId = applicationId
+                };
+                
+
+
+                var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
-                Console.WriteLine("Success deleted the application " + (resp.Txn as JObject)["txn"]["apid"]);
+                Console.WriteLine("Success deleted the application " + (resp.Transaction.Tx as ApplicationDeleteTransaction).ApplicationId);
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -228,14 +288,24 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationClearTransaction(sender.Address,applicationId, transParams);
-                var signedTx = sender.SignTransaction(tx);
+
+                var tx = new ApplicationClearStateTransaction()
+                {
+                    Sender = sender.Address,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApplicationId = applicationId.Value,
+                };
+                var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
                 var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
-                Console.WriteLine("Success cleared the application " + (resp.Txn as JObject)["txn"]["apid"]);
+                Console.WriteLine("Success cleared the application " + (resp.Transaction.Tx as ApplicationClearStateTransaction).ApplicationId);
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -243,7 +313,7 @@ namespace sdk_examples.V2.contract
             }
         }
 
-        async static Task  CallApp(DefaultApi client, Account creator, Account user, ulong? applicationId, List<byte[]> args,
+        async static Task CallApp(DefaultApi client, Account creator, Account user, ulong? applicationId, List<byte[]> args,
             TEALProgram program, string tealFileName)
         {
             Console.WriteLine("Creator Account:" + creator.Address.ToString());
@@ -251,12 +321,23 @@ namespace sdk_examples.V2.contract
             try
             {
                 var transParams = await client.ParamsAsync();
-                var tx = Utils.GetApplicationCallTransaction(user.Address, (ulong?)applicationId, transParams, args);
-                var signedTx = user.SignTransaction(tx);
-                //Console.WriteLine("Signed transaction with txid: " + signedTx.transactionID);
+                var tx = new ApplicationNoopTransaction()
+                {
+                    Sender = user.Address,
+                    Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
+                    FirstValid = transParams.LastRound,
+                    LastValid = transParams.LastRound + 1000,
+                    GenesisID = transParams.GenesisId,
+                    GenesisHash = new Digest(transParams.GenesisHash),
+                    ApplicationId = applicationId.Value,
+                    ApplicationArgs= args
+                    
+                };
+                var signedTx = tx.Sign(user);
+                
 
-                var cr = await client.AccountsAsync(creator.Address.ToString(),null);
-                var usr = await client.AccountsAsync(user.Address.ToString(),null);
+                var cr = await client.AccountsAsync(creator.Address.ToString(), null);
+                var usr = await client.AccountsAsync(user.Address.ToString(), null);
                 var mydrr = DryrunDrr(signedTx, program, cr, usr);
                 var drrFile = "mydrr.dr";
                 WriteDrr(drrFile, mydrr);
@@ -280,7 +361,7 @@ namespace sdk_examples.V2.contract
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as CommittedApplicationCallTransaction;
                 Console.WriteLine("Confirmed at round: " + resp.ConfirmedRound);
                 //System.out.println("Called app-id: " + pTrx.txn.tx.applicationId);
                 if (resp.GlobalStateDelta != null)
@@ -304,11 +385,11 @@ namespace sdk_examples.V2.contract
             {
                 System.Diagnostics.Process.Start("/System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal", line);
             }
-            else if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 var strCmdText = "/C " + line;
                 System.Diagnostics.Process.Start("cmd.exe", strCmdText);
-            }            
+            }
         }
 
         private static void WriteDrr(string filePath, DryrunRequest content)
@@ -323,7 +404,7 @@ namespace sdk_examples.V2.contract
 
             if (program != null)
             {
-                sources.Add(new DryrunSource() { FieldName = "approv",Source= Convert.ToBase64String(program.Bytes),TxnIndex=0 } );
+                sources.Add(new DryrunSource() { FieldName = "approv", Source = Convert.ToBase64String(program.Bytes), TxnIndex = 0 });
             }
             var drr = new DryrunRequest()
             {
@@ -336,7 +417,7 @@ namespace sdk_examples.V2.contract
 
         async static public Task ReadLocalState(DefaultApi client, Account account, ulong? appId)
         {
-            var acctResponse = await client.AccountsAsync(account.Address.ToString(),null);
+            var acctResponse = await client.AccountsAsync(account.Address.ToString(), null);
             var applicationLocalState = acctResponse.AppsLocalState;
             foreach (var state in applicationLocalState)
             {
@@ -354,7 +435,7 @@ namespace sdk_examples.V2.contract
 
         async static public Task ReadGlobalState(DefaultApi client, Account account, ulong? appId)
         {
-            var acctResponse = await client.AccountsAsync(account.Address.ToString(),null);
+            var acctResponse = await client.AccountsAsync(account.Address.ToString(), null);
             var createdApplications = acctResponse.CreatedApps;
             foreach (var app in createdApplications)
             {
@@ -369,6 +450,6 @@ namespace sdk_examples.V2.contract
                 }
             }
         }
-        
+
     }
 }

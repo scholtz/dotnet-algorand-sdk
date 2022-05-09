@@ -1,15 +1,10 @@
 ﻿using Algorand;
-using Algorand.Client;
-using Algorand.V2;
-using Algorand.V2.Algod;
+using Algorand.Algod;
 using Algorand.Algod.Model;
-
+using Algorand.Utils;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using Algorand.Algod;
-using Algorand.Utils;
 
 namespace sdk_examples.V2
 {
@@ -27,7 +22,7 @@ namespace sdk_examples.V2
             string SRC_ACCOUNT = "typical permit hurdle hat song detail cattle merge oxygen crowd arctic cargo smooth fly rice vacuum lounge yard frown predict west wife latin absent cup";
             string DEST_ADDR = "KV2XGKMXGYJ6PWYQA5374BYIQBL3ONRMSIARPCFCJEAMAHQEVYPB7PL3KU";
             string DEST_ADDR2 = "OAMCXDCH7LIVYUF2HSNQLPENI2ZXCWBSOLUAOITT47E4FAMFGAMI4NFLYU";
-           
+
             Account src = new Account(SRC_ACCOUNT);
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
@@ -40,21 +35,19 @@ namespace sdk_examples.V2
             {
                 throw new Exception("Could not get params", e);
             }
-            
+
             // let's create a transaction group
             var amount = Utils.AlgosToMicroalgos(1);
-
-            //       var tx = new PaymentTransaction(src.Address,new Address(DEST_ADDR),amount,"pay message",1000, transParams.LastRound,transParams.GenesisId,transParams.GenesisHash)
             var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(src.Address, new Address(DEST_ADDR), amount, "pay message", transParams);
             var tx2 = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(src.Address, new Address(DEST_ADDR2), amount, "pay message", transParams);
-            
+
             Digest gid = TxGroup.ComputeGroupID(new Transaction[] { tx, tx2 });
-            tx.Group=gid;
-            tx2.Group=gid;
-            
+            tx.Group = gid;
+            tx2.Group = gid;
+
             var signedTx = tx.Sign(src);
             var signedTx2 = tx2.Sign(src);
-            
+
             try
             {
                 //contact the signed msgpack
@@ -62,9 +55,9 @@ namespace sdk_examples.V2
 
                 PostTransactionsResponse id; //this only returns the id of the 1st in the list (for backward compatibility apparently)
                 id = await algodApiInstance.TransactionsAsync(group);
-                
+
                 Console.WriteLine("Successfully sent tx group with first tx id: " + id);
-                Console.WriteLine("Confirmed Round is: " + 
+                Console.WriteLine("Confirmed Round is: " +
                     Utils.WaitTransactionToComplete(algodApiInstance, id.TxId).Result.ConfirmedRound);
             }
             catch (Algorand.Algod.Model.ApiException e)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace Algorand.Algod.Model.Transactions
+namespace Algorand.Algod.Model
 {
     public class CommittedApplicationCreateTransaction :  CommittedApplicationCallTransaction 
     {
