@@ -4,7 +4,7 @@ using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
 
-namespace sdk_examples.V2
+namespace sdk_examples
 {
     class AccountTest
     {

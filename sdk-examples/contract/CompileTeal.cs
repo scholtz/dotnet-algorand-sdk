@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace sdk_examples.V2.contract
+namespace sdk_examples.contract
 {
     public class CompileTeal
     {

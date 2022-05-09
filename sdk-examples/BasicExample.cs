@@ -6,23 +6,26 @@ using System;
 using System.Threading.Tasks;
 
 
-namespace sdk_examples.V2
+namespace sdk_examples
 {
     class BasicExample
     {
-        public async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            string ALGOD_API_ADDR = args[0];
+            string ALGOD_API_ADDR = "http://localhost:4001/";
+            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+            string DEST_ADDR = "KV2XGKMXGYJ6PWYQA5374BYIQBL3ONRMSIARPCFCJEAMAHQEVYPB7PL3KU";
+            string SRC_ACCOUNT = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
+
+           
+
             if (ALGOD_API_ADDR.IndexOf("//") == -1)
             {
                 ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
             }
 
-            string ALGOD_API_TOKEN = args[1];
-            string SRC_ACCOUNT = "typical permit hurdle hat song detail cattle merge oxygen crowd arctic cargo smooth fly rice vacuum lounge yard frown predict west wife latin absent cup";
-            string DEST_ADDR = "KV2XGKMXGYJ6PWYQA5374BYIQBL3ONRMSIARPCFCJEAMAHQEVYPB7PL3KU";
-            if (!Address.IsValid(DEST_ADDR))
-                Console.WriteLine("The address " + DEST_ADDR + " is not valid!");
+
             Account src = new Account(SRC_ACCOUNT);
             Console.WriteLine("My account address is:" + src.Address.ToString());
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
@@ -41,7 +44,12 @@ namespace sdk_examples.V2
                 Console.WriteLine("Exception when calling algod#getSupply:" + e.Message);
             }
 
+       //     var accountInfo = await algodApiInstance.AccountsAsync(src.Address.ToString(), null);
+
+ 
+
             var accountInfo = await algodApiInstance.AccountsAsync(src.Address.ToString(), null);
+
             Console.WriteLine(string.Format("Account Balance: {0} microAlgos", accountInfo.Amount));
 
             try

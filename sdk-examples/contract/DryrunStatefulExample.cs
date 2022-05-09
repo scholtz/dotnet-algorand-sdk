@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 
-namespace sdk_examples.V2.contract
+namespace sdk_examples.contract
 {
     class DryrunStatefulExample
     {

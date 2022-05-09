@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace sdk_examples.V2.contract
+namespace sdk_examples.contract
 {
     class StatefulContract
     {

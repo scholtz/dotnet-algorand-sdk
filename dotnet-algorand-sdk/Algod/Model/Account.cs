@@ -126,6 +126,7 @@ namespace Algorand.Algod.Model
         /// <returns>the account</returns>
         public Account(KeyPair keyPair)
         {
+            KeyPair = keyPair;
             Address = new Address(KeyPair.ClearTextPublicKey);
         }
 
@@ -133,14 +134,16 @@ namespace Algorand.Algod.Model
         /// Generate a new, random account.
         /// </summary>
         public Account() : this(new SecureRandom()) {
-            Address = new Address(KeyPair.ClearTextPublicKey);
+           
         }
 
         /// <summary>
         /// Generate a newc account with seed(master derivation key)
         /// </summary>
         /// <param name="seed">seed(master derivation key)</param>
-        public Account(byte[] seed):this(new FixedSecureRandom(seed))    {    }
+        public Account(byte[] seed)  : this(new FixedSecureRandom(seed))  {
+        
+        }
 
 
         /// <summary>
@@ -152,7 +155,7 @@ namespace Algorand.Algod.Model
         private Account(SecureRandom srandom)
         {
             KeyPair = new KeyPair(srandom);
-
+            Address = new Address(KeyPair.ClearTextPublicKey);
         }
 
         public string ToMnemonic()

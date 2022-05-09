@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Algorand.Algod;
 using Algorand.Utils;
 
-namespace sdk_examples.V2
+namespace sdk_examples
 {
     /// <summary>
     /// Show Creating, modifying, sending and listing assets 

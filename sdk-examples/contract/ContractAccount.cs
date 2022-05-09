@@ -6,7 +6,7 @@ using Algorand.Utils;
 using System;
 using System.Threading.Tasks;
 
-namespace sdk_examples.V2.contract
+namespace sdk_examples.contract
 {
     class ContractAccount
     {

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace sdk_examples.V2
+namespace sdk_examples
 {
     class AtomicTransferExample
     {

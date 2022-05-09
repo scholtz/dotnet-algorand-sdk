@@ -6,7 +6,7 @@ using System;
 using System.Threading.Tasks;
 
 
-namespace sdk_examples.V2
+namespace sdk_examples
 {
     /// <summary>
     /// Part 1

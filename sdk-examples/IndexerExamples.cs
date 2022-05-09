@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace sdk_examples.V2
+namespace sdk_examples
 {
     public class IndexerExamples
     {
