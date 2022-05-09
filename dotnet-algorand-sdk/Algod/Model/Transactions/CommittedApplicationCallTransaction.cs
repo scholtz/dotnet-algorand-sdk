@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Algorand.Algod.Model
 {
-    internal class CommittedApplicationCallTransaction : CommittedTransaction
+    public class CommittedApplicationCallTransaction : CommittedTransaction
     {
 
         protected CommittedApplicationCallTransaction(ApplicationCallTransaction tx) : base(tx) { }

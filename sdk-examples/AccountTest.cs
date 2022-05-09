@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Algorand.V2;
-using Algorand.V2.Algod;
+using Algorand;
+using Algorand.Algod;
+
 using Account = Algorand.Model.Account;
 
 namespace sdk_examples.V2

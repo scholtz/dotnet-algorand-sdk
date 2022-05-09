@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    internal class CommittedApplicationCreateTransaction :  CommittedApplicationCallTransaction 
+    public class CommittedApplicationCreateTransaction :  CommittedApplicationCallTransaction 
     {
 
         public CommittedApplicationCreateTransaction() : base(new ApplicationCreateTransaction()) { }

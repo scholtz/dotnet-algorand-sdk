@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Algorand.Algod.Model
 {
-    internal class CommittedAssetTransferTransaction : CommittedTransaction
+    public class CommittedAssetTransferTransaction : CommittedTransaction
     {
         public CommittedAssetTransferTransaction() : base(new AssetTransferTransaction())  {   }
 

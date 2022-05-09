@@ -1,12 +1,13 @@
 ﻿using Algorand;
-using Algorand.V2;
-using Algorand.V2.Algod;
+
 using Algorand.Algod.Model;
 using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Account = Algorand.Account;
+
+using Algorand.Algod;
+using Algorand.Utils;
 
 namespace sdk_examples.V2
 {
@@ -61,23 +62,34 @@ namespace sdk_examples.V2
             // Total number of this asset available for circulation            
             var ap = new AssetParams()
             {
-                Creator = acct1.Address.ToString(),
+                Creator = acct1.Address,
                 Name =  "latikum22",
                 UnitName= "LAT",
-                 Total= 10000,
+                Total= 10000,
                 Decimals= 0,
                 Url = @"http://this.test.com", 
                 MetadataHash = Encoding.ASCII.GetBytes("16efaa3924a6fd9d3a4880099a4ac65d"),
-                Manager = acct2.Address.ToString()
+                Manager = acct2.Address
             };
 
             // Specified address can change reserve, freeze, clawback, and manager
             // you can leave as default, by default the sender will be manager/reserve/freeze/clawback
             // the following code only set the freeze to acct1
-            var tx = Utils.GetCreateAssetTransaction(ap, transParams, "asset tx message");
-
+            var tx = new AssetCreateTransaction()
+            {
+                AssetParams = ap,
+                Fee = transParams.Fee,
+                FirstValid = transParams.LastRound,
+                GenesisHash = new Digest(transParams.GenesisHash),
+                GenesisID = transParams.GenesisId,
+                LastValid = transParams.LastRound + 1000,
+                Note= Encoding.UTF8.GetBytes("asset tx message"),
+                Sender = acct1.Address,
+                 
+            };
+                
             // Sign the Transaction by sender
-            SignedTransaction signedTx = acct1.SignTransaction(tx);
+            SignedTransaction signedTx = tx.Sign(acct1);
             // send the transaction to the network and
             // wait for the transaction to be confirmed
             ulong assetID = 0;
@@ -88,8 +100,9 @@ namespace sdk_examples.V2
                 Console.WriteLine("Confirmed Round is: " +
                     Utils.WaitTransactionToComplete(algodApiInstance, id.TxId).Result.ConfirmedRound);
                 // Now that the transaction is confirmed we can get the assetID
-                var ptx = await  algodApiInstance.PendingGetAsync(id.TxId,null);                
-                assetID = ptx.AssetIndex??0;
+                var ptx = await  algodApiInstance.PendingGetAsync(id.TxId,null);
+                var actx = ptx as CommittedAssetCreateTransaction;
+                if (actx.FullyCommitted) assetID = actx.AssetIndex.Value;
             }
             catch (Exception e)
             {
@@ -113,12 +126,24 @@ namespace sdk_examples.V2
             // creation parameters and only changing the manager
             // and transaction parameters like first and last round
             // now update the manager to acct1
-            ast.Params.Manager = acct1.Address.ToString();
-            tx = Utils.GetConfigAssetTransaction(acct2.Address, ast, transParams, "config trans");
+            ast.Params.Manager = acct1.Address;
+            var autx = new AssetUpdateTransaction()
+            {
+                AssetParams = ast.Params,
+                Fee = transParams.Fee,
+                FirstValid = transParams.LastRound,
+                GenesisHash = new Digest(transParams.GenesisHash),
+                GenesisID = transParams.GenesisId,
+                LastValid = transParams.LastRound + 1000,
+                Note = Encoding.UTF8.GetBytes("config trans"),
+                AssetIndex= assetID,
+                Sender = acct2.Address
+            };
+
 
             // The transaction must be signed by the current manager account
             // We are reusing the signedTx variable from the first transaction in the example    
-            signedTx = acct2.SignTransaction(tx);
+            signedTx = autx.Sign(acct2);
             // send the transaction to the network and
             // wait for the transaction to be confirmed
             try
@@ -153,14 +178,27 @@ namespace sdk_examples.V2
             // First we update standard Transaction parameters
             // To account for changes in the state of the blockchain
             transParams = await algodApiInstance.ParamsAsync();
-            tx = Utils.GetAssetOptingInTransaction(acct3.Address, assetID, transParams, "opt in transaction");
+
+            var aoitx = new AssetAcceptTransaction()
+            {
+                Fee = transParams.Fee,
+                FirstValid = transParams.LastRound,
+                GenesisHash = new Digest(transParams.GenesisHash),
+                GenesisID = transParams.GenesisId,
+                LastValid = transParams.LastRound + 1000,
+                Note = Encoding.UTF8.GetBytes("opt in transaction"),
+                XferAsset = assetID,
+                AssetReceiver = acct3.Address,
+                Sender = acct2.Address
+            };
 
             // The transaction must be signed by the current manager account
             // We are reusing the signedTx variable from the first transaction in the example    
-            signedTx = acct3.SignTransaction(tx);
+            signedTx = aoitx.Sign(acct2);
+            
             // send the transaction to the network and
             // wait for the transaction to be confirmed
-            Algorand.Algod.Model.Account act = null;
+            Account act = null;
             try
             {
                 var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
@@ -189,10 +227,25 @@ namespace sdk_examples.V2
             // We set the assetCloseTo to null so we do not close the asset out
             Address assetCloseTo = new Address();
             ulong assetAmount = 10;
-            tx = Utils.GetTransferAssetTransaction(acct1.Address, acct3.Address, assetID, assetAmount, transParams, null, "transfer message");
+
+            var attx = new AssetTransferTransaction()
+            {
+                Fee = transParams.Fee,
+                FirstValid = transParams.LastRound,
+                GenesisHash = new Digest(transParams.GenesisHash),
+                GenesisID = transParams.GenesisId,
+                LastValid = transParams.LastRound + 1000,
+                Note = Encoding.UTF8.GetBytes("opt in transaction"),
+                XferAsset = assetID,
+                AssetReceiver = acct3.Address,
+                Sender = acct1.Address
+            };
+
+            //tx = Utils.GetTransferAssetTransaction(acct1.Address, acct3.Address, assetID, assetAmount, transParams, null, "transfer message");
             // The transaction must be signed by the sender account
-            // We are reusing the signedTx variable from the first transaction in the example    
-            signedTx = acct1.SignTransaction(tx);
+    
+            signedTx = attx.Sign(acct1);
+
             // send the transaction to the network and
             // wait for the transaction to be confirmed
             try
@@ -223,13 +276,28 @@ namespace sdk_examples.V2
             // First we update standard Transaction parameters
             // To account for changes in the state of the blockchain
             transParams = await algodApiInstance.ParamsAsync();
+            
             // Next we set asset xfer specific parameters
             // The sender should be freeze account acct2
             // Theaccount to freeze should be set to acct3
-            tx = Utils.GetFreezeAssetTransaction(acct2.Address, acct3.Address, assetID, true, transParams, "freeze transaction");
+            var aftx = new AssetFreezeTransaction()
+            {
+                Fee = transParams.Fee,
+                FirstValid = transParams.LastRound,
+                GenesisHash = new Digest(transParams.GenesisHash),
+                GenesisID = transParams.GenesisId,
+                LastValid = transParams.LastRound + 1000,
+                Note = Encoding.UTF8.GetBytes("opt in transaction"),
+                AssetFreezeID = assetID,  
+                FreezeState=true,
+                FreezeTarget = acct3.Address,
+                Sender = acct2.Address
+            };
+
+            //tx = Utils.GetFreezeAssetTransaction(acct2.Address, acct3.Address, assetID, true, transParams, "freeze transaction");
+           
             // The transaction must be signed by the freeze account acct2
-            // We are reusing the signedTx variable from the first transaction in the example    
-            signedTx = acct2.SignTransaction(tx);
+            signedTx = aftx.Sign(acct2);
             // send the transaction to the network and
             // wait for the transaction to be confirmed
             try
@@ -266,10 +334,27 @@ namespace sdk_examples.V2
             transParams = await algodApiInstance.ParamsAsync();
             // Next we set asset xfer specific parameters
             assetAmount = 10;
-            tx = Utils.GetRevokeAssetTransaction(acct2.Address, acct3.Address, acct1.Address, assetID, assetAmount, transParams, "revoke transaction");
+
+            //tx = Utils.GetRevokeAssetTransaction(acct2.Address, acct3.Address, acct1.Address, assetID, assetAmount, transParams, "revoke transaction");
+
+            var artx = new AssetClawbackTransaction()
+            {
+                Fee = transParams.Fee,
+                FirstValid = transParams.LastRound,
+                GenesisHash = new Digest(transParams.GenesisHash),
+                GenesisID = transParams.GenesisId,
+                LastValid = transParams.LastRound + 1000,
+                Note = Encoding.UTF8.GetBytes("opt in transaction"),
+                XferAsset= assetID,
+                AssetSender= acct3.Address, //revoked from acct
+                AssetReceiver= acct1.Address, // recipient of clawback
+                AssetAmount = assetAmount,
+                Sender = acct2.Address      // initiator of clawback
+            };
+          
             // The transaction must be signed by the clawback account
             // We are reusing the signedTx variable from the first transaction in the example    
-            signedTx = acct2.SignTransaction(tx);
+            signedTx = artx.Sign(acct2);
             // send the transaction to the network and
             // wait for the transaction to be confirmed
             try
@@ -301,10 +386,24 @@ namespace sdk_examples.V2
             // Next we set asset xfer specific parameters
             // The manager must sign and submit the transaction
             // This is currently set to acct1
-            tx = Utils.GetDestroyAssetTransaction(acct1.Address, assetID, transParams, "destroy transaction");
+
+            var adtx = new AssetDestroyTransaction()
+            {
+                Fee = transParams.Fee,
+                FirstValid = transParams.LastRound,
+                GenesisHash = new Digest(transParams.GenesisHash),
+                GenesisID = transParams.GenesisId,
+                LastValid = transParams.LastRound + 1000,
+                Note = Encoding.UTF8.GetBytes("opt in transaction"),
+                AssetIndex= assetID,
+                Sender = acct2.Address      // initiator of clawback
+            };
+
+
+            //    tx = Utils.GetDestroyAssetTransaction(acct1.Address, assetID, transParams, "destroy transaction");
             // The transaction must be signed by the manager account
-            // We are reusing the signedTx variable from the first transaction in the example    
-            signedTx = acct1.SignTransaction(tx);
+            signedTx = tx.Sign(acct1);
+
             // send the transaction to the network and
             // wait for the transaction to be confirmed
             try

@@ -8,11 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="V2\contract\sample.teal" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="V2\contract\sample.teal">
+    <Content Include="contract\sample.teal">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
