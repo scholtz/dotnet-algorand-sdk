@@ -33,8 +33,8 @@ namespace Algorand.Algod.Model
         [DefaultValue(0)]
         public ulong? ExtraProgramPages = 0;
 
-      
-
+        [JsonIgnore]
+        public ulong? ApplicationIndex { get; internal set; }
 
 
     }

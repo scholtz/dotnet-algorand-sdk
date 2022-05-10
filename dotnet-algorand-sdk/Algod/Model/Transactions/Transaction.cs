@@ -11,6 +11,10 @@ using System.Text;
 namespace Algorand.Algod.Model
 {
 
+
+    [JsonConverter(typeof(ReturnedTransactionConverter))]
+    public interface IReturnableTransaction { }
+
     [JsonConverter(typeof(JsonSubtypes), "type")]
     [JsonSubtypes.KnownSubType(typeof(ApplicationCallTransaction), "appl")]
     [JsonSubtypes.KnownSubType(typeof(KeyRegistrationTransaction), "keyreg")]
@@ -19,7 +23,7 @@ namespace Algorand.Algod.Model
     [JsonSubtypes.KnownSubType(typeof(AssetMovementsTransaction), "axfer")]
     [JsonSubtypes.KnownSubType(typeof(AssetConfigurationTransaction), "acfg")]
 
-    public abstract class Transaction
+    public abstract class Transaction : IReturnableTransaction
     {
         private const ulong MIN_TX_FEE_UALGOS = 1000;
         private static readonly byte[] TX_SIGN_PREFIX = Encoding.UTF8.GetBytes("TX");
@@ -97,11 +101,30 @@ namespace Algorand.Algod.Model
             }
         }
 
+
         public bool ShouldSerializeLease() { return Lease?.Length > 0; }
 
         [JsonProperty("rekey")]
         public Address RekeyTo;
 
+        [JsonIgnore]
+        public bool Committed => (ConfirmedRound ?? 0) > 0;
+
+
+        [JsonIgnore]
+        public ulong? ConfirmedRound { get; internal set; }
+
+        [JsonIgnore]
+        public string PoolError { get; internal set; }
+
+        [JsonIgnore]
+        public ulong? ReceiverRewards { get; internal set; }
+
+        [JsonIgnore]
+        public ulong? SenderRewards { get; internal set; }
+
+        [JsonIgnore]
+        public ulong? CloseRewards { get; internal set; }
 
         /// <summary>
         /// Sets the transaction fee according to suggestedFeePerByte * estimateTxSize.

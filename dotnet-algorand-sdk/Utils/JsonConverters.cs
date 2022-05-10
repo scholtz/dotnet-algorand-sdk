@@ -1,7 +1,9 @@
 ﻿using Algorand.Algod.Model;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Crypto.Parameters;
 using System;
+using System.Reflection;
 
 namespace Algorand.Utils
 {
@@ -170,6 +172,80 @@ namespace Algorand.Utils
             //base.WriteJson(writer, value, serializer);
             //writer.WriteValue(Convert.ToBase64String(bytes));
             //writer.WriteValue(bytes);
+        }
+    }
+
+    public class ReturnedTransactionConverter : JsonConverter
+    {
+        public override bool CanRead => true;
+
+        public override bool CanWrite => false;
+
+  
+
+        /// <summary>Determines if this converter is designed to deserialization to objects of the specified type.</summary>
+        /// <param name="objectType">The target type for deserialization.</param>
+        /// <returns>True if the type is supported.</returns>
+        public override bool CanConvert(Type objectType)
+        {
+            // FrameWork 4.5
+            // return typeof(T).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+            // Otherwise
+            return typeof(Transaction).IsAssignableFrom(objectType);
+        }
+
+        /// <summary>Parses the json to the specified type.</summary>
+        /// <param name="reader">Newtonsoft.Json.JsonReader</param>
+        /// <param name="objectType">Target type.</param>
+        /// <param name="existingValue">Ignored</param>
+        /// <param name="serializer">Newtonsoft.Json.JsonSerializer to use.</param>
+        /// <returns>Deserialized Object</returns>
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+
+            // Load JObject from stream
+            JObject jObject = JObject.Load(reader);
+
+            // Create target object based on JObject
+            ReturnedTransaction target = new ReturnedTransaction();
+
+            //Create a new reader for this jObject, and set all properties to match the original reader.
+            JsonReader jObjectReader = jObject.CreateReader();
+            jObjectReader.Culture = reader.Culture;
+            jObjectReader.DateParseHandling = reader.DateParseHandling;
+            jObjectReader.DateTimeZoneHandling = reader.DateTimeZoneHandling;
+            jObjectReader.FloatParseHandling = reader.FloatParseHandling;
+
+            // Populate the object properties
+            serializer.Populate(jObjectReader, target);
+
+            //now get any properties on the returned txn (which wraps the txn) and set them on the actual txn class
+            var returnedProps = target.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic |   BindingFlags.Instance);
+            var txnProps = target.Transaction.Tx.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            foreach (var returnedProp in returnedProps)
+            {
+                foreach (var txnProp in txnProps)
+                {
+                    if (returnedProp.Name == txnProp.Name && returnedProp.PropertyType == txnProp.PropertyType)
+                    {
+                        txnProp.SetValue(target.Transaction.Tx, returnedProp.GetValue(target));
+                        break;
+                    }
+                }
+
+            }
+
+
+
+            return target.Transaction.Tx;
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
         }
     }
   

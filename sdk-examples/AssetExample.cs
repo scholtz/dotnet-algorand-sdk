@@ -100,9 +100,9 @@ namespace sdk_examples
                 Console.WriteLine("Confirmed Round is: " +
                     Utils.WaitTransactionToComplete(algodApiInstance, id.TxId).Result.ConfirmedRound);
                 // Now that the transaction is confirmed we can get the assetID
-                var ptx = await  algodApiInstance.PendingGetAsync(id.TxId,null);
-                var actx = ptx as CommittedAssetCreateTransaction;
-                if (actx.FullyCommitted) assetID = actx.AssetIndex.Value;
+                var ptx = await  algodApiInstance.PendingGetAsync(id.TxId,null) as AssetCreateTransaction;
+                
+                if (ptx?.Committed??false) assetID = ptx.AssetIndex.Value;
             }
             catch (Exception e)
             {

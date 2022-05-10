@@ -26,11 +26,11 @@ namespace Algorand.Algod.Model
         public Address CloseRemainderTo;
 
 
-        /// <summary>Closing amount for the transaction.</summary>
-        [JsonProperty("closing-amount", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        private ulong? closingAmount { set { ClosingAmount = value; } }
+
+     
+
         [JsonIgnore]
-        public ulong? ClosingAmount { get; private set; }
+        public ulong? ClosingAmount { get; internal set; }
 
         public PaymentTransaction() { }
 

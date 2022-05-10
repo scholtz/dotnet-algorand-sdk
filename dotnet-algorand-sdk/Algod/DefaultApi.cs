@@ -166,7 +166,7 @@ namespace Algorand.Algod
         /// <br/>
         /// <br/>Or the transaction may have happened sufficiently long ago that the node no longer remembers it, and this will return an error.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CommittedTransaction> PendingGetAsync(string txid, Format? format);
+        System.Threading.Tasks.Task<IReturnableTransaction> PendingGetAsync(string txid, Format? format);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get a specific pending transaction.</summary>
@@ -179,7 +179,7 @@ namespace Algorand.Algod
         /// <br/>
         /// <br/>Or the transaction may have happened sufficiently long ago that the node no longer remembers it, and this will return an error.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CommittedTransaction> PendingGetAsync(string txid, Format? format, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IReturnableTransaction> PendingGetAsync(string txid, Format? format, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Get application information.</summary>
         /// <param name="application_id">An application identifier</param>
@@ -1450,7 +1450,7 @@ namespace Algorand.Algod
         /// <br/>
         /// <br/>Or the transaction may have happened sufficiently long ago that the node no longer remembers it, and this will return an error.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<CommittedTransaction> PendingGetAsync(string txid, Format? format)
+        public System.Threading.Tasks.Task<IReturnableTransaction> PendingGetAsync(string txid, Format? format)
         {
             return PendingGetAsync(txid, format, System.Threading.CancellationToken.None);
         }
@@ -1466,7 +1466,7 @@ namespace Algorand.Algod
         /// <br/>
         /// <br/>Or the transaction may have happened sufficiently long ago that the node no longer remembers it, and this will return an error.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<CommittedTransaction> PendingGetAsync(string txid, Format? format, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<IReturnableTransaction> PendingGetAsync(string txid, Format? format, System.Threading.CancellationToken cancellationToken)
         {
             if (txid == null)
                 throw new System.ArgumentNullException("txid");
@@ -1512,7 +1512,7 @@ namespace Algorand.Algod
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<CommittedTransaction>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<IReturnableTransaction>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);

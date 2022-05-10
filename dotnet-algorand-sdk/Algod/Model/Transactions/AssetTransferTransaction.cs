@@ -39,9 +39,10 @@ namespace Algorand.Algod.Model
         public Address AssetCloseTo;
 
 
-        
-      
-        
+
+        [JsonIgnore]
+        public ulong? AssetClosingAmount { get; internal set; }
+
 
 
     }

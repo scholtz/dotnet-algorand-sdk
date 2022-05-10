@@ -8,6 +8,7 @@ namespace Algorand.Algod.Model
         [JsonProperty(PropertyName = "apar",Required =Required.Always)]
         public AssetParams AssetParams;
 
-       
+        [JsonIgnore]
+        public ulong? AssetIndex { get; internal set; }
     }
 }

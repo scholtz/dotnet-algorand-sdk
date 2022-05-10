@@ -41,7 +41,16 @@ namespace Algorand.Algod.Model {
         public bool ShouldSerializeForeignApps() { return ForeignApps?.Count > 0; }
         public bool ShouldSerializeForeignAssets() { return ForeignAssets?.Count > 0; }
 
+        [JsonIgnore]
+        public ICollection<IReturnableTransaction> InnerTxns { get; internal set; }
 
+        [JsonIgnore]
+        public ICollection<byte[]> Logs { get; internal set; }
+
+        [JsonIgnore]
+        public StateDelta GlobalStateDelta { get; internal set; }
+        [JsonIgnore]
+        public ICollection<AccountStateDelta> LocalStateDelta { get; internal set; }
 
     }
 }

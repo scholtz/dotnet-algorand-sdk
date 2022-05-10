@@ -209,7 +209,7 @@ namespace sdk_examples.contract
                 var signedTx = tx.Sign(creator);
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as CommittedApplicationCreateTransaction;
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as ApplicationCreateTransaction;
                 
                 Console.WriteLine("Application ID is: " + resp.ApplicationIndex);
                 return resp.ApplicationIndex;
@@ -242,8 +242,8 @@ namespace sdk_examples.contract
                 var id = await Utils.SubmitTransaction(client, signedTx);
 
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as CommittedApplicationCallTransaction;
-                Console.WriteLine("Optin to Application ID: " + (resp.Transaction.Tx as ApplicationOptInTransaction).ApplicationId);
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as ApplicationOptInTransaction;
+                Console.WriteLine("Optin to Application ID: " + resp.ApplicationId);
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -274,8 +274,8 @@ namespace sdk_examples.contract
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
-                Console.WriteLine("Success deleted the application " + (resp.Transaction.Tx as ApplicationDeleteTransaction).ApplicationId);
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as ApplicationDeleteTransaction;
+                Console.WriteLine("Success deleted the application " + resp.ApplicationId);
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -304,8 +304,8 @@ namespace sdk_examples.contract
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId);
-                Console.WriteLine("Success cleared the application " + (resp.Transaction.Tx as ApplicationClearStateTransaction).ApplicationId);
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as ApplicationClearStateTransaction;
+                Console.WriteLine("Success cleared the application " + resp.ApplicationId);
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -361,7 +361,7 @@ namespace sdk_examples.contract
 
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as CommittedApplicationCallTransaction;
+                var resp = await Utils.WaitTransactionToComplete(client, id.TxId) as ApplicationCallTransaction;
                 Console.WriteLine("Confirmed at round: " + resp.ConfirmedRound);
                 //System.out.println("Called app-id: " + pTrx.txn.tx.applicationId);
                 if (resp.GlobalStateDelta != null)
