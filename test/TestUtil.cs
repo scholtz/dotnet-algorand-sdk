@@ -41,11 +41,11 @@ namespace test
             object decoded, decoded2;
             try
             {
-                encoded = Convert.ToBase64String(Encoder.EncodeToMsgPack(obj));
+                encoded = Convert.ToBase64String(Encoder.EncodeToMsgPackOrdered(obj));
                 decoded = Encoder.DecodeFromMsgPack<T>(Convert.FromBase64String(encoded));
                 Assert.AreEqual(decoded, obj);
 
-                encoded2 = Convert.ToBase64String(Encoder.EncodeToMsgPack(decoded));
+                encoded2 = Convert.ToBase64String(Encoder.EncodeToMsgPackOrdered(decoded));
                 Assert.AreEqual(encoded2, encoded);
 
                 decoded2 = Encoder.DecodeFromMsgPack<T>(Convert.FromBase64String(encoded2));

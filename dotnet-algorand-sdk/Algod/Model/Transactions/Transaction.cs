@@ -125,12 +125,14 @@ namespace Algorand.Algod.Model
         /// <returns></returns>
         public byte[] BytesToSign()
         {
-            byte[] encodedTx = Algorand.Utils.Encoder.EncodeToMsgPack(this);
+            byte[] encodedTx = Algorand.Utils.Encoder.EncodeToMsgPackOrdered(this);
             var retList = new List<byte>();
             retList.AddRange(TX_SIGN_PREFIX);
             retList.AddRange(encodedTx);
             return retList.ToArray();
         }
+
+
         /// <summary>
         /// Return transaction ID as Digest
         /// </summary>
@@ -139,6 +141,8 @@ namespace Algorand.Algod.Model
         {
             return new Digest(Digester.Digest(BytesToSign()));
         }
+
+    
         /// <summary>
         /// Return transaction ID as string
         /// </summary>
@@ -225,7 +229,7 @@ namespace Algorand.Algod.Model
         public int EstimatedEncodedSize()
         {
             Account acc = new Account();
-            return Utils.Encoder.EncodeToMsgPack(
+            return Utils.Encoder.EncodeToMsgPackOrdered(
                 new SignedTransaction(this, acc.SignRawBytes(BytesToSign()))).Length;
         }
 

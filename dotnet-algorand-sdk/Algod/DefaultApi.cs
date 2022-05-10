@@ -1088,6 +1088,8 @@ namespace Algorand.Algod
             return TransactionsAsync(rawtxn, System.Threading.CancellationToken.None);
         }
 
+
+       
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Broadcasts a raw transaction to the network.</summary>
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
@@ -1107,13 +1109,11 @@ namespace Algorand.Algod
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-
                     List<byte> byteList = new List<byte>();
                     foreach(var txn in rawtxn)
                     {
-                        byteList.AddRange(Encoder.EncodeToMsgPack(txn));
+                        byteList.AddRange(Encoder.EncodeToMsgPackOrdered(txn)); //this is not actually necessary - unordered works too
                     }
-
 
                     using (var ms = new MemoryStream(byteList.ToArray()))
                     {
@@ -1959,7 +1959,7 @@ namespace Algorand.Algod
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     //var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
-                    System.Net.Http.ByteArrayContent content_ = new System.Net.Http.ByteArrayContent(Encoder.EncodeToMsgPack(request));
+                    System.Net.Http.ByteArrayContent content_ = new System.Net.Http.ByteArrayContent(Encoder.EncodeToMsgPackOrdered(request));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/msgpack");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");

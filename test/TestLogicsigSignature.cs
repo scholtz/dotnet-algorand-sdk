@@ -46,13 +46,13 @@ namespace test
             Assert.AreEqual(lsig.ToAddress(), sender);
 
             // check serialization
-            byte[] outBytes = Encoder.EncodeToMsgPack(lsig);
+            byte[] outBytes = Encoder.EncodeToMsgPackOrdered(lsig);
             LogicsigSignature lsig1 = Encoder.DecodeFromMsgPack<LogicsigSignature>(outBytes);
             Assert.AreEqual(lsig, lsig1);
 
             // check serialization with null args
             lsig = new LogicsigSignature(program);
-            outBytes = Encoder.EncodeToMsgPack(lsig);
+            outBytes = Encoder.EncodeToMsgPackOrdered(lsig);
             lsig1 = Encoder.DecodeFromMsgPack<LogicsigSignature>(outBytes);
             Assert.AreEqual(lsig, lsig1);
 
@@ -84,7 +84,7 @@ namespace test
             Assert.IsTrue(verified);
 
             // check serialization
-            byte[] outBytes = Encoder.EncodeToMsgPack(lsig);
+            byte[] outBytes = Encoder.EncodeToMsgPackOrdered(lsig);
             LogicsigSignature lsig1 = Encoder.DecodeFromMsgPack<LogicsigSignature>(outBytes);
             Assert.AreEqual(lsig1, lsig);
             TestUtil.SerializeDeserializeCheck(lsig);
@@ -143,7 +143,7 @@ namespace test
             Assert.IsTrue(verified);
 
             // check serialization
-            byte[] outBytes = Encoder.EncodeToMsgPack(lsig);
+            byte[] outBytes = Encoder.EncodeToMsgPackOrdered(lsig);
             LogicsigSignature lsig2 = Encoder.DecodeFromMsgPack<LogicsigSignature>(outBytes);
             Assert.AreEqual(lsig2, lsig);
             verified = lsig2.Verify(ma.ToAddress());

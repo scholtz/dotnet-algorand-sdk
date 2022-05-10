@@ -21,7 +21,7 @@ namespace Algorand.Utils
         /// </summary>
         /// <param name="o">the object to serializing</param>
         /// <returns>serialized object</returns>
-        public static byte[] EncodeToMsgPack(object o)
+        public static byte[] EncodeToMsgPackOrdered(object o)
         {
             MemoryStream memoryStream = new MemoryStream();
             JsonSerializer serializer = new JsonSerializer()
@@ -36,6 +36,22 @@ namespace Algorand.Utils
             var bytes = memoryStream.ToArray();
             return bytes;
         }
+
+        public static byte[] EncodeToMsgPackNoOrder(object o)
+        {
+            MemoryStream memoryStream = new MemoryStream();
+            JsonSerializer serializer = new JsonSerializer()
+            {
+                DefaultValueHandling = DefaultValueHandling.Ignore,
+                Formatting = Formatting.None
+            };
+
+            MessagePackWriter writer = new MessagePackWriter(memoryStream);
+            serializer.Serialize(writer, o);
+            var bytes = memoryStream.ToArray();
+            return bytes;
+        }
+
 
         /// <summary>
         /// Convenience method for deserializing arbitrary objects encoded with canonical msg-pack

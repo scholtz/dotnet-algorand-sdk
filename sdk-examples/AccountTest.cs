@@ -8,16 +8,18 @@ namespace sdk_examples
 {
     class AccountTest
     {
-        public async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            string ALGOD_API_ADDR = args[0];
+            string ALGOD_API_ADDR = "http://localhost:4001/";
+            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            string SRC_ACCOUNT = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
+
             if (ALGOD_API_ADDR.IndexOf("//") == -1)
             {
                 ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
             }
 
-            string ALGOD_API_TOKEN = args.Length > 1 ? args[1] : null;
-            string SRC_ACCOUNT = "typical permit hurdle hat song detail cattle merge oxygen crowd arctic cargo smooth fly rice vacuum lounge yard frown predict west wife latin absent cup";
+      
             Account src = new Account(SRC_ACCOUNT);
             Console.WriteLine("My account address is:" + src.Address.ToString());
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);

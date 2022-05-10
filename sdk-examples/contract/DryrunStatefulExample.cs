@@ -394,7 +394,7 @@ namespace sdk_examples.contract
 
         private static void WriteDrr(string filePath, DryrunRequest content)
         {
-            var data = Encoder.EncodeToMsgPack(content);
+            var data = Encoder.EncodeToMsgPackOrdered(content);
             File.WriteAllBytes("./V2/contract/" + filePath, data);
         }
 

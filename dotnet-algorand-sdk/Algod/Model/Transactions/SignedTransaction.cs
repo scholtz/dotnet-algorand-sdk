@@ -115,7 +115,7 @@ namespace Algorand.Algod.Model
                 sTxs[i] = Encoder.DecodeFromMsgPack<SignedTransaction>(txsBytes[i]);
             }
             SignedTransaction merged = MergeMultisigTransactions(sTxs);
-            return Encoder.EncodeToMsgPack(merged);
+            return Encoder.EncodeToMsgPackOrdered(merged);
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace test
 
             // sign the transaction
             SignedTransaction signedTx = tx.Sign(account);
-            byte[] signedTxBytes = Encoder.EncodeToMsgPack(signedTx);
+            byte[] signedTxBytes = Encoder.EncodeToMsgPackOrdered(signedTx);
             string signedTxHex = Encoder.EncodeToHexStr(signedTxBytes);
 
             Assert.AreEqual(signedTxHex, REF_SIG_TXN);

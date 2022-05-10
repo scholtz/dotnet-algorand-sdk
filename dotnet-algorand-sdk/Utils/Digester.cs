@@ -2,9 +2,9 @@
 
 namespace Algorand.Utils
 {
-    internal class Digester
+    public class Digester
     {
-        internal static byte[] Digest(byte[] data)
+        public static byte[] Digest(byte[] data)
         {
             Sha512tDigest digest = new Sha512tDigest(256);
             digest.BlockUpdate(data, 0, data.Length);
