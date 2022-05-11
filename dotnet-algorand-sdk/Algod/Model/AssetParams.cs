@@ -22,7 +22,7 @@
         [Newtonsoft.Json.JsonIgnore]
         public Address Creator { get;  set;       }
         /// <summary>The address that created this asset. This is the address where the parameters for this asset can be found, and also the address where unwanted asset units can be sent in the worst case.</summary>
-        [Newtonsoft.Json.JsonProperty("creator", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("creator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private Address creator { set { Creator = value; } }
 
         /// <summary>\[dc\] The number of digits to use after the decimal point when displaying this asset. If 0, the asset is not divisible. If 1, the base unit of the asset is in tenths. If 2, the base unit of the asset is in hundredths, and so on. This value must be between 0 and 19 (inclusive).</summary>
@@ -30,7 +30,7 @@
         [System.ComponentModel.DataAnnotations.Range(0, 19)]
         public ulong Decimals { get; set; }
         /// <summary>The address that created this asset. This is the address where the parameters for this asset can be found, and also the address where unwanted asset units can be sent in the worst case.</summary>
-        [Newtonsoft.Json.JsonProperty("decimals", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("decimals", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private ulong decimals { set { Decimals = value; } }
 
 
@@ -84,12 +84,12 @@
         private Address reserve { set { Reserve = value; } }
 
         /// <summary>\[t\] The total number of units of this asset.</summary>
-        [Newtonsoft.Json.JsonProperty("t", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("t", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ulong? Total { get;  set; }
 
         /// <summary>\[t\] The total number of units of this asset.</summary>
-        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.Always)]
-        private ulong? total { get; set; }
+        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        private ulong? total { set { Total = value; } }
 
 
         /// <summary>\[un\] Name of a unit of this asset, as supplied by the creator. Included only when the name of a unit of this asset is composed of printable utf-8 characters.</summary>

@@ -76,7 +76,7 @@ namespace sdk_examples
             var tx = new AssetCreateTransaction()
             {
                 AssetParams = ap,
-                Fee = transParams.Fee,
+                
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
                 GenesisID = transParams.GenesisId,
@@ -86,6 +86,7 @@ namespace sdk_examples
                 
                  
             };
+            tx.SetFee(transParams.Fee);
                 
             // Sign the Transaction by sender
             SignedTransaction signedTx = tx.Sign(acct1);
@@ -129,7 +130,7 @@ namespace sdk_examples
             var autx = new AssetUpdateTransaction()
             {
                 AssetParams = ast.Params,
-                Fee = transParams.Fee,
+              
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
                 GenesisID = transParams.GenesisId,
@@ -138,6 +139,7 @@ namespace sdk_examples
                 AssetIndex= assetID,
                 Sender = acct2.Address
             };
+            tx.SetFee(transParams.Fee);
 
 
             // The transaction must be signed by the current manager account
@@ -180,7 +182,7 @@ namespace sdk_examples
 
             var aoitx = new AssetAcceptTransaction()
             {
-                Fee = transParams.Fee,
+               
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
                 GenesisID = transParams.GenesisId,
@@ -190,6 +192,7 @@ namespace sdk_examples
                 AssetReceiver = acct3.Address,
                 Sender = acct2.Address
             };
+            tx.SetFee(transParams.Fee);
 
             // The transaction must be signed by the current manager account
             // We are reusing the signedTx variable from the first transaction in the example    
@@ -229,7 +232,7 @@ namespace sdk_examples
 
             var attx = new AssetTransferTransaction()
             {
-                Fee = transParams.Fee,
+               
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
                 GenesisID = transParams.GenesisId,
@@ -239,10 +242,10 @@ namespace sdk_examples
                 AssetReceiver = acct3.Address,
                 Sender = acct1.Address
             };
-
+            tx.SetFee(transParams.Fee);
             //tx = Utils.GetTransferAssetTransaction(acct1.Address, acct3.Address, assetID, assetAmount, transParams, null, "transfer message");
             // The transaction must be signed by the sender account
-    
+
             signedTx = attx.Sign(acct1);
 
             // send the transaction to the network and
@@ -281,7 +284,7 @@ namespace sdk_examples
             // Theaccount to freeze should be set to acct3
             var aftx = new AssetFreezeTransaction()
             {
-                Fee = transParams.Fee,
+                
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
                 GenesisID = transParams.GenesisId,
@@ -292,9 +295,10 @@ namespace sdk_examples
                 FreezeTarget = acct3.Address,
                 Sender = acct2.Address
             };
+            tx.SetFee(transParams.Fee);
 
             //tx = Utils.GetFreezeAssetTransaction(acct2.Address, acct3.Address, assetID, true, transParams, "freeze transaction");
-           
+
             // The transaction must be signed by the freeze account acct2
             signedTx = aftx.Sign(acct2);
             // send the transaction to the network and
@@ -338,7 +342,7 @@ namespace sdk_examples
 
             var artx = new AssetClawbackTransaction()
             {
-                Fee = transParams.Fee,
+                
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
                 GenesisID = transParams.GenesisId,
@@ -350,7 +354,7 @@ namespace sdk_examples
                 AssetAmount = assetAmount,
                 Sender = acct2.Address      // initiator of clawback
             };
-          
+            tx.SetFee(transParams.Fee);
             // The transaction must be signed by the clawback account
             // We are reusing the signedTx variable from the first transaction in the example    
             signedTx = artx.Sign(acct2);
@@ -388,7 +392,7 @@ namespace sdk_examples
 
             var adtx = new AssetDestroyTransaction()
             {
-                Fee = transParams.Fee,
+                
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
                 GenesisID = transParams.GenesisId,
@@ -397,7 +401,7 @@ namespace sdk_examples
                 AssetIndex= assetID,
                 Sender = acct2.Address      // initiator of clawback
             };
-
+            tx.SetFee(transParams.Fee);
 
             //    tx = Utils.GetDestroyAssetTransaction(acct1.Address, assetID, transParams, "destroy transaction");
             // The transaction must be signed by the manager account

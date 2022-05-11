@@ -175,6 +175,12 @@ namespace Algorand.Algod.Model
             return Base32.EncodeToString(this.RawTxID().Bytes, false);
         }
 
+        public void SetFee(ulong fee)
+        {
+            if (fee < MIN_TX_FEE_UALGOS) fee = MIN_TX_FEE_UALGOS;
+            Fee = fee;
+        }
+
         public SignedTransaction Sign(Account signingAccount)
         {
             byte[] prefixEncodedTx = BytesToSign();
