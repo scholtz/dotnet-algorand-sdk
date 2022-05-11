@@ -12,7 +12,7 @@
     {
         
         [Newtonsoft.Json.JsonProperty("c", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Address Clawback { get;private set; }
+        public Address Clawback { get; set; }
 
         /// <summary>\[c\] Address of account used to clawback holdings of this asset.  If empty, clawback is not permitted.</summary>
         [Newtonsoft.Json.JsonProperty("clawback", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
