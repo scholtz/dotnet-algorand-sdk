@@ -84,7 +84,7 @@
         private Address reserve { set { Reserve = value; } }
 
         /// <summary>\[t\] The total number of units of this asset.</summary>
-        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("t", Required = Newtonsoft.Json.Required.Always)]
         public ulong? Total { get;  set; }
 
         /// <summary>\[t\] The total number of units of this asset.</summary>
@@ -117,7 +117,7 @@
 
 
         /// <summary>Base64 encoded URL where more information about the asset can be retrieved.</summary>
-        [Newtonsoft.Json.JsonProperty("url-b64", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonIgnore]
         public byte[] UrlB64 { get;  set; }
         /// <summary>Base64 encoded URL where more information about the asset can be retrieved.</summary>
         [Newtonsoft.Json.JsonProperty("url-b64", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
