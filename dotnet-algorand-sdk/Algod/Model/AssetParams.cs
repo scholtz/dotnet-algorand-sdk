@@ -20,7 +20,7 @@
 
 
         [Newtonsoft.Json.JsonIgnore]
-        public Address Creator { get; private set;       }
+        public Address Creator { get;  set;       }
         /// <summary>The address that created this asset. This is the address where the parameters for this asset can be found, and also the address where unwanted asset units can be sent in the worst case.</summary>
         [Newtonsoft.Json.JsonProperty("creator", Required = Newtonsoft.Json.Required.Always)]
         private Address creator { set { Creator = value; } }
@@ -36,7 +36,7 @@
 
         /// <summary>\[df\] Whether holdings of this asset are frozen by default.</summary>
         [Newtonsoft.Json.JsonProperty("df", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? DefaultFrozen { get; private set; }
+        public bool? DefaultFrozen { get;  set; }
 
         /// <summary>\[df\] Whether holdings of this asset are frozen by default.</summary>
         [Newtonsoft.Json.JsonProperty("default-frozen", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -44,48 +44,48 @@
 
         /// <summary>\[f\] Address of account used to freeze holdings of this asset.  If empty, freezing is not permitted.</summary>
         [Newtonsoft.Json.JsonProperty("f", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Address Freeze { get; private set; }
+        public Address Freeze { get;  set; }
         /// <summary>\[f\] Address of account used to freeze holdings of this asset.  If empty, freezing is not permitted.</summary>
         [Newtonsoft.Json.JsonProperty("freeze", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private Address freeze { set { Freeze = value; } }
 
         /// <summary>\[m\] Address of account used to manage the keys of this asset and to destroy it.</summary>
         [Newtonsoft.Json.JsonProperty("m", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Address Manager { get; private set; }
+        public Address Manager { get;  set; }
         /// <summary>\[m\] Address of account used to manage the keys of this asset and to destroy it.</summary>
         [Newtonsoft.Json.JsonProperty("manager", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private Address manager { set { Manager = value; } }
 
         /// <summary>\[am\] A commitment to some unspecified asset metadata. The format of this metadata is up to the application.</summary>
         [Newtonsoft.Json.JsonProperty("am", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public byte[] MetadataHash { get; private set; }
+        public byte[] MetadataHash { get;  set; }
         /// <summary>\[am\] A commitment to some unspecified asset metadata. The format of this metadata is up to the application.</summary>
         [Newtonsoft.Json.JsonProperty("metadata-hash", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private byte[] metadataHash { set { MetadataHash = value; } }
 
         /// <summary>\[an\] Name of this asset, as supplied by the creator. Included only when the asset name is composed of printable utf-8 characters.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; private set; }
+        [Newtonsoft.Json.JsonProperty("an", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
         /// <summary>\[an\] Name of this asset, as supplied by the creator. Included only when the asset name is composed of printable utf-8 characters.</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private string name { set { Name = value; } }
 
         [Newtonsoft.Json.JsonIgnore]
-        public byte[] NameB64 { get; private set; }
+        public byte[] NameB64 { get;  set; }
         /// <summary>Base64 encoded name of this asset, as supplied by the creator.</summary>
         [Newtonsoft.Json.JsonProperty("name-b64", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private byte[] nameB64 { set { NameB64 = value; } }
 
         /// <summary>\[r\] Address of account holding reserve (non-minted) units of this asset.</summary>
         [Newtonsoft.Json.JsonProperty("r", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Address Reserve { get; private set; }
+        public Address Reserve { get;  set; }
         /// <summary>\[r\] Address of account holding reserve (non-minted) units of this asset.</summary>
         [Newtonsoft.Json.JsonProperty("reserve", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private Address reserve { set { Reserve = value; } }
 
         /// <summary>\[t\] The total number of units of this asset.</summary>
         [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.Always)]
-        public ulong? Total { get; private set; }
+        public ulong? Total { get;  set; }
 
         /// <summary>\[t\] The total number of units of this asset.</summary>
         [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.Always)]
@@ -94,7 +94,7 @@
 
         /// <summary>\[un\] Name of a unit of this asset, as supplied by the creator. Included only when the name of a unit of this asset is composed of printable utf-8 characters.</summary>
         [Newtonsoft.Json.JsonProperty("un", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string UnitName { get; private set; }
+        public string UnitName { get;  set; }
         /// <summary>\[un\] Name of a unit of this asset, as supplied by the creator. Included only when the name of a unit of this asset is composed of printable utf-8 characters.</summary>
         [Newtonsoft.Json.JsonProperty("unit-name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private string unitName { set { UnitName = value; } }
@@ -102,7 +102,7 @@
 
         /// <summary>Base64 encoded name of a unit of this asset, as supplied by the creator.</summary>
         [Newtonsoft.Json.JsonIgnore]
-        public byte[] UnitNameB64 { get; private set; }
+        public byte[] UnitNameB64 { get;  set; }
 
         /// <summary>Base64 encoded name of a unit of this asset, as supplied by the creator.</summary>
         [Newtonsoft.Json.JsonProperty("unit-name-b64", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -118,7 +118,7 @@
 
         /// <summary>Base64 encoded URL where more information about the asset can be retrieved.</summary>
         [Newtonsoft.Json.JsonProperty("url-b64", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public byte[] UrlB64 { get; private set; }
+        public byte[] UrlB64 { get;  set; }
         /// <summary>Base64 encoded URL where more information about the asset can be retrieved.</summary>
         [Newtonsoft.Json.JsonProperty("url-b64", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private byte[] urlB64 { set { UrlB64 = value; } }

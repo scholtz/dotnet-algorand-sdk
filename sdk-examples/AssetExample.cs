@@ -60,7 +60,7 @@ namespace sdk_examples
             // Total number of this asset available for circulation            
             var ap = new AssetParams()
             {
-                Creator = acct1.Address,
+             
                 Name =  "latikum22",
                 UnitName= "LAT",
                 Total= 10000,

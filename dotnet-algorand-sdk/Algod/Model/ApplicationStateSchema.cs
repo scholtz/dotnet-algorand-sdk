@@ -9,7 +9,7 @@
     {
         /// <summary>\[nui\] num of uints.</summary>
         [Newtonsoft.Json.JsonProperty("nui", Required = Newtonsoft.Json.Required.Always)]
-        public ulong NumUint { get; private set; }
+        public ulong NumUint { get;  set; }
 
         /// <summary>\[nui\] num of uints.</summary>
         [Newtonsoft.Json.JsonProperty("num-uint", Required = Newtonsoft.Json.Required.Always)]
@@ -17,7 +17,7 @@
 
         /// <summary>\[nbs\] num of byte slices.</summary>
         [Newtonsoft.Json.JsonProperty("nbs", Required = Newtonsoft.Json.Required.Always)]
-        public ulong NumByteSlice { get; private set; }
+        public ulong NumByteSlice { get;  set; }
 
         /// <summary>\[nbs\] num of byte slices.</summary>
         [Newtonsoft.Json.JsonProperty("num-byte-slice", Required = Newtonsoft.Json.Required.Always)]
