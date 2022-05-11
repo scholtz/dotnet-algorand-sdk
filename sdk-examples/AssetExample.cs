@@ -139,7 +139,7 @@ namespace sdk_examples
                 AssetIndex= assetID,
                 Sender = acct2.Address
             };
-            tx.SetFee(transParams.Fee);
+            autx.SetFee(transParams.Fee);
 
 
             // The transaction must be signed by the current manager account
@@ -154,10 +154,9 @@ namespace sdk_examples
                 Console.WriteLine("Confirmed Round is: " +
                     Utils.WaitTransactionToComplete(algodApiInstance, id.TxId).Result.ConfirmedRound);
             }
-            catch (Exception e)
+            catch (ApiException<ErrorResponse> e)
             {
-                //e.printStackTrace();
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Result.Message);
                 return;
             }
 
@@ -192,7 +191,7 @@ namespace sdk_examples
                 AssetReceiver = acct3.Address,
                 Sender = acct2.Address
             };
-            tx.SetFee(transParams.Fee);
+            aoitx.SetFee(transParams.Fee);
 
             // The transaction must be signed by the current manager account
             // We are reusing the signedTx variable from the first transaction in the example    
@@ -242,7 +241,7 @@ namespace sdk_examples
                 AssetReceiver = acct3.Address,
                 Sender = acct1.Address
             };
-            tx.SetFee(transParams.Fee);
+            attx.SetFee(transParams.Fee);
             //tx = Utils.GetTransferAssetTransaction(acct1.Address, acct3.Address, assetID, assetAmount, transParams, null, "transfer message");
             // The transaction must be signed by the sender account
 
@@ -295,7 +294,7 @@ namespace sdk_examples
                 FreezeTarget = acct3.Address,
                 Sender = acct2.Address
             };
-            tx.SetFee(transParams.Fee);
+            aftx.SetFee(transParams.Fee);
 
             //tx = Utils.GetFreezeAssetTransaction(acct2.Address, acct3.Address, assetID, true, transParams, "freeze transaction");
 
@@ -354,7 +353,7 @@ namespace sdk_examples
                 AssetAmount = assetAmount,
                 Sender = acct2.Address      // initiator of clawback
             };
-            tx.SetFee(transParams.Fee);
+            artx.SetFee(transParams.Fee);
             // The transaction must be signed by the clawback account
             // We are reusing the signedTx variable from the first transaction in the example    
             signedTx = artx.Sign(acct2);
@@ -401,7 +400,7 @@ namespace sdk_examples
                 AssetIndex= assetID,
                 Sender = acct2.Address      // initiator of clawback
             };
-            tx.SetFee(transParams.Fee);
+            adtx.SetFee(transParams.Fee);
 
             //    tx = Utils.GetDestroyAssetTransaction(acct1.Address, assetID, transParams, "destroy transaction");
             // The transaction must be signed by the manager account
