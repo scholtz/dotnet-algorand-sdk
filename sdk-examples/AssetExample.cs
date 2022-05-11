@@ -17,25 +17,23 @@ namespace sdk_examples
     class AssetExample
     {
         // Utility function for sending a raw signed transaction to the network        
-        public async Task Main(params string[] args) //throws Exception
+        public static async Task Main(params string[] args) //throws Exception
         {
-            string algodApiAddrTmp = args[0];
-            if (algodApiAddrTmp.IndexOf("//") == -1)
-            {
-                algodApiAddrTmp = "http://" + algodApiAddrTmp;
-            }
+            string ALGOD_API_ADDR = "http://localhost:4001/";
+            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            string SRC_ACCOUNT = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
 
-            string ALGOD_API_ADDR = algodApiAddrTmp;
-            string ALGOD_API_TOKEN = args[1];
+            if (ALGOD_API_ADDR.IndexOf("//") == -1)
+            {
+                ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
+            }
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
             // Shown for demonstration purposes. NEVER reveal secret mnemonics in practice.
             // These three accounts are for testing purposes
-            string account1_mnemonic = "portion never forward pill lunch organ biology"
-                                      + " weird catch curve isolate plug innocent skin grunt"
-                                      + " bounce clown mercy hole eagle soul chunk type absorb trim";
+            string account1_mnemonic = SRC_ACCOUNT;
             string account2_mnemonic = "place blouse sad pigeon wing warrior wild script"
                                + " problem team blouse camp soldier breeze twist mother"
                                + " vanish public glass code arrow execute convince ability"
@@ -85,6 +83,7 @@ namespace sdk_examples
                 LastValid = transParams.LastRound + 1000,
                 Note= Encoding.UTF8.GetBytes("asset tx message"),
                 Sender = acct1.Address,
+                
                  
             };
                 
@@ -104,9 +103,9 @@ namespace sdk_examples
                 
                 if (ptx?.Committed??false) assetID = ptx.AssetIndex.Value;
             }
-            catch (Exception e)
+            catch (ApiException<ErrorResponse> e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Result.Message);
                 return;
             }
             Console.WriteLine("AssetID = " + assetID);

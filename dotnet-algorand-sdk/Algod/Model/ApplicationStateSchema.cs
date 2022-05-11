@@ -8,12 +8,20 @@
     public partial class ApplicationStateSchema
     {
         /// <summary>\[nui\] num of uints.</summary>
+        [Newtonsoft.Json.JsonProperty("nui", Required = Newtonsoft.Json.Required.Always)]
+        public ulong NumUint { get; private set; }
+
+        /// <summary>\[nui\] num of uints.</summary>
         [Newtonsoft.Json.JsonProperty("num-uint", Required = Newtonsoft.Json.Required.Always)]
-        public ulong NumUint { get; set; }
+        private ulong numUint { set { NumUint = value; } }
+
+        /// <summary>\[nbs\] num of byte slices.</summary>
+        [Newtonsoft.Json.JsonProperty("nbs", Required = Newtonsoft.Json.Required.Always)]
+        public ulong NumByteSlice { get; private set; }
 
         /// <summary>\[nbs\] num of byte slices.</summary>
         [Newtonsoft.Json.JsonProperty("num-byte-slice", Required = Newtonsoft.Json.Required.Always)]
-        public ulong NumByteSlice { get; set; }
+        private ulong numByteSlice { set { NumByteSlice = value; } }
 
 
     }

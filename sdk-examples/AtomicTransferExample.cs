@@ -50,8 +50,8 @@ namespace sdk_examples
 
             try
             {
-                //contact the signed msgpack
-                List<SignedTransaction> group = new List<SignedTransaction>();
+              
+                List<SignedTransaction> group = new List<SignedTransaction>() { signedTx, signedTx2};
 
                 PostTransactionsResponse id; //this only returns the id of the 1st in the list (for backward compatibility apparently)
                 id = await algodApiInstance.TransactionsAsync(group);
