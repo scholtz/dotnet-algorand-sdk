@@ -107,40 +107,7 @@ namespace Algorand.Utils
     
 
       
-        private static void ValidateAsset(AssetParams asset)
-        {
-            if (asset.Creator is null ) throw new ArgumentException("The sender must be specified.");
-         
-            
-            if (asset.Name is null || asset.Name == "") throw new ArgumentException("The asset name must be specified.");
-            
-            if (asset.UnitName is null || asset.UnitName == "") throw new ArgumentException("The unit name must be specified.");
-            else if (asset.UnitName.Length > 8) throw new ArgumentException(string.Format("The length of unit name is {0} > 8.", asset.UnitName.Length));
-            
-            if (asset.Total is null || asset.Total < 1) throw new ArgumentException("The total number of the asset must be specified and bigger than zero.");
-            
-            if (asset.Manager is null) asset.Manager = asset.Creator;
-            
-            if (asset.Reserve is null) asset.Reserve = asset.Manager;
-            
-            if (asset.Freeze is null) asset.Freeze = asset.Manager;
-             
-            if (asset.Clawback is null) asset.Clawback = asset.Manager;
-            
-            if (asset.MetadataHash is null || asset.MetadataHash.Length == 0)
-                asset.MetadataHash = Encoding.UTF8.GetBytes(GetRandomAssetMetaHash());//auto generate metahash by sdk
-            else if (asset.MetadataHash.Length != 32)
-                throw new ArgumentException("The metadata hash should be 32 bytes.");
-
-            if (asset.DefaultFrozen is null) asset.DefaultFrozen = false;
-        }
-      
        
-        
-     
-      
-        
-    
       
      
         public async static Task<Algod.Model.DryrunResponse> GetDryrunResponse(Algod.DefaultApi client, SignedTransaction stxn, byte[] source = null)

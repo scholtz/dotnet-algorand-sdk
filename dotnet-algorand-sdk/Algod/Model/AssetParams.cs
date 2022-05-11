@@ -1,5 +1,6 @@
 ﻿namespace Algorand.Algod.Model
 {
+    using System.ComponentModel;
     using System = global::System;
     /// <summary>AssetParams specifies the parameters for an asset.
     /// <br/>
@@ -7,7 +8,7 @@
     /// <br/>
     /// <br/>Definition:
     /// <br/>data/transactions/asset.go : AssetParams</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
+
     public partial class AssetParams
     {
         
@@ -34,10 +35,12 @@
         private ulong decimals { set { Decimals = value; } }
 
 
+    
         /// <summary>\[df\] Whether holdings of this asset are frozen by default.</summary>
         [Newtonsoft.Json.JsonProperty("df", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? DefaultFrozen { get;  set; }
-
+        [DefaultValue(false)]
+        
+        public bool? DefaultFrozen { get; set; }
         /// <summary>\[df\] Whether holdings of this asset are frozen by default.</summary>
         [Newtonsoft.Json.JsonProperty("default-frozen", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private bool? defaultFrozen { set { DefaultFrozen = value; } }
@@ -85,6 +88,7 @@
 
         /// <summary>\[t\] The total number of units of this asset.</summary>
         [Newtonsoft.Json.JsonProperty("t", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [DefaultValue(0)]
         public ulong? Total { get;  set; }
 
         /// <summary>\[t\] The total number of units of this asset.</summary>
