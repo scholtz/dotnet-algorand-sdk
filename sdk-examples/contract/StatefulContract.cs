@@ -14,42 +14,30 @@ namespace sdk_examples.contract
 {
     class StatefulContract
     {
-        public async Task Main(params string[] args)
+        public static async Task Main(params string[] args)
         {
-            string ALGOD_API_ADDR = args[0];
+            string ALGOD_API_ADDR = "http://localhost:4001/";
+            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
             if (ALGOD_API_ADDR.IndexOf("//") == -1)
             {
                 ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
             }
-            string ALGOD_API_TOKEN = args[1];
-            //第一个账号用于给智能合约签名，并把签名发布出去
-            string adminMnemonic = "place blouse sad pigeon wing warrior wild script"
-                    + " problem team blouse camp soldier breeze twist mother"
-                    + " vanish public glass code arrow execute convince ability there";
+       
+            string adminMnemonic = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
             Account admin = new Account(adminMnemonic);
-            var creatorMnemonic = "benefit once mutual legal marble hurdle dress toe fuel country prepare canvas barrel divide major square name captain calm flock crumble receive economy abandon power";
-            var userMnemonic = "pledge become mouse fantasy matrix bunker ask tissue prepare vocal unit patient cliff index train network intact company across stage faculty master mom abstract above";
-            // create two account to create and user the stateful contract
+            string creatorMnemonic = "oval brown real consider grow someone impulse palace elegant code elegant victory observe nerve thunder trash mutual viable patient ask below imitate gallery able text";
+            string userMnemonic = "clog tide item robust bounce fiction axis violin night steel frame pear ice proud consider uphold gaze polar page call infant segment page abstract diamond";
+
+
+
+            // create two accounts to create and uses the stateful contract
             var creator = new Account(creatorMnemonic);
             var user = new Account(userMnemonic);
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi client = new DefaultApi(httpClient);
 
-            //var transParams = client.TransactionParams();
-            //var tx = Utils.GetPaymentTransaction(admin.Address, creator.Address, 
-            //    Utils.AlgosToMicroalgos(1), null, transParams);
-            //var resp = Utils.SubmitTransaction(client, admin.SignTransaction(tx));
-            //var waitResp = Utils.WaitTransactionToComplete(client, resp.TxId);
-            //Console.WriteLine(string.Format("send 1 algo to account {0} at round {1}",
-            //    creator.Address.ToString(), waitResp.ConfirmedRound));
-
-            //tx = Utils.GetPaymentTransaction(admin.Address, user.Address,
-            //    Utils.AlgosToMicroalgos(1), null, transParams);
-            //resp = Utils.SubmitTransaction(client, admin.SignTransaction(tx));
-            //waitResp = Utils.WaitTransactionToComplete(client, resp.TxId);
-            //Console.WriteLine(string.Format("send 1 algo to account {0} at round {1}",
-            //    user.Address.ToString(), waitResp.ConfirmedRound));
-
+            
             // declare application state storage (immutable)
             ulong localInts = 1;
             ulong localBytes = 1;
@@ -57,14 +45,13 @@ namespace sdk_examples.contract
             ulong globalBytes = 0;
 
             // user declared approval program (initial)
-            string approvalProgramSourceInitial = File.ReadAllText("stateful_approval_init.teal");
+            string approvalProgramSourceInitial = File.ReadAllText("contract/stateful_approval_init.teal");
 
             // user declared approval program (refactored)
-            string approvalProgramSourceRefactored = File.ReadAllText("stateful_approval_refact.teal");
-            // creator 53GNUYJSTKGEHAVYE5ZS65YTVJSYZSJ7KJBWNQT3MJESCOKNOWEBYTLVA4
-            // user GG7UDCTXNHADKSJ22GG64BZNKXXLXMSYWVZDD2UGHBZ6RLVXWGRLMW52DU
+            string approvalProgramSourceRefactored = File.ReadAllText("contract/stateful_approval_refact.teal");
+         
             // declare clear state program source
-            string clearProgramSource = File.ReadAllText("stateful_clear.teal");
+            string clearProgramSource = File.ReadAllText("contract/stateful_clear.teal");
 
             CompileResponse approvalProgram;
             CompileResponse clearProgram;

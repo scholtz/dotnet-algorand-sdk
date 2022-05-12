@@ -8,20 +8,24 @@ using System.Threading.Tasks;
 
 namespace sdk_examples.contract
 {
-    class DryrunDedugging
+    class DryrunDebugging
     {
-        public async Task Main(params string[] args)
+        public static async Task Main(params string[] args)
         {
-            string ALGOD_API_ADDR = args[0];
+            string ALGOD_API_ADDR = "http://localhost:4001/";
+            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            
             if (ALGOD_API_ADDR.IndexOf("//") == -1)
             {
                 ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
             }
-            string ALGOD_API_TOKEN = args[1];
 
-            string SRC_ACCOUNT = "buzz genre work meat fame favorite rookie stay tennis demand panic busy hedgehog snow morning acquire ball grain grape member blur armor foil ability seminar";
+
+            string SRC_ACCOUNT = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
+
             Account acct1 = new Account(SRC_ACCOUNT);
-            var acct2Address = "QUDVUXBX4Q3Y2H5K2AG3QWEOMY374WO62YNJFFGUTMOJ7FB74CMBKY6LPQ";
+            string account2_mnemonic = "oval brown real consider grow someone impulse palace elegant code elegant victory observe nerve thunder trash mutual viable patient ask below imitate gallery able text";
+            Account acct2 = new Account(account2_mnemonic);
 
             //byte[] source = File.ReadAllBytes("V2\\contract\\sample.teal");
             byte[] program = Convert.FromBase64String("ASABASI=");
@@ -42,7 +46,7 @@ namespace sdk_examples.contract
             {
                 throw new Exception("Could not get params", e);
             }
-            Transaction tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct1.Address, new Address(acct2Address), 1000000, "tx using in dryrun", transParams);
+            Transaction tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct1.Address, acct2.Address, 1000000, "tx using in dryrun", transParams);
             try
             {
                 //bypass verify for non-lsig

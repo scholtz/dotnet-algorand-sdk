@@ -10,16 +10,17 @@ namespace sdk_examples.contract
 {
     class ContractAccount
     {
-        public async Task Main(params string[] args)
+        public static async Task Main(params string[] args)
         {
-            string ALGOD_API_ADDR = args[0];
+            string ALGOD_API_ADDR = "http://localhost:4001/";
+            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
             if (ALGOD_API_ADDR.IndexOf("//") == -1)
             {
                 ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
             }
 
-            string ALGOD_API_TOKEN = args[1];
-            //string toAddressMnemonic = "typical permit hurdle hat song detail cattle merge oxygen crowd arctic cargo smooth fly rice vacuum lounge yard frown predict west wife latin absent cup";
+
             var toAddress = new Address("7XVBE6T6FMUR6TI2XGSVSOPJHKQE2SDVPMFA3QUZNWM7IY6D4K2L23ZN2A");
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
@@ -33,7 +34,7 @@ namespace sdk_examples.contract
                 throw new Exception("Could not get params", e);
             }
             // format and send logic sig
-            byte[] program = Convert.FromBase64String("ASABASI="); //int 1
+            byte[] program = Convert.FromBase64String("ASABASI="); 
             LogicsigSignature lsig = new LogicsigSignature(program, null);
             Console.WriteLine("Escrow address: " + lsig.Address.ToString());
 
@@ -53,10 +54,10 @@ namespace sdk_examples.contract
                     Console.WriteLine("Confirmed Round is: " +
                         Utils.WaitTransactionToComplete(algodApiInstance, id.TxId).Result.ConfirmedRound);
                 }
-                catch (Algorand.Algod.Model.ApiException e)
+                catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
                 {
                     // This is generally expected, but should give us an informative error message.
-                    Console.WriteLine("Exception when calling algod#sendTransaction: " + e.Message);
+                    Console.WriteLine("Exception when calling algod#sendTransaction: " + e.Result.Message);
                 }
             }
             Console.WriteLine("You have successefully arrived the end of this test, please press and key to exist.");

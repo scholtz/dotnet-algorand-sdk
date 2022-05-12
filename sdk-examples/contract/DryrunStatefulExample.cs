@@ -14,39 +14,39 @@ namespace sdk_examples.contract
 {
     class DryrunStatefulExample
     {
-        public async Task Main(params string[] args)
+        public static async Task Main(params string[] args)
         {
-            string ALGOD_API_ADDR = args[0];
+            string ALGOD_API_ADDR = "http://localhost:4001/";
+            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
             if (ALGOD_API_ADDR.IndexOf("//") == -1)
             {
                 ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
             }
-            string ALGOD_API_TOKEN = args[1];
+
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             var client = new DefaultApi(httpClient);
 
-            
-            string creatorMnemonic = "benefit once mutual legal marble hurdle dress toe fuel country prepare canvas barrel divide major square name captain calm flock crumble receive economy abandon power";
-            //string userMnemonic = "pledge become mouse fantasy matrix bunker ask tissue prepare vocal unit patient cliff index train network intact company across stage faculty master mom abstract above";
+            string creatorMnemonic = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
 
             ulong localInts = 1;
             ulong localBytes = 0;
             ulong globalInts = 1;
             ulong globalBytes = 0;
 
-            byte[] data = File.ReadAllBytes("V2/contract/hello_world.teal");
+            byte[] data = File.ReadAllBytes("contract/hello_world.teal");
             CompileResponse approval_program_compiled;
             using (var datams = new MemoryStream(data))
             {
                 approval_program_compiled = await client.CompileAsync(datams);
             }
-            data = File.ReadAllBytes("V2/contract/hello_world_clear.teal");
+            data = File.ReadAllBytes("contract/hello_world_clear.teal");
             CompileResponse clear_program_compiled;
             using (var datams = new MemoryStream(data))
             {
                 clear_program_compiled = await client.CompileAsync(datams);
             }
-            data = File.ReadAllBytes("V2/contract/hello_world_updated.teal");
+            data = File.ReadAllBytes("contract/hello_world_updated.teal");
             CompileResponse approval_program_refactored_compiled;
             using (var datams = new MemoryStream(data))
             {
@@ -94,7 +94,7 @@ namespace sdk_examples.contract
 
                 //call application with updated app which updates local storage counter
                 await CallApp(client, creator, user, appid, null,
-                    new TEALProgram(approval_program_refactored_compiled.Result), "V2/contract/hello_world_updated.teal");
+                    new TEALProgram(approval_program_refactored_compiled.Result), "contract/hello_world_updated.teal");
 
                 //read local state of application from user account
                 await ReadLocalState(client, user, appid);
@@ -107,7 +107,7 @@ namespace sdk_examples.contract
 
                 //call application with arguments
                 await CallApp(client, creator, user, appid, null,
-                    new TEALProgram(approval_program_refactored_compiled.Result), "V2/contract/hello_world_updated.teal");
+                    new TEALProgram(approval_program_refactored_compiled.Result), "contract/hello_world_updated.teal");
 
                 // delete application
                 // clears global storage only
