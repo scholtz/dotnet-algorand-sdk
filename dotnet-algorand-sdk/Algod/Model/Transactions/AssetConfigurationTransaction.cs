@@ -1,6 +1,6 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
-using Newtonsoft.Json;
+
 
 namespace Algorand.Algod.Model
 {

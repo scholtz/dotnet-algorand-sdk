@@ -11,9 +11,9 @@ namespace Algorand.Algod.Model
     public  class ApplicationCreateTransaction : ApplicationNoopTransaction
     {
 
-        [JsonProperty(PropertyName = "apan")]
 
-        public OnCompletion OnCompletion => OnCompletion.Noop;
+
+      
 
         [JsonProperty(PropertyName = "apap", Required = Required.Always)]
         [JsonConverter(typeof(BytesConverter))]
