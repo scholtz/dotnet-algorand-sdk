@@ -1,17 +1,19 @@
 ﻿using Algorand;
 using Algorand.Indexer;
+using Algorand.Indexer.Model;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace sdk_examples
 {
-    public class IndexerExamples
+    public class IndexerExample
     {
-        public async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            string ALGOD_API_ADDR = "https://testnet-algorand.api.purestake.io/idx2/";
-            string ALGOD_API_TOKEN = "GeHdp7CCGt7ApLuPNppXN4LtrW07Mm1kaFNJ5Ovr";
+
+            string ALGOD_API_ADDR = "http://localhost:8980/";
+            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             LookupApi lookupApi = new LookupApi(httpClient);
@@ -35,7 +37,7 @@ namespace sdk_examples
             var appsInfo = await searchApi.ApplicationsAsync(limit: 10);
             Console.WriteLine("Search for application(limit 10): " + appsInfo.ToJson());
 
-            var appIndex = appsInfo.Applications.FirstOrDefault()?.Id;
+            var appIndex = appsInfo.Applications?.FirstOrDefault()?.Id;
             if (appIndex != null)
             {
                 System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
@@ -44,14 +46,23 @@ namespace sdk_examples
             }
 
             System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
-            var assetsInfo = await searchApi.AssetsAsync(limit: 10, unit: "LAT");
-            Console.WriteLine("Search for assets" + assetsInfo.ToJson());
+            try
+            {
+                var assetsInfo = await searchApi.AssetsAsync(limit: 10, name: "latikum22");
+                var assetIndex = assetsInfo.Assets.FirstOrDefault().Index;
 
-            var assetIndex = assetsInfo.Assets.FirstOrDefault().Index;
+                System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
+                var assetInfo = await lookupApi.AssetsAsync(assetIndex);
+                Console.WriteLine("Look up asset by id:" + assetInfo.ToJson());
+                Console.WriteLine("Search for assets" + assetsInfo.ToJson());
+            }
+            catch (ApiException<IndexerError> ex)
+            {
+               Console.WriteLine(ex.Result.Message);
+            }
+            
 
-            System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
-            var assetInfo = await lookupApi.AssetsAsync(assetIndex);
-            Console.WriteLine("Look up asset by id:" + assetInfo.ToJson());
+         
 
             Console.WriteLine("You have successefully arrived the end of this test, please press and key to exist.");
             Console.ReadKey();

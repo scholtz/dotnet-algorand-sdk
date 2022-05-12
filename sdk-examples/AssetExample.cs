@@ -34,13 +34,8 @@ namespace sdk_examples
             // Shown for demonstration purposes. NEVER reveal secret mnemonics in practice.
             // These three accounts are for testing purposes
             string account1_mnemonic = SRC_ACCOUNT;
-            string account2_mnemonic = "place blouse sad pigeon wing warrior wild script"
-                               + " problem team blouse camp soldier breeze twist mother"
-                               + " vanish public glass code arrow execute convince ability"
-                               + " there";
-            string account3_mnemonic = "image travel claw climb bottom spot path roast "
-                               + "century also task cherry address curious save item "
-                               + "clean theme amateur loyal apart hybrid steak about blanket";
+            string account2_mnemonic = "oval brown real consider grow someone impulse palace elegant code elegant victory observe nerve thunder trash mutual viable patient ask below imitate gallery able text";
+            string account3_mnemonic = "clog tide item robust bounce fiction axis violin night steel frame pear ice proud consider uphold gaze polar page call infant segment page abstract diamond";
 
             Account acct1 = new Account(account1_mnemonic);
             Account acct2 = new Account(account2_mnemonic);

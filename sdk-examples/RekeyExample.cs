@@ -16,24 +16,24 @@ namespace sdk_examples
     /// </summary>
     class RekeyExample
     {
-        public async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            string ALGOD_API_ADDR = args[0];
+            string ALGOD_API_ADDR = "http://localhost:4001/";
+            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            string SRC_ACCOUNT = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
+
             if (ALGOD_API_ADDR.IndexOf("//") == -1)
             {
                 ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
             }
 
-            string ALGOD_API_TOKEN = args.Length > 1 ? args[1] : null;
-            var account1_passphrase = "fringe model trophy claw stove perfect address market license abstract master slender choice around field embark sudden carbon exclude abuse square bulb front ability violin";
-            var account2_passphrase = "impulse nation creek toy carpet amused dream can small long disorder source mail game category damp spread length cupboard theory either baby squeeze about orbit";
-            var account3_passphrase = "fade exit sword someone lock minimum scout keen label dance jaguar select conduct luxury rose idea solid major solid lens globe agent assume abstract alien";
+            string account1_mnemonic = SRC_ACCOUNT;
+            string account2_mnemonic = "oval brown real consider grow someone impulse palace elegant code elegant victory observe nerve thunder trash mutual viable patient ask below imitate gallery able text";
+            string account3_mnemonic = "clog tide item robust bounce fiction axis violin night steel frame pear ice proud consider uphold gaze polar page call infant segment page abstract diamond";
 
-
-            var account1 = new Account(account1_passphrase);
-            var account2 = new Account(account2_passphrase);
-            //    private_key = mnemonic.to_private_key(account3_passphrase)
-            var account3 = new Account(account3_passphrase);
+            var account1 = new Account(account1_mnemonic);
+            var account2 = new Account(account2_mnemonic);
+            var account3 = new Account(account3_mnemonic);
 
             Console.WriteLine(string.Format("Account 1 : {0}", account1.Address));
             Console.WriteLine(string.Format("Account 2 : {0}", account2.Address));
@@ -93,9 +93,9 @@ namespace sdk_examples
                 Console.WriteLine("Confirmed Round is: " +
                     Utils.WaitTransactionToComplete(algodApiInstance, id.TxId).Result.ConfirmedRound);
             }
-            catch (Exception e)
+            catch (ApiException<ErrorResponse> e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Result.Message);
                 return;
             }
         }
