@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\JsonSubTypes\JsonSubTypes\JsonSubTypes.csproj" />
     <ProjectReference Include="..\dotnet-algorand-sdk\dotnet-algorand-sdk.csproj" />
   </ItemGroup>
 
