@@ -225,9 +225,9 @@ namespace sdk_examples.contract
                 Console.WriteLine("Application ID is: " + resp.ApplicationIndex.ToString());
                 return resp.ApplicationIndex;
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
             {
-                Console.WriteLine("Exception when calling create application: " + e.Message);
+                Console.WriteLine("Exception when calling create application: " + e.Result.Message);
                 return null;
             }
         }
