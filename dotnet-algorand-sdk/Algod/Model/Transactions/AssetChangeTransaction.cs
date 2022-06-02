@@ -12,7 +12,7 @@ namespace Algorand.Algod.Model
     { 
         [JsonProperty(PropertyName = "caid", Required = Required.Always)]
         [DefaultValue(0)]
-        public ulong AssetIndex = 0;
+        public ulong AssetIndex { get; set; } = 0;
 
     }
 }

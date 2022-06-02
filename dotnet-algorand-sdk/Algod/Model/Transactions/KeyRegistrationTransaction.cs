@@ -14,7 +14,7 @@ namespace Algorand.Algod.Model
     public abstract class KeyRegistrationTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
-        private string type => "keyreg";
+        public string type => "keyreg";
 
 
     }

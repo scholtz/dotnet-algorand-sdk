@@ -17,21 +17,21 @@ namespace Algorand.Algod.Model
 
         [JsonProperty(PropertyName = "apap", Required = Required.Always)]
         [JsonConverter(typeof(BytesConverter))]
-        public TEALProgram ApprovalProgram = null;
+        public TEALProgram ApprovalProgram { get; set; } = null;
 
         [JsonProperty(PropertyName = "apsu", Required = Required.Always)]
         [JsonConverter(typeof(BytesConverter))]
-        public TEALProgram ClearStateProgram = null;
+        public TEALProgram ClearStateProgram { get; set; } = null;
 
         [JsonProperty(PropertyName = "apgs",Required =Required.Always)]
-        public StateSchema GlobalStateSchema;
+        public StateSchema GlobalStateSchema { get; set; }
 
         [JsonProperty(PropertyName = "apls", Required = Required.Always)]
-        public StateSchema LocalStateSchema;
+        public StateSchema LocalStateSchema { get; set; }
 
         [JsonProperty(PropertyName = "apep")]
         [DefaultValue(0)]
-        public ulong? ExtraProgramPages = 0;
+        public ulong? ExtraProgramPages { get; set; } = 0;
 
         [JsonIgnore]
         public ulong? ApplicationIndex { get; internal set; }

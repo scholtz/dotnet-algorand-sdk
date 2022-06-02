@@ -532,6 +532,7 @@ namespace Algorand.Algod
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<CertifiedBlock> BlocksAsync(ulong round, Format? format, System.Threading.CancellationToken cancellationToken)
         {
+            
             if (round == null)
                 throw new System.ArgumentNullException("round");
 

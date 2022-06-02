@@ -32,22 +32,22 @@ namespace Algorand.Algod.Model
 
 
         [JsonProperty(PropertyName = "snd")]
-        public Address Sender;
-       
-        
+        public Address Sender { get; set; }
+
+
         [JsonProperty(PropertyName = "fee")]
         [DefaultValue(0)]
-        public ulong? Fee = 0;
+        public ulong? Fee { get; set; } = 0;
   
 
         [JsonProperty(PropertyName = "fv")]
         [DefaultValue(0)]
-        public ulong? FirstValid = 0;
+        public ulong? FirstValid { get; set; } = 0;
 
 
         [JsonProperty(PropertyName = "lv")]
         [DefaultValue(0)]
-        public ulong? LastValid = 0;
+        public ulong? LastValid { get; set; } = 0;
 
 
         [JsonIgnore]
@@ -71,17 +71,17 @@ namespace Algorand.Algod.Model
 
         [JsonProperty(PropertyName = "gen")]
         [DefaultValue("")]
-        public string GenesisID = "";
+        public string GenesisID { get; set; } = "";
 
 
       
         [JsonProperty(PropertyName = "gh")]
-        public Digest GenesisHash;
+        public Digest GenesisHash { get; set; }
 
 
 
         [JsonProperty(PropertyName = "grp")]
-        public Digest Group;
+        public Digest Group { get; set; }
 
 
 
@@ -105,7 +105,7 @@ namespace Algorand.Algod.Model
         public bool ShouldSerializeLease() { return Lease?.Length > 0; }
 
         [JsonProperty("rekey")]
-        public Address RekeyTo;
+        public Address RekeyTo { get; set; }
 
         [JsonIgnore]
         public bool Committed => (ConfirmedRound ?? 0) > 0;

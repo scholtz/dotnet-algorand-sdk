@@ -8,15 +8,15 @@ namespace Algorand.Algod.Model
     public class AssetFreezeTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
-        private string type => "afrz";
+        public string type => "afrz";
 
         [JsonProperty(PropertyName = "fadd", Required = Required.Always)]
-        public Address FreezeTarget;
+        public Address FreezeTarget { get; set; }
         [JsonProperty(PropertyName = "faid", Required = Required.Always)]
         [DefaultValue(0)]
-        public ulong? AssetFreezeID = 0;
+        public ulong? AssetFreezeID { get; set; } = 0;
         [JsonProperty(PropertyName = "afrz", Required=Required.Default)]
         [DefaultValue(false)]
-        public bool FreezeState = false;
+        public bool FreezeState { get; set; } = false;
     }
 }

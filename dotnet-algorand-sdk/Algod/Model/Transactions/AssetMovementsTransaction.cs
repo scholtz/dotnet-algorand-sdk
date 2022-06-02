@@ -13,12 +13,12 @@ namespace Algorand.Algod.Model
     public abstract class AssetMovementsTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type",Required =Required.Always)]
-        private string type => "axfer";
+        public string type => "axfer";
 
 
         [JsonProperty(PropertyName = "xaid", Required = Required.Always)]
         [DefaultValue(0)]
-        public ulong? XferAsset = 0;
+        public ulong? XferAsset { get; set; }  = 0;
                   
     }
 }

@@ -1,0 +1,1 @@
+﻿This project will include a full proxy for AlgoD offering SwaggerUI.

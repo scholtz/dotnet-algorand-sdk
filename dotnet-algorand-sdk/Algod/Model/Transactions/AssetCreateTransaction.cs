@@ -6,7 +6,7 @@ namespace Algorand.Algod.Model
     public class AssetCreateTransaction : AssetConfigurationTransaction
     {
         [JsonProperty(PropertyName = "apar",Required =Required.Always)]
-        public AssetParams AssetParams;
+        public AssetParams AssetParams { get; set; }
 
         [JsonIgnore]
         public ulong? AssetIndex { get; internal set; }

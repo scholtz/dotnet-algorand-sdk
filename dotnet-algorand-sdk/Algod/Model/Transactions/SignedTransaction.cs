@@ -5,6 +5,8 @@ using Algorand.Utils;
 using Newtonsoft.Json;
 using System;
 
+
+
 namespace Algorand.Algod.Model
 {
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
@@ -13,19 +15,19 @@ namespace Algorand.Algod.Model
         //TODO hgi & hgh flags
         
         [JsonProperty(PropertyName = "txn")]
-        public Transaction Tx;
+        public Transaction Tx { get; set; }
 
         [JsonProperty(PropertyName = "sig")]
-        public Signature Sig; 
+        public Signature Sig { get; set; }
 
         [JsonProperty(PropertyName = "msig")]
-        public MultisigSignature MSig;
+        public MultisigSignature MSig { get; set; }
 
         [JsonProperty(PropertyName = "lsig")]
-        public LogicsigSignature LSig;
+        public LogicsigSignature LSig { get; set; }
 
         [JsonProperty(PropertyName = "sgnr")]
-        public Address AuthAddr;
+        public Address AuthAddr { get; set; }
         public void SetAuthAddr(byte[] sigAddr)
         {
             AuthAddr = new Address(sigAddr);

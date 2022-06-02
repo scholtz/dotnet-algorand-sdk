@@ -20,7 +20,7 @@ namespace Algorand.Algod.Model
         /// </summary>
         [JsonProperty(PropertyName = "aamt", Required = Required.Always)]
         [DefaultValue(0)]
-        public ulong AssetAmount = 0;
+        public ulong AssetAmount { get; set; } = 0;
 
     
 
@@ -28,7 +28,7 @@ namespace Algorand.Algod.Model
         /// The receiver of the transfer.
         /// </summary>
         [JsonProperty(PropertyName = "arcv", Required = Required.Always)]
-        public Address AssetReceiver;
+        public Address AssetReceiver { get; set; }
 
         /// <summary>
         /// Indicates that the asset should be removed from the account's Assets map,
@@ -36,7 +36,7 @@ namespace Algorand.Algod.Model
         /// It's always valid to transfer remaining asset holdings to the AssetID account.
         /// </summary>
         [JsonProperty(PropertyName = "aclose")]
-        public Address AssetCloseTo;
+        public Address AssetCloseTo { get; set; }
 
 
 

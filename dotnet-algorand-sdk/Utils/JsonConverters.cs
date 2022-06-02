@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Crypto.Parameters;
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Algorand.Utils
@@ -225,7 +226,7 @@ namespace Algorand.Utils
             var returnedProps = target.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic |   BindingFlags.Instance);
             var txnProps = target.Transaction.Tx.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-            foreach (var returnedProp in returnedProps)
+            foreach (var returnedProp in returnedProps.Where(p=>p.Name!="Transaction"))
             {
                 foreach (var txnProp in txnProps)
                 {

@@ -11,7 +11,7 @@ namespace Algorand.Algod.Model
     public class AssetUpdateTransaction : AssetChangeTransaction
     {
         [JsonProperty(PropertyName = "apar")]
-        public AssetParams AssetParams;
+        public AssetParams AssetParams { get; set; }
 
 
 

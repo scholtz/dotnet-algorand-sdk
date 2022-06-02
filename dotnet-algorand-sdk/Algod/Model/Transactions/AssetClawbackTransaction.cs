@@ -12,7 +12,7 @@ namespace Algorand.Algod.Model
         /// </summary>
         [JsonProperty(PropertyName = "aamt", Required = Required.Always)]
         [DefaultValue(0)]
-        public ulong AssetAmount = 0;
+        public ulong AssetAmount { get; set; } = 0;
 
         /// <summary>
         /// The sender of the transfer.  If this is not a zero value, the real
@@ -20,14 +20,14 @@ namespace Algorand.Algod.Model
         /// this is the zero value, the asset is sent from the transaction's Sender.
         /// </summary>
         [JsonProperty(PropertyName = "asnd", Required = Required.Always)]
-        public Address AssetSender;
+        public Address AssetSender { get; set; }
 
         /// <summary>
         /// The receiver of the transfer.
         /// </summary>
         [JsonProperty(PropertyName = "arcv", Required = Required.Always)]
-        public Address AssetReceiver;
+        public Address AssetReceiver { get; set; }
 
-       
+
     }
 }

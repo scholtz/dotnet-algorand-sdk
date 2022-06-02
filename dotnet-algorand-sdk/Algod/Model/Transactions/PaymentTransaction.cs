@@ -4,30 +4,31 @@ using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.Text;
-
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("AlgodProxy")]
 namespace Algorand.Algod.Model
 {
     public class PaymentTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type")]
-        private readonly string type = "pay";
+        public string type => "pay";
 
         [JsonProperty(PropertyName = "amt")]
         [DefaultValue(0)]
-        public ulong? Amount = 0;
+        public ulong? Amount { get; set; }  = 0;
 
         [JsonProperty(PropertyName = "amount")]
-        private ulong? amount { set { Amount = value; } }
+        internal ulong? amount { set { Amount = value; } }
 
         [JsonProperty(PropertyName = "rcv")]
-        public Address Receiver;
+        public Address Receiver { get; set; }
 
         [JsonProperty(PropertyName = "close")]
-        public Address CloseRemainderTo;
+        public Address CloseRemainderTo { get; set; }
 
 
 
-     
+
 
         [JsonIgnore]
         public ulong? ClosingAmount { get; internal set; }

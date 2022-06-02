@@ -9,8 +9,9 @@ namespace Algorand.Algod.Model
 
     internal class ReturnedTransaction 
     {
+        
         [JsonProperty("txn")]
-        internal SignedTransaction Transaction;
+        internal SignedTransaction Transaction { get; set; }
 
         /// <summary>The round where this transaction was confirmed, if present.</summary>
         [JsonProperty("confirmed-round", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]

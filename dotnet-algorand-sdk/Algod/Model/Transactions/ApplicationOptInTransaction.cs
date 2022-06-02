@@ -12,7 +12,7 @@ namespace Algorand.Algod.Model
 
         [JsonProperty(PropertyName = "apid")]
         [DefaultValue(0)]
-        public ulong? ApplicationId = 0;
+        public ulong? ApplicationId { get; set; } = 0;
 
         [JsonProperty(PropertyName = "apan")]
         public OnCompletion OnCompletion => OnCompletion.Optin;
