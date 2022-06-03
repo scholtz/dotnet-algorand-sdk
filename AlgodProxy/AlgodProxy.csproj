@@ -14,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Swashbuckle.AspNetCore.Annotations">
+      <HintPath>..\..\..\swashbuckle\Swashbuckle.AspNetCore-master\src\Swashbuckle.AspNetCore.Annotations\bin\Debug\net5.0\Swashbuckle.AspNetCore.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="Swashbuckle.AspNetCore.Newtonsoft">
       <HintPath>..\..\..\swashbuckle\Swashbuckle.AspNetCore-master\src\Swashbuckle.AspNetCore.Newtonsoft\bin\Debug\net5.0\Swashbuckle.AspNetCore.Newtonsoft.dll</HintPath>
     </Reference>

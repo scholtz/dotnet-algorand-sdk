@@ -1,8 +1,11 @@
-﻿using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace AlgodProxy
 {
@@ -18,7 +21,7 @@ namespace AlgodProxy
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext schemaFilterContext)
         {
-      
+         
             var keys = new System.Collections.Generic.List<string>();
             var prefix = "Org.BouncyCastle.";
             foreach (var key in schemaFilterContext.SchemaRepository.Schemas.Keys)
@@ -33,5 +36,34 @@ namespace AlgodProxy
                 schemaFilterContext.SchemaRepository.Schemas.Remove(key);
             }
         }
+    }
+
+
+    public class SwaggerAddAliasFilter : ISchemaFilter
+    {
+        public void Apply(OpenApiSchema schema, SchemaFilterContext schemaFilterContext)
+        {
+            if (schemaFilterContext.MemberInfo != null)
+            {
+
+                schema.Extensions["x-long-name"] = new OpenApiString(schemaFilterContext.MemberInfo.Name);
+
+            }
+            
+           
+        }
+    }
+
+
+
+
+    public class AnnotationsDocumentFilter : IDocumentFilter
+    {
+        public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
+        {
+           
+        }
+
+    
     }
 }
