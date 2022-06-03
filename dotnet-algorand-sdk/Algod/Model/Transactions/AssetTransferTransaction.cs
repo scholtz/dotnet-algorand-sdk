@@ -3,7 +3,7 @@ using JsonSubTypes;
 using Newtonsoft.Json;
 using System.ComponentModel;
 
-namespace Algorand.Algod.Model
+namespace Algorand.Algod.Model.Transactions
 {
 
     [JsonConverter(typeof(JsonSubtypes))]

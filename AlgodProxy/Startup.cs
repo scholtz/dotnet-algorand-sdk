@@ -35,7 +35,7 @@ namespace AlgodProxy
 
             services.AddSwaggerGen(c =>
             {
-
+                c.SchemaFilter<SwaggerIgnoreFilter>();
                 c.UseAllOfForInheritance();
                 c.UseOneOfForPolymorphism();
                 c.CustomSchemaIds(type => type.ToString());

@@ -1,5 +1,6 @@
 ﻿
 using Algorand.Algod.Model;
+using Algorand.Algod.Model.Transactions;
 using System;
 using System.Collections.Generic;
 using System.IO;

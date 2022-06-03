@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 
 
-namespace Algorand.Algod.Model
+namespace Algorand.Algod.Model.Transactions
 {
     [JsonConverter(typeof(JsonSubtypes))]
     [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetUpdateTransaction), "caid")]

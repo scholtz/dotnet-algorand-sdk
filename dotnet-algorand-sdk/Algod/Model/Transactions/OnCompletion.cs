@@ -1,6 +1,6 @@
 ﻿
 
-namespace Algorand.Algod.Model
+namespace Algorand.Algod.Model.Transactions
 {
     public enum OnCompletion
     {

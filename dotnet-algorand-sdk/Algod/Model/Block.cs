@@ -1,6 +1,7 @@
 ﻿
 namespace Algorand.Algod.Model
 {
+    using Algorand.Algod.Model.Transactions;
 
     /* DESIGN - Block as an entity was missing from Algod but it was visible in Indexer
      */

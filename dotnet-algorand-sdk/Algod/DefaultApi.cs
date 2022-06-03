@@ -21,6 +21,8 @@ namespace Algorand.Algod
     using System.Collections.Generic;
     using System.IO;
     using System = global::System;
+    using Algorand.Algod.Model.Transactions;
+
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.14.5.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial interface IDefaultApi
     {

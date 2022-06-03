@@ -1,5 +1,6 @@
 ﻿namespace Algorand.Algod.Model
 {
+    using Algorand.Algod.Model.Transactions;
     using System = global::System;
 
 

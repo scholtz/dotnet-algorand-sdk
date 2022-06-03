@@ -5,6 +5,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using System;
 using System.Linq;
 using System.Reflection;
+using Algorand.Algod.Model.Transactions;
 
 namespace Algorand.Utils
 {

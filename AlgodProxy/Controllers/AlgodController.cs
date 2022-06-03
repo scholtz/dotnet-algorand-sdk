@@ -1,10 +1,6 @@
-﻿using Algorand.Algod.Model;
+﻿using Algorand.Algod.Model.Transactions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AlgodProxy.Controllers
 {
@@ -12,7 +8,7 @@ namespace AlgodProxy.Controllers
     [Route("[controller]")]
     public class AlgodController : ControllerBase
     {
-     
+
 
         private readonly ILogger<AlgodController> _logger;
 

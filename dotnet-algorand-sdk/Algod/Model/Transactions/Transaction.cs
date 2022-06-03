@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace Algorand.Algod.Model
+namespace Algorand.Algod.Model.Transactions
 {
 
 
@@ -27,8 +27,6 @@ namespace Algorand.Algod.Model
     {
         private const ulong MIN_TX_FEE_UALGOS = 1000;
         private static readonly byte[] TX_SIGN_PREFIX = Encoding.UTF8.GetBytes("TX");
-
-
 
 
         [JsonProperty(PropertyName = "snd")]

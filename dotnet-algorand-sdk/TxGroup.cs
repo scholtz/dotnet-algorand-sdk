@@ -1,5 +1,5 @@
 ﻿using Algorand.Utils;
-using Algorand.Algod.Model;
+using Algorand.Algod.Model.Transactions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

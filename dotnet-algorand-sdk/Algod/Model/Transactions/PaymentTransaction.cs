@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("AlgodProxy")]
-namespace Algorand.Algod.Model
+namespace Algorand.Algod.Model.Transactions
 {
     public class PaymentTransaction : Transaction
     {

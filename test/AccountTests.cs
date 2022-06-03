@@ -1,5 +1,6 @@
 using Algorand;
 using Algorand.Algod.Model;
+using Algorand.Algod.Model.Transactions;
 using Algorand.Utils;
 using NUnit.Framework;
 using Org.BouncyCastle.Crypto.Parameters;

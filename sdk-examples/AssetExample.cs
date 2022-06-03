@@ -1,5 +1,5 @@
 ﻿using Algorand;
-
+using Algorand.Algod.Model.Transactions;
 using Algorand.Algod.Model;
 using System;
 using System.Linq;

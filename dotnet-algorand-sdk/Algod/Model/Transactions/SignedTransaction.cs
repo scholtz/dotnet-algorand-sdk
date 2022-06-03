@@ -7,7 +7,7 @@ using System;
 
 
 
-namespace Algorand.Algod.Model
+namespace Algorand.Algod.Model.Transactions
 {
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class SignedTransaction
