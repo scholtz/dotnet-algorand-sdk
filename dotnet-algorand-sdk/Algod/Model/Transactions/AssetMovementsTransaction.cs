@@ -10,15 +10,13 @@ namespace Algorand.Algod.Model.Transactions
     [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetTransferTransaction), "aamt")]
     [JsonSubtypes.FallBackSubType(typeof(AssetAcceptTransaction))]
 
-    public abstract class AssetMovementsTransaction : Transaction
+    public abstract partial class AssetMovementsTransaction : Transaction
     {
-        [JsonProperty(PropertyName = "type",Required =Required.Always)]
+        [JsonProperty(PropertyName = "type", Required = Required.Always)]
         public string type => "axfer";
 
 
-        [JsonProperty(PropertyName = "xaid", Required = Required.Always)]
-        [DefaultValue(0)]
-        public ulong? XferAsset { get; set; }  = 0;
+        
                   
     }
 }

@@ -23,87 +23,20 @@ namespace Algorand.Algod.Model.Transactions
     [JsonSubtypes.KnownSubType(typeof(AssetMovementsTransaction), "axfer")]
     [JsonSubtypes.KnownSubType(typeof(AssetConfigurationTransaction), "acfg")]
 
-    public abstract class Transaction : IReturnableTransaction
+    public abstract partial class Transaction : IReturnableTransaction
     {
         private const ulong MIN_TX_FEE_UALGOS = 1000;
         private static readonly byte[] TX_SIGN_PREFIX = Encoding.UTF8.GetBytes("TX");
 
 
-        [JsonProperty(PropertyName = "snd")]
-        public Address Sender { get; set; }
-
-
-        [JsonProperty(PropertyName = "fee")]
-        [DefaultValue(0)]
-        public ulong? Fee { get; set; } = 0;
-  
-
-        [JsonProperty(PropertyName = "fv")]
-        [DefaultValue(0)]
-        public ulong? FirstValid { get; set; } = 0;
-
-
-        [JsonProperty(PropertyName = "lv")]
-        [DefaultValue(0)]
-        public ulong? LastValid { get; set; } = 0;
-
-
-        [JsonIgnore]
-        private byte[] _note;
-        [JsonProperty(PropertyName = "note")]
-        public byte[] Note
-        {
-            get
-            {
-                return _note;
-            }
-            set
-            {
-                if (value != null && value.Length > 0)
-                    _note = value;
-            }
-        }
-
+     
         //used by newtonsoft
         public bool ShouldSerializeNote() { return Note?.Length > 0; }
-
-        [JsonProperty(PropertyName = "gen")]
-        [DefaultValue("")]
-        public string GenesisID { get; set; } = "";
-
-
-      
-        [JsonProperty(PropertyName = "gh")]
-        public Digest GenesisHash { get; set; }
-
-
-
-        [JsonProperty(PropertyName = "grp")]
-        public Digest Group { get; set; }
-
-
-
-        [JsonIgnore]
-        private byte[] _lease;
-        [JsonProperty(PropertyName = "lx")]
-        public byte[] Lease
-        {
-            get
-            {
-                return _lease;
-            }
-            set
-            {
-                if (value != null && value.Length > 0)
-                    _lease = value;
-            }
-        }
-
+        
 
         public bool ShouldSerializeLease() { return Lease?.Length > 0; }
 
-        [JsonProperty("rekey")]
-        public Address RekeyTo { get; set; }
+    
 
         [JsonIgnore]
         public bool Committed => (ConfirmedRound ?? 0) > 0;

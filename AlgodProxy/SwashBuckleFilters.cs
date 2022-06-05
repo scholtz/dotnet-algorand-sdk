@@ -46,7 +46,7 @@ namespace AlgodProxy
             if (schemaFilterContext.MemberInfo != null)
             {
 
-                schema.Extensions["x-long-name"] = new OpenApiString(schemaFilterContext.MemberInfo.Name);
+                schema.Extensions["x-algorand-longname"] = new OpenApiString(schemaFilterContext.MemberInfo.Name);
 
             }
             

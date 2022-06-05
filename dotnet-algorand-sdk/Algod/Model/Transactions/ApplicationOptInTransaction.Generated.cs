@@ -10,8 +10,10 @@ namespace Algorand.Algod.Model.Transactions
     public partial class ApplicationOptInTransaction : ApplicationCallTransaction
     {
 
-        [JsonProperty(PropertyName = "apan")]
-        public OnCompletion OnCompletion => OnCompletion.Optin;
+        [JsonProperty(PropertyName = "apid")]
+        [DefaultValue(0)]
+        public ulong? ApplicationId { get; set; } = 0;
+
 
 
 

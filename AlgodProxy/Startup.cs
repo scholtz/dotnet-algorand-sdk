@@ -37,9 +37,10 @@ namespace AlgodProxy
             {
                 c.DocumentFilter<AnnotationsDocumentFilter>();
                 c.SchemaFilter<SwaggerIgnoreFilter>();
-                c.SchemaFilter<SwaggerAddAliasFilter>(); 
+                c.SchemaFilter<SwaggerAddAliasFilter>();
+                c.UseAllOfToExtendReferenceSchemas();
                 c.UseAllOfForInheritance();
-                c.UseOneOfForPolymorphism();
+//                c.UseOneOfForPolymorphism();
                 c.CustomSchemaIds(type => type.ToString());
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AlgodProxy", Version = "v1" });
             });

@@ -11,7 +11,7 @@ namespace Algorand.Algod.Model.Transactions
     [JsonSubtypes.KnownSubTypeWithProperty(typeof(KeyRegisterOnlineTransaction), "votelst")]
     [JsonSubtypes.KnownSubTypeWithProperty(typeof(KeyRegisterOnlineTransaction), "votekd")]
     [JsonSubtypes.KnownSubTypeWithProperty(typeof(KeyRegisterOnlineTransaction), "nonpart")]
-    public abstract class KeyRegistrationTransaction : Transaction
+    public abstract partial class KeyRegistrationTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         public string type => "keyreg";
