@@ -206,6 +206,11 @@ namespace sdk_examples
                 act  = await algodApiInstance.AccountInformationAsync(acct3.Address.ToString(),null,null);
                 Console.WriteLine(act);
             }
+            catch (ApiException<ErrorResponse> e)
+            {
+                Console.WriteLine(e.Result.Message);
+                return;
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
@@ -254,6 +259,11 @@ namespace sdk_examples
                 // and see that it now has 5 of the new asset
                 act = await algodApiInstance.AccountInformationAsync(acct3.Address.ToString(),null,null);
                 Console.WriteLine(act.Assets.Where(h => h.AssetId == assetID).FirstOrDefault()?.Amount);
+            }
+            catch (ApiException<ErrorResponse> e)
+            {
+                Console.WriteLine(e.Result.Message);
+                return;
             }
             catch (Exception e)
             {
@@ -308,6 +318,11 @@ namespace sdk_examples
                 // Note--currently no getter method for frozen state
                 act = await algodApiInstance.AccountInformationAsync(acct3.Address.ToString(),null,null);
                 Console.WriteLine(act.Assets.Where(h => h.AssetId == assetID).FirstOrDefault());
+            }
+            catch (ApiException<ErrorResponse> e)
+            {
+                Console.WriteLine(e.Result.Message);
+                return;
             }
             catch (Exception e)
             {
@@ -365,6 +380,11 @@ namespace sdk_examples
                 act = await algodApiInstance.AccountInformationAsync(acct3.Address.ToString(),null,null);
                 Console.WriteLine(act.Assets.Where(h => h.AssetId == assetID).FirstOrDefault()?.Amount);
             }
+            catch (ApiException<ErrorResponse> e)
+            {
+                Console.WriteLine(e.Result.Message);
+                return;
+            }
             catch (Exception e)
             {
                 //e.printStackTrace();
@@ -416,6 +436,11 @@ namespace sdk_examples
                 act = await algodApiInstance.AccountInformationAsync(acct1.Address.ToString(),null,null);
                 //Console.WriteLine("Does AssetID: " + assetID + " exist? " +
                 //    act.Thisassettotal.ContainsKey(assetID));
+            }
+            catch (ApiException<ErrorResponse> e)
+            {
+                Console.WriteLine(e.Result.Message);
+                return;
             }
             catch (Exception e)
             {
