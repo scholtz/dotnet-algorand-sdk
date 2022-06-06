@@ -67,10 +67,7 @@ public partial class Account{
     [System.ComponentModel.DataAnnotations.Required]
     public ulong Round {get;set;}
     
-    [Newtonsoft.Json.JsonProperty("sig-type", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-    public string SigType {get;set;}
-    
-
+   
     [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
     [System.ComponentModel.DataAnnotations.Required]
     public string Status {get;set;}

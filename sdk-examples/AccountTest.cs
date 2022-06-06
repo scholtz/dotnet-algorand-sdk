@@ -25,7 +25,7 @@ namespace sdk_examples
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
-            var accountInfo = await algodApiInstance.AccountsAsync(src.Address.ToString(),null);
+            var accountInfo = await algodApiInstance.AccountInformationAsync(src.Address.ToString(),null,null);
             Console.WriteLine(string.Format("Account Balance: {0} microAlgos", accountInfo.Amount));
 
             

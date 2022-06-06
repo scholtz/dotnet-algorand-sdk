@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doc", "doc-generator\doc.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SerialisationTests", "SerialisationTests\SerialisationTests.csproj", "{DB043B6D-CAB0-4472-9B2A-BA16EA320DF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgodProxy", "AlgodProxy\AlgodProxy.csproj", "{A7EA0414-E3EB-4131-89DD-16BB0CD7BA06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "transaction-spec-regen", "AlgodProxy\transaction-spec-regen.csproj", "{A7EA0414-E3EB-4131-89DD-16BB0CD7BA06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

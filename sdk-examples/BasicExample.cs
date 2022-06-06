@@ -35,7 +35,7 @@ namespace sdk_examples
 
             try
             {
-                var supply = await algodApiInstance.SupplyAsync();
+                var supply = await algodApiInstance.GetSupplyAsync();
                 Console.WriteLine("Total Algorand Supply: " + supply.TotalMoney);
                 Console.WriteLine("Online Algorand Supply: " + supply.OnlineMoney);
 
@@ -49,15 +49,15 @@ namespace sdk_examples
 
  
 
-            var accountInfo = await algodApiInstance.AccountsAsync(src.Address.ToString(), null);
+            var accountInfo = await algodApiInstance.AccountInformationAsync(src.Address.ToString(),null, null);
 
             Console.WriteLine(string.Format("Account Balance: {0} microAlgos", accountInfo.Amount));
 
             try
             {
-                var trans = await algodApiInstance.ParamsAsync();
+                var trans = await algodApiInstance.TransactionParamsAsync();
                 var lr = trans.LastRound;
-                var block = await algodApiInstance.BlocksAsync(lr, null);
+                var block = await algodApiInstance.GetBlockAsync(lr, null);
 
                 Console.WriteLine("Lastround: " + trans.LastRound.ToString());
                 Console.WriteLine("Block txns: " + block.Block.ToString());
@@ -70,7 +70,7 @@ namespace sdk_examples
             TransactionParametersResponse transParams;
             try
             {
-                transParams = await algodApiInstance.ParamsAsync();
+                transParams = await algodApiInstance.TransactionParamsAsync();
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -86,8 +86,8 @@ namespace sdk_examples
             try
             {
                 var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                Console.WriteLine("Successfully sent tx with id: " + id.TxId);
-                var resp = await Utils.WaitTransactionToComplete(algodApiInstance, id.TxId) as Transaction;
+                Console.WriteLine("Successfully sent tx with id: " + id.Txid);
+                var resp = await Utils.WaitTransactionToComplete(algodApiInstance, id.Txid) as Transaction;
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
             }
             catch (ApiException<ErrorResponse> e)

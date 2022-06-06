@@ -31,12 +31,12 @@ namespace Algorand.Utils
             {
                 throw new ArgumentException("Bad arguments for waitForConfirmation.");
             }
-            NodeStatusResponse nodeStatusResponse = await instance.StatusAsync();            
+            NodeStatusResponse nodeStatusResponse = await instance.GetStatusAsync();            
             var startRound = nodeStatusResponse.LastRound + 1;
             var currentRound = startRound;
             while (currentRound < (startRound + timeout))
             {
-                var pendingInfo = await instance.PendingGetAsync(txID,null) as Transaction;
+                var pendingInfo = await instance.PendingTransactionInformationAsync(txID,null) as Transaction;
 
                 if (pendingInfo != null)
                 {
@@ -51,7 +51,7 @@ namespace Algorand.Utils
                         throw new Exception("The transaction has been rejected with a pool error: " + pendingInfo.PoolError);
                     }
                 }
-                await instance.WaitForBlockAfterAsync(currentRound);
+                await instance.WaitForBlockAsync(currentRound);
                 currentRound++;
             }
             throw new Exception("Transaction not confirmed after " + timeout + " rounds!");
@@ -129,7 +129,7 @@ namespace Algorand.Utils
                 stxns.Add(stxn);
             }
             if (sources.Count < 1) sources = null;
-            return await client.DryrunAsync(new DryrunRequest() { Txns = stxns, Sources = sources });
+            return await client.TealDryrunAsync(new DryrunRequest() { Txns = stxns, Sources = sources });
         }
 
         internal static byte[] CombineBytes(byte[] b1, byte[] b2)

@@ -27,7 +27,7 @@ namespace sdk_examples.contract
             CompileResponse response;
             using (var datams = new MemoryStream(data))
             {
-                response = await algodApiInstance.CompileAsync(datams);
+                response = await algodApiInstance.TealCompileAsync(datams);
             }
 
             Console.WriteLine("response: " + response);

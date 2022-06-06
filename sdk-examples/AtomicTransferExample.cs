@@ -32,7 +32,7 @@ namespace sdk_examples
             TransactionParametersResponse transParams;
             try
             {
-                transParams = await algodApiInstance.ParamsAsync();
+                transParams = await algodApiInstance.TransactionParamsAsync();
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -61,7 +61,7 @@ namespace sdk_examples
 
                 Console.WriteLine("Successfully sent tx group with first tx id: " + id);
                 Console.WriteLine("Confirmed Round is: " +
-                    Utils.WaitTransactionToComplete(algodApiInstance, id.TxId).Result.ConfirmedRound);
+                    Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
             }
             catch (Algorand.Algod.Model.ApiException e)
             {

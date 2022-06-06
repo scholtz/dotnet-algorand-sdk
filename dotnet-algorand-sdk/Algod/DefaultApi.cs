@@ -12,6 +12,7 @@ namespace Algorand.Algod
 {
     using Algorand.Utils;
     using Algorand.Algod.Model;
+    using Algorand.Algod.Model.Transactions;
     using System.Collections.Generic;
     using System.IO;
     using System = global::System;
@@ -19,7 +20,9 @@ namespace Algorand.Algod
 
     public partial interface IDefaultApi
     {
-       /// <summary>Given a specific account public key, this call returns the accounts status, balance and spendable amounts</summary>
+       /// <summary>Given a specific account public key, this call returns the accounts status,
+/// balance and spendable amounts
+       /// </summary>
        /// <param name="exclude">When set to `all` will exclude asset holdings, application local state, created asset parameters, any created application parameters. Defaults to `none`.</param>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="address">An account public key</param>
@@ -32,7 +35,10 @@ namespace Algorand.Algod
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<Account> AccountInformationAsync(string address, string? exclude,  Format? format, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Given a specific account public key and asset ID, this call returns the account's asset holding and asset parameters (if either exist). Asset parameters will only be returned if the provided address is the asset's creator.</summary>
+       /// <summary>Given a specific account public key and asset ID, this call returns the
+/// account's asset holding and asset parameters (if either exist). Asset parameters
+/// will only be returned if the provided address is the asset's creator.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="address">An account public key</param>
        /// <param name="asset-id">An asset identifier</param>
@@ -45,7 +51,11 @@ namespace Algorand.Algod
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<AccountAssetResponse> AccountAssetInformationAsync(string address, ulong assetId,  Format? format, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Given a specific account public key and application ID, this call returns the account's application local state and global state (AppLocalState and AppParams, if either exists). Global state will only be returned if the provided address is the application's creator.</summary>
+       /// <summary>Given a specific account public key and application ID, this call returns the
+/// account's application local state and global state (AppLocalState and AppParams,
+/// if either exists). Global state will only be returned if the provided address is
+/// the application's creator.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="address">An account public key</param>
        /// <param name="application-id">An application identifier</param>
@@ -58,8 +68,10 @@ namespace Algorand.Algod
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<AccountApplicationResponse> AccountApplicationInformationAsync(string address, ulong applicationId,  Format? format, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Get the list of pending transactions by address, sorted by priority, in decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending transactions.
-</summary>
+       /// <summary>Get the list of pending transactions by address, sorted by priority, in
+/// decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending
+/// transactions.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
        /// <param name="address">An account public key</param>
@@ -72,7 +84,8 @@ namespace Algorand.Algod
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<PendingTransactions> GetPendingTransactionsByAddressAsync(string address,  Format? format, ulong? max, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Get the block for the given round.</summary>
+       /// <summary>Get the block for the given round.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="round">The round from which to fetch block information.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -83,7 +96,8 @@ namespace Algorand.Algod
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(ulong round,  Format? format, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Get a Merkle proof for a transaction in a block.</summary>
+       /// <summary>Get a Merkle proof for a transaction in a block.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="round">The round in which the transaction appears.</param>
        /// <param name="txid">The transaction ID for which to generate a proof.</param>
@@ -96,21 +110,25 @@ namespace Algorand.Algod
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<ProofResponse> GetProofAsync(ulong round, string txid,  Format? format, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Get the current supply reported by the ledger.</summary>
+       /// <summary>Get the current supply reported by the ledger.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<SupplyResponse> GetSupplyAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<SupplyResponse> GetSupplyAsync(System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Gets the current node status.</summary>
+       /// <summary>Gets the current node status.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<NodeStatusResponse> GetStatusAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<NodeStatusResponse> GetStatusAsync(System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Waits for a block to appear after round {round} and returns the node's status at the time.</summary>
+       /// <summary>Waits for a block to appear after round {round} and returns the node's status at
+/// the time.
+       /// </summary>
        /// <param name="round">The round to wait until returning status</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<NodeStatusResponse> WaitForBlockAsync(ulong round);
@@ -119,7 +137,8 @@ namespace Algorand.Algod
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<NodeStatusResponse> WaitForBlockAsync(ulong round, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Broadcasts a raw transaction to the network.</summary>
+       /// <summary>Broadcasts a raw transaction to the network.
+       /// </summary>
        /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(List<SignedTransaction> rawtxn);
@@ -128,15 +147,17 @@ namespace Algorand.Algod
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(List<SignedTransaction> rawtxn, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Get parameters for constructing a new transaction</summary>
+       /// <summary>Get parameters for constructing a new transaction
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<TransactionParametersResponse> TransactionParamsAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<TransactionParametersResponse> TransactionParamsAsync(System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Get the list of pending transactions, sorted by priority, in decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending transactions.
-</summary>
+       /// <summary>Get the list of pending transactions, sorted by priority, in decreasing order,
+/// truncated at the end at MAX. If MAX = 0, returns all pending transactions.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -147,12 +168,15 @@ namespace Algorand.Algod
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<PendingTransactions> GetPendingTransactionsAsync( Format? format, ulong? max, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Given a transaction ID of a recently submitted transaction, it returns information about it.  There are several cases when this might succeed:
-- transaction committed (committed round > 0)
-- transaction still in the pool (committed round = 0, pool error = "")
-- transaction removed from pool due to error (committed round = 0, pool error != "")
-Or the transaction may have happened sufficiently long ago that the node no longer remembers it, and this will return an error.
-</summary>
+       /// <summary>Given a transaction ID of a recently submitted transaction, it returns
+/// information about it. There are several cases when this might succeed:
+/// - transaction committed (committed round > 0)
+/// - transaction still in the pool (committed round = 0, pool error = "")
+/// - transaction removed from pool due to error (committed round = 0, pool error !=
+/// "")
+/// Or the transaction may have happened sufficiently long ago that the node no
+/// longer remembers it, and this will return an error.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="txid">A transaction ID</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -163,7 +187,9 @@ Or the transaction may have happened sufficiently long ago that the node no long
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<IReturnableTransaction> PendingTransactionInformationAsync(string txid,  Format? format, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Given a application ID, it returns application information including creator, approval and clear programs, global and local schemas, and global state.</summary>
+       /// <summary>Given a application ID, it returns application information including creator,
+/// approval and clear programs, global and local schemas, and global state.
+       /// </summary>
        /// <param name="application-id">An application identifier</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<Application> GetApplicationByIDAsync(ulong applicationId);
@@ -172,7 +198,9 @@ Or the transaction may have happened sufficiently long ago that the node no long
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<Application> GetApplicationByIDAsync(ulong applicationId, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Given a asset ID, it returns asset information including creator, name, total supply and special addresses.</summary>
+       /// <summary>Given a asset ID, it returns asset information including creator, name, total
+/// supply and special addresses.
+       /// </summary>
        /// <param name="asset-id">An asset identifier</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<Asset> GetAssetByIDAsync(ulong assetId);
@@ -181,7 +209,10 @@ Or the transaction may have happened sufficiently long ago that the node no long
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<Asset> GetAssetByIDAsync(ulong assetId, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Given TEAL source code in plain text, return base64 encoded program bytes and base32 SHA512_256 hash of program bytes (Address style). This endpoint is only enabled when a node's configuration file sets EnableDeveloperAPI to true.</summary>
+       /// <summary>Given TEAL source code in plain text, return base64 encoded program bytes and
+/// base32 SHA512_256 hash of program bytes (Address style). This endpoint is only
+/// enabled when a node's configuration file sets EnableDeveloperAPI to true.
+       /// </summary>
        /// <param name="source">TEAL source code to be compiled</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<CompileResponse> TealCompileAsync(System.IO.Stream source);
@@ -190,7 +221,10 @@ Or the transaction may have happened sufficiently long ago that the node no long
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<CompileResponse> TealCompileAsync(System.IO.Stream source, System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Executes TEAL program(s) in context and returns debugging information about the execution. This endpoint is only enabled when a node's configuration file sets EnableDeveloperAPI to true.</summary>
+       /// <summary>Executes TEAL program(s) in context and returns debugging information about the
+/// execution. This endpoint is only enabled when a node's configuration file sets
+/// EnableDeveloperAPI to true.
+       /// </summary>
        /// <param name="request">Transaction (or group) and any accompanying state-simulation data.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<DryrunResponse> TealDryrunAsync(DryrunRequest request);
@@ -228,7 +262,9 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Given a specific account public key, this call returns the accounts status, balance and spendable amounts</summary>
+       /// <summary>Given a specific account public key, this call returns the accounts status,
+/// balance and spendable amounts
+       /// </summary>
        /// <param name="exclude">When set to `all` will exclude asset holdings, application local state, created asset parameters, any created application parameters. Defaults to `none`.</param>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="address">An account public key</param>
@@ -238,7 +274,9 @@ Or the transaction may have happened sufficiently long ago that the node no long
               return AccountInformationAsync(address, exclude, format, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Given a specific account public key, this call returns the accounts status, balance and spendable amounts</summary>
+       /// <summary>>Given a specific account public key, this call returns the accounts status,
+/// balance and spendable amounts
+       /// </summary>
        /// <param name="exclude">When set to `all` will exclude asset holdings, application local state, created asset parameters, any created application parameters. Defaults to `none`.</param>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="address">An account public key</param>
@@ -319,17 +357,23 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Given a specific account public key and asset ID, this call returns the account's asset holding and asset parameters (if either exist). Asset parameters will only be returned if the provided address is the asset's creator.</summary>
+       /// <summary>Given a specific account public key and asset ID, this call returns the
+/// account's asset holding and asset parameters (if either exist). Asset parameters
+/// will only be returned if the provided address is the asset's creator.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="address">An account public key</param>
        /// <param name="asset-id">An asset identifier</param>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<AccountAssetResponse> AccountAssetInformationAsync(string address, ulong assetId,  Format? format)
        {
-              return AccountAssetInformationAsync(address, asset-id, format, System.Threading.CancellationToken.None);
+              return AccountAssetInformationAsync(address, assetId, format, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Given a specific account public key and asset ID, this call returns the account's asset holding and asset parameters (if either exist). Asset parameters will only be returned if the provided address is the asset's creator.</summary>
+       /// <summary>>Given a specific account public key and asset ID, this call returns the
+/// account's asset holding and asset parameters (if either exist). Asset parameters
+/// will only be returned if the provided address is the asset's creator.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="address">An account public key</param>
        /// <param name="asset-id">An asset identifier</param>
@@ -338,11 +382,11 @@ Or the transaction may have happened sufficiently long ago that the node no long
        public async System.Threading.Tasks.Task<AccountAssetResponse> AccountAssetInformationAsync(string address, ulong assetId,  Format? format, System.Threading.CancellationToken cancellationToken)
        {
               if (address == null) throw new System.ArgumentNullException("address");
-              if (asset-id == null) throw new System.ArgumentNullException("asset-id");
+              if (assetId == null) throw new System.ArgumentNullException("assetId");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/accounts/{address}/assets/{asset-id}?");
               urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
-              urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(asset-id, System.Globalization.CultureInfo.InvariantCulture)));
+              urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(assetId, System.Globalization.CultureInfo.InvariantCulture)));
 
               var client_ = _httpClient;
               var disposeClient_ = false;
@@ -412,17 +456,25 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Given a specific account public key and application ID, this call returns the account's application local state and global state (AppLocalState and AppParams, if either exists). Global state will only be returned if the provided address is the application's creator.</summary>
+       /// <summary>Given a specific account public key and application ID, this call returns the
+/// account's application local state and global state (AppLocalState and AppParams,
+/// if either exists). Global state will only be returned if the provided address is
+/// the application's creator.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="address">An account public key</param>
        /// <param name="application-id">An application identifier</param>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<AccountApplicationResponse> AccountApplicationInformationAsync(string address, ulong applicationId,  Format? format)
        {
-              return AccountApplicationInformationAsync(address, application-id, format, System.Threading.CancellationToken.None);
+              return AccountApplicationInformationAsync(address, applicationId, format, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Given a specific account public key and application ID, this call returns the account's application local state and global state (AppLocalState and AppParams, if either exists). Global state will only be returned if the provided address is the application's creator.</summary>
+       /// <summary>>Given a specific account public key and application ID, this call returns the
+/// account's application local state and global state (AppLocalState and AppParams,
+/// if either exists). Global state will only be returned if the provided address is
+/// the application's creator.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="address">An account public key</param>
        /// <param name="application-id">An application identifier</param>
@@ -431,11 +483,11 @@ Or the transaction may have happened sufficiently long ago that the node no long
        public async System.Threading.Tasks.Task<AccountApplicationResponse> AccountApplicationInformationAsync(string address, ulong applicationId,  Format? format, System.Threading.CancellationToken cancellationToken)
        {
               if (address == null) throw new System.ArgumentNullException("address");
-              if (application-id == null) throw new System.ArgumentNullException("application-id");
+              if (applicationId == null) throw new System.ArgumentNullException("applicationId");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/accounts/{address}/applications/{application-id}?");
               urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
-              urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(application-id, System.Globalization.CultureInfo.InvariantCulture)));
+              urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(applicationId, System.Globalization.CultureInfo.InvariantCulture)));
 
               var client_ = _httpClient;
               var disposeClient_ = false;
@@ -505,8 +557,10 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Get the list of pending transactions by address, sorted by priority, in decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending transactions.
-</summary>
+       /// <summary>Get the list of pending transactions by address, sorted by priority, in
+/// decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending
+/// transactions.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
        /// <param name="address">An account public key</param>
@@ -516,8 +570,10 @@ Or the transaction may have happened sufficiently long ago that the node no long
               return GetPendingTransactionsByAddressAsync(address, format, max, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Get the list of pending transactions by address, sorted by priority, in decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending transactions.
-</summary>
+       /// <summary>>Get the list of pending transactions by address, sorted by priority, in
+/// decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending
+/// transactions.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
        /// <param name="address">An account public key</param>
@@ -598,7 +654,8 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Get the block for the given round.</summary>
+       /// <summary>Get the block for the given round.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="round">The round from which to fetch block information.</param>
        /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -607,7 +664,8 @@ Or the transaction may have happened sufficiently long ago that the node no long
               return GetBlockAsync(round, format, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Get the block for the given round.</summary>
+       /// <summary>>Get the block for the given round.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="round">The round from which to fetch block information.</param>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -687,7 +745,8 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Get a Merkle proof for a transaction in a block.</summary>
+       /// <summary>Get a Merkle proof for a transaction in a block.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="round">The round in which the transaction appears.</param>
        /// <param name="txid">The transaction ID for which to generate a proof.</param>
@@ -697,7 +756,8 @@ Or the transaction may have happened sufficiently long ago that the node no long
               return GetProofAsync(round, txid, format, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Get a Merkle proof for a transaction in a block.</summary>
+       /// <summary>>Get a Merkle proof for a transaction in a block.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="round">The round in which the transaction appears.</param>
        /// <param name="txid">The transaction ID for which to generate a proof.</param>
@@ -780,14 +840,16 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Get the current supply reported by the ledger.</summary>
+       /// <summary>Get the current supply reported by the ledger.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<SupplyResponse> GetSupplyAsync()
        {
               return GetSupplyAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Get the current supply reported by the ledger.</summary>
+       /// <summary>>Get the current supply reported by the ledger.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<SupplyResponse> GetSupplyAsync(System.Threading.CancellationToken cancellationToken)
@@ -863,14 +925,16 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Gets the current node status.</summary>
+       /// <summary>Gets the current node status.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<NodeStatusResponse> GetStatusAsync()
        {
               return GetStatusAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Gets the current node status.</summary>
+       /// <summary>>Gets the current node status.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<NodeStatusResponse> GetStatusAsync(System.Threading.CancellationToken cancellationToken)
@@ -946,7 +1010,9 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Waits for a block to appear after round {round} and returns the node's status at the time.</summary>
+       /// <summary>Waits for a block to appear after round {round} and returns the node's status at
+/// the time.
+       /// </summary>
        /// <param name="round">The round to wait until returning status</param>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<NodeStatusResponse> WaitForBlockAsync(ulong round)
@@ -954,7 +1020,9 @@ Or the transaction may have happened sufficiently long ago that the node no long
               return WaitForBlockAsync(round, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Waits for a block to appear after round {round} and returns the node's status at the time.</summary>
+       /// <summary>>Waits for a block to appear after round {round} and returns the node's status at
+/// the time.
+       /// </summary>
        /// <param name="round">The round to wait until returning status</param>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -1033,7 +1101,8 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Broadcasts a raw transaction to the network.</summary>
+       /// <summary>Broadcasts a raw transaction to the network.
+       /// </summary>
        /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(List<SignedTransaction> rawtxn)
@@ -1041,7 +1110,8 @@ Or the transaction may have happened sufficiently long ago that the node no long
               return TransactionsAsync(rawtxn, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Broadcasts a raw transaction to the network.</summary>
+       /// <summary>>Broadcasts a raw transaction to the network.
+       /// </summary>
        /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -1122,14 +1192,16 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Get parameters for constructing a new transaction</summary>
+       /// <summary>Get parameters for constructing a new transaction
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<TransactionParametersResponse> TransactionParamsAsync()
        {
               return TransactionParamsAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Get parameters for constructing a new transaction</summary>
+       /// <summary>>Get parameters for constructing a new transaction
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<TransactionParametersResponse> TransactionParamsAsync(System.Threading.CancellationToken cancellationToken)
@@ -1205,8 +1277,9 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Get the list of pending transactions, sorted by priority, in decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending transactions.
-</summary>
+       /// <summary>Get the list of pending transactions, sorted by priority, in decreasing order,
+/// truncated at the end at MAX. If MAX = 0, returns all pending transactions.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
        /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1215,8 +1288,9 @@ Or the transaction may have happened sufficiently long ago that the node no long
               return GetPendingTransactionsAsync(format, max, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Get the list of pending transactions, sorted by priority, in decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending transactions.
-</summary>
+       /// <summary>>Get the list of pending transactions, sorted by priority, in decreasing order,
+/// truncated at the end at MAX. If MAX = 0, returns all pending transactions.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1294,12 +1368,15 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Given a transaction ID of a recently submitted transaction, it returns information about it.  There are several cases when this might succeed:
-- transaction committed (committed round > 0)
-- transaction still in the pool (committed round = 0, pool error = "")
-- transaction removed from pool due to error (committed round = 0, pool error != "")
-Or the transaction may have happened sufficiently long ago that the node no longer remembers it, and this will return an error.
-</summary>
+       /// <summary>Given a transaction ID of a recently submitted transaction, it returns
+/// information about it. There are several cases when this might succeed:
+/// - transaction committed (committed round > 0)
+/// - transaction still in the pool (committed round = 0, pool error = "")
+/// - transaction removed from pool due to error (committed round = 0, pool error !=
+/// "")
+/// Or the transaction may have happened sufficiently long ago that the node no
+/// longer remembers it, and this will return an error.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="txid">A transaction ID</param>
        /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1308,12 +1385,15 @@ Or the transaction may have happened sufficiently long ago that the node no long
               return PendingTransactionInformationAsync(txid, format, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Given a transaction ID of a recently submitted transaction, it returns information about it.  There are several cases when this might succeed:
-- transaction committed (committed round > 0)
-- transaction still in the pool (committed round = 0, pool error = "")
-- transaction removed from pool due to error (committed round = 0, pool error != "")
-Or the transaction may have happened sufficiently long ago that the node no longer remembers it, and this will return an error.
-</summary>
+       /// <summary>>Given a transaction ID of a recently submitted transaction, it returns
+/// information about it. There are several cases when this might succeed:
+/// - transaction committed (committed round > 0)
+/// - transaction still in the pool (committed round = 0, pool error = "")
+/// - transaction removed from pool due to error (committed round = 0, pool error !=
+/// "")
+/// Or the transaction may have happened sufficiently long ago that the node no
+/// longer remembers it, and this will return an error.
+       /// </summary>
        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
        /// <param name="txid">A transaction ID</param>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1393,24 +1473,28 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Given a application ID, it returns application information including creator, approval and clear programs, global and local schemas, and global state.</summary>
+       /// <summary>Given a application ID, it returns application information including creator,
+/// approval and clear programs, global and local schemas, and global state.
+       /// </summary>
        /// <param name="application-id">An application identifier</param>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<Application> GetApplicationByIDAsync(ulong applicationId)
        {
-              return GetApplicationByIDAsync(application-id, System.Threading.CancellationToken.None);
+              return GetApplicationByIDAsync(applicationId, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Given a application ID, it returns application information including creator, approval and clear programs, global and local schemas, and global state.</summary>
+       /// <summary>>Given a application ID, it returns application information including creator,
+/// approval and clear programs, global and local schemas, and global state.
+       /// </summary>
        /// <param name="application-id">An application identifier</param>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<Application> GetApplicationByIDAsync(ulong applicationId, System.Threading.CancellationToken cancellationToken)
        {
-              if (application-id == null) throw new System.ArgumentNullException("application-id");
+              if (applicationId == null) throw new System.ArgumentNullException("applicationId");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/applications/{application-id}");
-              urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(application-id, System.Globalization.CultureInfo.InvariantCulture)));
+              urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(applicationId, System.Globalization.CultureInfo.InvariantCulture)));
 
               var client_ = _httpClient;
               var disposeClient_ = false;
@@ -1480,24 +1564,28 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Given a asset ID, it returns asset information including creator, name, total supply and special addresses.</summary>
+       /// <summary>Given a asset ID, it returns asset information including creator, name, total
+/// supply and special addresses.
+       /// </summary>
        /// <param name="asset-id">An asset identifier</param>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<Asset> GetAssetByIDAsync(ulong assetId)
        {
-              return GetAssetByIDAsync(asset-id, System.Threading.CancellationToken.None);
+              return GetAssetByIDAsync(assetId, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Given a asset ID, it returns asset information including creator, name, total supply and special addresses.</summary>
+       /// <summary>>Given a asset ID, it returns asset information including creator, name, total
+/// supply and special addresses.
+       /// </summary>
        /// <param name="asset-id">An asset identifier</param>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<Asset> GetAssetByIDAsync(ulong assetId, System.Threading.CancellationToken cancellationToken)
        {
-              if (asset-id == null) throw new System.ArgumentNullException("asset-id");
+              if (assetId == null) throw new System.ArgumentNullException("assetId");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/assets/{asset-id}");
-              urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(asset-id, System.Globalization.CultureInfo.InvariantCulture)));
+              urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(assetId, System.Globalization.CultureInfo.InvariantCulture)));
 
               var client_ = _httpClient;
               var disposeClient_ = false;
@@ -1567,7 +1655,10 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Given TEAL source code in plain text, return base64 encoded program bytes and base32 SHA512_256 hash of program bytes (Address style). This endpoint is only enabled when a node's configuration file sets EnableDeveloperAPI to true.</summary>
+       /// <summary>Given TEAL source code in plain text, return base64 encoded program bytes and
+/// base32 SHA512_256 hash of program bytes (Address style). This endpoint is only
+/// enabled when a node's configuration file sets EnableDeveloperAPI to true.
+       /// </summary>
        /// <param name="source">TEAL source code to be compiled</param>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<CompileResponse> TealCompileAsync(System.IO.Stream source)
@@ -1575,7 +1666,10 @@ Or the transaction may have happened sufficiently long ago that the node no long
               return TealCompileAsync(source, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Given TEAL source code in plain text, return base64 encoded program bytes and base32 SHA512_256 hash of program bytes (Address style). This endpoint is only enabled when a node's configuration file sets EnableDeveloperAPI to true.</summary>
+       /// <summary>>Given TEAL source code in plain text, return base64 encoded program bytes and
+/// base32 SHA512_256 hash of program bytes (Address style). This endpoint is only
+/// enabled when a node's configuration file sets EnableDeveloperAPI to true.
+       /// </summary>
        /// <param name="source">TEAL source code to be compiled</param>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -1656,7 +1750,10 @@ Or the transaction may have happened sufficiently long ago that the node no long
 
        
 
-       /// <summary>Executes TEAL program(s) in context and returns debugging information about the execution. This endpoint is only enabled when a node's configuration file sets EnableDeveloperAPI to true.</summary>
+       /// <summary>Executes TEAL program(s) in context and returns debugging information about the
+/// execution. This endpoint is only enabled when a node's configuration file sets
+/// EnableDeveloperAPI to true.
+       /// </summary>
        /// <param name="request">Transaction (or group) and any accompanying state-simulation data.</param>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<DryrunResponse> TealDryrunAsync(DryrunRequest request)
@@ -1664,7 +1761,10 @@ Or the transaction may have happened sufficiently long ago that the node no long
               return TealDryrunAsync(request, System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Executes TEAL program(s) in context and returns debugging information about the execution. This endpoint is only enabled when a node's configuration file sets EnableDeveloperAPI to true.</summary>
+       /// <summary>>Executes TEAL program(s) in context and returns debugging information about the
+/// execution. This endpoint is only enabled when a node's configuration file sets
+/// EnableDeveloperAPI to true.
+       /// </summary>
        /// <param name="request">Transaction (or group) and any accompanying state-simulation data.</param>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -1681,8 +1781,8 @@ Or the transaction may have happened sufficiently long ago that the node no long
                 {
                      request_.Method = new System.Net.Http.HttpMethod("POST");
                      request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                     var content_ = new System.Net.Http.StreamContent(source);
-                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("text/plain");
+                     System.Net.Http.ByteArrayContent content_ = new System.Net.Http.ByteArrayContent(Encoder.EncodeToMsgPackOrdered(request));
+                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/msgpack");
                      request_.Content = content_;
 
                     PrepareRequest(client_, request_, urlBuilder_);

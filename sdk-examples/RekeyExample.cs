@@ -45,7 +45,7 @@ namespace sdk_examples
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
-            var trans = await algodApiInstance.ParamsAsync();
+            var trans = await algodApiInstance.TransactionParamsAsync();
             Console.WriteLine("Lastround: " + trans.LastRound.ToString());
 
 
@@ -69,7 +69,7 @@ namespace sdk_examples
                     //waitForTransactionToComplete(algodApiInstance, signedTx.transactionID);
                     //Console.ReadKey();
                     Console.WriteLine("Confirmed Round is: " +
-                        Utils.WaitTransactionToComplete(algodApiInstance, id.TxId).Result.ConfirmedRound);
+                        Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
                 }
                 catch (Exception e)
                 {
@@ -79,7 +79,7 @@ namespace sdk_examples
                 }
             }
 
-            var act = await algodApiInstance.AccountsAsync(account3.Address.ToString(), null);
+            var act = await algodApiInstance.AccountInformationAsync(account3.Address.ToString(),null, null);
             Console.WriteLine(act);
 
             ulong amount2 = 1000000;
@@ -92,7 +92,7 @@ namespace sdk_examples
                 var id = await Utils.SubmitTransaction(algodApiInstance, signedTx2);
                 Console.WriteLine("Transaction ID: " + id);
                 Console.WriteLine("Confirmed Round is: " +
-                    Utils.WaitTransactionToComplete(algodApiInstance, id.TxId).Result.ConfirmedRound);
+                    Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
             }
             catch (ApiException<ErrorResponse> e)
             {

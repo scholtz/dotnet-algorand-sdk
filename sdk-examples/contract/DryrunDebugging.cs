@@ -41,7 +41,7 @@ namespace sdk_examples.contract
             Algorand.Algod.Model.TransactionParametersResponse transParams;
             try
             {
-                transParams = await algodApiInstance.ParamsAsync();
+                transParams = await algodApiInstance.TransactionParamsAsync();
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
@@ -55,7 +55,7 @@ namespace sdk_examples.contract
 
                 // dryrun logic sig transaction
                 var dryrunResponse2 = await Utils.GetDryrunResponse(algodApiInstance, signedTx);
-                Console.WriteLine("Dryrun source repsonse : " + dryrunResponse2.ToJson()); // pretty print
+                Console.WriteLine("Dryrun source response : " + dryrunResponse2.ToJson()); 
             }
             catch (Algorand.Algod.Model.ApiException e)
             {
