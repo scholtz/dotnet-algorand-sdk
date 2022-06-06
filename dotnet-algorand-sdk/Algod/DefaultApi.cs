@@ -1127,57 +1127,66 @@ namespace Algorand.Algod
               {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                     request_.Method = new System.Net.Http.HttpMethod("POST");
-                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                     System.Net.Http.ByteArrayContent content_ = new System.Net.Http.ByteArrayContent(Encoder.EncodeToMsgPackOrdered(rawtxn));
-                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/msgpack");
-                     request_.Content = content_;
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
+                    List<byte> byteList = new List<byte>();
+                    foreach (var txn in rawtxn)
                     {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<PostTransactionsResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        //Algorand Generator cannot distinguish between response codes
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
+                        byteList.AddRange(Encoder.EncodeToMsgPackOrdered(txn)); //this is not actually necessary - unordered works too
                     }
-                    finally
+                    using (var ms = new MemoryStream(byteList.ToArray()))
                     {
-                        if (disposeResponse_)
-                            response_.Dispose();
+
+                        request_.Method = new System.Net.Http.HttpMethod("POST");
+                        request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                        var content_ = new System.Net.Http.StreamContent(ms);
+                        content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/msgpack");
+                        request_.Content = content_;
+
+                        PrepareRequest(client_, request_, urlBuilder_);
+
+                        var url_ = urlBuilder_.ToString();
+                        request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                        PrepareRequest(client_, request_, url_);
+
+                        var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                        var disposeResponse_ = true;
+                        try
+                        {
+                            var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                            if (response_.Content != null && response_.Content.Headers != null)
+                            {
+                                foreach (var item_ in response_.Content.Headers)
+                                    headers_[item_.Key] = item_.Value;
+                            }
+
+                            ProcessResponse(client_, response_);
+
+                            var status_ = (int)response_.StatusCode;
+                            if (status_ == 200)
+                            {
+                                var objectResponse_ = await ReadObjectResponseAsync<PostTransactionsResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                                if (objectResponse_.Object == null)
+                                {
+                                    throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                }
+                                return objectResponse_.Object;
+                            }
+                            else
+                            //Algorand Generator cannot distinguish between response codes
+                            {
+                                var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                                if (objectResponse_.Object == null)
+                                {
+                                    throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                }
+                                throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            }
+                        }
+                        finally
+                        {
+                            if (disposeResponse_)
+                                response_.Dispose();
+                        }
                     }
                 }
             }

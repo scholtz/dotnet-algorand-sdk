@@ -258,9 +258,9 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationOptInTransaction;
                 Console.WriteLine(string.Format("Address {0} optin to Application({1})",   sender.Address.ToString(), resp.ApplicationId));
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
             {
-                Console.WriteLine("Exception when calling create application: " + e.Message);
+                Console.WriteLine("Exception when calling create application: " + e.Result.Message);
             }
         }
 
@@ -289,9 +289,9 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationDeleteTransaction;
                 Console.WriteLine("Success deleted the application " + resp.ApplicationId);
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
             {
-                Console.WriteLine("Exception when calling create application: " + e.Message);
+                Console.WriteLine("Exception when calling create application: " + e.Result.Message);
             }
         }
 
@@ -319,9 +319,9 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationClearStateTransaction;
                 Console.WriteLine("Success cleared the application " + resp.ApplicationId);
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
             {
-                Console.WriteLine("Exception when calling create application: " + e.Message);
+                Console.WriteLine("Exception when calling create application: " + e.Result.Message);
             }
         }
 
@@ -371,9 +371,9 @@ namespace sdk_examples.contract
                     Console.WriteLine(outStr);
                 }
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
             {
-                Console.WriteLine("Exception when calling create application: " + e.Message);
+                Console.WriteLine("Exception when calling create application: " + e.Result.Message);
             }
         }
 

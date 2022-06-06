@@ -9,15 +9,7 @@
     {
 
 
-        /// <summary>\[nui\] num of uints.</summary>
-        [Newtonsoft.Json.JsonProperty("num-uint")]
-        private ulong numUint { set { NumUint = value; } }
-
-      
-
-        /// <summary>\[nbs\] num of byte slices.</summary>
-        [Newtonsoft.Json.JsonProperty("num-byte-slice")]
-        private ulong numByteSlice { set { NumByteSlice = value; } }
+   
 
 
     }
