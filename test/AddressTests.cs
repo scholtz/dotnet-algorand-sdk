@@ -39,7 +39,7 @@ namespace test
         public void testAddressSerializable()
         {
             Address a = new Address("VKM6KSCTDHEM6KGEAMSYCNEGIPFJMHDSEMIRAQLK76CJDIRMMDHKAIRMFQ");
-            byte[] outBytes = Encoder.EncodeToMsgPack(a);
+            byte[] outBytes = Encoder.EncodeToMsgPackOrdered(a);
             Address o = Encoder.DecodeFromMsgPack<Address>(outBytes);//把内存流反序列成对象            
             Assert.AreEqual(o, a);
             Assert.AreEqual("VKM6KSCTDHEM6KGEAMSYCNEGIPFJMHDSEMIRAQLK76CJDIRMMDHKAIRMFQ", o.EncodeAsString());
