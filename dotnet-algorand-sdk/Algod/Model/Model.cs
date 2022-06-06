@@ -18,25 +18,7 @@ namespace Algorand.Algod.Model
   
   
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Response3
-    {
-        /// <summary>Merkle proof of transaction membership.</summary>
-        [Newtonsoft.Json.JsonProperty("proof", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public byte[] Proof { get; set; }
-
-        /// <summary>Hash of SignedTxnInBlock for verifying proof.</summary>
-        [Newtonsoft.Json.JsonProperty("stibhash", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public byte[] Stibhash { get; set; }
-
-        /// <summary>Index of the transaction in the block's payset.</summary>
-        [Newtonsoft.Json.JsonProperty("idx", Required = Newtonsoft.Json.Required.Always)]
-        public ulong Idx { get; set; }
-
-
-    }
+   
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class RegisterParticipationKeysResponse
@@ -58,188 +40,16 @@ namespace Algorand.Algod.Model
 
     }
 
-    /// <summary>Supply represents the current supply of MicroAlgos in the system</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Response4
-    {
-        /// <summary>Round</summary>
-        [Newtonsoft.Json.JsonProperty("current_round", Required = Newtonsoft.Json.Required.Always)]
-        public ulong Current_round { get; set; }
+   
 
-        /// <summary>OnlineMoney</summary>
-        [Newtonsoft.Json.JsonProperty("online-money", Required = Newtonsoft.Json.Required.Always)]
-        public ulong OnlineMoney { get; set; }
+   
 
-        /// <summary>TotalMoney</summary>
-        [Newtonsoft.Json.JsonProperty("total-money", Required = Newtonsoft.Json.Required.Always)]
-        public ulong TotalMoney { get; set; }
+  
 
+    
+   
 
-    }
-
-    /// <summary>NodeStatus contains the information about a node status</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class NodeStatusResponse
-    {
-        /// <summary>CatchupTime in nanoseconds</summary>
-        [Newtonsoft.Json.JsonProperty("catchup-time", Required = Newtonsoft.Json.Required.Always)]
-        public ulong CatchupTime { get; set; }
-
-        /// <summary>LastRound indicates the last round seen</summary>
-        [Newtonsoft.Json.JsonProperty("last-round", Required = Newtonsoft.Json.Required.Always)]
-        public ulong LastRound { get; set; }
-
-        /// <summary>LastVersion indicates the last consensus version supported</summary>
-        [Newtonsoft.Json.JsonProperty("last-version", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string LastVersion { get; set; }
-
-        /// <summary>NextVersion of consensus protocol to use</summary>
-        [Newtonsoft.Json.JsonProperty("next-version", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string NextVersion { get; set; }
-
-        /// <summary>NextVersionRound is the round at which the next consensus version will apply</summary>
-        [Newtonsoft.Json.JsonProperty("next-version-round", Required = Newtonsoft.Json.Required.Always)]
-        public ulong NextVersionRound { get; set; }
-
-        /// <summary>NextVersionSupported indicates whether the next consensus version is supported by this node</summary>
-        [Newtonsoft.Json.JsonProperty("next-version-supported", Required = Newtonsoft.Json.Required.Always)]
-        public bool NextVersionSupported { get; set; }
-
-        /// <summary>StoppedAtUnsupportedRound indicates that the node does not support the new rounds and has stopped making progress</summary>
-        [Newtonsoft.Json.JsonProperty("stopped-at-unsupported-round", Required = Newtonsoft.Json.Required.Always)]
-        public bool StoppedAtUnsupportedRound { get; set; }
-
-        /// <summary>TimeSinceLastRound in nanoseconds</summary>
-        [Newtonsoft.Json.JsonProperty("time-since-last-round", Required = Newtonsoft.Json.Required.Always)]
-        public ulong TimeSinceLastRound { get; set; }
-
-        /// <summary>The last catchpoint seen by the node</summary>
-        [Newtonsoft.Json.JsonProperty("last-catchpoint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string LastCatchpoint { get; set; }
-
-        /// <summary>The current catchpoint that is being caught up to</summary>
-        [Newtonsoft.Json.JsonProperty("catchpoint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Catchpoint { get; set; }
-
-        /// <summary>The total number of accounts included in the current catchpoint</summary>
-        [Newtonsoft.Json.JsonProperty("catchpoint-total-accounts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ulong? CatchpointTotalAccounts { get; set; }
-
-        /// <summary>The number of accounts from the current catchpoint that have been processed so far as part of the catchup</summary>
-        [Newtonsoft.Json.JsonProperty("catchpoint-processed-accounts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ulong? CatchpointProcessedAccounts { get; set; }
-
-        /// <summary>The number of accounts from the current catchpoint that have been verified so far as part of the catchup</summary>
-        [Newtonsoft.Json.JsonProperty("catchpoint-verified-accounts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ulong? CatchpointVerifiedAccounts { get; set; }
-
-        /// <summary>The total number of blocks that are required to complete the current catchpoint catchup</summary>
-        [Newtonsoft.Json.JsonProperty("catchpoint-total-blocks", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ulong? CatchpointTotalBlocks { get; set; }
-
-        /// <summary>The number of blocks that have already been obtained by the node as part of the catchup</summary>
-        [Newtonsoft.Json.JsonProperty("catchpoint-acquired-blocks", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? CatchpointAcquiredBlocks { get; set; }
-
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class PostTransactionsResponse
-    {
-        /// <summary>encoding of the transaction hash.</summary>
-        [Newtonsoft.Json.JsonProperty("txId", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string TxId { get; set; }
-
-
-    }
-
-    /// <summary>TransactionParams contains the parameters that help a client construct
-    /// <br/>a new transaction.</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class TransactionParametersResponse
-    {
-        /// <summary>ConsensusVersion indicates the consensus protocol version
-        /// <br/>as of LastRound.</summary>
-        [Newtonsoft.Json.JsonProperty("consensus-version", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string ConsensusVersion { get; set; }
-
-        /// <summary>Fee is the suggested transaction fee
-        /// <br/>Fee is in units of micro-Algos per byte.
-        /// <br/>Fee may fall to zero but transactions must still have a fee of
-        /// <br/>at least MinTxnFee for the current network protocol.</summary>
-        [Newtonsoft.Json.JsonProperty("fee", Required = Newtonsoft.Json.Required.Always)]
-        public ulong Fee { get; set; }
-
-        /// <summary>GenesisHash is the hash of the genesis block.</summary>
-        [Newtonsoft.Json.JsonProperty("genesis-hash", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public byte[] GenesisHash { get; set; }
-
-        /// <summary>GenesisID is an ID listed in the genesis block.</summary>
-        [Newtonsoft.Json.JsonProperty("genesis-id", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string GenesisId { get; set; }
-
-        /// <summary>LastRound indicates the last round seen</summary>
-        [Newtonsoft.Json.JsonProperty("last-round", Required = Newtonsoft.Json.Required.Always)]
-        public ulong LastRound { get; set; }
-
-        /// <summary>The minimum transaction fee (not per byte) required for the
-        /// <br/>txn to validate for the current network protocol.</summary>
-        [Newtonsoft.Json.JsonProperty("min-fee", Required = Newtonsoft.Json.Required.Always)]
-        public ulong MinFee { get; set; }
-
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class CompileResponse
-    {
-        /// <summary>base32 SHA512_256 of program bytes (Address style)</summary>
-        [Newtonsoft.Json.JsonProperty("hash", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Hash { get; set; }
-
-        /// <summary>base64 encoded program bytes</summary>
-        [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Result { get; set; }
-
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class DryrunResponse
-    {
-        [Newtonsoft.Json.JsonProperty("txns", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<DryrunTxnResult> Txns { get; set; } = new System.Collections.ObjectModel.Collection<DryrunTxnResult>();
-
-        [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Error { get; set; }
-
-        /// <summary>Protocol version is the protocol version Dryrun was operated under.</summary>
-        [Newtonsoft.Json.JsonProperty("protocol-version", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string ProtocolVersion { get; set; }
-
-        public string ToJson()
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-
-        public static DryrunResponse FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<DryrunResponse>(data, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-
-    }
+   
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Response10
@@ -271,29 +81,7 @@ namespace Algorand.Algod.Model
 
     }
 
-    /// <summary>An catchpoint start response.</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Response12
-    {
-        /// <summary>Catchup start response string</summary>
-        [Newtonsoft.Json.JsonProperty("catchup-message", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string CatchupMessage { get; set; }
-
-
-    }
-
-    /// <summary>An catchpoint abort response.</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Response13
-    {
-        /// <summary>Catchup abort response string</summary>
-        [Newtonsoft.Json.JsonProperty("catchup-message", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string CatchupMessage { get; set; }
-
-
-    }
+   
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
     public enum AccountSigType

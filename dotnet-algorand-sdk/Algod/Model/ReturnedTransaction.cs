@@ -1,10 +1,11 @@
 ﻿
 
+using Algorand.Algod.Model.Transactions;
 using Algorand.Utils;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
-namespace Algorand.Algod.Model.Transactions
+namespace Algorand.Algod.Model
 {
 
     internal class ReturnedTransaction 

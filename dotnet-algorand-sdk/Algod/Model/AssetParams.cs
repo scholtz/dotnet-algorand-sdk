@@ -2,6 +2,9 @@
 {
     using System.ComponentModel;
     using System = global::System;
+
+    //TODO - modify codegen for this 
+
     /// <summary>AssetParams specifies the parameters for an asset.
     /// <br/>
     /// <br/>\[apar\] when part of an AssetConfig transaction.
@@ -11,7 +14,7 @@
 
     public partial class AssetParams
     {
-        
+            
         [Newtonsoft.Json.JsonProperty("c", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Address Clawback { get; set; }
 

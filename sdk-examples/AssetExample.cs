@@ -46,7 +46,7 @@ namespace sdk_examples
             // Transaction
             // We will account for changing transaction parameters
             // before every transaction in this example
-            var transParams = await algodApiInstance.ParamsAsync();
+            var transParams = await algodApiInstance.TransactionParamsAsync();
 
             // The following parameters are asset specific
             // and will be re-used throughout the example. 

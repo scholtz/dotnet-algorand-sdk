@@ -20,65 +20,70 @@ namespace Algorand.Algod
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.14.5.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial interface IPrivateApi
+    public partial interface ICommonApi
     {
-        /// <param name="address">The `account-id` to update, or `all` to update all accounts.</param>
-        /// <param name="fee">The fee to use when submitting key registration transactions. Defaults to the suggested fee.</param>
-        /// <param name="key_dilution">value to use for two-level participation key.</param>
-        /// <param name="round_last_valid">The last round for which the generated participation keys will be valid.</param>
-        /// <param name="no_wait">Don't wait for transaction to commit before returning response.</param>
-        /// <returns>Transaction ID of the submission.</returns>
+        /// <summary>Returns OK if healthy.</summary>
+        /// <returns>OK.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<RegisterParticipationKeysResponse> RegisterParticipationKeysAsync(string address, int? fee, int? key_dilution, int? round_last_valid, bool? no_wait);
+        System.Threading.Tasks.Task HealthAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <param name="address">The `account-id` to update, or `all` to update all accounts.</param>
-        /// <param name="fee">The fee to use when submitting key registration transactions. Defaults to the suggested fee.</param>
-        /// <param name="key_dilution">value to use for two-level participation key.</param>
-        /// <param name="round_last_valid">The last round for which the generated participation keys will be valid.</param>
-        /// <param name="no_wait">Don't wait for transaction to commit before returning response.</param>
-        /// <returns>Transaction ID of the submission.</returns>
+        /// <summary>Returns OK if healthy.</summary>
+        /// <returns>OK.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<RegisterParticipationKeysResponse> RegisterParticipationKeysAsync(string address, int? fee, int? key_dilution, int? round_last_valid, bool? no_wait, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task HealthAsync(System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>Return metrics about algod functioning.</summary>
+        /// <returns>text with \#-comments and key:value lines</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<object> ShutdownAsync(int? timeout);
+        System.Threading.Tasks.Task MetricsAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Return metrics about algod functioning.</summary>
+        /// <returns>text with \#-comments and key:value lines</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<object> ShutdownAsync(int? timeout, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MetricsAsync(System.Threading.CancellationToken cancellationToken);
 
-        /// <summary>Starts a catchpoint catchup.</summary>
-        /// <param name="catchpoint">A catch point</param>
+        /// <summary>Gets the genesis information.</summary>
+        /// <returns>The genesis file in json.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response12> CatchupPostAsync(string catchpoint);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Starts a catchpoint catchup.</summary>
-        /// <param name="catchpoint">A catch point</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response12> CatchupPostAsync(string catchpoint, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>Aborts a catchpoint catchup.</summary>
-        /// <param name="catchpoint">A catch point</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response13> CatchupDeleteAsync(string catchpoint);
+        System.Threading.Tasks.Task<string> GenesisAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Aborts a catchpoint catchup.</summary>
-        /// <param name="catchpoint">A catch point</param>
+        /// <summary>Gets the genesis information.</summary>
+        /// <returns>The genesis file in json.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response13> CatchupDeleteAsync(string catchpoint, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<string> GenesisAsync(System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>Gets the current swagger spec.</summary>
+        /// <returns>The current swagger spec</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> Swagger_jsonAsync();
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Gets the current swagger spec.</summary>
+        /// <returns>The current swagger spec</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> Swagger_jsonAsync(System.Threading.CancellationToken cancellationToken);
+
+        /// <returns>VersionsResponse is the response to 'GET /versions'</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Version> VersionsAsync();
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>VersionsResponse is the response to 'GET /versions'</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Version> VersionsAsync(System.Threading.CancellationToken cancellationToken);
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.14.5.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class PrivateApi : IPrivateApi
+    public partial class CommonApi : ICommonApi
     {
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public PrivateApi(System.Net.Http.HttpClient httpClient)
+        public CommonApi(System.Net.Http.HttpClient httpClient)
         {
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
@@ -99,52 +104,22 @@ namespace Algorand.Algod
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
-
-        /// <param name="address">The `account-id` to update, or `all` to update all accounts.</param>
-        /// <param name="fee">The fee to use when submitting key registration transactions. Defaults to the suggested fee.</param>
-        /// <param name="key_dilution">value to use for two-level participation key.</param>
-        /// <param name="round_last_valid">The last round for which the generated participation keys will be valid.</param>
-        /// <param name="no_wait">Don't wait for transaction to commit before returning response.</param>
-        /// <returns>Transaction ID of the submission.</returns>
+        /// <summary>Returns OK if healthy.</summary>
+        /// <returns>OK.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<RegisterParticipationKeysResponse> RegisterParticipationKeysAsync(string address, int? fee, int? key_dilution, int? round_last_valid, bool? no_wait)
+        public System.Threading.Tasks.Task HealthAsync()
         {
-            return RegisterParticipationKeysAsync(address, fee, key_dilution, round_last_valid, no_wait, System.Threading.CancellationToken.None);
+            return HealthAsync(System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <param name="address">The `account-id` to update, or `all` to update all accounts.</param>
-        /// <param name="fee">The fee to use when submitting key registration transactions. Defaults to the suggested fee.</param>
-        /// <param name="key_dilution">value to use for two-level participation key.</param>
-        /// <param name="round_last_valid">The last round for which the generated participation keys will be valid.</param>
-        /// <param name="no_wait">Don't wait for transaction to commit before returning response.</param>
-        /// <returns>Transaction ID of the submission.</returns>
+        /// <summary>Returns OK if healthy.</summary>
+        /// <returns>OK.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<RegisterParticipationKeysResponse> RegisterParticipationKeysAsync(string address, int? fee, int? key_dilution, int? round_last_valid, bool? no_wait, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task HealthAsync(System.Threading.CancellationToken cancellationToken)
         {
-            if (address == null)
-                throw new System.ArgumentNullException("address");
-
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("v2/register-participation-keys/{address}?");
-            urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
-            if (fee != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("fee") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fee, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (key_dilution != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("key-dilution") + "=").Append(System.Uri.EscapeDataString(ConvertToString(key_dilution, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (round_last_valid != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("round-last-valid") + "=").Append(System.Uri.EscapeDataString(ConvertToString(round_last_valid, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (no_wait != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("no-wait") + "=").Append(System.Uri.EscapeDataString(ConvertToString(no_wait, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            urlBuilder_.Length--;
+            urlBuilder_.Append("health");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -152,9 +127,7 @@ namespace Algorand.Algod
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -179,210 +152,7 @@ namespace Algorand.Algod
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<RegisterParticipationKeysResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<object> ShutdownAsync(int? timeout)
-        {
-            return ShutdownAsync(timeout, System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<object> ShutdownAsync(int? timeout, System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("v2/shutdown?");
-            if (timeout != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("timeout") + "=").Append(System.Uri.EscapeDataString(ConvertToString(timeout, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            urlBuilder_.Length--;
-
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<object>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        /// <summary>Starts a catchpoint catchup.</summary>
-        /// <param name="catchpoint">A catch point</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response12> CatchupPostAsync(string catchpoint)
-        {
-            return CatchupPostAsync(catchpoint, System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Starts a catchpoint catchup.</summary>
-        /// <param name="catchpoint">A catch point</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Response12> CatchupPostAsync(string catchpoint, System.Threading.CancellationToken cancellationToken)
-        {
-            if (catchpoint == null)
-                throw new System.ArgumentNullException("catchpoint");
-
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("v2/catchup/{catchpoint}");
-            urlBuilder_.Replace("{catchpoint}", System.Uri.EscapeDataString(ConvertToString(catchpoint, System.Globalization.CultureInfo.InvariantCulture)));
-
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response12>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 201)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response12>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 400)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ErrorResponse>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        if (status_ == 401)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ErrorResponse>("Invalid API Token", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        if (status_ == 500)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ErrorResponse>("Internal Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            return;
                         }
                         else
                         {
@@ -404,26 +174,22 @@ namespace Algorand.Algod
             }
         }
 
-        /// <summary>Aborts a catchpoint catchup.</summary>
-        /// <param name="catchpoint">A catch point</param>
+        /// <summary>Return metrics about algod functioning.</summary>
+        /// <returns>text with \#-comments and key:value lines</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response13> CatchupDeleteAsync(string catchpoint)
+        public System.Threading.Tasks.Task MetricsAsync()
         {
-            return CatchupDeleteAsync(catchpoint, System.Threading.CancellationToken.None);
+            return MetricsAsync(System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Aborts a catchpoint catchup.</summary>
-        /// <param name="catchpoint">A catch point</param>
+        /// <summary>Return metrics about algod functioning.</summary>
+        /// <returns>text with \#-comments and key:value lines</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Response13> CatchupDeleteAsync(string catchpoint, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MetricsAsync(System.Threading.CancellationToken cancellationToken)
         {
-            if (catchpoint == null)
-                throw new System.ArgumentNullException("catchpoint");
-
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("v2/catchup/{catchpoint}");
-            urlBuilder_.Replace("{catchpoint}", System.Uri.EscapeDataString(ConvertToString(catchpoint, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append("metrics");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -431,7 +197,83 @@ namespace Algorand.Algod
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("metrics were compiled out", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Gets the genesis information.</summary>
+        /// <returns>The genesis file in json.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<string> GenesisAsync()
+        {
+            return GenesisAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Gets the genesis information.</summary>
+        /// <returns>The genesis file in json.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<string> GenesisAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("genesis");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -457,7 +299,7 @@ namespace Algorand.Algod
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response13>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -465,39 +307,159 @@ namespace Algorand.Algod
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == 400)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ErrorResponse>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Unknown Error", status_, responseData_, headers_, null);
                         }
-                        else
-                        if (status_ == 401)
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Gets the current swagger spec.</summary>
+        /// <returns>The current swagger spec</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<string> Swagger_jsonAsync()
+        {
+            return Swagger_jsonAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Gets the current swagger spec.</summary>
+        /// <returns>The current swagger spec</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<string> Swagger_jsonAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("swagger.json");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ErrorResponse>("Invalid API Token", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
                         }
-                        else
-                        if (status_ == 500)
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<ErrorResponse>("Internal Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            return objectResponse_.Object;
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unknown Error", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <returns>VersionsResponse is the response to 'GET /versions'</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Version> VersionsAsync()
+        {
+            return VersionsAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>VersionsResponse is the response to 'GET /versions'</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<Version> VersionsAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("versions");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Version>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -616,5 +578,4 @@ namespace Algorand.Algod
             return result == null ? "" : result;
         }
     }
-
 }
