@@ -11,9 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test", "test\test.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doc", "doc-generator\doc.csproj", "{1E5F63E7-C4BD-4EDE-9C9F-F86DEEA7F462}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SerialisationTests", "SerialisationTests\SerialisationTests.csproj", "{DB043B6D-CAB0-4472-9B2A-BA16EA320DF5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "transaction-spec-regen", "AlgodProxy\transaction-spec-regen.csproj", "{A7EA0414-E3EB-4131-89DD-16BB0CD7BA06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "serialisation-tests", "SerialisationTests\serialisation-tests.csproj", "{DB043B6D-CAB0-4472-9B2A-BA16EA320DF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,10 +36,6 @@ Global
 		{DB043B6D-CAB0-4472-9B2A-BA16EA320DF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB043B6D-CAB0-4472-9B2A-BA16EA320DF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB043B6D-CAB0-4472-9B2A-BA16EA320DF5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A7EA0414-E3EB-4131-89DD-16BB0CD7BA06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7EA0414-E3EB-4131-89DD-16BB0CD7BA06}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7EA0414-E3EB-4131-89DD-16BB0CD7BA06}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7EA0414-E3EB-4131-89DD-16BB0CD7BA06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

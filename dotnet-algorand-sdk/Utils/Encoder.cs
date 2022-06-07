@@ -8,6 +8,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using System.IO;
 using Newtonsoft.Msgpack;
 using Algorand.Algod.Model;
+using Algorand.Algod.Model.Transactions;
 
 namespace Algorand.Utils
 {
@@ -33,6 +34,27 @@ namespace Algorand.Utils
 
             MessagePackWriter writer = new MessagePackWriter(memoryStream);            
             serializer.Serialize(writer, o);
+            var bytes = memoryStream.ToArray();
+            return bytes;
+        }
+
+        /// <summary>
+        /// Convenience method for serializing lists without the list wrapper: just concat each serialised object
+        /// </summary>
+        /// <param name="o">the object to serializing</param>
+        /// <returns>serialized object</returns>
+        public static byte[] EncodeToMsgPackOrdered(List<SignedTransaction> o)
+        {
+            MemoryStream memoryStream = new MemoryStream();
+            JsonSerializer serializer = new JsonSerializer()
+            {
+                DefaultValueHandling = DefaultValueHandling.Ignore,
+                ContractResolver = new OrderedContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            MessagePackWriter writer = new MessagePackWriter(memoryStream);
+            foreach (var e in o) { serializer.Serialize(writer, e); }
             var bytes = memoryStream.ToArray();
             return bytes;
         }

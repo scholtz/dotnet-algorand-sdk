@@ -1115,7 +1115,7 @@ namespace Algorand.Algod
                     List<byte> byteList = new List<byte>();
                     foreach(var txn in rawtxn)
                     {
-                        byteList.AddRange(Encoder.EncodeToMsgPackOrdered(txn)); //this is not actually necessary - unordered works too
+                        byteList.AddRange(Encoder.EncodeUnwrappedListToMsgPackOrdered(txn)); //this is not actually necessary - unordered works too
                     }
 
                     using (var ms = new MemoryStream(byteList.ToArray()))
