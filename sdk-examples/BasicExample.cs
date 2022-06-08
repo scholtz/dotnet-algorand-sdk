@@ -19,14 +19,6 @@ namespace sdk_examples
             string DEST_ADDR = "KV2XGKMXGYJ6PWYQA5374BYIQBL3ONRMSIARPCFCJEAMAHQEVYPB7PL3KU";
             string SRC_ACCOUNT = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
 
-           
-
-            if (ALGOD_API_ADDR.IndexOf("//") == -1)
-            {
-                ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
-            }
-
-
             Account src = new Account(SRC_ACCOUNT);
             Console.WriteLine("My account address is:" + src.Address.ToString());
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
@@ -40,9 +32,9 @@ namespace sdk_examples
                 Console.WriteLine("Online Algorand Supply: " + supply.OnlineMoney);
 
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
             {
-                Console.WriteLine("Exception when calling algod#getSupply:" + e.Message);
+                Console.WriteLine("Exception when calling algod#getSupply:" + e.Result.Message);
             }
 
        //     var accountInfo = await algodApiInstance.AccountsAsync(src.Address.ToString(), null);
@@ -62,9 +54,9 @@ namespace sdk_examples
                 Console.WriteLine("Lastround: " + trans.LastRound.ToString());
                 Console.WriteLine("Block txns: " + block.Block.ToString());
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
             {
-                Console.WriteLine("Exception when calling algod#getSupply:" + e.Message);
+                Console.WriteLine("Exception when calling algod#getSupply:" + e.Result.Message);
             }
 
             TransactionParametersResponse transParams;
@@ -72,7 +64,7 @@ namespace sdk_examples
             {
                 transParams = await algodApiInstance.TransactionParamsAsync();
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
             {
                 throw new Exception("Could not get params", e);
             }

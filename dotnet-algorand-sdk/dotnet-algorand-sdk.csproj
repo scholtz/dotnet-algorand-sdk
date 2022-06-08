@@ -7,7 +7,7 @@
 		<AssemblyName>Algorand</AssemblyName>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Version>0.2.1.7</Version>
+		<Version>1.0.0.0</Version>
 		<Authors>Frank Szendzielarz</Authors>
 		<Company></Company>
 		<Product>Algorand .NET SDK 2</Product>
@@ -16,12 +16,13 @@
 		<Description>Algorand SDK for .Net 2</Description>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<SignAssembly>true</SignAssembly>
-		<AssemblyVersion>0.2.1.0</AssemblyVersion>
-		<FileVersion>0.2.1.0</FileVersion>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
 		<Copyright></Copyright>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<RepositoryUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</RepositoryUrl>
 		<PackageId>Algorand2</PackageId>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -34,6 +35,10 @@
 		<None Include="..\LICENSE">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\README.md">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
 
