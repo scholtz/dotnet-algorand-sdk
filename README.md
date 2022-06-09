@@ -117,7 +117,7 @@ Modify the above code to add something like the following, replacing the values 
 
 The above invokes the Account constructor overload for interpreting mnemonics into private key values and creates a representation of an Algorand "Account".
 
-Before we can create a Transaction, we need to get some information about the network. This information includes some general information (such as that which identifies which sub-network of Algorand we are on, like the main, test or beta networks), and specific information (such as the current time or 'round' of the network, to set transaction validity duration).
+Before we can create a Transaction, we need to get some information about the network. This information is general information (such as that which identifies which sub-network of Algorand we are on, like the main, test or beta networks), and specific (such as the current time or 'round' of the network, to set transaction validity duration).
 
 To achieve this add this into the code above:
 
