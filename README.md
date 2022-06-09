@@ -24,7 +24,7 @@ The Nuget package is here <https://www.nuget.org/packages/Algorand2/>
 
 ## Quick Start
 
-For a set of working examples please the sdk-examples project.
+For a set of working examples please see the sdk-examples project.
 
 ### Get a node and account(s) 
 To get working with the Algorand network you will need access to a node. There are a number of ways to do this. The quickest ways of getting set up are to rent access to a node from a service like PureStake, or to install the Algorand Sandbox.
