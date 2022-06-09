@@ -7,7 +7,7 @@ The dotnet-algorand-skd is a dotnet library for communicating and interacting wi
 
 Interaction with the Algorand network is carried out mainly via the Algod HTTP API and Indexer HTTP API endpoints. This SDK offers API clients for both of those endpoints.
 
-Most operations involve producing, submitting and examining the status of transactions. To help achieve this the SDK offers a class model (Algod/Model/Transactions) of Algorand transactions and their properties. Transactions can then be instantiated, signed, sent and read back using this model. There are additional utility methods, such as on the Account class, which simplify taks like signing the transaction and correlating transaction identifiers.
+Most operations involve producing, submitting and examining the status of transactions. To help achieve this the SDK offers a class model (Algod/Model/Transactions) of Algorand transactions and their properties. Transactions can then be instantiated, signed, sent and read back using this model. There are additional utility methods, such as on the Account class, which simplify tasks like signing the transaction and correlating transaction identifiers.
 
 The Indexer client is used for connecting to the Algorand Indexer, which offers a predefined set of queries over a Postgres database of Algorand Blocks and Transactions. In this SDK the Indexer client and entity model is separate from Algod, mainly because the model in Indexer is expected to be an ongoing superset of fields and properties over historical versions of the model. For example, if a field becomes redundant, changes meaning, or is split into new fields, the Indexer model will continue to offer the historical view.
 
