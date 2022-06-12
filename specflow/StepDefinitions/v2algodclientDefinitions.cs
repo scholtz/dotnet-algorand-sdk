@@ -25,7 +25,7 @@ namespace specflow.StepDefinitions
         [Then(@"expect the path used to be ""([^""]*)""$")]
         public void ExpectThePathUsedToBe(string expectedPath)
         {
-            expectedPath.Should().Be(HttpClientTestInformation.LastRequest.RequestUri?.ToString());
+            expectedPath.Should().Be(HttpClientTestInformation.LastRequest.RequestUri?.PathAndQuery);
 
         }
     }
