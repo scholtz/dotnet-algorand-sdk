@@ -7,7 +7,7 @@ The dotnet-algorand-skd is a dotnet library for communicating and interacting wi
 
 Interaction with the Algorand network is carried out mainly via the Algod HTTP API and Indexer HTTP API endpoints. This SDK offers API clients for both of those endpoints.
 
-Most operations involve producing, submitting and examining the status of transactions. To help achieve this the SDK offers a class model (Algod/Model/Transactions) of Algorand transactions and their properties. Transactions can then be instantiated, signed, sent and read back using this model. There are additional utility methods, such as on the Account class, which simplify taks like signing the transaction and correlating transaction identifiers.
+Most operations involve producing, submitting and examining the status of transactions. To help achieve this the SDK offers a class model (Algod/Model/Transactions) of Algorand transactions and their properties. Transactions can then be instantiated, signed, sent and read back using this model. There are additional utility methods, such as on the Account class, which simplify tasks like signing the transaction and correlating transaction identifiers.
 
 The Indexer client is used for connecting to the Algorand Indexer, which offers a predefined set of queries over a Postgres database of Algorand Blocks and Transactions. In this SDK the Indexer client and entity model is separate from Algod, mainly because the model in Indexer is expected to be an ongoing superset of fields and properties over historical versions of the model. For example, if a field becomes redundant, changes meaning, or is split into new fields, the Indexer model will continue to offer the historical view.
 
@@ -24,7 +24,7 @@ The Nuget package is here <https://www.nuget.org/packages/Algorand2/>
 
 ## Quick Start
 
-For a set of working examples please the sdk-examples project.
+For a set of working examples please see the sdk-examples project.
 
 ### Get a node and account(s) 
 To get working with the Algorand network you will need access to a node. There are a number of ways to do this. The quickest ways of getting set up are to rent access to a node from a service like PureStake, or to install the Algorand Sandbox.
@@ -117,7 +117,7 @@ Modify the above code to add something like the following, replacing the values 
 
 The above invokes the Account constructor overload for interpreting mnemonics into private key values and creates a representation of an Algorand "Account".
 
-Before we can create a Transaction, we need to get some information about the network. This information includes some general information (such as that which identifies which sub-network of Algorand we are on, like the main, test or beta networks), and specific information (such as the current time or 'round' of the network, to set transaction validity duration).
+Before we can create a Transaction, we need to get some information about the network. This information is general (such as that which identifies which sub-network of Algorand we are on, like the main, test or beta networks), and specific (such as the current time or 'round' of the network, to set transaction validity duration).
 
 To achieve this add this into the code above:
 
