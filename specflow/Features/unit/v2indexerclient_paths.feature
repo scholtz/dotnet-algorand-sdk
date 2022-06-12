@@ -250,7 +250,7 @@ Feature: Indexer Client v2 Paths
       | /v2/accounts/7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q/created-applications?application-id=123&include-all=true&limit=456&next=def | 7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q        | 123            | true        | 456   | def  |
 
   @unit.indexer.ledger_refactoring
-  Scenario Outline: SearchAccounts path
+  Scenario Outline: SearchAccounts path 2
     When we make a Search Accounts call with exclude "<exclude>"
     Then expect the path used to be "<path>"
     Examples:
@@ -260,7 +260,7 @@ Feature: Indexer Client v2 Paths
       | /v2/accounts?exclude=assets%2Ccreated-assets%2Capps-local-state%2Ccreated-apps | assets,created-assets,apps-local-state,created-apps |
 
   @unit.indexer.ledger_refactoring
-  Scenario Outline: LookupAccountByID path
+  Scenario Outline: LookupAccountByID path 2
     When we make a Lookup Account by ID call against account "<account>" with exclude "<exclude>"
     Then expect the path used to be "<path>"
     Examples:
@@ -270,7 +270,7 @@ Feature: Indexer Client v2 Paths
       | /v2/accounts/7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q?exclude=assets%2Ccreated-assets%2Capps-local-state%2Ccreated-apps | 7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q     | assets,created-assets,apps-local-state,created-apps |
 
   @unit.indexer.ledger_refactoring
-  Scenario Outline: SearchForApplications path
+  Scenario Outline: SearchForApplications path 2
     When we make a SearchForApplications call with creator "<creator>"
     Then expect the path used to be "<path>"
 

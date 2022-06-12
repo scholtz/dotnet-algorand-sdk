@@ -71,7 +71,7 @@ Feature: Algod REST API v2 Paths
       | /v2/applications/1234 | 1234           |
 
   @unit.algod.ledger_refactoring
-  Scenario Outline: Account Information
+  Scenario Outline: Account Information 2
     When we make an Account Information call against account "<account>" with exclude "<exclude>"
     Then expect the path used to be "<path>"
     Examples:
