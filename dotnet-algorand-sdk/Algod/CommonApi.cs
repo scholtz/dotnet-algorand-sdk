@@ -12,6 +12,7 @@ namespace Algorand.Algod
 {
     using Algorand.Utils;
     using Algorand.Algod.Model;
+    using Algorand.Algod.Model.Transactions;
     using System.Collections.Generic;
     using System.IO;
     using System = global::System;
@@ -19,35 +20,41 @@ namespace Algorand.Algod
 
     public partial interface ICommonApi
     {
-       /// <summary>Returns OK if healthy.</summary>
+       /// <summary>Returns OK if healthy.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<string> HealthCheckAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<string> HealthCheckAsync(System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Return metrics about algod functioning.</summary>
+       /// <summary>Return metrics about algod functioning.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<string> MetricsAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<string> MetricsAsync(System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Returns the entire genesis file in json.</summary>
+       /// <summary>Returns the entire genesis file in json.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<string> GetGenesisAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<string> GetGenesisAsync(System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Returns the entire swagger spec in json.</summary>
+       /// <summary>Returns the entire swagger spec in json.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<string> SwaggerJSONAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<string> SwaggerJSONAsync(System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Retrieves the supported API versions, binary build versions, and genesis information.</summary>
+       /// <summary>Retrieves the supported API versions, binary build versions, and genesis
+/// information.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<Version> GetVersionAsync();
 
@@ -83,21 +90,22 @@ namespace Algorand.Algod
 
        
 
-       /// <summary>Returns OK if healthy.</summary>
+       /// <summary>Returns OK if healthy.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<string> HealthCheckAsync()
        {
               return HealthCheckAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Returns OK if healthy.</summary>
+       /// <summary>>Returns OK if healthy.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<string> HealthCheckAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/health");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -166,21 +174,22 @@ namespace Algorand.Algod
 
        
 
-       /// <summary>Return metrics about algod functioning.</summary>
+       /// <summary>Return metrics about algod functioning.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<string> MetricsAsync()
        {
               return MetricsAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Return metrics about algod functioning.</summary>
+       /// <summary>>Return metrics about algod functioning.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<string> MetricsAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/metrics");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -249,21 +258,22 @@ namespace Algorand.Algod
 
        
 
-       /// <summary>Returns the entire genesis file in json.</summary>
+       /// <summary>Returns the entire genesis file in json.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<string> GetGenesisAsync()
        {
               return GetGenesisAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Returns the entire genesis file in json.</summary>
+       /// <summary>>Returns the entire genesis file in json.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<string> GetGenesisAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/genesis");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -332,21 +342,22 @@ namespace Algorand.Algod
 
        
 
-       /// <summary>Returns the entire swagger spec in json.</summary>
+       /// <summary>Returns the entire swagger spec in json.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<string> SwaggerJSONAsync()
        {
               return SwaggerJSONAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Returns the entire swagger spec in json.</summary>
+       /// <summary>>Returns the entire swagger spec in json.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<string> SwaggerJSONAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/swagger.json");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -415,21 +426,24 @@ namespace Algorand.Algod
 
        
 
-       /// <summary>Retrieves the supported API versions, binary build versions, and genesis information.</summary>
+       /// <summary>Retrieves the supported API versions, binary build versions, and genesis
+/// information.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<Version> GetVersionAsync()
        {
               return GetVersionAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Retrieves the supported API versions, binary build versions, and genesis information.</summary>
+       /// <summary>>Retrieves the supported API versions, binary build versions, and genesis
+/// information.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<Version> GetVersionAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/versions");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try

@@ -288,7 +288,15 @@ namespace Algorand.Algod
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/accounts/{address}?");
               urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
-
+              if (exclude != null)
+              {
+                     urlBuilder_.Append(System.Uri.EscapeDataString("exclude") + "=").Append(System.Uri.EscapeDataString(ConvertToString(exclude, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+              }
+              if (format != null)
+              {
+                     urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+              }
+              urlBuilder_.Length--;
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -387,7 +395,11 @@ namespace Algorand.Algod
               urlBuilder_.Append("/v2/accounts/{address}/assets/{asset-id}?");
               urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
               urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(assetId, System.Globalization.CultureInfo.InvariantCulture)));
-
+              if (format != null)
+              {
+                     urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+              }
+              urlBuilder_.Length--;
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -488,7 +500,11 @@ namespace Algorand.Algod
               urlBuilder_.Append("/v2/accounts/{address}/applications/{application-id}?");
               urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
               urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(applicationId, System.Globalization.CultureInfo.InvariantCulture)));
-
+              if (format != null)
+              {
+                     urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+              }
+              urlBuilder_.Length--;
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -585,7 +601,15 @@ namespace Algorand.Algod
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/accounts/{address}/transactions/pending?");
               urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
-
+              if (format != null)
+              {
+                     urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+              }
+              if (max != null)
+              {
+                     urlBuilder_.Append(System.Uri.EscapeDataString("max") + "=").Append(System.Uri.EscapeDataString(ConvertToString(max, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+              }
+              urlBuilder_.Length--;
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -676,7 +700,11 @@ namespace Algorand.Algod
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/blocks/{round}?");
               urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
-
+              if (format != null)
+              {
+                     urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+              }
+              urlBuilder_.Length--;
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -771,7 +799,11 @@ namespace Algorand.Algod
               urlBuilder_.Append("/v2/blocks/{round}/transactions/{txid}/proof?");
               urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
               urlBuilder_.Replace("{txid}", System.Uri.EscapeDataString(ConvertToString(txid, System.Globalization.CultureInfo.InvariantCulture)));
-
+              if (format != null)
+              {
+                     urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+              }
+              urlBuilder_.Length--;
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -856,7 +888,6 @@ namespace Algorand.Algod
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/ledger/supply");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -941,7 +972,6 @@ namespace Algorand.Algod
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/status");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -1032,7 +1062,6 @@ namespace Algorand.Algod
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/status/wait-for-block-after/{round}");
               urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -1120,7 +1149,6 @@ namespace Algorand.Algod
               if (rawtxn == null) throw new System.ArgumentNullException("rawtxn");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/transactions");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -1208,7 +1236,6 @@ namespace Algorand.Algod
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/transactions/params");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -1299,7 +1326,15 @@ namespace Algorand.Algod
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/transactions/pending?");
-
+              if (format != null)
+              {
+                     urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+              }
+              if (max != null)
+              {
+                     urlBuilder_.Append(System.Uri.EscapeDataString("max") + "=").Append(System.Uri.EscapeDataString(ConvertToString(max, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+              }
+              urlBuilder_.Length--;
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -1404,7 +1439,11 @@ namespace Algorand.Algod
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/transactions/pending/{txid}?");
               urlBuilder_.Replace("{txid}", System.Uri.EscapeDataString(ConvertToString(txid, System.Globalization.CultureInfo.InvariantCulture)));
-
+              if (format != null)
+              {
+                     urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+              }
+              urlBuilder_.Length--;
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -1495,7 +1534,6 @@ namespace Algorand.Algod
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/applications/{application-id}");
               urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(applicationId, System.Globalization.CultureInfo.InvariantCulture)));
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -1586,7 +1624,6 @@ namespace Algorand.Algod
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/assets/{asset-id}");
               urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(assetId, System.Globalization.CultureInfo.InvariantCulture)));
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -1678,7 +1715,6 @@ namespace Algorand.Algod
               if (source == null) throw new System.ArgumentNullException("source");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/teal/compile");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -1772,7 +1808,6 @@ namespace Algorand.Algod
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/teal/dryrun");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
