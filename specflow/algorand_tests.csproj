@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\dotnet-algorand-sdk\dotnet-algorand-sdk.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="test_harness.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
