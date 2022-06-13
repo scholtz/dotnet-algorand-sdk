@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Text;
+using Algorand.Algod.Test;
 
 namespace Algorand
 {
@@ -10,7 +11,11 @@ namespace Algorand
     {
         public static HttpClient ConfigureHttpClient(string host, string token, string tokenHeader = "", int timeout = -1)
         {
+#if TEST_DEBUG
+            HttpClient _httpClient = new HttpClient(new TestHttpMessageHandler());
+#else
             HttpClient _httpClient = new HttpClient();
+#endif
 
             _httpClient.BaseAddress = new Uri(host);
             if (!_httpClient.BaseAddress.IsAbsoluteUri)

@@ -32,7 +32,7 @@
     </None>
   </ItemGroup>
 
-  <Target Name="PreBuild" AfterTargets="PreBuildEvent" Condition=" '$(Configuration)' == 'Test_debug' ">
+  <Target Name="PreBuild" AfterTargets="PreBuildEvent" Condition=" '$(Configuration)' == 'Test_Debug' ">
 	<Exec Command="powershell.exe -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -File $(ProjectDir)test_harness.ps1 -ProjectPath $(ProjectPath) -Build $(Configuration)" />
   </Target>
 
