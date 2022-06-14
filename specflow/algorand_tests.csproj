@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
-    <Configurations>Debug;Release;Test_Debug</Configurations>
+    <Configurations>Debug;Release;Test_Debug;Integration_Test_Debug</Configurations>
 	
   </PropertyGroup>
 
@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Drivers\" />
+    <Folder Include="StepDefinitions\Integration\" />
     <Folder Include="Support\" />
   </ItemGroup>
 
@@ -64,49 +65,20 @@
     <None Update="Features\unit\v2algodclient_responsejsons\suggestedParams.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\emptyjson.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\lookupAccountByID_0.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\lookupAccountTransactions_0.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\lookupAssetBalances_0.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\lookupAssetByID_0.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\lookupAssetTransactions_0.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\lookupBlock_0.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\searchForAccounts_0.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\searchForAccounts_1.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\searchForAssets_0.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\searchForTransactions_0.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\unit\v2indexerclient_responsejsons\searchForTransactions_1.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="copy_tests.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="test_harness.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
-  <Target Name="PreBuild" AfterTargets="PreBuildEvent" Condition=" '$(Configuration)' == 'Test_Debug' ">
-	<Exec Command="powershell.exe -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -File $(ProjectDir)test_harness.ps1 -ProjectPath $(ProjectPath) -Build $(Configuration)" />
-  </Target>
+        <Target Name="PreBuild" AfterTargets="PreBuildEvent" Condition=" '$(Configuration)' == 'Test_Debug' ">
+	        <Exec Command="powershell.exe -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -File $(ProjectDir)copy_tests.ps1 -ProjectPath $(ProjectPath) -Build $(Configuration)" />
+        </Target>	
+        <!--<Target Name="PreBuild" AfterTargets="PreBuildEvent" Condition=" '$(Configuration)' == 'Integration_Test_Debug' ">
+	        <Exec Command="powershell.exe -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -File $(ProjectDir)copy_tests.ps1 -ProjectPath $(ProjectPath) -Build $(Configuration)" />
+	        <Exec Command="powershell.exe -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -File $(ProjectDir)test_harness.ps1 -ProjectPath $(ProjectPath) -Build $(Configuration)" />
+        </Target>-->
 
 </Project>

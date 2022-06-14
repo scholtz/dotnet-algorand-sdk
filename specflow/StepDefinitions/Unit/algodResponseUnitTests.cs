@@ -14,6 +14,7 @@ using Algorand.Algod.Model.Transactions;
 using System.Collections.Generic;
 using System.Linq;
 
+#if TEST_DEBUG
 namespace specflow.StepDefinitions
 {
     [Binding]
@@ -323,3 +324,4 @@ namespace specflow.StepDefinitions
 
     }
 }
+#endif

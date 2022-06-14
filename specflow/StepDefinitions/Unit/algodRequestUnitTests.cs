@@ -8,7 +8,7 @@ using TechTalk.SpecFlow;
 
 using algorand_tests;
 using System.IO;
-
+#if TEST_DEBUG
 namespace specflow.StepDefinitions
 {
     [Binding]
@@ -105,4 +105,6 @@ namespace specflow.StepDefinitions
 
 
     }
+
 }
+#endif

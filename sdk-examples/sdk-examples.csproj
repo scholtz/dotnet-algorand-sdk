@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>sdk_examples</RootNamespace>
     <StartupObject>sdk_examples.BasicExample</StartupObject>
-    <Configurations>Debug;Release;Test_Debug</Configurations>
+    <Configurations>Debug;Release;Test_Debug;Integration_Test_Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
