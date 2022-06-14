@@ -23,6 +23,7 @@
 		<RepositoryUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</RepositoryUrl>
 		<PackageId>Algorand2</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug</Configurations>
 	</PropertyGroup>
 
 	<ItemGroup>
