@@ -12,42 +12,50 @@ namespace Algorand.Algod
 {
     using Algorand.Utils;
     using Algorand.Algod.Model;
+    using Algorand.Algod.Model.Transactions;
     using System.Collections.Generic;
     using System.IO;
     using System = global::System;
+    using Newtonsoft.Msgpack;
 
 
     public partial interface ICommonApi
     {
-       /// <summary>Returns OK if healthy.</summary>
+       /// <summary>Returns OK if healthy.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<string> HealthCheckAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<string> HealthCheckAsync(System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Return metrics about algod functioning.</summary>
+       /// <summary>Return metrics about algod functioning.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<string> MetricsAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<string> MetricsAsync(System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Returns the entire genesis file in json.</summary>
+       /// <summary>Returns the entire genesis file in json.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<string> GetGenesisAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<string> GetGenesisAsync(System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Returns the entire swagger spec in json.</summary>
+       /// <summary>Returns the entire swagger spec in json.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<string> SwaggerJSONAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        System.Threading.Tasks.Task<string> SwaggerJSONAsync(System.Threading.CancellationToken cancellationToken);
 
-       /// <summary>Retrieves the supported API versions, binary build versions, and genesis information.</summary>
+       /// <summary>Retrieves the supported API versions, binary build versions, and genesis
+/// information.
+       /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        System.Threading.Tasks.Task<Version> GetVersionAsync();
 
@@ -83,21 +91,22 @@ namespace Algorand.Algod
 
        
 
-       /// <summary>Returns OK if healthy.</summary>
+       /// <summary>Returns OK if healthy.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<string> HealthCheckAsync()
        {
               return HealthCheckAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Returns OK if healthy.</summary>
+       /// <summary>>Returns OK if healthy.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<string> HealthCheckAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/health");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -166,21 +175,22 @@ namespace Algorand.Algod
 
        
 
-       /// <summary>Return metrics about algod functioning.</summary>
+       /// <summary>Return metrics about algod functioning.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<string> MetricsAsync()
        {
               return MetricsAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Return metrics about algod functioning.</summary>
+       /// <summary>>Return metrics about algod functioning.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<string> MetricsAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/metrics");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -249,21 +259,22 @@ namespace Algorand.Algod
 
        
 
-       /// <summary>Returns the entire genesis file in json.</summary>
+       /// <summary>Returns the entire genesis file in json.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<string> GetGenesisAsync()
        {
               return GetGenesisAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Returns the entire genesis file in json.</summary>
+       /// <summary>>Returns the entire genesis file in json.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<string> GetGenesisAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/genesis");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -332,21 +343,22 @@ namespace Algorand.Algod
 
        
 
-       /// <summary>Returns the entire swagger spec in json.</summary>
+       /// <summary>Returns the entire swagger spec in json.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<string> SwaggerJSONAsync()
        {
               return SwaggerJSONAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Returns the entire swagger spec in json.</summary>
+       /// <summary>>Returns the entire swagger spec in json.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<string> SwaggerJSONAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/swagger.json");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -415,21 +427,24 @@ namespace Algorand.Algod
 
        
 
-       /// <summary>Retrieves the supported API versions, binary build versions, and genesis information.</summary>
+       /// <summary>Retrieves the supported API versions, binary build versions, and genesis
+/// information.
+       /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
        public System.Threading.Tasks.Task<Version> GetVersionAsync()
        {
               return GetVersionAsync(System.Threading.CancellationToken.None);
        }
 
-       /// <summary>Retrieves the supported API versions, binary build versions, and genesis information.</summary>
+       /// <summary>>Retrieves the supported API versions, binary build versions, and genesis
+/// information.
+       /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<Version> GetVersionAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/versions");
-
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -521,31 +536,57 @@ namespace Algorand.Algod
 
        if (ReadResponseAsString)
        {
-              var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+              string responseText;
+                if (response.Content.Headers.ContentType.MediaType == "application/msgpack")
+                {
+                    using (MessagePackReader reader = new MessagePackReader(await response.Content.ReadAsStreamAsync().ConfigureAwait(false)))
+                    {
+                        responseText = reader.ReadAsString();
+                    }
+                }
+                else
+                {
+                    responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                
               try
               {
-              var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
-              return new ObjectResponseResult<T>(typedBody, responseText);
+                     var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
+                     return new ObjectResponseResult<T>(typedBody, responseText);
               }
               catch (Newtonsoft.Json.JsonException exception)
               {
-              var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-              throw new ApiException(message, (int)response.StatusCode, responseText, headers, exception);
+                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
+                     throw new ApiException(message, (int)response.StatusCode, responseText, headers, exception);
               }
        }
        else
        {
-              try
-              {
-              using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-              using (var streamReader = new System.IO.StreamReader(responseStream))
-              using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
-              {
-                     var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
-                     var typedBody = serializer.Deserialize<T>(jsonTextReader);
-                     return new ObjectResponseResult<T>(typedBody, string.Empty);
-              }
-              }
+                 try
+                {
+                    if (response.Content.Headers.ContentType.MediaType == "application/msgpack")
+                    {
+                        using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                        using (var reader = new MessagePackReader(responseStream))
+                        {
+                            var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
+                            var typedBody = serializer.Deserialize<T>(reader);
+                            return new ObjectResponseResult<T>(typedBody, string.Empty);
+                        }
+                    }
+                    else
+                    {
+                        using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                        using (var streamReader = new System.IO.StreamReader(responseStream))
+                        using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
+                        {
+                            var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
+                            var typedBody = serializer.Deserialize<T>(jsonTextReader);
+                            return new ObjectResponseResult<T>(typedBody, string.Empty);
+                        }
+                    }
+                                      
+                }
               catch (Newtonsoft.Json.JsonException exception)
               {
               var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";

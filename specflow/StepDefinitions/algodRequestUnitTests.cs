@@ -1,10 +1,13 @@
 using Algorand.Algod.Model;
 using Algorand.Algod.Test;
+using System.Net.Http;
+using System.Net;
 using FluentAssertions;
 using System;
 using TechTalk.SpecFlow;
 
 using algorand_tests;
+using System.IO;
 
 namespace specflow.StepDefinitions
 {
@@ -89,11 +92,17 @@ namespace specflow.StepDefinitions
         }
 
 
+      
+
+
         [Then(@"expect the path used to be ""([^""]*)""$")]
         public void ExpectThePathUsedToBe(string expectedPath)
         {
             expectedPath.Should().Be(TestHttpMessageHandler.LastRequest.RequestUri?.PathAndQuery);
 
         }
+
+
+
     }
 }

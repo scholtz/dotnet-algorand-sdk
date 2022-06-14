@@ -20,12 +20,14 @@ namespace specflow.StepDefinitions
         [Given("mock server recording request paths")]
         public void MockServerRecordingRequestPaths()
         {
-            algodDefaultApiInstance = new DefaultApi(httpClient);
-            algodCommonApiInstance = new CommonApi(httpClient);
+            setUp();
 
-            //HttpClientTestInformation contains the last request called.
+        }
 
-
+        public static void setUp()
+        { 
+            if (algodDefaultApiInstance == null) algodDefaultApiInstance = new DefaultApi(httpClient);
+            if (algodCommonApiInstance == null) algodCommonApiInstance = new CommonApi(httpClient);
         }
     }
 }
