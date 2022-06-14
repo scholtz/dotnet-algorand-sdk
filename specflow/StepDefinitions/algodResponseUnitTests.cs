@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Algorand.Algod.Model.Transactions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace specflow.StepDefinitions
 {
@@ -91,6 +92,14 @@ namespace specflow.StepDefinitions
 
         }
 
+        [Then(@"the parsed Pending Transactions Information response should contain an array of len (\d+) and element number (\d+) should have sender ""([^""]*)""")]
+        public void ExpectArrayOfLenAndElementNumberAndSender(int len, int element, string sender)
+        {
+            pendingTransactions.TopTransactions.Count.Should().Be(len);
+            pendingTransactions.TopTransactions.ToList()[element].Tx.Sender.ToString().Should().Be(sender);
+
+        }
+
         PostTransactionsResponse? postTransactionsResponse;
         [When(@"we make any Send Raw Transaction call")]
         public async Task WeMakeAnySendRawTransactionCall()
@@ -105,6 +114,12 @@ namespace specflow.StepDefinitions
             {
                 error = ex.Result.Message;
             }
+        }
+
+        [Then(@"the parsed Send Raw Transaction response should have txid ""([^""]*)""")]
+        public void ExpectTransactionIdToBe(string txid)
+        {
+            postTransactionsResponse?.Txid.Should().Be(txid);
         }
 
         PendingTransactions? pendingTransactionsByAddress;
@@ -123,6 +138,14 @@ namespace specflow.StepDefinitions
             }
         }
 
+        [Then(@"the parsed Pending Transactions By Address response should contain an array of len (\d+) and element number (\d+) should have sender ""([^""]*)""")]
+        public void ExpectPendingTransactionsByAddressArrayOfLenAndElementNumberAndSender(int len, int element, string sender)
+        {
+            pendingTransactionsByAddress.TopTransactions.Count.Should().Be(len);
+            pendingTransactionsByAddress.TopTransactions.ToList()[element].Tx.Sender.ToString().Should().Be(sender);
+
+        }
+
         NodeStatusResponse? status;
         [When(@"we make any Node Status call")]
         public async Task WeMakeAnyNodeStatusCall()
@@ -139,6 +162,14 @@ namespace specflow.StepDefinitions
             }
         }
 
+        [Then(@"the parsed Node Status response should have a last round of (\d+)")]
+        public void ExpectNodeStatusResponseRoundNum(ulong round)
+        {
+            status?.LastRound.Should().Be(round);
+
+        }
+
+
         SupplyResponse? supply;
         [When(@"we make any Ledger Supply call")]
         public async Task WeMakeAnyLedgerSupplyCall()
@@ -153,6 +184,16 @@ namespace specflow.StepDefinitions
             {
                 error = ex.Result.Message;
             }
+        }
+
+        [Then(@"the parsed Ledger Supply response should have totalMoney (\d+) onlineMoney (\d+) on round (\d+)")]
+        public void ExpectNodeStatusResponseRoundNum(ulong total, ulong online, ulong round)
+        {
+            supply?.TotalMoney.Should().Be(total);
+            supply?.OnlineMoney.Should().Be(online);
+            supply?.OnlineMoney.Should().Be(online);
+
+
         }
 
         NodeStatusResponse? statusAfterBlock;
@@ -171,6 +212,12 @@ namespace specflow.StepDefinitions
             }
         }
 
+        [Then(@"the parsed Status After Block response should have a last round of (\d+)")]
+        public void ExpectParsedStatusAfterBlockLastRound(ulong total)
+        {
+            statusAfterBlock?.LastRound.Should().Be(total);
+        }
+
         Account? accountInformation;
         [When(@"we make any Account Information call")]
         public async Task WeMakeAnyAccountInformationCall()
@@ -185,6 +232,12 @@ namespace specflow.StepDefinitions
             {
                 error = ex.Result.Message;
             }
+        }
+
+        [Then(@"the parsed Account Information response should have address ""([^""]*)""")]
+        public void ExpectParsedAccountInfoToHaveAddress(string addr)
+        {
+            accountInformation?.Address.ToString().Should().Be(addr);
         }
 
         CertifiedBlock? block;
@@ -203,6 +256,12 @@ namespace specflow.StepDefinitions
             }
         }
 
+        [Then(@"the parsed Get Block response should have rewards pool ""([^""]*)""")]
+        public void ExpectParsedGetBlockToHaveRewardPool(string pool)
+        {
+            block?.Block.RewardsPool.Should().Be(pool);
+        }
+
         TransactionParametersResponse? transactionParameters;
         [When(@"we make any Suggested Transaction Parameters call")]
         public async Task WeMakeAnySuggestedTransactionParametersCall()
@@ -219,6 +278,12 @@ namespace specflow.StepDefinitions
             }
         }
 
+        [Then(@"the parsed Suggested Transaction Parameters response should have first round valid of (\d+)")]
+        public void ExpectParsedSuggestedTransactionParametersResponseShouldHaveFirstRoundValidOf(ulong round)
+        {
+            transactionParameters?.LastRound.Should().Be(round);
+        }
+
         DryrunResponse? dryrunResponse;
         [When(@"we make any Dryrun call")]
         public async Task WeMakeAnyDryrunCall()
@@ -233,6 +298,18 @@ namespace specflow.StepDefinitions
             {
                 error = ex.Result.Message;
             }
+        }
+
+        [Then(@"the parsed Dryrun Response should have global delta ([^""]*) with (\d+)")]
+        public void ExpectParsedDryrunResponseShouldHaveGlobalDelta(string key, ulong creator)
+        {
+            dryrunResponse?.Txns
+                .SelectMany(t => t.GlobalDelta)
+                .Where(kv => kv.Key == key)
+                .Select(kv => kv.Value)
+                .FirstOrDefault()
+                .Should()
+                .Be(creator);
         }
 
         [Then(@"expect error string to contain ""([^""]*)""$")]
