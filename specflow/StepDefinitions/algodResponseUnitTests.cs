@@ -40,7 +40,7 @@ namespace specflow.StepDefinitions
             }
             else
             {
-                mockResponseBytes = File.ReadAllBytes(Path.Combine(directory,jsonfile));
+                mockResponseBytes = File.ReadAllBytes(Path.Combine("Features", "Unit",directory,jsonfile));
                 resp = new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new ByteArrayContent(mockResponseBytes)
@@ -300,7 +300,7 @@ namespace specflow.StepDefinitions
             }
         }
 
-        [Then(@"the parsed Dryrun Response should have global delta ([^""]*) with (\d+)")]
+        [Then(@"the parsed Dryrun Response should have global delta ""([^""]*)"" with (\d+)")]
         public void ExpectParsedDryrunResponseShouldHaveGlobalDelta(string key, ulong creator)
         {
             dryrunResponse?.Txns
@@ -308,6 +308,7 @@ namespace specflow.StepDefinitions
                 .Where(kv => kv.Key == key)
                 .Select(kv => kv.Value)
                 .FirstOrDefault()
+                ?.Action
                 .Should()
                 .Be(creator);
         }
