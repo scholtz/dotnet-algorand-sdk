@@ -106,7 +106,7 @@ namespace Algorand.Algod
        public async System.Threading.Tasks.Task<string> HealthCheckAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
-              urlBuilder_.Append("/health");
+              urlBuilder_.Append("health");
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -190,7 +190,7 @@ namespace Algorand.Algod
        public async System.Threading.Tasks.Task<string> MetricsAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
-              urlBuilder_.Append("/metrics");
+              urlBuilder_.Append("metrics");
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -274,7 +274,7 @@ namespace Algorand.Algod
        public async System.Threading.Tasks.Task<string> GetGenesisAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
-              urlBuilder_.Append("/genesis");
+              urlBuilder_.Append("genesis");
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -358,7 +358,7 @@ namespace Algorand.Algod
        public async System.Threading.Tasks.Task<string> SwaggerJSONAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
-              urlBuilder_.Append("/swagger.json");
+              urlBuilder_.Append("swagger.json");
               var client_ = _httpClient;
               var disposeClient_ = false;
               try
@@ -444,7 +444,7 @@ namespace Algorand.Algod
        public async System.Threading.Tasks.Task<Version> GetVersionAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
-              urlBuilder_.Append("/versions");
+              urlBuilder_.Append("versions");
               var client_ = _httpClient;
               var disposeClient_ = false;
               try

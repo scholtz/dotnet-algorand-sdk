@@ -7,7 +7,7 @@
 		<AssemblyName>Algorand</AssemblyName>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Version>1.0.0.1</Version>
+		<Version>1.0.0.2</Version>
 		<Authors>Frank Szendzielarz</Authors>
 		<Company></Company>
 		<Product>Algorand .NET SDK 2</Product>
