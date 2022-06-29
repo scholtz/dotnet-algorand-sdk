@@ -32,7 +32,7 @@ namespace sdk_examples
                 Console.WriteLine("Online Algorand Supply: " + supply.OnlineMoney);
 
             }
-            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
+            catch (ApiException<ErrorResponse> e)
             {
                 Console.WriteLine("Exception when calling algod#getSupply:" + e.Result.Message);
             }
@@ -54,7 +54,7 @@ namespace sdk_examples
                 Console.WriteLine("Lastround: " + trans.LastRound.ToString());
                 Console.WriteLine("Block txns: " + block.Block.ToString());
             }
-            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
+            catch (ApiException<ErrorResponse> e)
             {
                 Console.WriteLine("Exception when calling algod#getSupply:" + e.Result.Message);
             }
@@ -64,7 +64,7 @@ namespace sdk_examples
             {
                 transParams = await algodApiInstance.TransactionParamsAsync();
             }
-            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
+            catch (ApiException<ErrorResponse> e)
             {
                 throw new Exception("Could not get params", e);
             }

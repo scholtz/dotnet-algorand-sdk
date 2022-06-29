@@ -15,6 +15,7 @@ using RestSharp;
 using Algorand.Client;
 using Algorand.Kmd.Model;
 
+
 namespace Algorand.Kmd.Api
 {
     /// <summary>
@@ -29,7 +30,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Create a new wallet (collection of keys) with the given parameters.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletResponse</returns>
         APIV1POSTWalletResponse CreateWallet(CreateWalletRequest body);
@@ -40,7 +41,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Create a new wallet (collection of keys) with the given parameters.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletResponse</returns>
         ApiResponse<APIV1POSTWalletResponse> CreateWalletWithHttpInfo(CreateWalletRequest body);
@@ -50,7 +51,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Deletes the key with the passed public key from the wallet.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1DELETEKeyResponse</returns>
         APIV1DELETEKeyResponse DeleteKey(DeleteKeyRequest body);
@@ -61,7 +62,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Deletes the key with the passed public key from the wallet.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1DELETEKeyResponse</returns>
         ApiResponse<APIV1DELETEKeyResponse> DeleteKeyWithHttpInfo(DeleteKeyRequest body);
@@ -71,7 +72,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Deletes multisig preimage information for the passed address from the wallet. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMultisigDeleteResponse</returns>
         APIV1POSTMultisigDeleteResponse DeleteMultisig(DeleteMultisigRequest body);
@@ -82,7 +83,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Deletes multisig preimage information for the passed address from the wallet. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMultisigDeleteResponse</returns>
         ApiResponse<APIV1POSTMultisigDeleteResponse> DeleteMultisigWithHttpInfo(DeleteMultisigRequest body);
@@ -92,7 +93,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Export the secret key associated with the passed public key.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTKeyExportResponse</returns>
         APIV1POSTKeyExportResponse ExportKey(ExportKeyRequest body);
@@ -103,7 +104,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Export the secret key associated with the passed public key.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTKeyExportResponse</returns>
         ApiResponse<APIV1POSTKeyExportResponse> ExportKeyWithHttpInfo(ExportKeyRequest body);
@@ -113,7 +114,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Export the master derivation key from the wallet. This key is a master \&quot;backup\&quot; key for the underlying wallet. With it, you can regenerate all of the wallets that have been generated with this wallet&#x27;s &#x60;POST /v1/key&#x60; endpoint. This key will not allow you to recover keys imported from other wallets, however. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMasterKeyExportResponse</returns>
         APIV1POSTMasterKeyExportResponse ExportMasterKey(ExportMasterKeyRequest body);
@@ -124,7 +125,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Export the master derivation key from the wallet. This key is a master \&quot;backup\&quot; key for the underlying wallet. With it, you can regenerate all of the wallets that have been generated with this wallet&#x27;s &#x60;POST /v1/key&#x60; endpoint. This key will not allow you to recover keys imported from other wallets, however. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMasterKeyExportResponse</returns>
         ApiResponse<APIV1POSTMasterKeyExportResponse> ExportMasterKeyWithHttpInfo(ExportMasterKeyRequest body);
@@ -134,7 +135,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Given a multisig address whose preimage this wallet stores, returns the information used to generate the address, including public keys, threshold, and multisig version. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMultisigExportResponse</returns>
         APIV1POSTMultisigExportResponse ExportMultisig(ExportMultisigRequest body);
@@ -145,7 +146,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Given a multisig address whose preimage this wallet stores, returns the information used to generate the address, including public keys, threshold, and multisig version. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMultisigExportResponse</returns>
         ApiResponse<APIV1POSTMultisigExportResponse> ExportMultisigWithHttpInfo(ExportMultisigRequest body);
@@ -155,7 +156,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Generates the next key in the deterministic key sequence (as determined by the master derivation key) and adds it to the wallet, returning the public key. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTKeyResponse</returns>
         APIV1POSTKeyResponse GenerateKey(GenerateKeyRequest body);
@@ -166,7 +167,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Generates the next key in the deterministic key sequence (as determined by the master derivation key) and adds it to the wallet, returning the public key. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTKeyResponse</returns>
         ApiResponse<APIV1POSTKeyResponse> GenerateKeyWithHttpInfo(GenerateKeyRequest body);
@@ -176,7 +177,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Returns information about the wallet associated with the passed wallet handle token. Additionally returns expiration information about the token itself. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletInfoResponse</returns>
         APIV1POSTWalletInfoResponse GetWalletInfo(WalletInfoRequest body);
@@ -187,7 +188,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Returns information about the wallet associated with the passed wallet handle token. Additionally returns expiration information about the token itself. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletInfoResponse</returns>
         ApiResponse<APIV1POSTWalletInfoResponse> GetWalletInfoWithHttpInfo(WalletInfoRequest body);
@@ -197,7 +198,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Import an externally generated key into the wallet. Note that if you wish to back up the imported key, you must do so by backing up the entire wallet database, because imported keys were not derived from the wallet&#x27;s master derivation key. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTKeyImportResponse</returns>
         APIV1POSTKeyImportResponse ImportKey(ImportKeyRequest body);
@@ -208,7 +209,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Import an externally generated key into the wallet. Note that if you wish to back up the imported key, you must do so by backing up the entire wallet database, because imported keys were not derived from the wallet&#x27;s master derivation key. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTKeyImportResponse</returns>
         ApiResponse<APIV1POSTKeyImportResponse> ImportKeyWithHttpInfo(ImportKeyRequest body);
@@ -218,7 +219,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Generates a multisig account from the passed public keys array and multisig metadata, and stores all of this in the wallet. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMultisigImportResponse</returns>
         APIV1POSTMultisigImportResponse ImportMultisig(ImportMultisigRequest body);
@@ -229,7 +230,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Generates a multisig account from the passed public keys array and multisig metadata, and stores all of this in the wallet. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMultisigImportResponse</returns>
         ApiResponse<APIV1POSTMultisigImportResponse> ImportMultisigWithHttpInfo(ImportMultisigRequest body);
@@ -239,7 +240,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Unlock the wallet and return a wallet handle token that can be used for subsequent operations. These tokens expire periodically and must be renewed. You can &#x60;POST&#x60; the token to &#x60;/v1/wallet/info&#x60; to see how much time remains until expiration, and renew it with &#x60;/v1/wallet/renew&#x60;. When you&#x27;re done, you can invalidate the token with &#x60;/v1/wallet/release&#x60;. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletInitResponse</returns>
         APIV1POSTWalletInitResponse InitWalletHandleToken(InitWalletHandleTokenRequest body);
@@ -250,7 +251,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Unlock the wallet and return a wallet handle token that can be used for subsequent operations. These tokens expire periodically and must be renewed. You can &#x60;POST&#x60; the token to &#x60;/v1/wallet/info&#x60; to see how much time remains until expiration, and renew it with &#x60;/v1/wallet/renew&#x60;. When you&#x27;re done, you can invalidate the token with &#x60;/v1/wallet/release&#x60;. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletInitResponse</returns>
         ApiResponse<APIV1POSTWalletInitResponse> InitWalletHandleTokenWithHttpInfo(InitWalletHandleTokenRequest body);
@@ -260,7 +261,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the public keys in this wallet. All of them have a stored private key.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTKeysListResponse</returns>
         APIV1POSTKeysListResponse ListKeysInWallet(ListKeysRequest body);
@@ -271,7 +272,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the public keys in this wallet. All of them have a stored private key.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTKeysListResponse</returns>
         ApiResponse<APIV1POSTKeysListResponse> ListKeysInWalletWithHttpInfo(ListKeysRequest body);
@@ -281,7 +282,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the multisig accounts whose preimages this wallet stores
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMultisigListResponse</returns>
         APIV1POSTMultisigListResponse ListMultisg(ListMultisigRequest body);
@@ -292,7 +293,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the multisig accounts whose preimages this wallet stores
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMultisigListResponse</returns>
         ApiResponse<APIV1POSTMultisigListResponse> ListMultisgWithHttpInfo(ListMultisigRequest body);
@@ -302,7 +303,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the wallets that kmd is aware of.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>APIV1GETWalletsResponse</returns>
         APIV1GETWalletsResponse ListWallets();
 
@@ -312,7 +313,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the wallets that kmd is aware of.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>ApiResponse of APIV1GETWalletsResponse</returns>
         ApiResponse<APIV1GETWalletsResponse> ListWalletsWithHttpInfo();
         /// <summary>
@@ -321,7 +322,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Invalidate the passed wallet handle token, making it invalid for use in subsequent requests.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletReleaseResponse</returns>
         APIV1POSTWalletReleaseResponse ReleaseWalletHandleToken(ReleaseWalletHandleTokenRequest body);
@@ -332,7 +333,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Invalidate the passed wallet handle token, making it invalid for use in subsequent requests.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletReleaseResponse</returns>
         ApiResponse<APIV1POSTWalletReleaseResponse> ReleaseWalletHandleTokenWithHttpInfo(ReleaseWalletHandleTokenRequest body);
@@ -342,7 +343,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Rename the underlying wallet to something else
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletRenameResponse</returns>
         APIV1POSTWalletRenameResponse RenameWallet(RenameWalletRequest body);
@@ -353,7 +354,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Rename the underlying wallet to something else
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletRenameResponse</returns>
         ApiResponse<APIV1POSTWalletRenameResponse> RenameWalletWithHttpInfo(RenameWalletRequest body);
@@ -363,7 +364,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Renew a wallet handle token, increasing its expiration duration to its initial value
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletRenewResponse</returns>
         APIV1POSTWalletRenewResponse RenewWalletHandleToken(RenewWalletHandleTokenRequest body);
@@ -374,7 +375,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Renew a wallet handle token, increasing its expiration duration to its initial value
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletRenewResponse</returns>
         ApiResponse<APIV1POSTWalletRenewResponse> RenewWalletHandleTokenWithHttpInfo(RenewWalletHandleTokenRequest body);
@@ -384,7 +385,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Start a multisig signature, or add a signature to a partially completed multisig signature object. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMultisigTransactionSignResponse</returns>
         APIV1POSTMultisigTransactionSignResponse SignMultisigTransaction(SignMultisigRequest body);
@@ -395,7 +396,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Start a multisig signature, or add a signature to a partially completed multisig signature object. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMultisigTransactionSignResponse</returns>
         ApiResponse<APIV1POSTMultisigTransactionSignResponse> SignMultisigTransactionWithHttpInfo(SignMultisigRequest body);
@@ -405,7 +406,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Signs the passed transaction with a key from the wallet, determined by the sender encoded in the transaction. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTTransactionSignResponse</returns>
         APIV1POSTTransactionSignResponse SignTransaction(SignTransactionRequest body);
@@ -416,7 +417,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Signs the passed transaction with a key from the wallet, determined by the sender encoded in the transaction. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTTransactionSignResponse</returns>
         ApiResponse<APIV1POSTTransactionSignResponse> SignTransactionWithHttpInfo(SignTransactionRequest body);
@@ -428,7 +429,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Create a new wallet (collection of keys) with the given parameters.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTWalletResponse> CreateWalletAsync(CreateWalletRequest body);
@@ -439,7 +440,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Create a new wallet (collection of keys) with the given parameters.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletResponse>> CreateWalletAsyncWithHttpInfo(CreateWalletRequest body);
@@ -449,7 +450,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Deletes the key with the passed public key from the wallet.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1DELETEKeyResponse</returns>
         System.Threading.Tasks.Task<APIV1DELETEKeyResponse> DeleteKeyAsync(DeleteKeyRequest body);
@@ -460,7 +461,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Deletes the key with the passed public key from the wallet.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1DELETEKeyResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1DELETEKeyResponse>> DeleteKeyAsyncWithHttpInfo(DeleteKeyRequest body);
@@ -470,7 +471,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Deletes multisig preimage information for the passed address from the wallet. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMultisigDeleteResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTMultisigDeleteResponse> DeleteMultisigAsync(DeleteMultisigRequest body);
@@ -481,7 +482,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Deletes multisig preimage information for the passed address from the wallet. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMultisigDeleteResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTMultisigDeleteResponse>> DeleteMultisigAsyncWithHttpInfo(DeleteMultisigRequest body);
@@ -491,7 +492,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Export the secret key associated with the passed public key.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTKeyExportResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTKeyExportResponse> ExportKeyAsync(ExportKeyRequest body);
@@ -502,7 +503,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Export the secret key associated with the passed public key.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTKeyExportResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTKeyExportResponse>> ExportKeyAsyncWithHttpInfo(ExportKeyRequest body);
@@ -512,7 +513,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Export the master derivation key from the wallet. This key is a master \&quot;backup\&quot; key for the underlying wallet. With it, you can regenerate all of the wallets that have been generated with this wallet&#x27;s &#x60;POST /v1/key&#x60; endpoint. This key will not allow you to recover keys imported from other wallets, however. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMasterKeyExportResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTMasterKeyExportResponse> ExportMasterKeyAsync(ExportMasterKeyRequest body);
@@ -523,7 +524,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Export the master derivation key from the wallet. This key is a master \&quot;backup\&quot; key for the underlying wallet. With it, you can regenerate all of the wallets that have been generated with this wallet&#x27;s &#x60;POST /v1/key&#x60; endpoint. This key will not allow you to recover keys imported from other wallets, however. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMasterKeyExportResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTMasterKeyExportResponse>> ExportMasterKeyAsyncWithHttpInfo(ExportMasterKeyRequest body);
@@ -533,7 +534,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Given a multisig address whose preimage this wallet stores, returns the information used to generate the address, including public keys, threshold, and multisig version. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMultisigExportResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTMultisigExportResponse> ExportMultisigAsync(ExportMultisigRequest body);
@@ -544,7 +545,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Given a multisig address whose preimage this wallet stores, returns the information used to generate the address, including public keys, threshold, and multisig version. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMultisigExportResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTMultisigExportResponse>> ExportMultisigAsyncWithHttpInfo(ExportMultisigRequest body);
@@ -554,7 +555,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Generates the next key in the deterministic key sequence (as determined by the master derivation key) and adds it to the wallet, returning the public key. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTKeyResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTKeyResponse> GenerateKeyAsync(GenerateKeyRequest body);
@@ -565,7 +566,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Generates the next key in the deterministic key sequence (as determined by the master derivation key) and adds it to the wallet, returning the public key. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTKeyResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTKeyResponse>> GenerateKeyAsyncWithHttpInfo(GenerateKeyRequest body);
@@ -575,7 +576,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Returns information about the wallet associated with the passed wallet handle token. Additionally returns expiration information about the token itself. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletInfoResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTWalletInfoResponse> GetWalletInfoAsync(WalletInfoRequest body);
@@ -586,7 +587,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Returns information about the wallet associated with the passed wallet handle token. Additionally returns expiration information about the token itself. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletInfoResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletInfoResponse>> GetWalletInfoAsyncWithHttpInfo(WalletInfoRequest body);
@@ -596,7 +597,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Import an externally generated key into the wallet. Note that if you wish to back up the imported key, you must do so by backing up the entire wallet database, because imported keys were not derived from the wallet&#x27;s master derivation key. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTKeyImportResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTKeyImportResponse> ImportKeyAsync(ImportKeyRequest body);
@@ -607,7 +608,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Import an externally generated key into the wallet. Note that if you wish to back up the imported key, you must do so by backing up the entire wallet database, because imported keys were not derived from the wallet&#x27;s master derivation key. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTKeyImportResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTKeyImportResponse>> ImportKeyAsyncWithHttpInfo(ImportKeyRequest body);
@@ -617,7 +618,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Generates a multisig account from the passed public keys array and multisig metadata, and stores all of this in the wallet. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMultisigImportResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTMultisigImportResponse> ImportMultisigAsync(ImportMultisigRequest body);
@@ -628,7 +629,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Generates a multisig account from the passed public keys array and multisig metadata, and stores all of this in the wallet. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMultisigImportResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTMultisigImportResponse>> ImportMultisigAsyncWithHttpInfo(ImportMultisigRequest body);
@@ -638,7 +639,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Unlock the wallet and return a wallet handle token that can be used for subsequent operations. These tokens expire periodically and must be renewed. You can &#x60;POST&#x60; the token to &#x60;/v1/wallet/info&#x60; to see how much time remains until expiration, and renew it with &#x60;/v1/wallet/renew&#x60;. When you&#x27;re done, you can invalidate the token with &#x60;/v1/wallet/release&#x60;. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletInitResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTWalletInitResponse> InitWalletHandleTokenAsync(InitWalletHandleTokenRequest body);
@@ -649,7 +650,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Unlock the wallet and return a wallet handle token that can be used for subsequent operations. These tokens expire periodically and must be renewed. You can &#x60;POST&#x60; the token to &#x60;/v1/wallet/info&#x60; to see how much time remains until expiration, and renew it with &#x60;/v1/wallet/renew&#x60;. When you&#x27;re done, you can invalidate the token with &#x60;/v1/wallet/release&#x60;. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletInitResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletInitResponse>> InitWalletHandleTokenAsyncWithHttpInfo(InitWalletHandleTokenRequest body);
@@ -659,7 +660,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the public keys in this wallet. All of them have a stored private key.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTKeysListResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTKeysListResponse> ListKeysInWalletAsync(ListKeysRequest body);
@@ -670,7 +671,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the public keys in this wallet. All of them have a stored private key.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTKeysListResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTKeysListResponse>> ListKeysInWalletAsyncWithHttpInfo(ListKeysRequest body);
@@ -680,7 +681,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the multisig accounts whose preimages this wallet stores
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMultisigListResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTMultisigListResponse> ListMultisgAsync(ListMultisigRequest body);
@@ -691,7 +692,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the multisig accounts whose preimages this wallet stores
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMultisigListResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTMultisigListResponse>> ListMultisgAsyncWithHttpInfo(ListMultisigRequest body);
@@ -701,7 +702,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the wallets that kmd is aware of.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of APIV1GETWalletsResponse</returns>
         System.Threading.Tasks.Task<APIV1GETWalletsResponse> ListWalletsAsync();
 
@@ -711,7 +712,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Lists all of the wallets that kmd is aware of.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of ApiResponse (APIV1GETWalletsResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1GETWalletsResponse>> ListWalletsAsyncWithHttpInfo();
         /// <summary>
@@ -720,7 +721,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Invalidate the passed wallet handle token, making it invalid for use in subsequent requests.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletReleaseResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTWalletReleaseResponse> ReleaseWalletHandleTokenAsync(ReleaseWalletHandleTokenRequest body);
@@ -731,7 +732,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Invalidate the passed wallet handle token, making it invalid for use in subsequent requests.
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletReleaseResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletReleaseResponse>> ReleaseWalletHandleTokenAsyncWithHttpInfo(ReleaseWalletHandleTokenRequest body);
@@ -741,7 +742,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Rename the underlying wallet to something else
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletRenameResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTWalletRenameResponse> RenameWalletAsync(RenameWalletRequest body);
@@ -752,7 +753,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Rename the underlying wallet to something else
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletRenameResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletRenameResponse>> RenameWalletAsyncWithHttpInfo(RenameWalletRequest body);
@@ -762,7 +763,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Renew a wallet handle token, increasing its expiration duration to its initial value
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletRenewResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTWalletRenewResponse> RenewWalletHandleTokenAsync(RenewWalletHandleTokenRequest body);
@@ -773,7 +774,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Renew a wallet handle token, increasing its expiration duration to its initial value
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletRenewResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletRenewResponse>> RenewWalletHandleTokenAsyncWithHttpInfo(RenewWalletHandleTokenRequest body);
@@ -783,7 +784,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Start a multisig signature, or add a signature to a partially completed multisig signature object. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMultisigTransactionSignResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTMultisigTransactionSignResponse> SignMultisigTransactionAsync(SignMultisigRequest body);
@@ -794,7 +795,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Start a multisig signature, or add a signature to a partially completed multisig signature object. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMultisigTransactionSignResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTMultisigTransactionSignResponse>> SignMultisigTransactionAsyncWithHttpInfo(SignMultisigRequest body);
@@ -804,7 +805,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Signs the passed transaction with a key from the wallet, determined by the sender encoded in the transaction. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTTransactionSignResponse</returns>
         System.Threading.Tasks.Task<APIV1POSTTransactionSignResponse> SignTransactionAsync(SignTransactionRequest body);
@@ -815,7 +816,7 @@ namespace Algorand.Kmd.Api
         /// <remarks>
         /// Signs the passed transaction with a key from the wallet, determined by the sender encoded in the transaction. 
         /// </remarks>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTTransactionSignResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<APIV1POSTTransactionSignResponse>> SignTransactionAsyncWithHttpInfo(SignTransactionRequest body);
@@ -933,7 +934,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Create a wallet Create a new wallet (collection of keys) with the given parameters.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletResponse</returns>
         public APIV1POSTWalletResponse CreateWallet(CreateWalletRequest body)
@@ -945,14 +946,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Create a wallet Create a new wallet (collection of keys) with the given parameters.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletResponse</returns>
         public ApiResponse<APIV1POSTWalletResponse> CreateWalletWithHttpInfo(CreateWalletRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->CreateWallet");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->CreateWallet");
 
             var localVarPath = "/v1/wallet";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1011,7 +1012,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Create a wallet Create a new wallet (collection of keys) with the given parameters.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTWalletResponse> CreateWalletAsync(CreateWalletRequest body)
@@ -1024,14 +1025,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Create a wallet Create a new wallet (collection of keys) with the given parameters.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletResponse>> CreateWalletAsyncWithHttpInfo(CreateWalletRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->CreateWallet");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->CreateWallet");
 
             var localVarPath = "/v1/wallet";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1090,7 +1091,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Delete a key Deletes the key with the passed public key from the wallet.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1DELETEKeyResponse</returns>
         public APIV1DELETEKeyResponse DeleteKey(DeleteKeyRequest body)
@@ -1102,14 +1103,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Delete a key Deletes the key with the passed public key from the wallet.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1DELETEKeyResponse</returns>
         public ApiResponse<APIV1DELETEKeyResponse> DeleteKeyWithHttpInfo(DeleteKeyRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->DeleteKey");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->DeleteKey");
 
             var localVarPath = "/v1/key";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1168,7 +1169,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Delete a key Deletes the key with the passed public key from the wallet.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1DELETEKeyResponse</returns>
         public async System.Threading.Tasks.Task<APIV1DELETEKeyResponse> DeleteKeyAsync(DeleteKeyRequest body)
@@ -1181,14 +1182,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Delete a key Deletes the key with the passed public key from the wallet.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1DELETEKeyResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1DELETEKeyResponse>> DeleteKeyAsyncWithHttpInfo(DeleteKeyRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->DeleteKey");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->DeleteKey");
 
             var localVarPath = "/v1/key";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1247,7 +1248,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Delete a multisig Deletes multisig preimage information for the passed address from the wallet. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMultisigDeleteResponse</returns>
         public APIV1POSTMultisigDeleteResponse DeleteMultisig(DeleteMultisigRequest body)
@@ -1259,14 +1260,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Delete a multisig Deletes multisig preimage information for the passed address from the wallet. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMultisigDeleteResponse</returns>
         public ApiResponse<APIV1POSTMultisigDeleteResponse> DeleteMultisigWithHttpInfo(DeleteMultisigRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->DeleteMultisig");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->DeleteMultisig");
 
             var localVarPath = "/v1/multisig/delete";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1325,7 +1326,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Delete a multisig Deletes multisig preimage information for the passed address from the wallet. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMultisigDeleteResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTMultisigDeleteResponse> DeleteMultisigAsync(DeleteMultisigRequest body)
@@ -1338,14 +1339,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Delete a multisig Deletes multisig preimage information for the passed address from the wallet. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMultisigDeleteResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTMultisigDeleteResponse>> DeleteMultisigAsyncWithHttpInfo(DeleteMultisigRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->DeleteMultisig");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->DeleteMultisig");
 
             var localVarPath = "/v1/multisig/delete";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1404,7 +1405,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export a key Export the secret key associated with the passed public key.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTKeyExportResponse</returns>
         public APIV1POSTKeyExportResponse ExportKey(ExportKeyRequest body)
@@ -1416,14 +1417,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export a key Export the secret key associated with the passed public key.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTKeyExportResponse</returns>
         public ApiResponse<APIV1POSTKeyExportResponse> ExportKeyWithHttpInfo(ExportKeyRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportKey");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportKey");
 
             var localVarPath = "/v1/key/export";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1482,7 +1483,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export a key Export the secret key associated with the passed public key.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTKeyExportResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTKeyExportResponse> ExportKeyAsync(ExportKeyRequest body)
@@ -1495,14 +1496,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export a key Export the secret key associated with the passed public key.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTKeyExportResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTKeyExportResponse>> ExportKeyAsyncWithHttpInfo(ExportKeyRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportKey");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportKey");
 
             var localVarPath = "/v1/key/export";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1561,7 +1562,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export the master derivation key from a wallet Export the master derivation key from the wallet. This key is a master \&quot;backup\&quot; key for the underlying wallet. With it, you can regenerate all of the wallets that have been generated with this wallet&#x27;s &#x60;POST /v1/key&#x60; endpoint. This key will not allow you to recover keys imported from other wallets, however. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMasterKeyExportResponse</returns>
         public APIV1POSTMasterKeyExportResponse ExportMasterKey(ExportMasterKeyRequest body)
@@ -1573,14 +1574,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export the master derivation key from a wallet Export the master derivation key from the wallet. This key is a master \&quot;backup\&quot; key for the underlying wallet. With it, you can regenerate all of the wallets that have been generated with this wallet&#x27;s &#x60;POST /v1/key&#x60; endpoint. This key will not allow you to recover keys imported from other wallets, however. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMasterKeyExportResponse</returns>
         public ApiResponse<APIV1POSTMasterKeyExportResponse> ExportMasterKeyWithHttpInfo(ExportMasterKeyRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportMasterKey");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportMasterKey");
 
             var localVarPath = "/v1/master_key/export";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1639,7 +1640,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export the master derivation key from a wallet Export the master derivation key from the wallet. This key is a master \&quot;backup\&quot; key for the underlying wallet. With it, you can regenerate all of the wallets that have been generated with this wallet&#x27;s &#x60;POST /v1/key&#x60; endpoint. This key will not allow you to recover keys imported from other wallets, however. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMasterKeyExportResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTMasterKeyExportResponse> ExportMasterKeyAsync(ExportMasterKeyRequest body)
@@ -1652,14 +1653,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export the master derivation key from a wallet Export the master derivation key from the wallet. This key is a master \&quot;backup\&quot; key for the underlying wallet. With it, you can regenerate all of the wallets that have been generated with this wallet&#x27;s &#x60;POST /v1/key&#x60; endpoint. This key will not allow you to recover keys imported from other wallets, however. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMasterKeyExportResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTMasterKeyExportResponse>> ExportMasterKeyAsyncWithHttpInfo(ExportMasterKeyRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportMasterKey");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportMasterKey");
 
             var localVarPath = "/v1/master_key/export";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1718,7 +1719,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export multisig address metadata Given a multisig address whose preimage this wallet stores, returns the information used to generate the address, including public keys, threshold, and multisig version. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMultisigExportResponse</returns>
         public APIV1POSTMultisigExportResponse ExportMultisig(ExportMultisigRequest body)
@@ -1730,14 +1731,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export multisig address metadata Given a multisig address whose preimage this wallet stores, returns the information used to generate the address, including public keys, threshold, and multisig version. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMultisigExportResponse</returns>
         public ApiResponse<APIV1POSTMultisigExportResponse> ExportMultisigWithHttpInfo(ExportMultisigRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportMultisig");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportMultisig");
 
             var localVarPath = "/v1/multisig/export";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1796,7 +1797,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export multisig address metadata Given a multisig address whose preimage this wallet stores, returns the information used to generate the address, including public keys, threshold, and multisig version. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMultisigExportResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTMultisigExportResponse> ExportMultisigAsync(ExportMultisigRequest body)
@@ -1809,14 +1810,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Export multisig address metadata Given a multisig address whose preimage this wallet stores, returns the information used to generate the address, including public keys, threshold, and multisig version. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMultisigExportResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTMultisigExportResponse>> ExportMultisigAsyncWithHttpInfo(ExportMultisigRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportMultisig");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ExportMultisig");
 
             var localVarPath = "/v1/multisig/export";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1875,7 +1876,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Generate a key Generates the next key in the deterministic key sequence (as determined by the master derivation key) and adds it to the wallet, returning the public key. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTKeyResponse</returns>
         public APIV1POSTKeyResponse GenerateKey(GenerateKeyRequest body)
@@ -1887,14 +1888,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Generate a key Generates the next key in the deterministic key sequence (as determined by the master derivation key) and adds it to the wallet, returning the public key. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTKeyResponse</returns>
         public ApiResponse<APIV1POSTKeyResponse> GenerateKeyWithHttpInfo(GenerateKeyRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->GenerateKey");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->GenerateKey");
 
             var localVarPath = "/v1/key";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1953,7 +1954,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Generate a key Generates the next key in the deterministic key sequence (as determined by the master derivation key) and adds it to the wallet, returning the public key. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTKeyResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTKeyResponse> GenerateKeyAsync(GenerateKeyRequest body)
@@ -1966,14 +1967,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Generate a key Generates the next key in the deterministic key sequence (as determined by the master derivation key) and adds it to the wallet, returning the public key. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTKeyResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTKeyResponse>> GenerateKeyAsyncWithHttpInfo(GenerateKeyRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->GenerateKey");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->GenerateKey");
 
             var localVarPath = "/v1/key";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2032,7 +2033,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Get wallet info Returns information about the wallet associated with the passed wallet handle token. Additionally returns expiration information about the token itself. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletInfoResponse</returns>
         public APIV1POSTWalletInfoResponse GetWalletInfo(WalletInfoRequest body)
@@ -2044,14 +2045,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Get wallet info Returns information about the wallet associated with the passed wallet handle token. Additionally returns expiration information about the token itself. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletInfoResponse</returns>
         public ApiResponse<APIV1POSTWalletInfoResponse> GetWalletInfoWithHttpInfo(WalletInfoRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->GetWalletInfo");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->GetWalletInfo");
 
             var localVarPath = "/v1/wallet/info";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2110,7 +2111,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Get wallet info Returns information about the wallet associated with the passed wallet handle token. Additionally returns expiration information about the token itself. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletInfoResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTWalletInfoResponse> GetWalletInfoAsync(WalletInfoRequest body)
@@ -2123,14 +2124,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Get wallet info Returns information about the wallet associated with the passed wallet handle token. Additionally returns expiration information about the token itself. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletInfoResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletInfoResponse>> GetWalletInfoAsyncWithHttpInfo(WalletInfoRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->GetWalletInfo");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->GetWalletInfo");
 
             var localVarPath = "/v1/wallet/info";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2189,7 +2190,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Import a key Import an externally generated key into the wallet. Note that if you wish to back up the imported key, you must do so by backing up the entire wallet database, because imported keys were not derived from the wallet&#x27;s master derivation key. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTKeyImportResponse</returns>
         public APIV1POSTKeyImportResponse ImportKey(ImportKeyRequest body)
@@ -2201,14 +2202,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Import a key Import an externally generated key into the wallet. Note that if you wish to back up the imported key, you must do so by backing up the entire wallet database, because imported keys were not derived from the wallet&#x27;s master derivation key. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTKeyImportResponse</returns>
         public ApiResponse<APIV1POSTKeyImportResponse> ImportKeyWithHttpInfo(ImportKeyRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ImportKey");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ImportKey");
 
             var localVarPath = "/v1/key/import";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2267,7 +2268,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Import a key Import an externally generated key into the wallet. Note that if you wish to back up the imported key, you must do so by backing up the entire wallet database, because imported keys were not derived from the wallet&#x27;s master derivation key. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTKeyImportResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTKeyImportResponse> ImportKeyAsync(ImportKeyRequest body)
@@ -2280,14 +2281,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Import a key Import an externally generated key into the wallet. Note that if you wish to back up the imported key, you must do so by backing up the entire wallet database, because imported keys were not derived from the wallet&#x27;s master derivation key. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTKeyImportResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTKeyImportResponse>> ImportKeyAsyncWithHttpInfo(ImportKeyRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ImportKey");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ImportKey");
 
             var localVarPath = "/v1/key/import";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2346,7 +2347,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Import a multisig account Generates a multisig account from the passed public keys array and multisig metadata, and stores all of this in the wallet. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMultisigImportResponse</returns>
         public APIV1POSTMultisigImportResponse ImportMultisig(ImportMultisigRequest body)
@@ -2358,14 +2359,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Import a multisig account Generates a multisig account from the passed public keys array and multisig metadata, and stores all of this in the wallet. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMultisigImportResponse</returns>
         public ApiResponse<APIV1POSTMultisigImportResponse> ImportMultisigWithHttpInfo(ImportMultisigRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ImportMultisig");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ImportMultisig");
 
             var localVarPath = "/v1/multisig/import";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2424,7 +2425,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Import a multisig account Generates a multisig account from the passed public keys array and multisig metadata, and stores all of this in the wallet. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMultisigImportResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTMultisigImportResponse> ImportMultisigAsync(ImportMultisigRequest body)
@@ -2437,14 +2438,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Import a multisig account Generates a multisig account from the passed public keys array and multisig metadata, and stores all of this in the wallet. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMultisigImportResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTMultisigImportResponse>> ImportMultisigAsyncWithHttpInfo(ImportMultisigRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ImportMultisig");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ImportMultisig");
 
             var localVarPath = "/v1/multisig/import";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2503,7 +2504,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Initialize a wallet handle token Unlock the wallet and return a wallet handle token that can be used for subsequent operations. These tokens expire periodically and must be renewed. You can &#x60;POST&#x60; the token to &#x60;/v1/wallet/info&#x60; to see how much time remains until expiration, and renew it with &#x60;/v1/wallet/renew&#x60;. When you&#x27;re done, you can invalidate the token with &#x60;/v1/wallet/release&#x60;. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletInitResponse</returns>
         public APIV1POSTWalletInitResponse InitWalletHandleToken(InitWalletHandleTokenRequest body)
@@ -2515,14 +2516,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Initialize a wallet handle token Unlock the wallet and return a wallet handle token that can be used for subsequent operations. These tokens expire periodically and must be renewed. You can &#x60;POST&#x60; the token to &#x60;/v1/wallet/info&#x60; to see how much time remains until expiration, and renew it with &#x60;/v1/wallet/renew&#x60;. When you&#x27;re done, you can invalidate the token with &#x60;/v1/wallet/release&#x60;. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletInitResponse</returns>
         public ApiResponse<APIV1POSTWalletInitResponse> InitWalletHandleTokenWithHttpInfo(InitWalletHandleTokenRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->InitWalletHandleToken");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->InitWalletHandleToken");
 
             var localVarPath = "/v1/wallet/init";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2581,7 +2582,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Initialize a wallet handle token Unlock the wallet and return a wallet handle token that can be used for subsequent operations. These tokens expire periodically and must be renewed. You can &#x60;POST&#x60; the token to &#x60;/v1/wallet/info&#x60; to see how much time remains until expiration, and renew it with &#x60;/v1/wallet/renew&#x60;. When you&#x27;re done, you can invalidate the token with &#x60;/v1/wallet/release&#x60;. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletInitResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTWalletInitResponse> InitWalletHandleTokenAsync(InitWalletHandleTokenRequest body)
@@ -2594,14 +2595,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Initialize a wallet handle token Unlock the wallet and return a wallet handle token that can be used for subsequent operations. These tokens expire periodically and must be renewed. You can &#x60;POST&#x60; the token to &#x60;/v1/wallet/info&#x60; to see how much time remains until expiration, and renew it with &#x60;/v1/wallet/renew&#x60;. When you&#x27;re done, you can invalidate the token with &#x60;/v1/wallet/release&#x60;. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletInitResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletInitResponse>> InitWalletHandleTokenAsyncWithHttpInfo(InitWalletHandleTokenRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->InitWalletHandleToken");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->InitWalletHandleToken");
 
             var localVarPath = "/v1/wallet/init";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2660,7 +2661,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List keys in wallet Lists all of the public keys in this wallet. All of them have a stored private key.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTKeysListResponse</returns>
         public APIV1POSTKeysListResponse ListKeysInWallet(ListKeysRequest body)
@@ -2672,14 +2673,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List keys in wallet Lists all of the public keys in this wallet. All of them have a stored private key.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTKeysListResponse</returns>
         public ApiResponse<APIV1POSTKeysListResponse> ListKeysInWalletWithHttpInfo(ListKeysRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ListKeysInWallet");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ListKeysInWallet");
 
             var localVarPath = "/v1/keys/list";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2738,7 +2739,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List keys in wallet Lists all of the public keys in this wallet. All of them have a stored private key.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTKeysListResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTKeysListResponse> ListKeysInWalletAsync(ListKeysRequest body)
@@ -2751,14 +2752,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List keys in wallet Lists all of the public keys in this wallet. All of them have a stored private key.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTKeysListResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTKeysListResponse>> ListKeysInWalletAsyncWithHttpInfo(ListKeysRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ListKeysInWallet");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ListKeysInWallet");
 
             var localVarPath = "/v1/keys/list";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2817,7 +2818,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List multisig accounts Lists all of the multisig accounts whose preimages this wallet stores
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMultisigListResponse</returns>
         public APIV1POSTMultisigListResponse ListMultisg(ListMultisigRequest body)
@@ -2829,14 +2830,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List multisig accounts Lists all of the multisig accounts whose preimages this wallet stores
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMultisigListResponse</returns>
         public ApiResponse<APIV1POSTMultisigListResponse> ListMultisgWithHttpInfo(ListMultisigRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ListMultisg");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ListMultisg");
 
             var localVarPath = "/v1/multisig/list";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2895,7 +2896,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List multisig accounts Lists all of the multisig accounts whose preimages this wallet stores
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMultisigListResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTMultisigListResponse> ListMultisgAsync(ListMultisigRequest body)
@@ -2908,14 +2909,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List multisig accounts Lists all of the multisig accounts whose preimages this wallet stores
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMultisigListResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTMultisigListResponse>> ListMultisgAsyncWithHttpInfo(ListMultisigRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ListMultisg");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ListMultisg");
 
             var localVarPath = "/v1/multisig/list";
             var localVarPathParams = new Dictionary<String, String>();
@@ -2974,7 +2975,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List wallets Lists all of the wallets that kmd is aware of.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>APIV1GETWalletsResponse</returns>
         public APIV1GETWalletsResponse ListWallets()
         {
@@ -2985,7 +2986,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List wallets Lists all of the wallets that kmd is aware of.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>ApiResponse of APIV1GETWalletsResponse</returns>
         public ApiResponse<APIV1GETWalletsResponse> ListWalletsWithHttpInfo()
         {
@@ -3038,7 +3039,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List wallets Lists all of the wallets that kmd is aware of.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of APIV1GETWalletsResponse</returns>
         public async System.Threading.Tasks.Task<APIV1GETWalletsResponse> ListWalletsAsync()
         {
@@ -3050,7 +3051,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// List wallets Lists all of the wallets that kmd is aware of.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of ApiResponse (APIV1GETWalletsResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1GETWalletsResponse>> ListWalletsAsyncWithHttpInfo()
         {
@@ -3103,7 +3104,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Release a wallet handle token Invalidate the passed wallet handle token, making it invalid for use in subsequent requests.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletReleaseResponse</returns>
         public APIV1POSTWalletReleaseResponse ReleaseWalletHandleToken(ReleaseWalletHandleTokenRequest body)
@@ -3115,14 +3116,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Release a wallet handle token Invalidate the passed wallet handle token, making it invalid for use in subsequent requests.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletReleaseResponse</returns>
         public ApiResponse<APIV1POSTWalletReleaseResponse> ReleaseWalletHandleTokenWithHttpInfo(ReleaseWalletHandleTokenRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ReleaseWalletHandleToken");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ReleaseWalletHandleToken");
 
             var localVarPath = "/v1/wallet/release";
             var localVarPathParams = new Dictionary<String, String>();
@@ -3181,7 +3182,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Release a wallet handle token Invalidate the passed wallet handle token, making it invalid for use in subsequent requests.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletReleaseResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTWalletReleaseResponse> ReleaseWalletHandleTokenAsync(ReleaseWalletHandleTokenRequest body)
@@ -3194,14 +3195,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Release a wallet handle token Invalidate the passed wallet handle token, making it invalid for use in subsequent requests.
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletReleaseResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletReleaseResponse>> ReleaseWalletHandleTokenAsyncWithHttpInfo(ReleaseWalletHandleTokenRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ReleaseWalletHandleToken");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ReleaseWalletHandleToken");
 
             var localVarPath = "/v1/wallet/release";
             var localVarPathParams = new Dictionary<String, String>();
@@ -3260,7 +3261,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Rename a wallet Rename the underlying wallet to something else
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletRenameResponse</returns>
         public APIV1POSTWalletRenameResponse RenameWallet(RenameWalletRequest body)
@@ -3272,14 +3273,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Rename a wallet Rename the underlying wallet to something else
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletRenameResponse</returns>
         public ApiResponse<APIV1POSTWalletRenameResponse> RenameWalletWithHttpInfo(RenameWalletRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->RenameWallet");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->RenameWallet");
 
             var localVarPath = "/v1/wallet/rename";
             var localVarPathParams = new Dictionary<String, String>();
@@ -3338,7 +3339,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Rename a wallet Rename the underlying wallet to something else
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletRenameResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTWalletRenameResponse> RenameWalletAsync(RenameWalletRequest body)
@@ -3351,14 +3352,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Rename a wallet Rename the underlying wallet to something else
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletRenameResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletRenameResponse>> RenameWalletAsyncWithHttpInfo(RenameWalletRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->RenameWallet");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->RenameWallet");
 
             var localVarPath = "/v1/wallet/rename";
             var localVarPathParams = new Dictionary<String, String>();
@@ -3417,7 +3418,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Renew a wallet handle token Renew a wallet handle token, increasing its expiration duration to its initial value
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTWalletRenewResponse</returns>
         public APIV1POSTWalletRenewResponse RenewWalletHandleToken(RenewWalletHandleTokenRequest body)
@@ -3429,14 +3430,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Renew a wallet handle token Renew a wallet handle token, increasing its expiration duration to its initial value
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTWalletRenewResponse</returns>
         public ApiResponse<APIV1POSTWalletRenewResponse> RenewWalletHandleTokenWithHttpInfo(RenewWalletHandleTokenRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->RenewWalletHandleToken");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->RenewWalletHandleToken");
 
             var localVarPath = "/v1/wallet/renew";
             var localVarPathParams = new Dictionary<String, String>();
@@ -3495,7 +3496,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Renew a wallet handle token Renew a wallet handle token, increasing its expiration duration to its initial value
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTWalletRenewResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTWalletRenewResponse> RenewWalletHandleTokenAsync(RenewWalletHandleTokenRequest body)
@@ -3508,14 +3509,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Renew a wallet handle token Renew a wallet handle token, increasing its expiration duration to its initial value
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTWalletRenewResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTWalletRenewResponse>> RenewWalletHandleTokenAsyncWithHttpInfo(RenewWalletHandleTokenRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->RenewWalletHandleToken");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->RenewWalletHandleToken");
 
             var localVarPath = "/v1/wallet/renew";
             var localVarPathParams = new Dictionary<String, String>();
@@ -3574,7 +3575,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Sign a multisig transaction Start a multisig signature, or add a signature to a partially completed multisig signature object. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTMultisigTransactionSignResponse</returns>
         public APIV1POSTMultisigTransactionSignResponse SignMultisigTransaction(SignMultisigRequest body)
@@ -3586,14 +3587,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Sign a multisig transaction Start a multisig signature, or add a signature to a partially completed multisig signature object. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTMultisigTransactionSignResponse</returns>
         public ApiResponse<APIV1POSTMultisigTransactionSignResponse> SignMultisigTransactionWithHttpInfo(SignMultisigRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->SignMultisigTransaction");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->SignMultisigTransaction");
 
             var localVarPath = "/v1/multisig/sign";
             var localVarPathParams = new Dictionary<String, String>();
@@ -3652,7 +3653,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Sign a multisig transaction Start a multisig signature, or add a signature to a partially completed multisig signature object. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTMultisigTransactionSignResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTMultisigTransactionSignResponse> SignMultisigTransactionAsync(SignMultisigRequest body)
@@ -3665,14 +3666,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Sign a multisig transaction Start a multisig signature, or add a signature to a partially completed multisig signature object. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTMultisigTransactionSignResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTMultisigTransactionSignResponse>> SignMultisigTransactionAsyncWithHttpInfo(SignMultisigRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->SignMultisigTransaction");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->SignMultisigTransaction");
 
             var localVarPath = "/v1/multisig/sign";
             var localVarPathParams = new Dictionary<String, String>();
@@ -3731,7 +3732,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Sign a transaction Signs the passed transaction with a key from the wallet, determined by the sender encoded in the transaction. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>APIV1POSTTransactionSignResponse</returns>
         public APIV1POSTTransactionSignResponse SignTransaction(SignTransactionRequest body)
@@ -3743,14 +3744,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Sign a transaction Signs the passed transaction with a key from the wallet, determined by the sender encoded in the transaction. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>ApiResponse of APIV1POSTTransactionSignResponse</returns>
         public ApiResponse<APIV1POSTTransactionSignResponse> SignTransactionWithHttpInfo(SignTransactionRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->SignTransaction");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->SignTransaction");
 
             var localVarPath = "/v1/transaction/sign";
             var localVarPathParams = new Dictionary<String, String>();
@@ -3809,7 +3810,7 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Sign a transaction Signs the passed transaction with a key from the wallet, determined by the sender encoded in the transaction. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of APIV1POSTTransactionSignResponse</returns>
         public async System.Threading.Tasks.Task<APIV1POSTTransactionSignResponse> SignTransactionAsync(SignTransactionRequest body)
@@ -3822,14 +3823,14 @@ namespace Algorand.Kmd.Api
         /// <summary>
         /// Sign a transaction Signs the passed transaction with a key from the wallet, determined by the sender encoded in the transaction. 
         /// </summary>
-        /// <exception cref="Algorand.Kmd.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="Algorand.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"></param>
         /// <returns>Task of ApiResponse (APIV1POSTTransactionSignResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<APIV1POSTTransactionSignResponse>> SignTransactionAsyncWithHttpInfo(SignTransactionRequest body)
         {
             // verify the required parameter 'body' is set
             if (body == null)
-                throw new ApiException(400, "Missing required parameter 'body' when calling DefaultApi->SignTransaction");
+                throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->SignTransaction");
 
             var localVarPath = "/v1/transaction/sign";
             var localVarPathParams = new Dictionary<String, String>();

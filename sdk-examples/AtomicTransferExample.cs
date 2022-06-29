@@ -34,7 +34,7 @@ namespace sdk_examples
             {
                 transParams = await algodApiInstance.TransactionParamsAsync();
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 throw new Exception("Could not get params", e);
             }
@@ -63,7 +63,7 @@ namespace sdk_examples
                 Console.WriteLine("Confirmed Round is: " +
                     Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 // This is generally expected, but should give us an informative error message.
                 Console.WriteLine("Exception when calling algod#rawTransaction: " + e.Message);

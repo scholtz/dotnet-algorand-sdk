@@ -125,7 +125,7 @@ namespace sdk_examples.contract
 
                 Console.WriteLine("You have successefully arrived the end of this test, please press and key to exist.");
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 // This is generally expected, but should give us an informative error message.
                 Console.WriteLine("Exception when calling algod#sendTransaction: " + e.Message);
@@ -157,7 +157,7 @@ namespace sdk_examples.contract
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
                 Console.WriteLine("Application ID is: " + appId);
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -226,7 +226,7 @@ namespace sdk_examples.contract
                 Console.WriteLine("Application ID is: " + resp.ApplicationIndex.ToString());
                 return resp.ApplicationIndex;
             }
-            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
+            catch (Algorand.ApiException<ErrorResponse> e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Result.Message);
                 return null;
@@ -258,7 +258,7 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationOptInTransaction;
                 Console.WriteLine(string.Format("Address {0} optin to Application({1})",   sender.Address.ToString(), resp.ApplicationId));
             }
-            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
+            catch (Algorand.ApiException<ErrorResponse> e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Result.Message);
             }
@@ -289,7 +289,7 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationDeleteTransaction;
                 Console.WriteLine("Success deleted the application " + resp.ApplicationId);
             }
-            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
+            catch (Algorand.ApiException<ErrorResponse> e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Result.Message);
             }
@@ -319,7 +319,7 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationClearStateTransaction;
                 Console.WriteLine("Success cleared the application " + resp.ApplicationId);
             }
-            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
+            catch (Algorand.ApiException<ErrorResponse> e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Result.Message);
             }
@@ -371,7 +371,7 @@ namespace sdk_examples.contract
                     Console.WriteLine(outStr);
                 }
             }
-            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
+            catch (Algorand.ApiException<ErrorResponse> e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Result.Message);
             }

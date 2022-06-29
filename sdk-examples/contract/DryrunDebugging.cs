@@ -43,7 +43,7 @@ namespace sdk_examples.contract
             {
                 transParams = await algodApiInstance.TransactionParamsAsync();
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 throw new Exception("Could not get params", e);
             }
@@ -57,7 +57,7 @@ namespace sdk_examples.contract
                 var dryrunResponse2 = await Utils.GetDryrunResponse(algodApiInstance, signedTx);
                 Console.WriteLine("Dryrun source response : " + dryrunResponse2.ToJson()); 
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 // This is generally expected, but should give us an informative error message.
                 Console.WriteLine("Exception when calling algod#rawTransaction: " + e.Message);

@@ -119,7 +119,7 @@ namespace sdk_examples.contract
                 // clears local storage
                 await ClearApp(client, user, appid);
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 throw new Exception("Could not get params", e);
             }
@@ -149,7 +149,7 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid);
                 Console.WriteLine("Close out Application ID is: " + appId);
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -180,7 +180,7 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid);
                 Console.WriteLine("Updated the application ID is: " + appid);
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -215,7 +215,7 @@ namespace sdk_examples.contract
                 Console.WriteLine("Application ID is: " + resp.ApplicationIndex);
                 return resp.ApplicationIndex;
             }
-            catch (Algorand.Algod.Model.ApiException<ErrorResponse> e)
+            catch (Algorand.ApiException<ErrorResponse> e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Response);
                 return null;
@@ -246,7 +246,7 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationOptInTransaction;
                 Console.WriteLine("Optin to Application ID: " + resp.ApplicationId);
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -278,7 +278,7 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationDeleteTransaction;
                 Console.WriteLine("Success deleted the application " + resp.ApplicationId);
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -308,7 +308,7 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationClearStateTransaction;
                 Console.WriteLine("Success cleared the application " + resp.ApplicationId);
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -374,7 +374,7 @@ namespace sdk_examples.contract
                     Console.WriteLine("    Local state: " + resp.LocalStateDelta.ToString());
                 }
             }
-            catch (Algorand.Algod.Model.ApiException e)
+            catch (Algorand.ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }

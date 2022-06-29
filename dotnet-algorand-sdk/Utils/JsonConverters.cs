@@ -38,8 +38,16 @@ namespace Algorand.Utils
                     }
                     case string s:
                     {
-                         bytes = Convert.FromBase64String(s);
+                        try
+                        {
+                            bytes = Convert.FromBase64String(s);
                             break;
+                        }
+                        catch(Exception e)
+                        {
+                                return new Address(s);
+                        }
+
                     }
                     default:
                         bytes = null;

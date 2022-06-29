@@ -247,4 +247,8 @@
 		
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Indexer\Model\" />
+	</ItemGroup>
+
 </Project>

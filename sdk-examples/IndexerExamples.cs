@@ -1,6 +1,7 @@
 ﻿using Algorand;
 using Algorand.Indexer;
 using Algorand.Indexer.Model;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,43 +21,41 @@ namespace sdk_examples
             SearchApi searchApi = new SearchApi(httpClient);
             CommonApi commonApi = new CommonApi(httpClient);
 
-            //AlgodApi algodApiInstance = new AlgodApi(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-            var health = await commonApi.HealthAsync();
-            Console.WriteLine("Make Health Check: " + health.ToJson());
 
-            System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
+            var health = await commonApi.makeHealthCheckAsync();
+            Console.WriteLine("Make Health Check: " + JsonConvert.SerializeObject(health));
+
             var address = "KV2XGKMXGYJ6PWYQA5374BYIQBL3ONRMSIARPCFCJEAMAHQEVYPB7PL3KU";
-            var acctInfo = await lookupApi.AccountsAsync(address);
-            Console.WriteLine("Look up account by id: " + acctInfo.ToJson());
+            var acctInfo = await lookupApi.lookupAccountByIDAsync(address,null,null,null);
+            Console.WriteLine("Look up account by id: " + JsonConvert.SerializeObject(acctInfo));
 
-            System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
-            var transInfos = await lookupApi.TransactionsGetAsync(address, limit: 10);
-            Console.WriteLine("Look up account transactions(limit 10): " + transInfos.ToJson());
 
-            System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
-            var appsInfo = await searchApi.ApplicationsAsync(limit: 10);
-            Console.WriteLine("Search for application(limit 10): " + appsInfo.ToJson());
+            var transInfos = await lookupApi.lookupAccountTransactionsAsync(address, limit: 10);
+            Console.WriteLine("Look up account transactions(limit 10): " + JsonConvert.SerializeObject(transInfos));
+
+
+            var appsInfo = await searchApi.searchForApplicationsAsync(limit: 10);
+            Console.WriteLine("Search for application(limit 10): " + JsonConvert.SerializeObject(appsInfo));
 
             var appIndex = appsInfo.Applications?.FirstOrDefault()?.Id;
             if (appIndex != null)
             {
                 System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
-                var appInfo = await lookupApi.ApplicationsAsync(appIndex.Value);
-                Console.WriteLine("Look up application by id: " + appInfo.ToJson());
+                var appInfo = await lookupApi.lookupApplicationByIDAsync(appIndex.Value);
+                Console.WriteLine("Look up application by id: " + JsonConvert.SerializeObject(appInfo));
             }
 
-            System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
             try
             {
-                var assetsInfo = await searchApi.AssetsAsync(limit: 10, name: "latikum22");
+                var assetsInfo = await searchApi.searchForAssetsAsync(limit: 10, name: "latikum22");
                 var assetIndex = assetsInfo.Assets.FirstOrDefault().Index;
 
                 System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
-                var assetInfo = await lookupApi.AssetsAsync(assetIndex);
-                Console.WriteLine("Look up asset by id:" + assetInfo.ToJson());
-                Console.WriteLine("Search for assets" + assetsInfo.ToJson());
+                var assetInfo = await lookupApi.lookupAssetByIDAsync(assetIndex);
+                Console.WriteLine("Look up asset by id:" + JsonConvert.SerializeObject(assetInfo));
+                Console.WriteLine("Search for assets" + JsonConvert.SerializeObject(assetsInfo));
             }
-            catch (ApiException<IndexerError> ex)
+            catch (ApiException<ErrorResponse> ex)
             {
                Console.WriteLine(ex.Result.Message);
             }
