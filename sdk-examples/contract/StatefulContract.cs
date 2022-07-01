@@ -216,7 +216,7 @@ namespace sdk_examples.contract
                     GlobalStateSchema = new StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes },
                     LocalStateSchema = new StateSchema() { NumUint = localInts, NumByteSlice = localBytes }
                 };
-
+          
                 var signedTx = tx.Sign(creator);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 

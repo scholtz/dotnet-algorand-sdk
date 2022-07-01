@@ -15,7 +15,7 @@ namespace Algorand.Algod.Model.Transactions {
         [JsonProperty(PropertyName = "apan")]
         public OnCompletion OnCompletion => OnCompletion.Clear;
 
-
+     
 
 
     }

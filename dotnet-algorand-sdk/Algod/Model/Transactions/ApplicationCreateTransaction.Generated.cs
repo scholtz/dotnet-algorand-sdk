@@ -20,10 +20,10 @@ namespace Algorand.Algod.Model.Transactions
         [JsonConverter(typeof(BytesConverter))]
         public TEALProgram ClearStateProgram { get; set; } = null;
 
-        [JsonProperty(PropertyName = "apgs",Required =Required.Always)]
+        [JsonProperty(PropertyName = "apgs",Required =Required.Default)]
         public StateSchema GlobalStateSchema { get; set; }
 
-        [JsonProperty(PropertyName = "apls", Required = Required.Always)]
+        [JsonProperty(PropertyName = "apls", Required = Required.Default)]
         public StateSchema LocalStateSchema { get; set; }
 
         [JsonProperty(PropertyName = "apep")]
@@ -33,6 +33,8 @@ namespace Algorand.Algod.Model.Transactions
         [JsonIgnore]
         public ulong? ApplicationIndex { get; internal set; }
 
+
+      
 
     }
 }
