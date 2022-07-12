@@ -13,7 +13,7 @@ namespace Algorand.Utils
     public class Logic
     {
         private static int MAX_COST = 20000;
-        private static int MAX_LENGTH = 1000;
+     //   private static int MAX_LENGTH = 1000;
         private const int INTCBLOCK_OPCODE = 32;
         private const int BYTECBLOCK_OPCODE = 38;
         private const int PUSHBYTES_OPCODE = 128;
@@ -239,16 +239,16 @@ namespace Algorand.Utils
             }
 
             int cost = 0;
-            int length = program.Length;
-            for (int i = 0; i < args.Count; i++)
-            {
-                length += args[i].Length;
-            }
+            //int length = program.Length;
+            //for (int i = 0; i < args.Count; i++)
+            //{
+            //    length += args[i].Length;
+            //}
 
-            if (length > MAX_LENGTH)
-            {
-                throw new ArgumentException("program too long");
-            }
+            //if (length > MAX_LENGTH)
+            //{
+            //    throw new ArgumentException("program too long");
+            //}
 
             if (opcodes == null)
             {
