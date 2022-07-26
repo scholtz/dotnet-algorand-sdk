@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Text;
 using System.Runtime.CompilerServices;
-[assembly: InternalsVisibleTo("AlgodProxy")]
+
 namespace Algorand.Algod.Model.Transactions
 {
     public partial class PaymentTransaction : Transaction

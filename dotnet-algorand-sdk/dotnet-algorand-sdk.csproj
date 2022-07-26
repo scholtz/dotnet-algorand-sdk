@@ -7,7 +7,7 @@
 		<AssemblyName>Algorand</AssemblyName>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Version>1.0.0.5</Version>
+		<Version>1.0.0.6</Version>
 		<Authors>Frank Szendzielarz</Authors>
 		<Company></Company>
 		<Product>Algorand .NET SDK 2</Product>
@@ -24,6 +24,7 @@
 		<PackageId>Algorand2</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug</Configurations>
+		<AssemblyOriginatorKeyFile>Algorand.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 
 	<ItemGroup>
