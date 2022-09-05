@@ -9,12 +9,18 @@ namespace Algorand
 {
     public class HttpClientConfigurator
     {
-        public static HttpClient ConfigureHttpClient(string host, string token, string tokenHeader = "", int timeout = -1)
+        public static HttpClient ConfigureHttpClient(string host, string token, string tokenHeader = "", int timeout = -1, HttpMessageHandler shim=null)
         {
 #if TEST_DEBUG
             HttpClient _httpClient = new HttpClient(new TestHttpMessageHandler());
 #else
-            HttpClient _httpClient = new HttpClient();
+            
+            HttpClient _httpClient;
+            if (shim != null)
+                _httpClient = new HttpClient(shim);
+            else
+                _httpClient = new HttpClient();
+           
 #endif
 
             _httpClient.BaseAddress = new Uri(host);

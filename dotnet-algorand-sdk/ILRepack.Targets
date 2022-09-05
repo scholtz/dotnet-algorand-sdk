@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="ILRepacker" AfterTargets="Build" Condition="'$(Configuration)' == 'Unity'">
+		<ItemGroup>
+			<InputAssemblies Include="$(TargetPath)" />
+			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'Newtonsoft.Json'" />
+			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'JsonSubTypes'" />
+			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'Newtonsoft.Msgpack'" />
+			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'MsgPack'" />
+			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'System.CodeDom'" />
+		</ItemGroup>
+
+		<ILRepack AllowDuplicateResources="false"
+				  DebugInfo="true"
+				  Union="true"
+				  Internalize="true"
+				  InputAssemblies="@(InputAssemblies)"
+				  OutputFile="$(TargetPath)"
+				  Parallel="true"
+				  TargetKind="SameAsPrimaryAssembly" />
+	</Target>
+</Project>

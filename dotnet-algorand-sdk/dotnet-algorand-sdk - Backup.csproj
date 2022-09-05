@@ -1,0 +1,261 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>8.0</LangVersion>
+		<RootNamespace>Algorand</RootNamespace>
+		<AssemblyName>Algorand</AssemblyName>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<Version>1.0.0.9</Version>
+		<Authors>Frank Szendzielarz</Authors>
+		<Company></Company>
+		<Product>Algorand .NET SDK 2</Product>
+		<PackageProjectUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</PackageProjectUrl>
+		<PackageLicenseUrl></PackageLicenseUrl>
+		<Description>Algorand SDK for .Net 2</Description>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
+		<Copyright></Copyright>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<RepositoryUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</RepositoryUrl>
+		<PackageId>Algorand2</PackageId>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity</Configurations>
+		<AssemblyOriginatorKeyFile>Algorand.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Algod\CommonApi.old.cs" />
+	  <Compile Remove="Algod\DefaultApi.old.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="langspec.json" />
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\README.md">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="langspec.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)' == 'Unity'">
+		<PackageReference Include="ILRepack.Lib.MSBuild" Version="2.1.18" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="BouncyCastle.NetCore" Version="1.8.8" />
+	
+		<PackageReference Include="JsonSubTypes" Version="1.9.0" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="MsgPack.Cli" Version="1.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Newtonsoft.Msgpack" Version="0.1.11" />
+		<PackageReference Include="RestSharp" Version="106.12.0" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Algod\Model\Account.Generated.cs">
+			<DependentUpon>Account.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\AccountApplicationResponse.Generated.cs">
+			<DependentUpon>AccountApplicationResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\AccountAssetResponse.Generated.cs">
+			<DependentUpon>AccountAssetResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\AccountParticipation.Generated.cs">
+			<DependentUpon>AccountParticipation.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\AccountStateDelta.Generated.cs">
+			<DependentUpon>AccountStateDelta.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\Application.Generated.cs">
+			<DependentUpon>Application.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\ApplicationLocalState.Generated.cs">
+			<DependentUpon>ApplicationLocalState.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\ApplicationParams.Generated.cs">
+			<DependentUpon>ApplicationParams.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\ApplicationStateSchema.Generated.cs">
+			<DependentUpon>ApplicationStateSchema.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\Asset.Generated.cs">
+			<DependentUpon>Asset.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\AssetHolding.Generated.cs">
+			<DependentUpon>AssetHolding.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\CertifiedBlock.Generated.cs">
+			<DependentUpon>CertifiedBlock.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\BuildVersion.Generated.cs">
+			<DependentUpon>BuildVersion.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\CatchpointAbortResponse.Generated.cs">
+			<DependentUpon>CatchpointAbortResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\CatchpointStartResponse.Generated.cs">
+			<DependentUpon>CatchpointStartResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\CompileResponse.Generated.cs">
+			<DependentUpon>CompileResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\DryrunRequest.Generated.cs">
+			<DependentUpon>DryrunRequest.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\DryrunResponse.Generated.cs">
+			<DependentUpon>DryrunResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\DryrunSource.Generated.cs">
+			<DependentUpon>DryrunSource.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\DryrunState.Generated.cs">
+			<DependentUpon>DryrunState.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\DryrunTxnResult.Generated.cs">
+			<DependentUpon>DryrunTxnResult.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\ErrorResponse.Generated.cs">
+			<DependentUpon>ErrorResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\EvalDelta.Generated.cs">
+			<DependentUpon>EvalDelta.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\EvalDeltaKeyValue.Generated.cs">
+			<DependentUpon>EvalDeltaKeyValue.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\NodeStatusResponse.Generated.cs">
+			<DependentUpon>NodeStatusResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\NodeStatusResponse.Generated.cs">
+			<DependentUpon>NodeStatusResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\ReturnedTransaction.Generated.cs">
+			<DependentUpon>ReturnedTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\PendingTransactions.Generated.cs">
+			<DependentUpon>PendingTransactions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\PostTransactionsResponse.Generated.cs">
+			<DependentUpon>PostTransactionsResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\ProofResponse.Generated.cs">
+			<DependentUpon>ProofResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\SupplyResponse.Generated.cs">
+			<DependentUpon>SupplyResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\TealKeyValue.Generated.cs">
+			<DependentUpon>TealKeyValue.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\TealValue.Generated.cs">
+			<DependentUpon>TealValue.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\TransactionParametersResponse.Generated.cs">
+			<DependentUpon>TransactionParametersResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\Version.Generated.cs">
+			<DependentUpon>Version.cs</DependentUpon>
+		</Compile>
+		
+		
+		
+		<Compile Update="Algod\Model\Transactions\ApplicationCallTransaction.Generated.cs">
+			<DependentUpon>ApplicationCallTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/ApplicationClearStateTransaction.Generated.cs">
+			<DependentUpon>ApplicationClearStateTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/ApplicationCloseOutTransaction.Generated.cs">
+			<DependentUpon>ApplicationCloseOutTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/ApplicationCreateTransaction.Generated.cs">
+			<DependentUpon>ApplicationCreateTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/ApplicationDeleteTransaction.Generated.cs">
+			<DependentUpon>ApplicationDeleteTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/ApplicationNoopTransaction.Generated.cs">
+			<DependentUpon>ApplicationNoopTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/ApplicationOptinTransaction.Generated.cs">
+			<DependentUpon>ApplicationOptinTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/ApplicationUpdateTransaction.Generated.cs">
+			<DependentUpon>ApplicationUpdateTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/AssetAcceptTransaction.Generated.cs">
+			<DependentUpon>AssetAcceptTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/AssetChangeTransaction.Generated.cs">
+			<DependentUpon>AssetChangeTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/AssetClawbackTransaction.Generated.cs">
+			<DependentUpon>Algod/Model/Transactions/AssetClawbackTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/AssetConfigurationTransaction.Generated.cs">
+			<DependentUpon>AssetConfigurationTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/AssetCreateTransaction.Generated.cs">
+			<DependentUpon>AssetCreateTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/AssetDestroyTransaction.Generated.cs">
+			<DependentUpon>Algod/Model/Transactions/AssetDestroyTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/AssetFreezeTransaction.Generated.cs">
+			<DependentUpon>Algod/Model/Transactions/AssetFreezeTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/AssetMovementsTransaction.Generated.cs">
+			<DependentUpon>AssetMovementsTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/AssetTransferTransaction.Generated.cs">
+			<DependentUpon>AssetTransferTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/AssetUpdateTransaction.Generated.cs">
+			<DependentUpon>AssetUpdateTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/KeyRegisterOfflineTransaction.Generated.cs">
+			<DependentUpon>KeyRegisterOfflineTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/KeyRegisterOnlineTransaction.Generated.cs">
+			<DependentUpon>KeyRegisterOnlineTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/KeyRegistrationTransaction.Generated.cs">
+			<DependentUpon>KeyRegistrationTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/PaymentTransaction.Generated.cs">
+			<DependentUpon>PaymentTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/SignedTransaction.Generated.cs">
+			<DependentUpon>SignedTransaction.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/StateSchema.Generated.cs">
+			<DependentUpon>StateSchema.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod/Model/Transactions/Transaction.Generated.cs">
+			<DependentUpon>Transaction.cs</DependentUpon>
+		</Compile>
+		
+		
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Indexer\Model\" />
+	</ItemGroup>
+
+	
+</Project>

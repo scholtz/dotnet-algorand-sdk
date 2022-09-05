@@ -5,9 +5,9 @@
 		<LangVersion>8.0</LangVersion>
 		<RootNamespace>Algorand</RootNamespace>
 		<AssemblyName>Algorand</AssemblyName>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Version>1.0.0.6</Version>
+		<Version>1.0.0.10</Version>
 		<Authors>Frank Szendzielarz</Authors>
 		<Company></Company>
 		<Product>Algorand .NET SDK 2</Product>
@@ -23,8 +23,12 @@
 		<RepositoryUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</RepositoryUrl>
 		<PackageId>Algorand2</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug</Configurations>
+		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity</Configurations>
 		<AssemblyOriginatorKeyFile>Algorand.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unity|AnyCPU'">
+	  <Optimize>True</Optimize>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -50,10 +54,15 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(Configuration)' == 'Unity'">
+		<PackageReference Include="ILRepack.Lib.MSBuild" Version="2.1.18" />
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="BouncyCastle.NetCore" Version="1.8.8" />
+	
 		<PackageReference Include="JsonSubTypes" Version="1.9.0" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="MsgPack.Cli" Version="1.0.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Newtonsoft.Msgpack" Version="0.1.11" />
 		<PackageReference Include="RestSharp" Version="106.12.0" />
@@ -252,4 +261,5 @@
 	  <Folder Include="Indexer\Model\" />
 	</ItemGroup>
 
+	
 </Project>

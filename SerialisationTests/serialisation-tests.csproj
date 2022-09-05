@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Configurations>Debug;Release;Test_Debug;Integration_Test_Debug</Configurations>
+    <Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
