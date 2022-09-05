@@ -22,6 +22,12 @@ Or from Project -> Manage NuGet Packages
 
 The Nuget package is here <https://www.nuget.org/packages/Algorand2/>
 
+UPDATE: There is now a Unity build at <https://www.nuget.org/packages/Algorand2_Unity/1.0.0.10>
+
+The Unity build allows the DLL to be used directly in Unity without Newtonsoft or Codedom conflicts.
+It also offers a new optional parameter to HttpClientConfigurator allowing a shim to be injected
+so that WebGL builds can use a different http client by delegation.
+
 ## Quick Start
 
 For a set of working examples please see the sdk-examples project.
