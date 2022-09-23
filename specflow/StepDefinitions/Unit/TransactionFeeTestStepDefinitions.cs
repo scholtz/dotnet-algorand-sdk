@@ -1,12 +1,15 @@
 using Algorand;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
+using Algorand.Utils;
 using FluentAssertions;
 using Newtonsoft.Json;
+using SpecFlow.Internal.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using TechTalk.SpecFlow;
 
@@ -239,41 +242,118 @@ namespace algorand_tests.StepDefinitions
             json.Should().NotContain("fee");
 
         }
-
-        [Given(@"payment transaction parameters  (.*) (.*) (.*) ""([^""]*)"" ""([^""]*)"" ""([^""]*)"" (.*) ""([^""]*)"" ""([^""]*)""")]
+        
+        [Given(@"payment transaction parameters (.*) (.*) (.*) ""([^""]*)"" ""([^""]*)"" ""([^""]*)"" (.*) ""([^""]*)"" ""([^""]*)""")]
         public void GivenPaymentTransactionParameters(ulong fee, ulong fv, ulong lv, string gh, string to, string close, ulong amt, string gen, string note)
         {
-            throw new PendingStepException();
+            _scenarioContext["fee"] = fee;
+            _scenarioContext["fv"] = fv;
+            _scenarioContext["lv"] = lv;
+            _scenarioContext["gh"] = gh;
+            _scenarioContext["to"] = to;
+            _scenarioContext["close"] = close;
+            _scenarioContext["amt"] = amt;
+            _scenarioContext["gen"] = gen;
+            _scenarioContext["note"] = note;
+
         }
 
+        //[Given(@"payment transaction parameters (.*) (.*) ""(.*)"" ""(.*)"" ""(.*)"" (.*) ""(.*)"" ""(.*)""")]
+        //public void GivenPaymentTransactionParameters( ulong fv, ulong lv, string gh, string to, string close, ulong amt, string gen, string note)
+        //{
+        //    _scenarioContext["fee"] = 0;
+        //    _scenarioContext["fv"] = fv;
+        //    _scenarioContext["lv"] = lv;
+        //    _scenarioContext["gh"] = gh;
+        //    _scenarioContext["to"] = to;
+        //    _scenarioContext["close"] = close;
+        //    _scenarioContext["amt"] = amt;
+        //    _scenarioContext["gen"] = gen;
+        //    _scenarioContext["note"] = note;
+
+        //}
+
         [Given(@"mnemonic for private key ""([^""]*)""")]
-        public void GivenMnemonicForPrivateKey(string p0)
+        public void GivenMnemonicForPrivateKey(string mnemonic)
         {
-            throw new PendingStepException();
+            _scenarioContext["mnemonic"] = mnemonic;
         }
 
         [Given(@"multisig addresses ""([^""]*)""")]
         public void GivenMultisigAddresses(string p0)
         {
-            throw new PendingStepException();
+            _scenarioContext["multisigs"] = p0.Split(' ').Select(s=>new Address(s)).ToList();
         }
 
         [When(@"I create the multisig payment transaction")]
         public void WhenICreateTheMultisigPaymentTransaction()
         {
-            throw new PendingStepException();
+            ulong fee = (ulong)_scenarioContext["fee"];
+            ulong fv =  (ulong)_scenarioContext["fv"];
+            ulong lv =  (ulong)_scenarioContext["lv"];
+            string gh = (string)_scenarioContext["gh"];
+            string to = (string)_scenarioContext["to"];
+            string close =  (string)_scenarioContext["close"];
+            ulong amt =     (ulong)_scenarioContext["amt"];
+            string gen =    (string)_scenarioContext["gen"];
+            string note =   (string)_scenarioContext["note"];
+
+            PaymentTransaction transaction = new PaymentTransaction()
+            {
+                Fee = fee,
+                FirstValid = fv,
+                LastValid = lv,
+                GenesisHash = new Digest(gh),
+                Receiver = new Address(to),
+                CloseRemainderTo = new Address(close),
+                Amount = amt,
+                GenesisID = gen,
+                Note = Encoding.UTF8.GetBytes(note)
+            };
+
+            _scenarioContext["transaction"] = transaction;
         }
 
         [When(@"I sign the multisig transaction with the private key")]
         public void WhenISignTheMultisigTransactionWithThePrivateKey()
         {
-            throw new PendingStepException();
+            var addresses = (List<Address>)_scenarioContext["multisigs"];
+            var multiSigAddress= new MultisigAddress(1, 1, addresses.Select(a=>a.Bytes).ToList());
+            Account acct = new Account((string)_scenarioContext["mnemonic"]);
+            Transaction tx = (Transaction)_scenarioContext["transaction"];
+            tx.Sender = multiSigAddress.ToAddress();
+            var signedTx = tx.Sign(multiSigAddress, acct);
+
+
+            _scenarioContext["signedTransaction"]=signedTx;
         }
 
         [When(@"I create the multisig payment transaction with zero fee")]
         public void WhenICreateTheMultisigPaymentTransactionWithZeroFee()
         {
-            throw new PendingStepException();
+            ulong fv = (ulong)_scenarioContext["fv"];
+            ulong lv = (ulong)_scenarioContext["lv"];
+            string gh = (string)_scenarioContext["gh"];
+            string to = (string)_scenarioContext["to"];
+            string close = (string)_scenarioContext["close"];
+            ulong amt = (ulong)_scenarioContext["amt"];
+            string gen = (string)_scenarioContext["gen"];
+            string note = (string)_scenarioContext["note"];
+
+            PaymentTransaction transaction = new PaymentTransaction()
+            {
+                Fee = 0,
+                FirstValid = fv,
+                LastValid = lv,
+                GenesisHash = new Digest(gh),
+                Receiver = new Address(to),
+                CloseRemainderTo = new Address(close),
+                Amount = amt,
+                GenesisID = gen,
+                Note = Encoding.UTF8.GetBytes(note)
+            };
+
+            _scenarioContext["transaction"] = transaction;
         }
     }
 }
