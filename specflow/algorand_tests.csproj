@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="copy_tests.ps1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentAssertions.Json" Version="6.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
@@ -29,6 +33,489 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Features\resources\generated_responses\algod_applications_ApplicationResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_AssetResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_BlockResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_CatchpointAbortResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_CatchpointStartResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_CompileResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_DryrunResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_ErrorResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_NodeStatusResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_PendingTransactionResponse_0.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_PendingTransactionResponse_1.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_PendingTransactionsResponse_0.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_PendingTransactionsResponse_1.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_PostTransactionsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_SupplyResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\algod_applications_TransactionParametersResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\indexer_applications_AccountResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\indexer_applications_AccountsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\indexer_applications_ApplicationResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\indexer_applications_ApplicationsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\indexer_applications_AssetBalancesResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\indexer_applications_AssetResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\indexer_applications_AssetsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\indexer_applications_ErrorResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\indexer_applications_TransactionsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\indexer_applications_TransactionsResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses\indexer_applications_TransactionsResponse_2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\algod_CompileResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\algod_DryrunResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\algod_GetGenesisResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\algod_NodeStatusResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\algod_PendingTransactionResponse_0.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\algod_PendingTransactionsResponse_0.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\algod_PendingTransactionsResponse_1.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\algod_PostTransactionsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\algod_ProofResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\algod_SupplyResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\algod_TransactionParametersResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_AccountResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_AccountsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_ApplicationResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_ApplicationsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_AssetBalancesResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_AssetResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_AssetsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_BlockResponse_0.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_CompileResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_DryrunResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_NodeStatusResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_NodeStatusResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_PendingTransactionResponse_0.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_PendingTransactionsResponse_0.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_PendingTransactionsResponse_1.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_PostTransactionsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_ProofResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_SupplyResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_TransactionParametersResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_TransactionsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_TransactionsResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_231\indexer_applications_TransactionsResponse_2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_AccountApplicationResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_AccountApplicationResponse_2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_AccountAssetResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_AccountAssetResponse_2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_Account_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_Account_2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_Application_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_Application_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_Asset_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_Asset_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_CompileResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_CompileResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_ErrorResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_ErrorResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_ErrorResponse_2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_NodeStatusResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_NodeStatusResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_NodeStatusResponse_2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_NodeStatusResponse_3.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_PostTransactionsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_PostTransactionsResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_SupplyResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_SupplyResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_TransactionParametersResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\algod_unlimited_aa_TransactionParametersResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_AccountResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_AccountsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_ApplicationLocalStatesResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_ApplicationLogsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_ApplicationResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_ApplicationsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_ApplicationsResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_AssetBalancesResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_AssetHoldingsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_AssetResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_AssetsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_AssetsResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_Block_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_ErrorResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_ErrorResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_HealthCheck_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_10.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_11.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_12.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_13.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_14.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_15.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_16.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_17.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_3.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_4.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_5.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_6.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_7.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_8.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionResponse_9.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionsResponse_0.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionsResponse_1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\generated_responses_unlimited_assets\indexer_unlimited_aa_TransactionsResponse_2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\abi_method_call.teal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\abi_method_call.teal.tok">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\big_app_program.teal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\big_app_program.teal.tok">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\fake_random.teal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\globalwrite.teal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\globcheck.teal.tok">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\globwrite.teal.tok">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\globwrite_int.teal.tok">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\invalid.teal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\localwrite.teal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\loccheck.teal.tok">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\locwrite.teal.tok">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\locwrite_int.teal.tok">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\one.teal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\one.teal.tok">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\random_byte.teal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\six.teal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\six.teal.tok">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\slot_machine.teal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\zero.teal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\programs\zero.teal.tok">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\accountInformation.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\app_trace.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\block.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\block.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\dryrunResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\empty.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\errorDryrunResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\error_app_trace.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\largeDryrunResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\large_app_trace.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\ledgerSupply.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\pendingTransactions.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\pendingTransactionsByAddr.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\pendingTransactionsByTxid.base64">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\sendTx.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\status.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\resources\v2algodclient_responsejsons\suggestedParams.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Features\unit\v2algodclient_responsejsons\accountInformation.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -65,17 +552,14 @@
     <None Update="Features\unit\v2algodclient_responsejsons\suggestedParams.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="copy_tests.ps1">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="test_harness.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
-        <Target Name="PreBuild" AfterTargets="PreBuildEvent" Condition=" '$(Configuration)' == 'Test_Debug' ">
+        <!--<Target Name="PreBuild" AfterTargets="PreBuildEvent" Condition=" '$(Configuration)' == 'Test_Debug' ">
 	        <Exec Command="powershell.exe -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -File $(ProjectDir)copy_tests.ps1 -ProjectPath $(ProjectPath) -Build $(Configuration)" />
-        </Target>	
+        </Target>-->	
         <!--<Target Name="PreBuild" AfterTargets="PreBuildEvent" Condition=" '$(Configuration)' == 'Integration_Test_Debug' ">
 	        <Exec Command="powershell.exe -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -File $(ProjectDir)copy_tests.ps1 -ProjectPath $(ProjectPath) -Build $(Configuration)" />
 	        <Exec Command="powershell.exe -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -File $(ProjectDir)test_harness.ps1 -ProjectPath $(ProjectPath) -Build $(Configuration)" />
