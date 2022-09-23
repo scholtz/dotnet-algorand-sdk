@@ -308,7 +308,7 @@ namespace algorand_tests.StepDefinitions
                 CloseRemainderTo = new Address(close),
                 Amount = amt,
                 GenesisID = gen,
-                Note = Encoding.UTF8.GetBytes(note)
+                Note = Convert.FromBase64String(note)
             };
 
             _scenarioContext["transaction"] = transaction;
@@ -350,7 +350,7 @@ namespace algorand_tests.StepDefinitions
                 CloseRemainderTo = new Address(close),
                 Amount = amt,
                 GenesisID = gen,
-                Note = Encoding.UTF8.GetBytes(note)
+                Note = Convert.FromBase64String(note)
             };
 
             _scenarioContext["transaction"] = transaction;
