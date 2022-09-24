@@ -300,7 +300,7 @@ namespace algorand_tests.StepDefinitions
 
             PaymentTransaction transaction = new PaymentTransaction()
             {
-                Fee = fee,
+                Fee=1,
                 FirstValid = fv,
                 LastValid = lv,
                 GenesisHash = new Digest(gh),
@@ -311,6 +311,8 @@ namespace algorand_tests.StepDefinitions
                 Note = Convert.FromBase64String(note)
             };
 
+
+
             _scenarioContext["transaction"] = transaction;
         }
 
@@ -318,10 +320,14 @@ namespace algorand_tests.StepDefinitions
         public void WhenISignTheMultisigTransactionWithThePrivateKey()
         {
             var addresses = (List<Address>)_scenarioContext["multisigs"];
-            var multiSigAddress= new MultisigAddress(1, 1, addresses.Select(a=>a.Bytes).ToList());
+            var multiSigAddress= new MultisigAddress(1, 2, addresses.Select(a=>a.Bytes).ToList());
             Account acct = new Account((string)_scenarioContext["mnemonic"]);
             Transaction tx = (Transaction)_scenarioContext["transaction"];
             tx.Sender = multiSigAddress.ToAddress();
+            tx.SetFeeByFeePerByte((ulong)_scenarioContext["fee"]);
+
+         
+
             var signedTx = tx.Sign(multiSigAddress, acct);
 
 

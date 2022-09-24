@@ -7,6 +7,8 @@ using Org.BouncyCastle.Crypto.Parameters;
 using System.Text;
 using Algorand.Utils;
 using Algorand.Algod.Model;
+using System.ComponentModel;
+
 
 namespace Algorand
 {
@@ -17,6 +19,7 @@ namespace Algorand
     public class Signature
     {
         private static int ED25519_SIG_SIZE = 64;
+
         
         public byte[] Bytes { get; private set; }
 
@@ -46,6 +49,8 @@ namespace Algorand
         {
             Bytes = new byte[ED25519_SIG_SIZE];
         }
+
+        
 
         public override bool Equals(object obj)
         {
@@ -478,6 +483,10 @@ namespace Algorand
 
         [JsonProperty(PropertyName = "s")]
         public Signature sig;
+
+
+        public bool ShouldSerializesig() => sig.Bytes.Any(b => b != 0);
+
         /// <summary>
         /// workaround wrapped json values
         /// </summary>

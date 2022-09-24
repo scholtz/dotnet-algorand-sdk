@@ -96,7 +96,7 @@ namespace algorand_tests.StepDefinitions
 
             PaymentTransaction transaction = new PaymentTransaction()
             {
-                Fee = fee,
+                Fee=fee,
                 FirstValid = fv,
                 LastValid = lv,
                 GenesisHash = new Digest(gh),
@@ -106,6 +106,7 @@ namespace algorand_tests.StepDefinitions
                 GenesisID = gen,
                 Note = Convert.FromBase64String(note)
             };
+            
 
             _scenarioContext["transaction"] = transaction;
         }
@@ -158,37 +159,64 @@ namespace algorand_tests.StepDefinitions
         [Given(@"encoded multisig transaction ""([^""]*)""")]
         public void GivenEncodedMultisigTransaction(string p0)
         {
-            throw new PendingStepException();
+            _scenarioContext["mtx"] = p0;
         }
 
         [When(@"I append a signature to the multisig transaction")]
         public void WhenIAppendASignatureToTheMultisigTransaction()
         {
-            throw new PendingStepException();
+            SignedTransaction tx = Algorand.Utils.Encoder.DecodeFromMsgPack<SignedTransaction>(Convert.FromBase64String((string)_scenarioContext["mtx"]));
+
+            string mnemnonic = (string)_scenarioContext["mnemonic"];
+            Account acct = new Account(mnemnonic);
+
+            var newSigned = tx.Tx.Sign(acct);
+
+            var msigToUse=tx.MSig.Subsigs.Where(k=> new Address(k.key.GetEncoded()).EncodeAsString()==acct.Address.EncodeAsString()).FirstOrDefault();
+
+            msigToUse.sig = newSigned.Sig;
+
+
+            _scenarioContext["signedTransaction"] = tx;  
+
+
         }
 
         [Given(@"encoded multisig transactions ""([^""]*)""")]
         public void GivenEncodedMultisigTransactions(string p0)
         {
-            throw new PendingStepException();
+            
+            List<SignedTransaction> tx = p0.Split(' ').Select(s=> Algorand.Utils.Encoder.DecodeFromMsgPack<SignedTransaction>(Convert.FromBase64String(s))).ToList();
+
+            _scenarioContext["msigtxns"] = tx;
+
         }
 
         [When(@"I merge the multisig transactions")]
         public void WhenIMergeTheMultisigTransactions()
         {
-            throw new PendingStepException();
+            List<SignedTransaction> tx = (List<SignedTransaction>)_scenarioContext["msigtxns"];
+
+            var signed=SignedTransaction.MergeMultisigTransactions(tx.ToArray());
+
+            _scenarioContext["signedTransaction"] = signed;
         }
 
         [When(@"I convert (.*) microalgos to algos and back")]
-        public void WhenIConvertMicroalgosToAlgosAndBack(int p0)
+        public void WhenIConvertMicroalgosToAlgosAndBack(ulong p0)
         {
-            throw new PendingStepException();
+            var a=Utils.MicroalgosToAlgos(p0);
+            var ma=Utils.AlgosToMicroalgos(a);
+            _scenarioContext["ma"] = ma;
+            ma.Should().Be(p0);
+
         }
 
         [Then(@"it should still be the same amount of microalgos (.*)")]
-        public void ThenItShouldStillBeTheSameAmountOfMicroalgos(int p0)
+        public void ThenItShouldStillBeTheSameAmountOfMicroalgos(ulong p0)
         {
-            throw new PendingStepException();
+            ulong ma = (ulong)_scenarioContext["ma"];
+            ma.Should().Be(p0);
         }
     }
 }

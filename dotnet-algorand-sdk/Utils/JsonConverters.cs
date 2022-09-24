@@ -32,31 +32,32 @@ namespace Algorand.Utils
                 switch (reader.Value)
                 {
                     case byte[] b:
-                    {
-                        bytes = b;
-                        break;
-                    }
-                    case string s:
-                    {
-                        try
                         {
-                            bytes = Convert.FromBase64String(s);
+                            bytes = b;
                             break;
                         }
-                        catch(Exception e)
+                    case string s:
                         {
+                            try
+                            {
+                                bytes = Convert.FromBase64String(s);
+                                break;
+                            }
+                            catch (Exception e)
+                            {
                                 return new Address(s);
-                        }
+                            }
 
-                    }
+                        }
                     default:
                         bytes = null;
                         break;
                 }
-                
+
                 if (bytes != null && bytes.Length > 0) return new Address(bytes);
                 else return new Address();
-            } else if (objectType == typeof( TEALProgram))
+            }
+            else if (objectType == typeof(TEALProgram))
             {
                 byte[] bytes;
                 switch (reader.Value)
@@ -103,9 +104,6 @@ namespace Algorand.Utils
                 else return new Digest();
             }
             else 
-
-
-
             return new object();
 
         }
@@ -120,7 +118,10 @@ namespace Algorand.Utils
             }else if (value is Signature)
             {
                 var sig = value as Signature;
-                bytes = sig.Bytes;
+                if (sig.Bytes.Any(b=>b!=0))
+                    bytes = sig.Bytes;
+                
+                    
             }
             else if (value is Digest)
             {
