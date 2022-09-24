@@ -300,7 +300,7 @@ namespace algorand_tests.StepDefinitions
 
             PaymentTransaction transaction = new PaymentTransaction()
             {
-                Fee=1,
+                Fee=fee,
                 FirstValid = fv,
                 LastValid = lv,
                 GenesisHash = new Digest(gh),
@@ -324,7 +324,8 @@ namespace algorand_tests.StepDefinitions
             Account acct = new Account((string)_scenarioContext["mnemonic"]);
             Transaction tx = (Transaction)_scenarioContext["transaction"];
             tx.Sender = multiSigAddress.ToAddress();
-            tx.SetFeeByFeePerByte((ulong)_scenarioContext["fee"]);
+            if (((ulong)_scenarioContext["fee"])>0)
+                tx.SetFeeByFeePerByte((ulong)_scenarioContext["fee"]);
 
          
 

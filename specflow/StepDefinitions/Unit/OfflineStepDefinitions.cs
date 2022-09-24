@@ -116,7 +116,7 @@ namespace algorand_tests.StepDefinitions
         {
             Account account = new Account((string)_scenarioContext["mnemonic"]);
             var tx = (Transaction)_scenarioContext["transaction"];
-            tx.Sender = account.Address;
+            if (tx.Sender==null) tx.Sender = account.Address;
             var signed=tx.Sign(account);
             _scenarioContext["signedTransaction"]=signed;
             
