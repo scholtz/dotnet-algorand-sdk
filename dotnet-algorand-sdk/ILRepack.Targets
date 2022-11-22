@@ -8,6 +8,8 @@
 			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'Newtonsoft.Msgpack'" />
 			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'MsgPack'" />
 			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'System.CodeDom'" />
+			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'BouncyCastle.Crypto'" />
+			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'RestSharp'" />
 		</ItemGroup>
 
 		<ILRepack AllowDuplicateResources="false"
