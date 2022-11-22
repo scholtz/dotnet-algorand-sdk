@@ -9,9 +9,10 @@ using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Events;
-
+#if TEST_DEBUG
 namespace algorand_tests.StepDefinitions
 {
+
     [Binding]
     public class OfflineStepDefinitions
     {
@@ -220,3 +221,4 @@ namespace algorand_tests.StepDefinitions
         }
     }
 }
+#endif

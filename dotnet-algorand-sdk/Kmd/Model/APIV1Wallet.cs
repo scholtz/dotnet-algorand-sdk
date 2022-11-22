@@ -38,7 +38,7 @@ namespace Algorand.Kmd.Model
         /// <param name="mnemonicUx">mnemonicUx.</param>
         /// <param name="name">name.</param>
         /// <param name="supportedTxs">supportedTxs.</param>
-        public APIV1Wallet(string driverName = default(string), uint? driverVersion = default(uint?), string id = default(string), bool? mnemonicUx = default(bool?), string name = default(string), List<TxType> supportedTxs = default(List<TxType>))
+        public APIV1Wallet(string driverName = default(string), uint? driverVersion = default(uint?), string id = default(string), bool? mnemonicUx = default(bool?), string name = default(string), List<string> supportedTxs = default(List<string>))
         {
             this.DriverName = driverName;
             this.DriverVersion = driverVersion;
@@ -82,7 +82,7 @@ namespace Algorand.Kmd.Model
         /// Gets or Sets SupportedTxs
         /// </summary>
         [DataMember(Name="supported_txs", EmitDefaultValue=false)]
-        public List<TxType> SupportedTxs { get; set; }
+        public List<string> SupportedTxs { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

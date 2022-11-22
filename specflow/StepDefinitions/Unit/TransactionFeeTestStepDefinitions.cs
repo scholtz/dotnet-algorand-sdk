@@ -13,8 +13,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using TechTalk.SpecFlow;
 
+#if TEST_DEBUG
 namespace algorand_tests.StepDefinitions
 {
+    
     [Binding]
     public class TransactionFeeTestStepDefinitions
     {
@@ -364,3 +366,4 @@ namespace algorand_tests.StepDefinitions
         }
     }
 }
+#endif

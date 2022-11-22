@@ -38,7 +38,7 @@ namespace Algorand.Kmd.Model
         /// <param name="transactionType">transactionType.</param>
         /// <param name="walletHandleToken">walletHandleToken.</param>
         /// <param name="walletPassword">walletPassword.</param>
-        public SignMultisigRequest(MultisigSig partialMultisig = default(MultisigSig), PublicKey publicKey = default(PublicKey), List<int?> transaction = default(List<int?>), TxType transactionType = default(TxType), string walletHandleToken = default(string), string walletPassword = default(string))
+        public SignMultisigRequest(MultisigSig partialMultisig = default(MultisigSig), string publicKey = default(string), List<int?> transaction = default(List<int?>), string transactionType = default(string), string walletHandleToken = default(string), string walletPassword = default(string))
         {
             this.PartialMultisig = partialMultisig;
             this.PublicKey = publicKey;
@@ -58,7 +58,7 @@ namespace Algorand.Kmd.Model
         /// Gets or Sets PublicKey
         /// </summary>
         [DataMember(Name="public_key", EmitDefaultValue=false)]
-        public PublicKey PublicKey { get; set; }
+        public string PublicKey { get; set; }
 
         /// <summary>
         /// Gets or Sets Transaction
@@ -70,7 +70,7 @@ namespace Algorand.Kmd.Model
         /// Gets or Sets TransactionType
         /// </summary>
         [DataMember(Name="transaction_type", EmitDefaultValue=false)]
-        public TxType TransactionType { get; set; }
+        public string TransactionType { get; set; }
 
         /// <summary>
         /// Gets or Sets WalletHandleToken

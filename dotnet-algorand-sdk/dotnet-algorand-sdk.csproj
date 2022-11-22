@@ -34,6 +34,7 @@
 	<ItemGroup>
 	  <Compile Remove="Algod\CommonApi.old.cs" />
 	  <Compile Remove="Algod\DefaultApi.old.cs" />
+	  <Compile Remove="Kmd\Model\TxType.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -2682,7 +2682,7 @@ namespace Algorand.Kmd.Api
             if (body == null)
                 throw new Algorand.Client.ApiException(400, "Missing required parameter 'body' when calling DefaultApi->ListKeysInWallet");
 
-            var localVarPath = "/v1/keys/list";
+            var localVarPath = "/v1/key/list";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);

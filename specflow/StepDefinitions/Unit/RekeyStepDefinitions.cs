@@ -1,7 +1,7 @@
 using Algorand.Algod.Model.Transactions;
 using System;
 using TechTalk.SpecFlow;
-
+#if TEST_DEBUG
 namespace algorand_tests.StepDefinitions
 {
     [Binding]
@@ -30,3 +30,4 @@ namespace algorand_tests.StepDefinitions
         }
     }
 }
+#endif

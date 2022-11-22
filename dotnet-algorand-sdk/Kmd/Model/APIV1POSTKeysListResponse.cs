@@ -35,11 +35,11 @@ namespace Algorand.Kmd.Model
         /// <param name="error">error.</param>
         /// <param name="message">message.</param>
         /// <param name="publicKeys">publicKeys.</param>
-        public APIV1POSTKeysListResponse(bool? error = default(bool?), string message = default(string), List<PublicKey> publicKeys = default(List<PublicKey>))
+        public APIV1POSTKeysListResponse(bool? error = default(bool?), string message = default(string), List<string> publicKeys = default(List<string>))
         {
             this.Error = error;
             this.Message = message;
-            this.PublicKeys = publicKeys;
+            this.Addresses = publicKeys;
         }
         
         /// <summary>
@@ -57,8 +57,8 @@ namespace Algorand.Kmd.Model
         /// <summary>
         /// Gets or Sets PublicKeys
         /// </summary>
-        [DataMember(Name="public_keys", EmitDefaultValue=false)]
-        public List<PublicKey> PublicKeys { get; set; }
+        [DataMember(Name="addresses", EmitDefaultValue=false)]
+        public List<string> Addresses { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -70,7 +70,7 @@ namespace Algorand.Kmd.Model
             sb.Append("class APIV1POSTKeysListResponse {\n");
             sb.Append("  Error: ").Append(Error).Append("\n");
             sb.Append("  Message: ").Append(Message).Append("\n");
-            sb.Append("  PublicKeys: ").Append(PublicKeys).Append("\n");
+            sb.Append("  PublicKeys: ").Append(Addresses).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -116,10 +116,10 @@ namespace Algorand.Kmd.Model
                     this.Message.Equals(input.Message))
                 ) && 
                 (
-                    this.PublicKeys == input.PublicKeys ||
-                    this.PublicKeys != null &&
-                    input.PublicKeys != null &&
-                    this.PublicKeys.SequenceEqual(input.PublicKeys)
+                    this.Addresses == input.Addresses ||
+                    this.Addresses != null &&
+                    input.Addresses != null &&
+                    this.Addresses.SequenceEqual(input.Addresses)
                 );
         }
 
@@ -136,8 +136,8 @@ namespace Algorand.Kmd.Model
                     hashCode = hashCode * 59 + this.Error.GetHashCode();
                 if (this.Message != null)
                     hashCode = hashCode * 59 + this.Message.GetHashCode();
-                if (this.PublicKeys != null)
-                    hashCode = hashCode * 59 + this.PublicKeys.GetHashCode();
+                if (this.Addresses != null)
+                    hashCode = hashCode * 59 + this.Addresses.GetHashCode();
                 return hashCode;
             }
         }

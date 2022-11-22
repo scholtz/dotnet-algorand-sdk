@@ -35,7 +35,8 @@ namespace specflow.StepDefinitions
 
         public static void setUpKmd()
         {
-            if (kmdApi == null) kmdApi = new Algorand.Kmd.Api.DefaultApi("http://localhost:60000");
+            if (kmdApi == null) kmdApi = new Algorand.Kmd.Api.DefaultApi("http://localhost:60001");
+            kmdApi.Configuration.AddApiKey("X-KMD-API-Token", ALGOD_API_TOKEN);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Algorand.Kmd.Model
         /// <param name="publicKey">publicKey.</param>
         /// <param name="walletHandleToken">walletHandleToken.</param>
         /// <param name="walletPassword">walletPassword.</param>
-        public DeleteKeyRequest(PublicKey publicKey = default(PublicKey), string walletHandleToken = default(string), string walletPassword = default(string))
+        public DeleteKeyRequest(string publicKey = default(string), string walletHandleToken = default(string), string walletPassword = default(string))
         {
             this.PublicKey = publicKey;
             this.WalletHandleToken = walletHandleToken;
@@ -46,7 +46,7 @@ namespace Algorand.Kmd.Model
         /// Gets or Sets PublicKey
         /// </summary>
         [DataMember(Name="public_key", EmitDefaultValue=false)]
-        public PublicKey PublicKey { get; set; }
+        public string PublicKey { get; set; }
 
         /// <summary>
         /// Gets or Sets WalletHandleToken

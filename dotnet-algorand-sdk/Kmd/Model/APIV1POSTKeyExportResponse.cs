@@ -35,7 +35,7 @@ namespace Algorand.Kmd.Model
         /// <param name="error">error.</param>
         /// <param name="message">message.</param>
         /// <param name="privateKey">privateKey.</param>
-        public APIV1POSTKeyExportResponse(bool? error = default(bool?), string message = default(string), PrivateKey privateKey = default(PrivateKey))
+        public APIV1POSTKeyExportResponse(bool? error = default(bool?), string message = default(string), string privateKey = default(string))
         {
             this.Error = error;
             this.Message = message;
@@ -58,7 +58,7 @@ namespace Algorand.Kmd.Model
         /// Gets or Sets PrivateKey
         /// </summary>
         [DataMember(Name="private_key", EmitDefaultValue=false)]
-        public PrivateKey PrivateKey { get; set; }
+        public string PrivateKey { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

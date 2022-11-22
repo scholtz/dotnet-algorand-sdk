@@ -35,7 +35,7 @@ namespace Algorand.Kmd.Model
         /// <param name="error">error.</param>
         /// <param name="message">message.</param>
         /// <param name="publicKey">publicKey.</param>
-        public APIV1POSTKeyImportResponse(bool? error = default(bool?), string message = default(string), PublicKey publicKey = default(PublicKey))
+        public APIV1POSTKeyImportResponse(bool? error = default(bool?), string message = default(string), string publicKey = default(string))
         {
             this.Error = error;
             this.Message = message;
@@ -58,7 +58,7 @@ namespace Algorand.Kmd.Model
         /// Gets or Sets PublicKey
         /// </summary>
         [DataMember(Name="public_key", EmitDefaultValue=false)]
-        public PublicKey PublicKey { get; set; }
+        public string PublicKey { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

@@ -34,7 +34,7 @@ namespace Algorand.Kmd.Model
         /// </summary>
         /// <param name="key">key.</param>
         /// <param name="sig">sig.</param>
-        public MultisigSubsig(PublicKey key = default(PublicKey), Signature sig = default(Signature))
+        public MultisigSubsig(string key = default(string), Signature sig = default(Signature))
         {
             this.Key = key;
             this.Sig = sig;
@@ -44,7 +44,7 @@ namespace Algorand.Kmd.Model
         /// Gets or Sets Key
         /// </summary>
         [DataMember(Name="Key", EmitDefaultValue=false)]
-        public PublicKey Key { get; set; }
+        public string Key { get; set; }
 
         /// <summary>
         /// Gets or Sets Sig

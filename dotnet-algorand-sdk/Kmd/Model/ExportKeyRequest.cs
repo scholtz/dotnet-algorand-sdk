@@ -35,9 +35,9 @@ namespace Algorand.Kmd.Model
         /// <param name="publicKey">publicKey.</param>
         /// <param name="walletHandleToken">walletHandleToken.</param>
         /// <param name="walletPassword">walletPassword.</param>
-        public ExportKeyRequest(PublicKey publicKey = default(PublicKey), string walletHandleToken = default(string), string walletPassword = default(string))
+        public ExportKeyRequest(string address = default(string), string walletHandleToken = default(string), string walletPassword = default(string))
         {
-            this.PublicKey = publicKey;
+            this.Address = address;
             this.WalletHandleToken = walletHandleToken;
             this.WalletPassword = walletPassword;
         }
@@ -45,8 +45,8 @@ namespace Algorand.Kmd.Model
         /// <summary>
         /// Gets or Sets PublicKey
         /// </summary>
-        [DataMember(Name="public_key", EmitDefaultValue=false)]
-        public PublicKey PublicKey { get; set; }
+        [DataMember(Name="address", EmitDefaultValue=false)]
+        public string Address { get; set; }
 
         /// <summary>
         /// Gets or Sets WalletHandleToken
@@ -68,7 +68,7 @@ namespace Algorand.Kmd.Model
         {
             var sb = new StringBuilder();
             sb.Append("class ExportKeyRequest {\n");
-            sb.Append("  PublicKey: ").Append(PublicKey).Append("\n");
+            sb.Append("  PublicKey: ").Append(Address).Append("\n");
             sb.Append("  WalletHandleToken: ").Append(WalletHandleToken).Append("\n");
             sb.Append("  WalletPassword: ").Append(WalletPassword).Append("\n");
             sb.Append("}\n");
@@ -106,9 +106,9 @@ namespace Algorand.Kmd.Model
 
             return 
                 (
-                    this.PublicKey == input.PublicKey ||
-                    (this.PublicKey != null &&
-                    this.PublicKey.Equals(input.PublicKey))
+                    this.Address == input.Address ||
+                    (this.Address != null &&
+                    this.Address.Equals(input.Address))
                 ) && 
                 (
                     this.WalletHandleToken == input.WalletHandleToken ||
@@ -131,8 +131,8 @@ namespace Algorand.Kmd.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.PublicKey != null)
-                    hashCode = hashCode * 59 + this.PublicKey.GetHashCode();
+                if (this.Address != null)
+                    hashCode = hashCode * 59 + this.Address.GetHashCode();
                 if (this.WalletHandleToken != null)
                     hashCode = hashCode * 59 + this.WalletHandleToken.GetHashCode();
                 if (this.WalletPassword != null)

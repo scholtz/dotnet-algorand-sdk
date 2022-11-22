@@ -36,7 +36,7 @@ namespace Algorand.Kmd.Model
         /// <param name="transactionType">transactionType.</param>
         /// <param name="walletHandleToken">walletHandleToken.</param>
         /// <param name="walletPassword">walletPassword.</param>
-        public SignTransactionRequest(List<int?> transaction = default(List<int?>), TxType transactionType = default(TxType), string walletHandleToken = default(string), string walletPassword = default(string))
+        public SignTransactionRequest(List<int?> transaction = default(List<int?>), string transactionType = default(string), string walletHandleToken = default(string), string walletPassword = default(string))
         {
             this.Transaction = transaction;
             this.TransactionType = transactionType;
@@ -54,7 +54,7 @@ namespace Algorand.Kmd.Model
         /// Gets or Sets TransactionType
         /// </summary>
         [DataMember(Name="transaction_type", EmitDefaultValue=false)]
-        public TxType TransactionType { get; set; }
+        public string TransactionType { get; set; }
 
         /// <summary>
         /// Gets or Sets WalletHandleToken

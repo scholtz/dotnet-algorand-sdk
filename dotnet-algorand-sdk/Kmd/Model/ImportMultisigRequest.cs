@@ -36,7 +36,7 @@ namespace Algorand.Kmd.Model
         /// <param name="pks">pks.</param>
         /// <param name="threshold">threshold.</param>
         /// <param name="walletHandleToken">walletHandleToken.</param>
-        public ImportMultisigRequest(int? multisigVersion = default(int?), List<PublicKey> pks = default(List<PublicKey>), int? threshold = default(int?), string walletHandleToken = default(string))
+        public ImportMultisigRequest(int? multisigVersion = default(int?), List<string> pks = default(List<string>), int? threshold = default(int?), string walletHandleToken = default(string))
         {
             this.MultisigVersion = multisigVersion;
             this.Pks = pks;
@@ -54,7 +54,7 @@ namespace Algorand.Kmd.Model
         /// Gets or Sets Pks
         /// </summary>
         [DataMember(Name="pks", EmitDefaultValue=false)]
-        public List<PublicKey> Pks { get; set; }
+        public List<string> Pks { get; set; }
 
         /// <summary>
         /// Gets or Sets Threshold

@@ -7,9 +7,10 @@ using System;
 using System.Net.Http.Headers;
 using System.Reflection;
 using TechTalk.SpecFlow;
-
+#if TEST_DEBUG
 namespace algorand_tests.StepDefinitions
 {
+    
     [Binding]
     public class TransactionEncodingStepDefinitions
     {
@@ -176,3 +177,4 @@ namespace algorand_tests.StepDefinitions
         }
     }
 }
+#endif

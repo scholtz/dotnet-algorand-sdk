@@ -27,7 +27,7 @@ namespace Algorand.Kmd.Model
     /// TxType is the type of the transaction written to the ledger
     /// </summary>
     [DataContract]
-        public partial class TxType :  IEquatable<TxType>, IValidatableObject
+        public partial class TxType :   IEquatable<TxType>, IValidatableObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TxType" /> class.

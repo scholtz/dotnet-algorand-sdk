@@ -24,10 +24,10 @@ namespace Algorand.Algod
        /// <summary>Returns OK if healthy.
        /// </summary>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-       System.Threading.Tasks.Task<string> HealthCheckAsync();
+       System.Threading.Tasks.Task HealthCheckAsync();
 
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-       System.Threading.Tasks.Task<string> HealthCheckAsync(System.Threading.CancellationToken cancellationToken);
+       System.Threading.Tasks.Task HealthCheckAsync(System.Threading.CancellationToken cancellationToken);
 
        /// <summary>Return metrics about algod functioning.
        /// </summary>
@@ -94,7 +94,7 @@ namespace Algorand.Algod
        /// <summary>Returns OK if healthy.
        /// </summary>
        /// <exception cref="ApiException">A server side error occurred.</exception>
-       public System.Threading.Tasks.Task<string> HealthCheckAsync()
+       public System.Threading.Tasks.Task HealthCheckAsync()
        {
               return HealthCheckAsync(System.Threading.CancellationToken.None);
        }
@@ -103,7 +103,7 @@ namespace Algorand.Algod
        /// </summary>
        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-       public async System.Threading.Tasks.Task<string> HealthCheckAsync(System.Threading.CancellationToken cancellationToken)
+       public async System.Threading.Tasks.Task HealthCheckAsync(System.Threading.CancellationToken cancellationToken)
        {
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("health");
@@ -139,22 +139,13 @@ namespace Algorand.Algod
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
+                           
                         }
                         else
                         //Algorand Generator cannot distinguish between response codes
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                          
+                            throw new ApiException<ErrorResponse>("Error", status_, "", headers_, null, null);
                         }
                     }
                     finally

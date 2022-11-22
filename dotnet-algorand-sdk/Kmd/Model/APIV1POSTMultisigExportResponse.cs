@@ -37,7 +37,7 @@ namespace Algorand.Kmd.Model
         /// <param name="multisigVersion">multisigVersion.</param>
         /// <param name="pks">pks.</param>
         /// <param name="threshold">threshold.</param>
-        public APIV1POSTMultisigExportResponse(bool? error = default(bool?), string message = default(string), int? multisigVersion = default(int?), List<PublicKey> pks = default(List<PublicKey>), int? threshold = default(int?))
+        public APIV1POSTMultisigExportResponse(bool? error = default(bool?), string message = default(string), int? multisigVersion = default(int?), List<string> pks = default(List<string>), int? threshold = default(int?))
         {
             this.Error = error;
             this.Message = message;
@@ -68,7 +68,7 @@ namespace Algorand.Kmd.Model
         /// Gets or Sets Pks
         /// </summary>
         [DataMember(Name="pks", EmitDefaultValue=false)]
-        public List<PublicKey> Pks { get; set; }
+        public List<string> Pks { get; set; }
 
         /// <summary>
         /// Gets or Sets Threshold

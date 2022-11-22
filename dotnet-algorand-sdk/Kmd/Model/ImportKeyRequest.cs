@@ -34,7 +34,7 @@ namespace Algorand.Kmd.Model
         /// </summary>
         /// <param name="privateKey">privateKey.</param>
         /// <param name="walletHandleToken">walletHandleToken.</param>
-        public ImportKeyRequest(PrivateKey privateKey = default(PrivateKey), string walletHandleToken = default(string))
+        public ImportKeyRequest(string privateKey = default(string), string walletHandleToken = default(string))
         {
             this.PrivateKey = privateKey;
             this.WalletHandleToken = walletHandleToken;
@@ -44,7 +44,7 @@ namespace Algorand.Kmd.Model
         /// Gets or Sets PrivateKey
         /// </summary>
         [DataMember(Name="private_key", EmitDefaultValue=false)]
-        public PrivateKey PrivateKey { get; set; }
+        public string PrivateKey { get; set; }
 
         /// <summary>
         /// Gets or Sets WalletHandleToken
