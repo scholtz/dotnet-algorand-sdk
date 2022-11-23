@@ -28,6 +28,12 @@ The Unity build allows the DLL to be used directly in Unity without Newtonsoft o
 It also offers a new optional parameter to HttpClientConfigurator allowing a shim to be injected
 so that WebGL builds can use a different http client by delegation.
 
+## Note about the KMD API
+
+This legacy implementation is due for replacement. The KMD API as is is barely functional,
+uses the RestSharp client, and is not connected to Algorand Codegen. Please expect
+the KMD API to be completely changed in the coming months.
+
 ## Quick Start
 
 For a set of working examples please see the sdk-examples project.
