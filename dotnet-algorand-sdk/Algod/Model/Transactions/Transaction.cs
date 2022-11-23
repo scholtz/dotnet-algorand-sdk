@@ -146,11 +146,6 @@ namespace Algorand.Algod.Model.Transactions
 
         public SignedTransaction Sign(MultisigAddress from, Account signingAccount)
         {
-            // check that from addr of tx matches multisig preimage
-            if (!Sender.ToString().Equals(from.ToString()))
-            {
-                throw new ArgumentException("Transaction sender does not match multisig account");
-            }
             // check that account secret key is in multisig pk list
             var myEncoded = signingAccount.KeyPair.ClearTextPublicKey;
             int myI = -1;
