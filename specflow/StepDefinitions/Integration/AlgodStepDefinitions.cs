@@ -270,6 +270,7 @@ namespace algorand_tests.StepDefinitions
         [When(@"I send the transaction")]
         public async Task WhenISendTheTransaction()
         {
+            _scenarioContext["error"] = false;
             SignedTransaction st=(SignedTransaction) _scenarioContext["signedTransaction"] ;
             
             var id = (await Utils.SubmitTransaction(httpUtilities.algodDefaultApiInstance, st)).Txid;

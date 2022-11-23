@@ -8,7 +8,9 @@ namespace Algorand.Algod.Model.Transactions
 {
     public partial class KeyRegisterOnlineTransaction : KeyRegistrationTransaction
     {
+        [JsonProperty(PropertyName = "sprfkey")]
+        
+        public byte[] StateProofPK { get; set; } 
 
-    
     }
 }

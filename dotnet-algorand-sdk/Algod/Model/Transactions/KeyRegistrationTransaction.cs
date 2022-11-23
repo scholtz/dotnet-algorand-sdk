@@ -17,5 +17,7 @@ namespace Algorand.Algod.Model.Transactions
         public string type => "keyreg";
 
 
+
+
     }
 }
