@@ -146,11 +146,13 @@ namespace Algorand.Algod.Model.Transactions
 
         public SignedTransaction Sign(MultisigAddress from, Account signingAccount)
         {
+            //TODO - replace this old code - add more MultiSig support - add examples
+
             // check that account secret key is in multisig pk list
             var myEncoded = signingAccount.KeyPair.ClearTextPublicKey;
             int myI = -1;
-            for (int i = 0; i < from.publicKeys.Count; i++)
-                if (Enumerable.SequenceEqual(myEncoded, from.publicKeys[i].GetEncoded()))
+            for (int i = 0; i < from.publicKeys.Count; i++)                                             //for each key in the 'from' of the transaction
+                if (Enumerable.SequenceEqual(myEncoded, from.publicKeys[i].GetEncoded()))               //check the signing account is there
                 {
                     myI = i;
                     break;
@@ -162,20 +164,26 @@ namespace Algorand.Algod.Model.Transactions
             }
 
             // now, create the multisignature
-            SignedTransaction txSig = Sign(signingAccount);
-            MultisigSignature mSig = new MultisigSignature(from.version, from.threshold);
-            for (int i = 0; i < from.publicKeys.Count; i++)
+            SignedTransaction txSig = Sign(signingAccount);                                             //sign this transaction with the signing account
+            MultisigSignature mSig = new MultisigSignature(from.version, from.threshold);               //create a new multisignature like the current 'from'
+            for (int i = 0; i < from.publicKeys.Count; i++)                                             //for each sig in the original from
             {
-                if (i == myI)
+                if (i == myI)                                                                           //if it's our key
                 {
-                    mSig.Subsigs.Add(new MultisigSubsig(signingAccount.KeyPair.PublicKey, txSig.Sig));
+                    mSig.Subsigs.Add(new MultisigSubsig(signingAccount.KeyPair.PublicKey, txSig.Sig));  //then add the new subsig
                 }
                 else
                 {
-                    mSig.Subsigs.Add(new MultisigSubsig(from.publicKeys[i]));
+                    mSig.Subsigs.Add(new MultisigSubsig(from.publicKeys[i]));                           //otherwise just copy the original
                 }
             }
-            return new SignedTransaction(this, null,mSig,null,null);
+
+
+            var ret=new SignedTransaction(this, null,mSig,null,null);
+            
+            if (!from.ToAddress().Equals(ret.Tx.Sender)) { ret.AuthAddr=from.ToAddress(); }
+
+            return ret;
         }
 
 
