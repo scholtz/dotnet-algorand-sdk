@@ -41,7 +41,7 @@ namespace algorand_tests.StepDefinitions
             try
             {
 
-                await httpUtilities.algodCommonApiInstance.HealthCheckAsync();
+                await httpUtilities.algodDefaultApiInstance.HealthCheckAsync();
             }
             catch (Exception ex)
             {

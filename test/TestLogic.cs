@@ -127,35 +127,35 @@ namespace test
             Assert.IsEmpty(programData.byteBlock);
         }
 
-        [Test]
-        public void testCheckProgramLongArgs()
-        {
-            byte[] program = { 0x01, 0x20, 0x01, 0x01, 0x22  // int 1
-            };
-            List<byte[]> args = new List<byte[]>();
-            byte[] arg = Enumerable.Repeat((byte)0x31, 1000).ToArray();
-            args.Add(arg);
+        //[Test]
+        //public void testCheckProgramLongArgs()
+        //{
+        //    byte[] program = { 0x01, 0x20, 0x01, 0x01, 0x22  // int 1
+        //    };
+        //    List<byte[]> args = new List<byte[]>();
+        //    byte[] arg = Enumerable.Repeat((byte)0x31, 1000).ToArray();
+        //    args.Add(arg);
 
-            var ex = Assert.Throws<ArgumentException>(() => { Logic.ReadProgram(program, args); });
-            Assert.AreEqual("program too long", ex.Message);
-        }
+        //    var ex = Assert.Throws<ArgumentException>(() => { Logic.ReadProgram(program, args); });
+        //    Assert.AreEqual("program too long", ex.Message);
+        //}
 
-        [Test]
-        public void testCheckProgramLong()
-        {
-            byte[] program = { 0x01, 0x20, 0x01, 0x01, 0x22  // int 1
-        };
-            byte[] int1 = new byte[1000];
-            var program2 = program.ToList();
-            program2.AddRange(int1);
-            List<byte[]> args = new List<byte[]>();
+        //[Test]
+        //public void testCheckProgramLong()
+        //{
+        //    byte[] program = { 0x01, 0x20, 0x01, 0x01, 0x22  // int 1
+        //};
+        //    byte[] int1 = new byte[1000];
+        //    var program2 = program.ToList();
+        //    program2.AddRange(int1);
+        //    List<byte[]> args = new List<byte[]>();
 
-            //JavaHelper<byte>.SyatemArrayCopy(program, 0, program2, 0, program.Length);
-            //JavaHelper<byte>.SyatemArrayCopy(int1, 0, program2, program.Length, int1.Length);
+        //    //JavaHelper<byte>.SyatemArrayCopy(program, 0, program2, 0, program.Length);
+        //    //JavaHelper<byte>.SyatemArrayCopy(int1, 0, program2, program.Length, int1.Length);
 
-            var ex = Assert.Throws<ArgumentException>(() => { Logic.CheckProgram(program2.ToArray(), args); });
-            Assert.AreEqual("program too long", ex.Message);
-        }
+        //    var ex = Assert.Throws<ArgumentException>(() => { Logic.CheckProgram(program2.ToArray(), args); });
+        //    Assert.AreEqual("program too long", ex.Message);
+        //}
 
         [Test]
         public void testCheckProgramInvalidOpcode()

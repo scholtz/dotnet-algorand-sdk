@@ -16,6 +16,9 @@ public partial class CompileResponse{
     [System.ComponentModel.DataAnnotations.Required]
     public string Result {get;set;}
 
+    [Newtonsoft.Json.JsonProperty("sourcemap", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+    public byte[] Sourcemap {get;set;}
+
     
 }
 

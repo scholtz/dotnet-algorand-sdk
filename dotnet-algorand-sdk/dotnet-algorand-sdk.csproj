@@ -110,12 +110,6 @@
 		<Compile Update="Algod\Model\BuildVersion.Generated.cs">
 			<DependentUpon>BuildVersion.cs</DependentUpon>
 		</Compile>
-		<Compile Update="Algod\Model\CatchpointAbortResponse.Generated.cs">
-			<DependentUpon>CatchpointAbortResponse.cs</DependentUpon>
-		</Compile>
-		<Compile Update="Algod\Model\CatchpointStartResponse.Generated.cs">
-			<DependentUpon>CatchpointStartResponse.cs</DependentUpon>
-		</Compile>
 		<Compile Update="Algod\Model\CompileResponse.Generated.cs">
 			<DependentUpon>CompileResponse.cs</DependentUpon>
 		</Compile>
@@ -173,7 +167,70 @@
 		<Compile Update="Algod\Model\TransactionParametersResponse.Generated.cs">
 			<DependentUpon>TransactionParametersResponse.cs</DependentUpon>
 		</Compile>
-		<Compile Update="Algod\Model\Version.Generated.cs">
+		<Compile Update="Algod\Model\AccountBalanceRecord.generated.cs">
+			<DependentUpon>AccountBalanceRecord.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\AccountDeltas.generated.cs">
+			<DependentUpon>AccountDeltas.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\AccountTotals.generated.cs">
+			<DependentUpon>AccountTotals.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\AppResourceRecord.generated.cs">
+			<DependentUpon>AppResourceRecord.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\AssetParams.generated.cs">
+			<DependentUpon>AssetParams.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\AssetResourceRecord.generated.cs">
+			<DependentUpon>AssetResourceRecord.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\BlockHashResponse.generated.cs">
+			<DependentUpon>BlockHashResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\Box.generated.cs">
+			<DependentUpon>Box.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\BoxDescriptor.generated.cs">
+			<DependentUpon>BoxDescriptor.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\BoxesResponse.generated.cs">
+			<DependentUpon>BoxesResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\DisassembleResponse.generated.cs">
+			<DependentUpon>DisassembleResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\GetSyncRoundResponse.generated.cs">
+			<DependentUpon>GetSyncRoundResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\KvDelta.generated.cs">
+			<DependentUpon>KvDelta.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\LedgerStateDelta.generated.cs">
+			<DependentUpon>LedgerStateDelta.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\LightBlockHeaderProof.generated.cs">
+			<DependentUpon>LightBlockHeaderProof.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\ModifiedApp.generated.cs">
+			<DependentUpon>ModifiedApp.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\ModifiedAsset.generated.cs">
+			<DependentUpon>ModifiedAsset.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\StateProof.generated.cs">
+			<DependentUpon>StateProof.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\StateProofMessage.generated.cs">
+			<DependentUpon>StateProofMessage.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\TransactionProofResponse.generated.cs">
+			<DependentUpon>TransactionProofResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\TxLease.generated.cs">
+			<DependentUpon>TxLease.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Algod\Model\Version.generated.cs">
 			<DependentUpon>Version.cs</DependentUpon>
 		</Compile>
 		

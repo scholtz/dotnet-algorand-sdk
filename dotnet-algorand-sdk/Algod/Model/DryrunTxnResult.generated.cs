@@ -12,8 +12,11 @@ public partial class DryrunTxnResult{
     [Newtonsoft.Json.JsonProperty("app-call-trace", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
     public System.Collections.Generic.ICollection<DryrunState> AppCallTrace {get;set;} = new System.Collections.ObjectModel.Collection<DryrunState>();
 
-    [Newtonsoft.Json.JsonProperty("cost", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-    public ulong? Cost {get;set;}
+    [Newtonsoft.Json.JsonProperty("budget-added", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+    public ulong? BudgetAdded {get;set;}
+
+    [Newtonsoft.Json.JsonProperty("budget-consumed", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+    public ulong? BudgetConsumed {get;set;}
 
 
     [Newtonsoft.Json.JsonProperty("disassembly", Required = Newtonsoft.Json.Required.Always)]

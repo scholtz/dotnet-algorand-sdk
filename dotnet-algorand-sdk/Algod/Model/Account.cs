@@ -35,7 +35,7 @@ namespace Algorand.Algod.Model
   
 
 
-      
+        //TODO - omit this from the .generated codegen
 
         /// <summary>Indicates what type of signature is used by this account, must be one of:
         /// <br/>* sig

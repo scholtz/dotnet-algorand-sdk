@@ -15,14 +15,23 @@ public partial class NodeStatusResponse{
     [Newtonsoft.Json.JsonProperty("catchpoint-processed-accounts", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
     public ulong? CatchpointProcessedAccounts {get;set;}
 
+    [Newtonsoft.Json.JsonProperty("catchpoint-processed-kvs", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+    public ulong? CatchpointProcessedKvs {get;set;}
+
     [Newtonsoft.Json.JsonProperty("catchpoint-total-accounts", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
     public ulong? CatchpointTotalAccounts {get;set;}
 
     [Newtonsoft.Json.JsonProperty("catchpoint-total-blocks", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
     public ulong? CatchpointTotalBlocks {get;set;}
 
+    [Newtonsoft.Json.JsonProperty("catchpoint-total-kvs", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+    public ulong? CatchpointTotalKvs {get;set;}
+
     [Newtonsoft.Json.JsonProperty("catchpoint-verified-accounts", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
     public ulong? CatchpointVerifiedAccounts {get;set;}
+
+    [Newtonsoft.Json.JsonProperty("catchpoint-verified-kvs", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+    public ulong? CatchpointVerifiedKvs {get;set;}
 
 
     [Newtonsoft.Json.JsonProperty("catchup-time", Required = Newtonsoft.Json.Required.Always)]

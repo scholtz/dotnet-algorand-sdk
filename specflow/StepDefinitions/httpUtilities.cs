@@ -15,7 +15,7 @@ namespace specflow.StepDefinitions
         private static HttpClient httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
 
         internal static DefaultApi algodDefaultApiInstance;
-        internal static CommonApi algodCommonApiInstance;
+
         internal static Algorand.Kmd.Api.DefaultApi kmdApi;
 
         [Given("mock server recording request paths")]
@@ -29,7 +29,7 @@ namespace specflow.StepDefinitions
         public static void setUp()
         { 
             if (algodDefaultApiInstance == null) algodDefaultApiInstance = new DefaultApi(httpClient);
-            if (algodCommonApiInstance == null) algodCommonApiInstance = new CommonApi(httpClient);
+     
            
         }
 

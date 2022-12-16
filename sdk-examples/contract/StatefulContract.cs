@@ -25,10 +25,10 @@ namespace sdk_examples.contract
                 ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
             }
        
-            string adminMnemonic = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
+            string adminMnemonic = "allow already artwork safe unaware promote celery baby december museum reveal tool laptop federal joy speak kit endless glare wonder prevent lecture exclude abstract raccoon";
             Account admin = new Account(adminMnemonic);
-            string creatorMnemonic = "oval brown real consider grow someone impulse palace elegant code elegant victory observe nerve thunder trash mutual viable patient ask below imitate gallery able text";
-            string userMnemonic = "clog tide item robust bounce fiction axis violin night steel frame pear ice proud consider uphold gaze polar page call infant segment page abstract diamond";
+            string creatorMnemonic = "wave elevator silk crazy note convince adjust faculty above breeze shove cattle neither battle vacuum segment mean rent genre negative excess large coyote abandon wait";
+            string userMnemonic = "degree paddle team casual fortune antique lemon just you cereal pony forget garlic mobile potato fork awkward easy girl clock buzz dad noodle abstract giant";
 
 
 

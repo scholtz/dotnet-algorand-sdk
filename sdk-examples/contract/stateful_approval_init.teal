@@ -1,4 +1,4 @@
-#pragma version 2
+#pragma version 8
 ///// Handle each possible OnCompletion type. We don't have to worry about
 //// handling ClearState, because the ClearStateProgram will execute in that
 //// case, not the ApprovalProgram.
@@ -27,7 +27,7 @@ err
 handle_noop:
 //// Handle NoOp
 //// Check for creator
-addr PNVWLRRYMI5U2RRD5BAKGSOPOXLISJTMEVSXUSXW3SJ2RAAYDHKEQ3X2AU
+addr RGQQTQMQALZIV3PB3QCP4OAC3QJGQJ4U5QI3JEGZL5C3CHYRHK6QICVMCA
 txn Sender
 ==
 bnz handle_optin
@@ -71,13 +71,13 @@ int 1
 return
 handle_deleteapp:
 //// Check for creator
-addr PNVWLRRYMI5U2RRD5BAKGSOPOXLISJTMEVSXUSXW3SJ2RAAYDHKEQ3X2AU
+addr RGQQTQMQALZIV3PB3QCP4OAC3QJGQJ4U5QI3JEGZL5C3CHYRHK6QICVMCA
 txn Sender
 ==
 return
 handle_updateapp:
 //// Check for creator
-addr PNVWLRRYMI5U2RRD5BAKGSOPOXLISJTMEVSXUSXW3SJ2RAAYDHKEQ3X2AU
+addr RGQQTQMQALZIV3PB3QCP4OAC3QJGQJ4U5QI3JEGZL5C3CHYRHK6QICVMCA
 txn Sender
 ==
 return
