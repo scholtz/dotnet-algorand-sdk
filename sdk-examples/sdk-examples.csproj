@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>sdk_examples</RootNamespace>
-    <StartupObject>sdk_examples.contract.StatefulContract</StartupObject>
+    <StartupObject>sdk_examples.AccountTest</StartupObject>
     <Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity</Configurations>
   </PropertyGroup>
 

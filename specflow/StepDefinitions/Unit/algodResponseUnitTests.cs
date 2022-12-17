@@ -14,6 +14,8 @@ using Algorand.Algod.Model.Transactions;
 using System.Collections.Generic;
 using System.Linq;
 using Algorand;
+using MsgPack;
+using MsgPack.Serialization;
 
 #if TEST_DEBUG
 namespace specflow.StepDefinitions
@@ -33,6 +35,10 @@ namespace specflow.StepDefinitions
             if (jsonfile.EndsWith("base64"))
             {
                 mockResponseBytes = System.Convert.FromBase64String( File.ReadAllText(Path.Combine( "Features","Unit",directory,jsonfile)) )   ;
+
+                var t = MessagePack.MessagePackSerializer.ConvertToJson(mockResponseBytes);
+                
+
                 resp = new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content =  new ByteArrayContent(mockResponseBytes)
@@ -55,7 +61,7 @@ namespace specflow.StepDefinitions
             TestHttpMessageHandler.NextResponse = resp;
         }
 
-        Algorand.Algod.Model.Transactions.Transaction? pendingTransactionInfo;
+        Algorand.Algod.Model.PendingTransactions? pendingTransactionInfo;
         [When(@"we make any Pending Transaction Information call")]
         public async Task WeMakeAnyPendingTransactionInformationCall()
         {
@@ -63,7 +69,7 @@ namespace specflow.StepDefinitions
             try
             {
                 error = "";
-                pendingTransactionInfo = await httpUtilities.algodDefaultApiInstance.PendingTransactionInformationAsync("", null) as Algorand.Algod.Model.Transactions.Transaction;
+                pendingTransactionInfo = await httpUtilities.algodDefaultApiInstance.GetPendingTransactionsByAddressAsync("", null) as PendingTransactions ;
             }
             catch (ApiException<ErrorResponse> ex)
             {
@@ -74,7 +80,7 @@ namespace specflow.StepDefinitions
         [Then(@"the parsed Pending Transaction Information response should have sender ""([^""]*)""")]
         public void ExpectPendingTransactionInformationResponseSenderToBe(string sender)
         {
-            pendingTransactionInfo?.Sender.Should().Be(sender);
+            pendingTransactionInfo?.TopTransactions.Select(t=>t.Tx.Sender.Should().Be(sender));
         }
 
         PendingTransactions? pendingTransactions;
