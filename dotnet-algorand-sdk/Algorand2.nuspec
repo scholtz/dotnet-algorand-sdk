@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Algorand2_Unity</id>
-    <version>1.0.0.14</version>
+    <version>1.0.0.15</version>
     <authors>Frank Szendzielarz</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="file">LICENSE</license>
