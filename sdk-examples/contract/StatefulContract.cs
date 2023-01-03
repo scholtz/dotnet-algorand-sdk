@@ -143,7 +143,7 @@ namespace sdk_examples.contract
                     Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
                     FirstValid = transParams.LastRound,
                     LastValid = transParams.LastRound + 1000,
-                    GenesisID = transParams.GenesisId,
+                    GenesisId = transParams.GenesisId,
                     GenesisHash = new Digest(transParams.GenesisHash),
                 };
 
@@ -171,11 +171,11 @@ namespace sdk_examples.contract
                 var tx = new ApplicationUpdateTransaction()
                 {
                     Sender = creator.Address,
-                    ApplicationId = appid,
+                    ApplicationId = appid??0,
                     Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
                     FirstValid = transParams.LastRound,
                     LastValid = transParams.LastRound + 1000,
-                    GenesisID = transParams.GenesisId,
+                    GenesisId = transParams.GenesisId,
                     GenesisHash = new Digest(transParams.GenesisHash),
                     ApprovalProgram = approvalProgram,
                     ClearStateProgram = clearProgram
@@ -209,7 +209,7 @@ namespace sdk_examples.contract
                     Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
                     FirstValid = transParams.LastRound,
                     LastValid = transParams.LastRound + 1000,
-                    GenesisID = transParams.GenesisId,
+                    GenesisId = transParams.GenesisId,
                     GenesisHash = new Digest(transParams.GenesisHash),
                     ApprovalProgram = approvalProgram,
                     ClearStateProgram = clearProgram,
@@ -244,9 +244,9 @@ namespace sdk_examples.contract
                     Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
                     FirstValid = transParams.LastRound,
                     LastValid = transParams.LastRound + 1000,
-                    GenesisID = transParams.GenesisId,
+                    GenesisId = transParams.GenesisId,
                     GenesisHash = new Digest(transParams.GenesisHash),
-                    ApplicationId = applicationId
+                    ApplicationId = applicationId??0
                 };
 
 
@@ -275,9 +275,9 @@ namespace sdk_examples.contract
                     Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
                     FirstValid = transParams.LastRound,
                     LastValid = transParams.LastRound + 1000,
-                    GenesisID = transParams.GenesisId,
+                    GenesisId = transParams.GenesisId,
                     GenesisHash = new Digest(transParams.GenesisHash),
-                    ApplicationId = applicationId
+                    ApplicationId = applicationId??0
                 };
 
 
@@ -306,7 +306,7 @@ namespace sdk_examples.contract
                     Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
                     FirstValid = transParams.LastRound,
                     LastValid = transParams.LastRound + 1000,
-                    GenesisID = transParams.GenesisId,
+                    GenesisId = transParams.GenesisId,
                     GenesisHash = new Digest(transParams.GenesisHash),
                     ApplicationId = applicationId.Value,
                 };
@@ -337,7 +337,7 @@ namespace sdk_examples.contract
                     Fee = transParams.Fee >= 1000 ? transParams.Fee : 1000,
                     FirstValid = transParams.LastRound,
                     LastValid = transParams.LastRound + 1000,
-                    GenesisID = transParams.GenesisId,
+                    GenesisId = transParams.GenesisId,
                     GenesisHash = new Digest(transParams.GenesisHash),
                     ApplicationId = applicationId.Value,
                     ApplicationArgs = args

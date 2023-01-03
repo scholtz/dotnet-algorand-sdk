@@ -21,7 +21,7 @@ namespace sdk_examples
         {
             string ALGOD_API_ADDR = "http://localhost:4001/";
             string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            string SRC_ACCOUNT = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
+            string SRC_ACCOUNT = "move sell junior vast verb stove bracket filter place child fame bone story science miss injury put cancel already session cheap furnace void able minimum";
 
             if (ALGOD_API_ADDR.IndexOf("//") == -1)
             {
@@ -34,8 +34,8 @@ namespace sdk_examples
             // Shown for demonstration purposes. NEVER reveal secret mnemonics in practice.
             // These three accounts are for testing purposes
             string account1_mnemonic = SRC_ACCOUNT;
-            string account2_mnemonic = "oval brown real consider grow someone impulse palace elegant code elegant victory observe nerve thunder trash mutual viable patient ask below imitate gallery able text";
-            string account3_mnemonic = "clog tide item robust bounce fiction axis violin night steel frame pear ice proud consider uphold gaze polar page call infant segment page abstract diamond";
+            string account2_mnemonic = "gravity maid again grass ozone execute exotic vapor fringe snack club monitor where jar pyramid receive tattoo science scene high sound degree bless above good";
+            string account3_mnemonic = "pencil ostrich net alpha need vivid elevator gadget bundle meadow flash hamster pig young ten clown before grace arch tennis absent knock peanut ability alarm";
 
             Account acct1 = new Account(account1_mnemonic);
             Account acct2 = new Account(account2_mnemonic);
@@ -62,7 +62,8 @@ namespace sdk_examples
                 Decimals= 0,
                 Url = @"http://this.test.com", 
                 MetadataHash = Encoding.ASCII.GetBytes("16efaa3924a6fd9d3a4880099a4ac65d"),
-                Manager = acct2.Address
+                Manager = acct2.Address,
+                Freeze = acct1.Address
             };
 
             // Specified address can change reserve, freeze, clawback, and manager
@@ -71,14 +72,14 @@ namespace sdk_examples
             var tx = new AssetCreateTransaction()
             {
                 AssetParams = ap,
-                
+                 
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisID = transParams.GenesisId,
+                GenesisId = transParams.GenesisId,
                 LastValid = transParams.LastRound + 1000,
                 Note= Encoding.UTF8.GetBytes("asset tx message"),
                 Sender = acct1.Address,
-                
+         
                  
             };
             tx.SetFee(transParams.Fee);
@@ -91,13 +92,13 @@ namespace sdk_examples
             try
             {
                 var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                Console.WriteLine("Transaction ID: " + id);
-                Console.WriteLine("Confirmed Round is: " +
-                    Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
+                Console.WriteLine("Transaction ID: " + id.Txid);
+                var txCompleted = await Utils.WaitTransactionToComplete(algodApiInstance, id.Txid);
+                Console.WriteLine($"Confirmed Round is: {txCompleted.ConfirmedRound}");
                 // Now that the transaction is confirmed we can get the assetID
                 var ptx = await  algodApiInstance.PendingTransactionInformationAsync(id.Txid,null) as AssetCreateTransaction;
                 
-                if (ptx?.Committed??false) assetID = ptx.AssetIndex.Value;
+                if (ptx?.Committed??false) assetID = ptx.AssetIndex;
             }
             catch (ApiException<ErrorResponse> e)
             {
@@ -105,9 +106,9 @@ namespace sdk_examples
                 return;
             }
             Console.WriteLine("AssetID = " + assetID);
+            
+            
             // now the asset already created
-
-
             // Change Asset Configuration:
             // Next we will change the asset configuration
             // First we update standard Transaction parameters
@@ -128,7 +129,7 @@ namespace sdk_examples
               
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisID = transParams.GenesisId,
+                GenesisId = transParams.GenesisId,
                 LastValid = transParams.LastRound + 1000,
                 Note = Encoding.UTF8.GetBytes("config trans"),
                 AssetIndex= assetID,
@@ -159,7 +160,8 @@ namespace sdk_examples
             // Get the asset information for the newly changed asset            
             ast = await algodApiInstance.GetAssetByIDAsync(assetID);
             //The manager should now be the same as the creator
-            Console.WriteLine(ap);
+            Console.WriteLine(ast.Params.Manager);
+            Console.WriteLine(ast.Params.Creator);
 
 
 
@@ -176,21 +178,21 @@ namespace sdk_examples
 
             var aoitx = new AssetAcceptTransaction()
             {
-               
+                
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisID = transParams.GenesisId,
+                GenesisId = transParams.GenesisId,
                 LastValid = transParams.LastRound + 1000,
                 Note = Encoding.UTF8.GetBytes("opt in transaction"),
                 XferAsset = assetID,
                 AssetReceiver = acct3.Address,
-                Sender = acct2.Address
+                Sender = acct3.Address
             };
             aoitx.SetFee(transParams.Fee);
 
             // The transaction must be signed by the current manager account
             // We are reusing the signedTx variable from the first transaction in the example    
-            signedTx = aoitx.Sign(acct2);
+            signedTx = aoitx.Sign(acct3);
             
             // send the transaction to the network and
             // wait for the transaction to be confirmed
@@ -204,7 +206,7 @@ namespace sdk_examples
                 // We can now list the account information for acct3 
                 // and see that it can accept the new asseet
                 act  = await algodApiInstance.AccountInformationAsync(acct3.Address.ToString(),null,null);
-                Console.WriteLine(act);
+     
             }
             catch (ApiException<ErrorResponse> e)
             {
@@ -231,10 +233,10 @@ namespace sdk_examples
 
             var attx = new AssetTransferTransaction()
             {
-               
+                AssetAmount = assetAmount,
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisID = transParams.GenesisId,
+                GenesisId = transParams.GenesisId,
                 LastValid = transParams.LastRound + 1000,
                 Note = Encoding.UTF8.GetBytes("opt in transaction"),
                 XferAsset = assetID,
@@ -291,20 +293,20 @@ namespace sdk_examples
                 
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisID = transParams.GenesisId,
+                GenesisId = transParams.GenesisId,
                 LastValid = transParams.LastRound + 1000,
                 Note = Encoding.UTF8.GetBytes("opt in transaction"),
-                AssetFreezeID = assetID,  
+                AssetFreezeId = assetID,  
                 FreezeState=true,
                 FreezeTarget = acct3.Address,
-                Sender = acct2.Address
+                Sender = acct1.Address
             };
             aftx.SetFee(transParams.Fee);
 
             //tx = Utils.GetFreezeAssetTransaction(acct2.Address, acct3.Address, assetID, true, transParams, "freeze transaction");
 
             // The transaction must be signed by the freeze account acct2
-            signedTx = aftx.Sign(acct2);
+            signedTx = aftx.Sign(acct1);
             // send the transaction to the network and
             // wait for the transaction to be confirmed
             try
@@ -354,7 +356,7 @@ namespace sdk_examples
                 
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisID = transParams.GenesisId,
+                GenesisId = transParams.GenesisId,
                 LastValid = transParams.LastRound + 1000,
                 Note = Encoding.UTF8.GetBytes("opt in transaction"),
                 XferAsset= assetID,
@@ -409,7 +411,7 @@ namespace sdk_examples
                 
                 FirstValid = transParams.LastRound,
                 GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisID = transParams.GenesisId,
+                GenesisId = transParams.GenesisId,
                 LastValid = transParams.LastRound + 1000,
                 Note = Encoding.UTF8.GetBytes("opt in transaction"),
                 AssetIndex= assetID,

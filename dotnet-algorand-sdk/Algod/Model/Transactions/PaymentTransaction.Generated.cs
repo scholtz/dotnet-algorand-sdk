@@ -1,38 +1,62 @@
-﻿
-
-using Newtonsoft.Json;
-using System;
-using System.ComponentModel;
-using System.Text;
-using System.Runtime.CompilerServices;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    public partial class PaymentTransaction : Transaction
-    {
-      
 
-        [JsonProperty(PropertyName = "amt")]
-        [DefaultValue(0)]
-        public ulong? Amount { get; set; }  = 0;
+using System = global::System;
+#if UNITY
+using UnityEngine;
+    using Newtonsoft.Json;
+#endif
 
-        [JsonProperty(PropertyName = "amount")]
-        internal ulong? amount { set { Amount = value; } }
-
-        [JsonProperty(PropertyName = "rcv")]
-        public Address Receiver { get; set; }
-
-        [JsonProperty(PropertyName = "close")]
-        public Address CloseRemainderTo { get; set; }
+#if UNITY
+[System.Serializable]
+#endif
+public partial class PaymentTransaction : Transaction{
 
 
+ 
+
+    [Newtonsoft.Json.JsonProperty("amt", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"Amount")]
+    public ulong Amount {get;set;}
+#else
+    public ulong? Amount {get;set;}
+#endif
 
 
 
-        [JsonIgnore]
-        public ulong? ClosingAmount { get; internal set; }
+    [Newtonsoft.Json.JsonProperty("close", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"CloseRemainderTo")]
+    public Algorand.Address CloseRemainderTo {get;set;}
+#else
+    public Algorand.Address CloseRemainderTo {get;set;}
+#endif
 
-      
 
-    }
+
+    [Newtonsoft.Json.JsonProperty("rcv", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"Receiver")]
+    public Algorand.Address Receiver {get;set;}
+#else
+    public Algorand.Address Receiver {get;set;}
+#endif
+
+
+
+  
+
+
+    
+}
+
+
 }

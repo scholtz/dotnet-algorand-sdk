@@ -1,29 +1,32 @@
-﻿
-
-
-using Newtonsoft.Json;
-using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {
 
-    public partial class ApplicationDeleteTransaction : ApplicationCallTransaction
-    {
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
 
-        [JsonProperty(PropertyName = "apid")]
-        [DefaultValue(0)]
-        public ulong? ApplicationId { get; set; } = 0;
+#if UNITY
+[System.Serializable]
+#endif
+public partial class ApplicationDeleteTransaction : ApplicationCallTransaction{
+
+  
+
+    [Newtonsoft.Json.JsonProperty("apid", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"ApplicationId")]
+    public ulong ApplicationId {get;set;}
+#else
+    public ulong? ApplicationId {get;set;}
+#endif
 
 
-        [JsonProperty(PropertyName = "apan")]
-        public OnCompletion OnCompletion => OnCompletion.Delete;
+    
+}
 
 
-
-
-
-
-
-
-    }
 }

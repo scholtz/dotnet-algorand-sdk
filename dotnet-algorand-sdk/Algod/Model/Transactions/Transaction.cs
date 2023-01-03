@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Algorand.Algod.Model.Transactions
 {
@@ -38,24 +39,62 @@ namespace Algorand.Algod.Model.Transactions
 
     
 
+       
+
+#if UNITY
+        [field: SerializeField]
+        [Tooltip(@"")]
+        [field: InspectorName(@"ConfirmedRound")]
         [JsonIgnore]
+        public ulong ConfirmedRound { get; internal set; }
+
+       
+        [JsonIgnore]
+        public bool Committed => ConfirmedRound > 0;
+
+        [field: SerializeField]
+        [Tooltip(@"")]
+        [field: InspectorName(@"ReceiverRewards")]
+        [JsonIgnore]
+        public ulong ReceiverRewards { get; internal set; }
+
+        [field: SerializeField]
+        [Tooltip(@"")]
+        [field: InspectorName(@"SenderRewards")]
+        [JsonIgnore]
+        public ulong SenderRewards { get; internal set; }
+
+        [field: SerializeField]
+        [Tooltip(@"")]
+        [field: InspectorName(@"CloseRewards")]
+        [JsonIgnore]
+        public ulong CloseRewards { get; internal set; }
+#else
+         [JsonIgnore]
+        public ulong? ConfirmedRound { get; internal set; }
+
+         [JsonIgnore]
         public bool Committed => (ConfirmedRound ?? 0) > 0;
 
+          [JsonIgnore]
+        public ulong? ReceiverRewards { get; internal set; }
 
+        
         [JsonIgnore]
-        public ulong? ConfirmedRound { get; internal set; }
+        public ulong? SenderRewards { get; internal set; }
+
+        
+        [JsonIgnore]
+        public ulong? CloseRewards { get; internal set; }
+#endif
+
 
         [JsonIgnore]
         public string PoolError { get; internal set; }
 
-        [JsonIgnore]
-        public ulong? ReceiverRewards { get; internal set; }
+      
 
-        [JsonIgnore]
-        public ulong? SenderRewards { get; internal set; }
 
-        [JsonIgnore]
-        public ulong? CloseRewards { get; internal set; }
 
         /// <summary>
         /// Sets the transaction fee according to suggestedFeePerByte * estimateTxSize.
@@ -69,7 +108,7 @@ namespace Algorand.Algod.Model.Transactions
             {
                 newFee = MIN_TX_FEE_UALGOS;
             }
-            Fee = newFee;
+            Fee = newFee.Value;
         }
 
         /// <summary>

@@ -1,41 +1,93 @@
-﻿
-
-
-using Newtonsoft.Json;
-using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {
 
-    public partial class ApplicationUpdateTransaction : ApplicationCallTransaction
-    {
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
 
-        [JsonProperty(PropertyName = "apid")]
-        [DefaultValue(0)]
-        public ulong? ApplicationId { get; set; } = 0;
+#if UNITY
+[System.Serializable]
+#endif
+public partial class ApplicationUpdateTransaction : ApplicationCallTransaction{
 
-
-
-        [JsonProperty(PropertyName = "apap")]
-        public TEALProgram ApprovalProgram { get; set; }
-
-        [JsonProperty(PropertyName = "apsu")]
-        public TEALProgram ClearStateProgram { get; set; }
-
-        [JsonProperty(PropertyName = "apgs")]
-        public StateSchema GlobalStateSchema { get; set; }
-
-        [JsonProperty(PropertyName = "apls")]
-        public StateSchema LocalStateSchema { get; set; }
-
-        [JsonProperty(PropertyName = "apep")]
-        [DefaultValue(0)]
-        public ulong? ExtraProgramPages { get; set; } = 0;
+   
 
 
-        public bool ShouldSerializeExtraProgramPages () => ExtraProgramPages!=null && ExtraProgramPages != 0;
+    [Newtonsoft.Json.JsonProperty("apap", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"ApprovalProgram")]
+    public Algorand.TEALProgram ApprovalProgram {get;set;}
+#else
+    public Algorand.TEALProgram ApprovalProgram {get;set;}
+#endif
 
 
 
-    }
+    [Newtonsoft.Json.JsonProperty("apep", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"ExtraProgramPages")]
+    public ulong ExtraProgramPages {get;set;}
+#else
+    public ulong? ExtraProgramPages {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("apgs", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"GlobalStateSchema")]
+    public StateSchema GlobalStateSchema {get;set;}
+#else
+    public StateSchema GlobalStateSchema {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("apid", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"ApplicationId")]
+    public ulong ApplicationId {get;set;}
+#else
+    public ulong? ApplicationId {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("apls", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"LocalStateSchema")]
+    public StateSchema LocalStateSchema {get;set;}
+#else
+    public StateSchema LocalStateSchema {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("apsu", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"ClearStateProgram")]
+    public Algorand.TEALProgram ClearStateProgram {get;set;}
+#else
+    public Algorand.TEALProgram ClearStateProgram {get;set;}
+#endif
+
+
+    
+}
+
+
 }

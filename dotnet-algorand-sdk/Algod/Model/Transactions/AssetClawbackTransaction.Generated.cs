@@ -1,33 +1,57 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    public partial class AssetClawbackTransaction : AssetMovementsTransaction
-    {
 
-        /// <summary>
-        /// The amount of asset to transfer. A zero amount transferred to self
-        /// allocates that asset in the account's Assets map.
-        /// </summary>
-        [JsonProperty(PropertyName = "aamt", Required = Required.Always)]
-        [DefaultValue(0)]
-        public ulong AssetAmount { get; set; } = 0;
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
 
-        /// <summary>
-        /// The sender of the transfer.  If this is not a zero value, the real
-        /// transaction sender must be the Clawback address from the AssetParams. If
-        /// this is the zero value, the asset is sent from the transaction's Sender.
-        /// </summary>
-        [JsonProperty(PropertyName = "asnd", Required = Required.Always)]
-        public Address AssetSender { get; set; }
+#if UNITY
+[System.Serializable]
+#endif
+public partial class AssetClawbackTransaction : AssetMovementsTransaction{
 
-        /// <summary>
-        /// The receiver of the transfer.
-        /// </summary>
-        [JsonProperty(PropertyName = "arcv", Required = Required.Always)]
-        public Address AssetReceiver { get; set; }
+    [Newtonsoft.Json.JsonProperty("aamt", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"AssetAmount")]
+    public ulong AssetAmount {get;set;}
+#else
+    public ulong AssetAmount {get;set;}
+#endif
 
 
-    }
+
+    [Newtonsoft.Json.JsonProperty("arcv", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"AssetReceiver")]
+    public Algorand.Address AssetReceiver {get;set;}
+#else
+    public Algorand.Address AssetReceiver {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("asnd", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"AssetSender")]
+    public Algorand.Address AssetSender {get;set;}
+#else
+    public Algorand.Address AssetSender {get;set;}
+#endif
+
+
+    
+}
+
+
 }

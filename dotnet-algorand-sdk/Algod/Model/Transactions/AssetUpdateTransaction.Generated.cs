@@ -1,17 +1,30 @@
-﻿using JsonSubTypes;
-using Newtonsoft.Json;
-using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {
 
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
 
-    public partial class AssetUpdateTransaction : AssetChangeTransaction
-    {
-        [JsonProperty(PropertyName = "apar")]
-        public AssetParams AssetParams { get; set; }
+#if UNITY
+[System.Serializable]
+#endif
+public partial class AssetUpdateTransaction : AssetChangeTransaction{
+
+    [Newtonsoft.Json.JsonProperty("apar", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"AssetParams")]
+    public Algorand.Algod.Model.AssetParams AssetParams {get;set;}
+#else
+    public Algorand.Algod.Model.AssetParams AssetParams {get;set;}
+#endif
 
 
+    
+}
 
-    }
+
 }

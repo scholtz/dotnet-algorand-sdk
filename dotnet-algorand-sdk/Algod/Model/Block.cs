@@ -2,6 +2,7 @@
 namespace Algorand.Algod.Model
 {
     using Algorand.Algod.Model.Transactions;
+    using UnityEngine;
 
     /* DESIGN - Block as an entity was missing from Algod but it was visible in Indexer
      */
@@ -22,6 +23,7 @@ namespace Algorand.Algod.Model
         /// <summary>\[gen\] ID to which this block belongs.</summary>
         [Newtonsoft.Json.JsonProperty("gen")] //, Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+
         public string GenesisId { get; set; }
 
         /// <summary>\[prev\] Previous block hash.</summary>

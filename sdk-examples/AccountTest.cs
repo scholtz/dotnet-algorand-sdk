@@ -16,7 +16,7 @@ namespace sdk_examples
         {
             string ALGOD_API_ADDR = "http://localhost:4001/";
             string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            string SRC_ACCOUNT = "wave elevator silk crazy note convince adjust faculty above breeze shove cattle neither battle vacuum segment mean rent genre negative excess large coyote abandon wait";
+            string SRC_ACCOUNT = "move sell junior vast verb stove bracket filter place child fame bone story science miss injury put cancel already session cheap furnace void able minimum";
 
             if (ALGOD_API_ADDR.IndexOf("//") == -1)
             {

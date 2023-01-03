@@ -1,13 +1,21 @@
-﻿using JsonSubTypes;
-using Newtonsoft.Json;
 
 namespace Algorand.Algod.Model.Transactions
 {
- 
-    public abstract partial class KeyRegistrationTransaction : Transaction
-    {
-       
+
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
+
+#if UNITY
+[System.Serializable]
+#endif
+public partial class KeyRegistrationTransaction : Transaction{
+
+  
+
+    
+}
 
 
-    }
 }

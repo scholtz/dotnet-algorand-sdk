@@ -1,19 +1,42 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    public partial class StateSchema
-    {
-        /// <summary>Maximum number of TEAL uints that may be stored in the key/value store.</summary>
-        [JsonProperty("nui", DefaultValueHandling = DefaultValueHandling.Ignore)] //, Required = Newtonsoft.Json.Required.Always)]
-        [DefaultValue(0)]
-        public ulong? NumUint { get; set; }
 
-        /// <summary>Maximum number of TEAL byte slices that may be stored in the key/value store.</summary>
-        [JsonProperty("nbs", DefaultValueHandling = DefaultValueHandling.Ignore)] //, Required = Newtonsoft.Json.Required.Always)]
-        [DefaultValue(0)]
-        public ulong? NumByteSlice { get; set; }
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
 
-    }
+#if UNITY
+[System.Serializable]
+#endif
+public partial class StateSchema{
+
+    [Newtonsoft.Json.JsonProperty("nbs", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"NumByteSlice")]
+    public ulong NumByteSlice {get;set;}
+#else
+    public ulong? NumByteSlice {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("nui", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"NumUint")]
+    public ulong NumUint {get;set;}
+#else
+    public ulong? NumUint {get;set;}
+#endif
+
+
+    
+}
+
+
 }

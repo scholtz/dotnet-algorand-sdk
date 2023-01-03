@@ -5,6 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Text;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace Algorand.Algod.Model.Transactions
 {
@@ -36,12 +37,12 @@ namespace Algorand.Algod.Model.Transactions
 
             Sender = from;
             Fee = flatFee;
-            FirstValid = lastRound;
-            LastValid = lastRound + 1000;
+            FirstValid = lastRound ?? 0;
+            LastValid = (lastRound??0) + 1000;
             Note = notes;
-            Amount = amount;
+            Amount = amount??0;
             Receiver = to;
-            GenesisID = genesisId;
+            GenesisId = genesisId;
 
             if (String.IsNullOrWhiteSpace(genesishashb64)) {
                 GenesisHash = null;
@@ -87,6 +88,22 @@ namespace Algorand.Algod.Model.Transactions
             tx.SetFeeByFeePerByte( suggestedFeePerByte);
             return tx;
         }
+
+#if UNITY
+        [field: SerializeField]
+        [Tooltip(@"")]
+        [field: InspectorName(@"ClosingAmount")]
+        [JsonIgnore]
+        public ulong? ClosingAmount { get; internal set; }
+#else
+    
+        [JsonIgnore]
+        public ulong? ClosingAmount { get; internal set; }
+#endif
+        [JsonProperty(PropertyName = "amount")]
+        internal ulong? amount { set { Amount = value ?? 0; } }
+
+
 
     }
 }

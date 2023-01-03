@@ -1,16 +1,35 @@
-﻿
-using JsonSubTypes;
-using Newtonsoft.Json;
-using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {
 
-   
-    public abstract partial class AssetMovementsTransaction : Transaction
-    {
-        [JsonProperty(PropertyName = "xaid", Required = Required.Always)]
-        [DefaultValue(0)]
-        public ulong? XferAsset { get; set; } = 0;
-    }
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
+
+#if UNITY
+[System.Serializable]
+#endif
+public partial class AssetMovementsTransaction : Transaction{
+
+    
+
+
+
+    [Newtonsoft.Json.JsonProperty("xaid", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"XferAsset")]
+    public ulong XferAsset {get;set;}
+#else
+    public ulong XferAsset {get;set;}
+#endif
+
+
+    
+}
+
+
 }
