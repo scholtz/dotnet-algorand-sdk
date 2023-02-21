@@ -59,6 +59,11 @@ namespace Algorand.Utils
             return bytes;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
         public static byte[] EncodeToMsgPackNoOrder(object o)
         {
             MemoryStream memoryStream = new MemoryStream();

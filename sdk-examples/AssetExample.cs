@@ -19,6 +19,11 @@ namespace sdk_examples
         // Utility function for sending a raw signed transaction to the network        
         public static async Task Main(params string[] args) //throws Exception
         {
+
+            /******************
+             * Initiate a connection.....
+             *********************/
+
             string ALGOD_API_ADDR = "http://localhost:4001/";
             string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
             string SRC_ACCOUNT = "move sell junior vast verb stove bracket filter place child fame bone story science miss injury put cancel already session cheap furnace void able minimum";
