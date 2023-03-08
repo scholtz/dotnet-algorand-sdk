@@ -34,15 +34,28 @@ namespace Algorand
         public TEALProgram(byte[] program)
         {
             if (program == null) return;
+            
+            this.program = JavaHelper<byte>.ArrayCopyOf(program, program.Length);
+        }
+
+        /// <summary>
+        /// Validate the TEAL Program against known langspec
+        /// </summary>
+        /// <param name="errorMessage">Error message if error</param>
+        /// <returns>false</returns>
+        public bool Validate(out string errorMessage)
+        {
+            errorMessage = "";
             try
             {
                 Logic.ReadProgram(program, null);
+                return true;
             }
             catch (Exception e)
             {
-                throw new ArgumentException(e.Message);
+                errorMessage=e.Message;
             }
-            this.program = JavaHelper<byte>.ArrayCopyOf(program, program.Length);
+            return false;
         }
 
         /// <summary>
