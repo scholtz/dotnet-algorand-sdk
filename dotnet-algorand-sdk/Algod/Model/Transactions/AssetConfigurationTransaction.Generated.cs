@@ -1,12 +1,21 @@
-﻿using JsonSubTypes;
-using Newtonsoft.Json;
-
 
 namespace Algorand.Algod.Model.Transactions
 {
-  
-    public abstract partial class AssetConfigurationTransaction : Transaction
-    {
 
-    }
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
+
+#if UNITY
+[System.Serializable]
+#endif
+public partial class AssetConfigurationTransaction : Transaction{
+
+   
+
+    
+}
+
+
 }

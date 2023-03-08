@@ -1,21 +1,60 @@
-﻿
-
-using Newtonsoft.Json;
-using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    public partial class AssetFreezeTransaction : Transaction
-    {
-     
 
-        [JsonProperty(PropertyName = "fadd", Required = Required.Always)]
-        public Address FreezeTarget { get; set; }
-        [JsonProperty(PropertyName = "faid", Required = Required.Always)]
-        [DefaultValue(0)]
-        public ulong? AssetFreezeID { get; set; } = 0;
-        [JsonProperty(PropertyName = "afrz", Required=Required.Default)]
-        [DefaultValue(false)]
-        public bool FreezeState { get; set; } = false;
-    }
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
+
+#if UNITY
+[System.Serializable]
+#endif
+public partial class AssetFreezeTransaction : Transaction{
+
+    [Newtonsoft.Json.JsonProperty("afrz", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"FreezeState")]
+    public bool FreezeState {get;set;}
+#else
+    public bool? FreezeState {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("fadd", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"FreezeTarget")]
+    public Algorand.Address FreezeTarget {get;set;}
+#else
+    public Algorand.Address FreezeTarget {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("faid", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"AssetFreezeId")]
+    public ulong AssetFreezeId {get;set;}
+#else
+    public ulong AssetFreezeId {get;set;}
+#endif
+
+
+
+  
+
+
+    
+}
+
+
 }

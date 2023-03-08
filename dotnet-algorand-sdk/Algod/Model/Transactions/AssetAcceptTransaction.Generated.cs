@@ -1,16 +1,31 @@
-﻿using Newtonsoft.Json;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    public partial class AssetAcceptTransaction : AssetMovementsTransaction
-    {
 
-        /// <summary>
-        /// The receiver of the transfer.
-        /// </summary>
-        [JsonProperty(PropertyName = "arcv", Required = Required.Always)]
-        public Address AssetReceiver { get; set; }
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
+
+#if UNITY
+[System.Serializable]
+#endif
+public partial class AssetAcceptTransaction : AssetMovementsTransaction{
+
+    [Newtonsoft.Json.JsonProperty("arcv", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"AssetReceiver")]
+    public Algorand.Address AssetReceiver {get;set;}
+#else
+    public Algorand.Address AssetReceiver {get;set;}
+#endif
 
 
-    }
+    
+}
+
+
 }

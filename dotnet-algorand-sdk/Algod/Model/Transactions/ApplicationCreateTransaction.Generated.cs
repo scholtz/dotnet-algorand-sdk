@@ -1,40 +1,82 @@
-﻿
-
-
-using Algorand.Utils;
-using Newtonsoft.Json;
-using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {
 
-    public partial  class ApplicationCreateTransaction : ApplicationNoopTransaction
-    {
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
+
+#if UNITY
+[System.Serializable]
+#endif
+public partial class ApplicationCreateTransaction : ApplicationNoopTransaction{
+
+    [Newtonsoft.Json.JsonProperty("apap", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"ApprovalProgram")]
+    public Algorand.TEALProgram ApprovalProgram {get;set;}
+#else
+    public Algorand.TEALProgram ApprovalProgram {get;set;}
+#endif
 
 
-        [JsonProperty(PropertyName = "apap", Required = Required.Always)]
-        [JsonConverter(typeof(BytesConverter))]
-        public TEALProgram ApprovalProgram { get; set; } = null;
 
-        [JsonProperty(PropertyName = "apsu", Required = Required.Always)]
-        [JsonConverter(typeof(BytesConverter))]
-        public TEALProgram ClearStateProgram { get; set; } = null;
-
-        [JsonProperty(PropertyName = "apgs",Required =Required.Default)]
-        public StateSchema GlobalStateSchema { get; set; }
-
-        [JsonProperty(PropertyName = "apls", Required = Required.Default)]
-        public StateSchema LocalStateSchema { get; set; }
-
-        [JsonProperty(PropertyName = "apep")]
-        [DefaultValue(0)]
-        public ulong? ExtraProgramPages { get; set; } = 0;
-
-        [JsonIgnore]
-        public ulong? ApplicationIndex { get; internal set; }
+    [Newtonsoft.Json.JsonProperty("apep", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"ExtraProgramPages")]
+    public ulong ExtraProgramPages {get;set;}
+#else
+    public ulong? ExtraProgramPages {get;set;}
+#endif
 
 
-      
 
-    }
+    [Newtonsoft.Json.JsonProperty("apgs", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"GlobalStateSchema")]
+    public StateSchema GlobalStateSchema {get;set;}
+#else
+    public StateSchema GlobalStateSchema {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("apls", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"LocalStateSchema")]
+    public StateSchema LocalStateSchema {get;set;}
+#else
+    public StateSchema LocalStateSchema {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("apsu", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"ClearStateProgram")]
+    public Algorand.TEALProgram ClearStateProgram {get;set;}
+#else
+    public Algorand.TEALProgram ClearStateProgram {get;set;}
+#endif
+
+
+    
+}
+
+
 }

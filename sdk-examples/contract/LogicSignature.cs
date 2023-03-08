@@ -30,6 +30,7 @@ namespace sdk_examples.contract
 
 
             LogicsigSignature lsig = new LogicsigSignature(program, null);
+            
 
             // sign the logic signaure with an account sk
 

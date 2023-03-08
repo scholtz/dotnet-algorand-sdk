@@ -1,25 +1,34 @@
-﻿
 
+namespace Algorand.Algod.Model.Transactions
+{
 
-using JsonSubTypes;
-using Newtonsoft.Json;
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
 
-using System.ComponentModel;
+#if UNITY
+[System.Serializable]
+#endif
+public partial class ApplicationClearStateTransaction : ApplicationCallTransaction{
 
-namespace Algorand.Algod.Model.Transactions { 
-
-
-    public partial class ApplicationClearStateTransaction : ApplicationCallTransaction
-    {
-
-        [JsonProperty(PropertyName = "apid")]
-        [DefaultValue(0)]
-        public ulong ApplicationId { get; set; } = 0;
+  
 
 
 
-        
+    [Newtonsoft.Json.JsonProperty("apid", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"ApplicationId")]
+    public ulong ApplicationId {get;set;}
+#else
+    public ulong? ApplicationId {get;set;}
+#endif
+
+
     
+}
 
-    }
+
 }

@@ -14,7 +14,7 @@ namespace Algorand.Algod.Model.Transactions
 
         public bool ShouldSerializeGlobalStateSchema()
         {
-            return GlobalStateSchema!=null && ( GlobalStateSchema.NumByteSlice != 0 || GlobalStateSchema.NumUint != 0);
+            return GlobalStateSchema!=null && (GlobalStateSchema.NumByteSlice != 0 || GlobalStateSchema.NumUint != 0);
         }
 
         public bool ShouldSerializeLocalStateSchema()

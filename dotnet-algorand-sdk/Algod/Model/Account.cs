@@ -15,6 +15,7 @@ namespace Algorand.Algod.Model
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using UnityEngine;
     using System = global::System;
     /// <summary>Account information at a given round.
     /// <br/>
@@ -43,6 +44,14 @@ namespace Algorand.Algod.Model
         /// <br/>* lsig</summary>
         [Newtonsoft.Json.JsonProperty("sig-type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+#if UNITY
+        [field: SerializeField]
+        [Tooltip(@"Indicates what type of signature is used by this account, must be one of:
+* sig
+* msig
+* lsig")]
+        [field: InspectorName(@"SigType")]
+#endif
         public AccountSigType? SigType { get; set; }
 
 

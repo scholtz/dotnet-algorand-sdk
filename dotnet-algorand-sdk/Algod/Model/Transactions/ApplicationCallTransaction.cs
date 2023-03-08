@@ -15,5 +15,24 @@ namespace Algorand.Algod.Model.Transactions
     {
         [JsonProperty(PropertyName = "type")]
         public string type => "appl";
+
+        public bool ShouldSerializeAccounts() { return Accounts?.Count > 0; }
+        public bool ShouldSerializeApplicationargs() { return ApplicationArgs?.Count > 0; }
+        public bool ShouldSerializeForeignapps() { return ForeignApps?.Count > 0; }
+        public bool ShouldSerializeForeignassets() { return ForeignAssets?.Count > 0; }
+
+        [JsonIgnore]
+        public ICollection<IReturnableTransaction> InnerTxns { get; internal set; }
+
+        [JsonIgnore]
+        public ICollection<byte[]> Logs { get; internal set; }
+
+        [JsonIgnore]
+        public StateDelta GlobalStateDelta { get; internal set; }
+        [JsonIgnore]
+        public ICollection<AccountStateDelta> LocalStateDelta { get; internal set; }
+
     }
+
+
 }

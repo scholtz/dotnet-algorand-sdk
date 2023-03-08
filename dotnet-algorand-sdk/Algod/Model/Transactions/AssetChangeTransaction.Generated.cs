@@ -1,16 +1,31 @@
-﻿using JsonSubTypes;
-using Newtonsoft.Json;
-using System.ComponentModel;
-
 
 namespace Algorand.Algod.Model.Transactions
 {
-  
-    public abstract partial class AssetChangeTransaction : AssetConfigurationTransaction
-    { 
-        [JsonProperty(PropertyName = "caid", Required = Required.Always)]
-        [DefaultValue(0)]
-        public ulong AssetIndex { get; set; } = 0;
 
-    }
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
+
+#if UNITY
+[System.Serializable]
+#endif
+public partial class AssetChangeTransaction : AssetConfigurationTransaction{
+
+    [Newtonsoft.Json.JsonProperty("caid", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"AssetIndex")]
+    public ulong AssetIndex {get;set;}
+#else
+    public ulong AssetIndex {get;set;}
+#endif
+
+
+    
+}
+
+
 }

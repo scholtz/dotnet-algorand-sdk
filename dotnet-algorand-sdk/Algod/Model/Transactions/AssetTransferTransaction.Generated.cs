@@ -1,48 +1,56 @@
-﻿
-using JsonSubTypes;
-using Newtonsoft.Json;
-using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {
 
-  
-    public partial class AssetTransferTransaction : AssetMovementsTransaction
-    {
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
 
+#if UNITY
+[System.Serializable]
+#endif
+public partial class AssetTransferTransaction : AssetMovementsTransaction{
 
-        /// <summary>
-        /// The amount of asset to transfer. A zero amount transferred to self
-        /// allocates that asset in the account's Assets map.
-        /// </summary>
-        [JsonProperty(PropertyName = "aamt", Required = Required.Always)]
-        [DefaultValue(0)]
-        public ulong AssetAmount { get; set; } = 0;
-
-
-
-        /// <summary>
-        /// The receiver of the transfer.
-        /// </summary>
-        [JsonProperty(PropertyName = "arcv", Required = Required.Always)]
-        public Address AssetReceiver { get; set; }
-
-        /// <summary>
-        /// Indicates that the asset should be removed from the account's Assets map,
-        /// and specifies where the remaining asset holdings should be transferred.
-        /// It's always valid to transfer remaining asset holdings to the AssetID account.
-        /// </summary>
-        [JsonProperty(PropertyName = "aclose")]
-        public Address AssetCloseTo { get; set; }
+    [Newtonsoft.Json.JsonProperty("aamt", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"AssetAmount")]
+    public ulong AssetAmount {get;set;}
+#else
+    public ulong AssetAmount {get;set;}
+#endif
 
 
 
-        [JsonIgnore]
-        public ulong? AssetClosingAmount { get; internal set; }
+    [Newtonsoft.Json.JsonProperty("aclose", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"AssetCloseTo")]
+    public Algorand.Address AssetCloseTo {get;set;}
+#else
+    public Algorand.Address AssetCloseTo {get;set;}
+#endif
 
 
 
+    [Newtonsoft.Json.JsonProperty("arcv", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"AssetReceiver")]
+    public Algorand.Address AssetReceiver {get;set;}
+#else
+    public Algorand.Address AssetReceiver {get;set;}
+#endif
 
 
-    }
+    
+}
+
+
 }
