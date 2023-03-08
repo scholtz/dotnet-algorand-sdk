@@ -1,4 +1,4 @@
-:root, body.dark-theme {
+:root, .dark-theme {
   --color-foreground: #ccd5dc;
   --color-navbar: #66666d;
   --color-breadcrumb: #999;
@@ -9,9 +9,10 @@
   --color-background-dark: #1e1e1e;
   --color-background-table-alt: #212123;
   --color-background-quote: #69696e;
+  color-scheme: dark;
 }
 
-body.light-theme {
+.light-theme {
   --color-foreground: #171717;
   --color-breadcrumb: #4a4a4a;
   --color-toc-hover: #4c4c4c;
@@ -19,6 +20,7 @@ body.light-theme {
   --color-background-subnav: #f5f5f5;
   --color-background-dark: #ddd;
   --color-background-table-alt: #f9f9f9;
+  color-scheme: light;
 }
 
 body {
@@ -444,16 +446,13 @@ input:checked + .slider:before {
 
 @media (min-width: 1600px) {
   .container {
-    width: 100%;
+    width: 90%;
   }
-  .sidefilter {
-    width: 18%;
-  }
-  .sidetoc {
-    width: 18%;
+  .sidefilter, .sidetoc {
+    width: 350px;
   }
   .article.grid-right {
-    margin-left: 19%;
+    margin-left: 350px;
   }
   .sideaffix {
     width: 11.5%;

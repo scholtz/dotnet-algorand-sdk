@@ -1,4 +1,4 @@
-const sw = document.getElementById("switch-style"), sw_mobile = document.getElementById("switch-style-m"), b = document.body;
+const sw = document.getElementById("switch-style"), sw_mobile = document.getElementById("switch-style-m"), b = document.documentElement;
 if (b) {
   function toggleTheme(target, dark) {
     target.classList.toggle("dark-theme", dark)
