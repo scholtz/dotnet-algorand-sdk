@@ -5,16 +5,12 @@ namespace Algorand.Algod.Model.Transactions
 using System = global::System;
 #if UNITY
 using UnityEngine;
-    using Newtonsoft.Json;
 #endif
 
 #if UNITY
 [System.Serializable]
 #endif
 public partial class PaymentTransaction : Transaction{
-
-
- 
 
     [Newtonsoft.Json.JsonProperty("amt", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
@@ -52,7 +48,15 @@ public partial class PaymentTransaction : Transaction{
 
 
 
-  
+    [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"Type")]
+    public string Type {get;set;}
+#else
+    public string Type {get;set;}
+#endif
 
 
     

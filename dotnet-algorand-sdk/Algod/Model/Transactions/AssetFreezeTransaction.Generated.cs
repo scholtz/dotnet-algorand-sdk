@@ -49,10 +49,6 @@ public partial class AssetFreezeTransaction : Transaction{
 #endif
 
 
-
-  
-
-
     
 }
 

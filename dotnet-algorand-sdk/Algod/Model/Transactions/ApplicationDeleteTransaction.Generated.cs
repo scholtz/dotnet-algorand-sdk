@@ -12,8 +12,6 @@ using UnityEngine;
 #endif
 public partial class ApplicationDeleteTransaction : ApplicationCallTransaction{
 
-  
-
     [Newtonsoft.Json.JsonProperty("apid", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
     [field:SerializeField]

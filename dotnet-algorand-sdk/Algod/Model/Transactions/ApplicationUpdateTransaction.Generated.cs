@@ -12,9 +12,6 @@ using UnityEngine;
 #endif
 public partial class ApplicationUpdateTransaction : ApplicationCallTransaction{
 
-   
-
-
     [Newtonsoft.Json.JsonProperty("apap", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
     [field:SerializeField]

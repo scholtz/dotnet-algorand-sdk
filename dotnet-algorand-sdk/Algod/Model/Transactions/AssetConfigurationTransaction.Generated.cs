@@ -11,9 +11,6 @@ using UnityEngine;
 [System.Serializable]
 #endif
 public partial class AssetConfigurationTransaction : Transaction{
-
-   
-
     
 }
 

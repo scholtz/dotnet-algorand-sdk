@@ -84,58 +84,7 @@ public partial class Transaction{
 
 
 
-    
-#if UNITY
-    [field:SerializeField]
-    [Tooltip(@"")]
-    [field:InspectorName(@"Lease")]
-        [Newtonsoft.Json.JsonIgnore]
-        private byte[] _lease {get;set;}
-#endif
-    [Newtonsoft.Json.JsonProperty("lx", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public byte[] Lease
-    {
-        get
-        {
-            return _lease;
-        }
-        set
-        {
-            if (value != null && value.Length > 0)
-                _lease = value;
-        }
-    }
-
-
-
-
-     
-#if UNITY
-    [field:SerializeField]
-    [Tooltip(@"")]
-    [field:InspectorName(@"Note")]
-    [Newtonsoft.Json.JsonIgnore]
-    private byte[] _note {get;set;}
-#endif
-        [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public byte[] Note
-    {
-        get
-        {
-            return _note;
-        }
-        set
-        {
-            if (value != null && value.Length > 0)
-                _note = value;
-        }
-    }
-
-
-
-
-
-        [Newtonsoft.Json.JsonProperty("rekey", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+    [Newtonsoft.Json.JsonProperty("rekey", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
     [field:SerializeField]
     [Tooltip(@"")]

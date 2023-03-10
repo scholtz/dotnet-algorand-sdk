@@ -12,10 +12,6 @@ using UnityEngine;
 #endif
 public partial class AssetMovementsTransaction : Transaction{
 
-    
-
-
-
     [Newtonsoft.Json.JsonProperty("xaid", Required = Newtonsoft.Json.Required.Always)]
     [System.ComponentModel.DataAnnotations.Required]
 #if UNITY

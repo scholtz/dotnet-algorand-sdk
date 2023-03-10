@@ -219,8 +219,6 @@ The requirement grows based on asset and application usage.")]
 
 
 
-
-
     [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
     [System.ComponentModel.DataAnnotations.Required]
 #if UNITY

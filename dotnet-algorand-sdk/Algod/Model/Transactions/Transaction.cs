@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using UnityEngine;
 
 namespace Algorand.Algod.Model.Transactions
@@ -37,9 +38,55 @@ namespace Algorand.Algod.Model.Transactions
 
         public bool ShouldSerializeLease() { return Lease?.Length > 0; }
 
-    
-
+        private byte[] _lease { get; set; }
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"Lease")]
+        [Newtonsoft.Json.JsonIgnore]
        
+#endif
+        [Newtonsoft.Json.JsonProperty("lx", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public byte[] Lease
+        {
+            get
+            {
+                return _lease;
+            }
+            set
+            {
+                if (value != null && value.Length > 0)
+                    _lease = value;
+            }
+        }
+
+
+
+
+        private byte[] _note { get; set; }
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"Note")]
+    [Newtonsoft.Json.JsonIgnore]
+  
+#endif
+        [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public byte[] Note
+        {
+            get
+            {
+                return _note;
+            }
+            set
+            {
+                if (value != null && value.Length > 0)
+                    _note = value;
+            }
+        }
+
+
+
 
 #if UNITY
         [field: SerializeField]
@@ -70,7 +117,7 @@ namespace Algorand.Algod.Model.Transactions
         [JsonIgnore]
         public ulong CloseRewards { get; internal set; }
 #else
-         [JsonIgnore]
+        [JsonIgnore]
         public ulong? ConfirmedRound { get; internal set; }
 
          [JsonIgnore]

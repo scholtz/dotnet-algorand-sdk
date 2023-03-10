@@ -51,10 +51,6 @@ public partial class ApplicationCallTransaction : Transaction{
 #else
     public System.Collections.Generic.ICollection<ulong> ForeignApps {get;set;} = new System.Collections.ObjectModel.Collection<ulong>();
 #endif
-
-    
-
-
     
 }
 
