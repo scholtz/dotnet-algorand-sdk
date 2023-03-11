@@ -15,7 +15,10 @@ namespace Algorand.Algod.Model
     using System;
     using System.Collections.Generic;
     using System.Text;
+#if UNITY
     using UnityEngine;
+#endif
+
     using System = global::System;
     /// <summary>Account information at a given round.
     /// <br/>

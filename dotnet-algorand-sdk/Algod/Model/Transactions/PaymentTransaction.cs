@@ -5,7 +5,9 @@ using System;
 using System.ComponentModel;
 using System.Text;
 using System.Runtime.CompilerServices;
+#if UNITY
 using UnityEngine;
+#endif
 
 namespace Algorand.Algod.Model.Transactions
 {

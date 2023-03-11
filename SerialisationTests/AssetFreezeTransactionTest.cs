@@ -13,7 +13,7 @@ namespace SerialisationTests
         {
             string ADDR = "KV2XGKMXGYJ6PWYQA5374BYIQBL3ONRMSIARPCFCJEAMAHQEVYPB7PL3KU";
 
-            AssetFreezeTransaction txn = new AssetFreezeTransaction() { AssetFreezeID = 123, FreezeState = false, FreezeTarget = new Algorand.Address(ADDR) };
+            AssetFreezeTransaction txn = new AssetFreezeTransaction() { AssetFreezeId = 123, FreezeState = false, FreezeTarget = new Algorand.Address(ADDR) };
             
 
             var txnJson = Encoder.EncodeToJson(txn);

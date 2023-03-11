@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel;
+#if UNITY
 using UnityEngine;
+#endif
 
 namespace Algorand.Algod.Model.Transactions
 {

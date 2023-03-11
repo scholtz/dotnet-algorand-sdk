@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Target Name="ILRepacker" AfterTargets="Build" Condition="'$(Configuration)' == 'Unity'">
+	<Target Name="ILRepacker" AfterTargets="CopyFilesToOutputDirectory" Condition="'$(Configuration)' == 'Unity' Or '$(Configuration)' == 'Unity_debug'">
 		<ItemGroup>
 			<InputAssemblies Include="$(TargetPath)" />
 			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'Newtonsoft.Json'" />
@@ -20,5 +20,6 @@
 				  OutputFile="$(TargetPath)"
 				  Parallel="true"
 				  TargetKind="SameAsPrimaryAssembly" />
+		
 	</Target>
 </Project>

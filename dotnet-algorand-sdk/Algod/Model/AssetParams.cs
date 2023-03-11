@@ -62,16 +62,20 @@ using UnityEngine;
         [Newtonsoft.Json.JsonProperty("df", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [DefaultValue(false)]
 #if UNITY
-    [field:SerializeField]
-    [Tooltip(@"DefaultFrozen")]
-    [field:InspectorName(@"DefaultFrozen")]  
-    public bool DefaultFrozen { get; set; }
-#else
-        public bool? DefaultFrozen { get; set; }
-#endif
+        [field:SerializeField]
+        [Tooltip(@"DefaultFrozen")]
+        [field:InspectorName(@"DefaultFrozen")]  
+        public bool DefaultFrozen { get; set; }
         /// <summary>\[df\] Whether holdings of this asset are frozen by default.</summary>
         [Newtonsoft.Json.JsonProperty("default-frozen", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        private bool defaultFrozen { set { DefaultFrozen = value; } }
+#else
+        public bool? DefaultFrozen { get; set; }
+         /// <summary>\[df\] Whether holdings of this asset are frozen by default.</summary>
+        [Newtonsoft.Json.JsonProperty("default-frozen", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private bool? defaultFrozen { set { DefaultFrozen = value; } }
+#endif
+
 
         /// <summary>\[f\] Address of account used to freeze holdings of this asset.  If empty, freezing is not permitted.</summary>
         [Newtonsoft.Json.JsonProperty("f", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -143,16 +147,20 @@ using UnityEngine;
         [Newtonsoft.Json.JsonProperty("t", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [DefaultValue(0)]
 #if UNITY
-    [field:SerializeField]
-    [Tooltip(@"Total amount. ")]
-    [field:InspectorName(@"Total")]  
-    public ulong Total { get;  set; }
-#else
-        public ulong? Total { get;  set; }
-#endif
+        [field:SerializeField]
+        [Tooltip(@"Total amount. ")]
+        [field:InspectorName(@"Total")]  
+        public ulong Total { get;  set; }
         /// <summary>\[t\] The total number of units of this asset.</summary>
         [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        private ulong total { set { Total = value; } }
+#else
+        public ulong? Total { get;  set; }
+         /// <summary>\[t\] The total number of units of this asset.</summary>
+        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         private ulong? total { set { Total = value; } }
+#endif
+
 
 
         /// <summary>\[un\] Name of a unit of this asset, as supplied by the creator. Included only when the name of a unit of this asset is composed of printable utf-8 characters.</summary>

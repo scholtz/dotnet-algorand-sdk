@@ -8,7 +8,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+#if UNITY
 using UnityEngine;
+#endif
 
 namespace Algorand.Algod.Model.Transactions
 {
