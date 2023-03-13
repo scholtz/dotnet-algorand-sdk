@@ -14,6 +14,7 @@
 
 namespace Algorand.KMD
 {
+    using System;
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v12.0.0.0))")]
@@ -24,7 +25,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>The current swagger spec</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> Swagger_jsonAsync();
+        System.Threading.Tasks.Task<string> SwaggerHandlerAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -32,14 +33,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>The current swagger spec</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> Swagger_jsonAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<string> SwaggerHandlerAsync(System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Generate a key
         /// </summary>
         /// <returns>Response to `POST /v1/key`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTKeyResponse> KeyPostAsync(GenerateKeyRequest generate_Key_Request);
+        System.Threading.Tasks.Task<APIV1POSTKeyResponse> GenerateKeyAsync(GenerateKeyRequest generate_Key_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -47,14 +48,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTKeyResponse> KeyPostAsync(GenerateKeyRequest generate_Key_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTKeyResponse> GenerateKeyAsync(GenerateKeyRequest generate_Key_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Delete a key
         /// </summary>
         /// <returns>Response to `DELETE /v1/key`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1DELETEKeyResponse> KeyDeleteAsync(DeleteKeyRequest delete_Key_Request);
+        System.Threading.Tasks.Task<APIV1DELETEKeyResponse> DeleteKeyAsync(DeleteKeyRequest delete_Key_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -62,14 +63,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `DELETE /v1/key`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1DELETEKeyResponse> KeyDeleteAsync(DeleteKeyRequest delete_Key_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1DELETEKeyResponse> DeleteKeyAsync(DeleteKeyRequest delete_Key_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Export a key
         /// </summary>
         /// <returns>Response to `POST /v1/key/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTKeyExportResponse> ExportPostAsync(ExportKeyRequest export_Key_Request);
+        System.Threading.Tasks.Task<APIV1POSTKeyExportResponse> ExportKeyAsync(ExportKeyRequest export_Key_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -77,14 +78,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTKeyExportResponse> ExportPostAsync(ExportKeyRequest export_Key_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTKeyExportResponse> ExportKeyAsync(ExportKeyRequest export_Key_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Import a key
         /// </summary>
         /// <returns>Response to `POST /v1/key/import`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTKeyImportResponse> ImportPostAsync(ImportKeyRequest import_Key_Request);
+        System.Threading.Tasks.Task<APIV1POSTKeyImportResponse> ImportKeyAsync(ImportKeyRequest import_Key_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -92,14 +93,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key/import`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTKeyImportResponse> ImportPostAsync(ImportKeyRequest import_Key_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTKeyImportResponse> ImportKeyAsync(ImportKeyRequest import_Key_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// List keys in wallet
         /// </summary>
         /// <returns>Response to `POST /v1/key/list`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTKeyListResponse> ListPostAsync(ListKeysRequest list_Keys_Request);
+        System.Threading.Tasks.Task<APIV1POSTKeyListResponse> ListKeysInWalletAsync(ListKeysRequest list_Keys_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -107,14 +108,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key/list`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTKeyListResponse> ListPostAsync(ListKeysRequest list_Keys_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTKeyListResponse> ListKeysInWalletAsync(ListKeysRequest list_Keys_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Export the master derivation key from a wallet
         /// </summary>
         /// <returns>Response to `POST /v1/master-key/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMasterKeyExportResponse> ExportPostAsync(ExportMasterKeyRequest export_Master_Key_Request);
+        System.Threading.Tasks.Task<APIV1POSTMasterKeyExportResponse> ExportMasterKeyAsync(ExportMasterKeyRequest export_Master_Key_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -122,14 +123,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/master-key/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMasterKeyExportResponse> ExportPostAsync(ExportMasterKeyRequest export_Master_Key_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTMasterKeyExportResponse> ExportMasterKeyAsync(ExportMasterKeyRequest export_Master_Key_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Delete a multisig
         /// </summary>
         /// <returns>Response to POST /v1/multisig/delete</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1DELETEMultisigResponse> MultisigAsync(DeleteMultisigRequest delete_Multisig_Request);
+        System.Threading.Tasks.Task<APIV1DELETEMultisigResponse> DeleteMultisigAsync(DeleteMultisigRequest delete_Multisig_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -137,14 +138,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to POST /v1/multisig/delete</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1DELETEMultisigResponse> MultisigAsync(DeleteMultisigRequest delete_Multisig_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1DELETEMultisigResponse> DeleteMultisigAsync(DeleteMultisigRequest delete_Multisig_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Export multisig address metadata
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMultisigExportResponse> ExportPostAsync(ExportMultisigRequest export_Multisig_Request);
+        System.Threading.Tasks.Task<APIV1POSTMultisigExportResponse> ExportMultisigAsync(ExportMultisigRequest export_Multisig_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -152,14 +153,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMultisigExportResponse> ExportPostAsync(ExportMultisigRequest export_Multisig_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTMultisigExportResponse> ExportMultisigAsync(ExportMultisigRequest export_Multisig_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Import a multisig account
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/import`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMultisigImportResponse> ImportPostAsync(ImportMultisigRequest import_Multisig_Request);
+        System.Threading.Tasks.Task<APIV1POSTMultisigImportResponse> ImportMultisigAsync(ImportMultisigRequest import_Multisig_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -167,14 +168,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/import`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMultisigImportResponse> ImportPostAsync(ImportMultisigRequest import_Multisig_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTMultisigImportResponse> ImportMultisigAsync(ImportMultisigRequest import_Multisig_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// List multisig accounts
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/list`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMultisigListResponse> ListPostAsync(ListMultisigRequest list_Multisig_Request);
+        System.Threading.Tasks.Task<APIV1POSTMultisigListResponse> ListMultisgAsync(ListMultisigRequest list_Multisig_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -182,14 +183,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/list`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMultisigListResponse> ListPostAsync(ListMultisigRequest list_Multisig_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTMultisigListResponse> ListMultisgAsync(ListMultisigRequest list_Multisig_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Sign a multisig transaction
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMultisigTransactionSignResponse> SignPostAsync(SignMultisigRequest sign_Multisig_Transaction_Request);
+        System.Threading.Tasks.Task<APIV1POSTMultisigTransactionSignResponse> SignMultisigTransactionAsync(SignMultisigRequest sign_Multisig_Transaction_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -197,14 +198,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMultisigTransactionSignResponse> SignPostAsync(SignMultisigRequest sign_Multisig_Transaction_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTMultisigTransactionSignResponse> SignMultisigTransactionAsync(SignMultisigRequest sign_Multisig_Transaction_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Sign a program for a multisig account
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/signdata`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMultisigProgramSignResponse> SignprogramAsync(SignProgramMultisigRequest sign_Multisig_Program_Request);
+        System.Threading.Tasks.Task<APIV1POSTMultisigProgramSignResponse> SignMultisigProgramAsync(SignProgramMultisigRequest sign_Multisig_Program_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -212,14 +213,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/signdata`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTMultisigProgramSignResponse> SignprogramAsync(SignProgramMultisigRequest sign_Multisig_Program_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTMultisigProgramSignResponse> SignMultisigProgramAsync(SignProgramMultisigRequest sign_Multisig_Program_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Sign program
         /// </summary>
         /// <returns>Response to `POST /v1/data/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTProgramSignResponse> SignPostAsync(SignProgramRequest sign_Program_Request);
+        System.Threading.Tasks.Task<APIV1POSTProgramSignResponse> SignProgramAsync(SignProgramRequest sign_Program_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -227,14 +228,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/data/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTProgramSignResponse> SignPostAsync(SignProgramRequest sign_Program_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTProgramSignResponse> SignProgramAsync(SignProgramRequest sign_Program_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Sign a transaction
         /// </summary>
         /// <returns>Response to `POST /v1/transaction/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTTransactionSignResponse> SignPostAsync(SignTransactionRequest sign_Transaction_Request);
+        System.Threading.Tasks.Task<APIV1POSTTransactionSignResponse> SignTransactionAsync(SignTransactionRequest sign_Transaction_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -242,14 +243,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/transaction/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTTransactionSignResponse> SignPostAsync(SignTransactionRequest sign_Transaction_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTTransactionSignResponse> SignTransactionAsync(SignTransactionRequest sign_Transaction_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Create a wallet
         /// </summary>
         /// <returns>Response to `POST /v1/wallet`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletResponse> WalletAsync(CreateWalletRequest create_Wallet_Request);
+        System.Threading.Tasks.Task<APIV1POSTWalletResponse> CreateWalletAsync(CreateWalletRequest create_Wallet_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -257,14 +258,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletResponse> WalletAsync(CreateWalletRequest create_Wallet_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTWalletResponse> CreateWalletAsync(CreateWalletRequest create_Wallet_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Get wallet info
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/info`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletInfoResponse> InfoAsync(WalletInfoRequest get_Wallet_Info_Request);
+        System.Threading.Tasks.Task<APIV1POSTWalletInfoResponse> GetWalletInfoAsync(WalletInfoRequest get_Wallet_Info_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -272,14 +273,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/info`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletInfoResponse> InfoAsync(WalletInfoRequest get_Wallet_Info_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTWalletInfoResponse> GetWalletInfoAsync(WalletInfoRequest get_Wallet_Info_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Initialize a wallet handle token
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/init`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletInitResponse> InitAsync(InitWalletHandleTokenRequest initialize_Wallet_Handle_Token_Request);
+        System.Threading.Tasks.Task<APIV1POSTWalletInitResponse> InitWalletHandleTokenAsync(InitWalletHandleTokenRequest initialize_Wallet_Handle_Token_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -287,14 +288,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/init`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletInitResponse> InitAsync(InitWalletHandleTokenRequest initialize_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTWalletInitResponse> InitWalletHandleTokenAsync(InitWalletHandleTokenRequest initialize_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Release a wallet handle token
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/release`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletReleaseResponse> ReleaseAsync(ReleaseWalletHandleTokenRequest release_Wallet_Handle_Token_Request);
+        System.Threading.Tasks.Task<APIV1POSTWalletReleaseResponse> ReleaseWalletHandleTokenAsync(ReleaseWalletHandleTokenRequest release_Wallet_Handle_Token_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -302,14 +303,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/release`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletReleaseResponse> ReleaseAsync(ReleaseWalletHandleTokenRequest release_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTWalletReleaseResponse> ReleaseWalletHandleTokenAsync(ReleaseWalletHandleTokenRequest release_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Rename a wallet
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/rename`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletRenameResponse> RenameAsync(RenameWalletRequest rename_Wallet_Request);
+        System.Threading.Tasks.Task<APIV1POSTWalletRenameResponse> RenameWalletAsync(RenameWalletRequest rename_Wallet_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -317,14 +318,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/rename`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletRenameResponse> RenameAsync(RenameWalletRequest rename_Wallet_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTWalletRenameResponse> RenameWalletAsync(RenameWalletRequest rename_Wallet_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Renew a wallet handle token
         /// </summary>
         /// <returns>Response `POST /v1/wallet/renew`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletRenewResponse> RenewAsync(RenewWalletHandleTokenRequest renew_Wallet_Handle_Token_Request);
+        System.Threading.Tasks.Task<APIV1POSTWalletRenewResponse> RenewWalletHandleTokenAsync(RenewWalletHandleTokenRequest renew_Wallet_Handle_Token_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -332,14 +333,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response `POST /v1/wallet/renew`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1POSTWalletRenewResponse> RenewAsync(RenewWalletHandleTokenRequest renew_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1POSTWalletRenewResponse> RenewWalletHandleTokenAsync(RenewWalletHandleTokenRequest renew_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// List wallets
         /// </summary>
         /// <returns>Response to `GET /v1/wallets`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1GETWalletsResponse> WalletsAsync(ListWalletsRequest list_Wallet_Request);
+        System.Threading.Tasks.Task<APIV1GETWalletsResponse> ListWalletsAsync(object list_Wallet_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -347,14 +348,14 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `GET /v1/wallets`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIV1GETWalletsResponse> WalletsAsync(ListWalletsRequest list_Wallet_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIV1GETWalletsResponse> ListWalletsAsync(object list_Wallet_Request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Retrieves the current version
         /// </summary>
         /// <returns>Response to `GET /versions`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<VersionsResponse> VersionsAsync(VersionsRequest versions_Request);
+        System.Threading.Tasks.Task<VersionsResponse> GetVersionAsync(object versions_Request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -362,7 +363,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `GET /versions`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<VersionsResponse> VersionsAsync(VersionsRequest versions_Request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<VersionsResponse> GetVersionAsync(object versions_Request, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -405,9 +406,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>The current swagger spec</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<string> Swagger_jsonAsync()
+        public virtual System.Threading.Tasks.Task<string> SwaggerHandlerAsync()
         {
-            return Swagger_jsonAsync(System.Threading.CancellationToken.None);
+            return SwaggerHandlerAsync(System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -416,7 +417,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>The current swagger spec</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<string> Swagger_jsonAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<string> SwaggerHandlerAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/swagger.json");
@@ -485,9 +486,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTKeyResponse> KeyPostAsync(GenerateKeyRequest generate_Key_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTKeyResponse> GenerateKeyAsync(GenerateKeyRequest generate_Key_Request)
         {
-            return KeyPostAsync(generate_Key_Request, System.Threading.CancellationToken.None);
+            return GenerateKeyAsync(generate_Key_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -496,7 +497,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTKeyResponse> KeyPostAsync(GenerateKeyRequest generate_Key_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTKeyResponse> GenerateKeyAsync(GenerateKeyRequest generate_Key_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (generate_Key_Request == null)
                 throw new System.ArgumentNullException("generate_Key_Request");
@@ -571,9 +572,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `DELETE /v1/key`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1DELETEKeyResponse> KeyDeleteAsync(DeleteKeyRequest delete_Key_Request)
+        public virtual System.Threading.Tasks.Task<APIV1DELETEKeyResponse> DeleteKeyAsync(DeleteKeyRequest delete_Key_Request)
         {
-            return KeyDeleteAsync(delete_Key_Request, System.Threading.CancellationToken.None);
+            return DeleteKeyAsync(delete_Key_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -582,7 +583,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `DELETE /v1/key`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1DELETEKeyResponse> KeyDeleteAsync(DeleteKeyRequest delete_Key_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1DELETEKeyResponse> DeleteKeyAsync(DeleteKeyRequest delete_Key_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (delete_Key_Request == null)
                 throw new System.ArgumentNullException("delete_Key_Request");
@@ -657,9 +658,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTKeyExportResponse> ExportPostAsync(ExportKeyRequest export_Key_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTKeyExportResponse> ExportKeyAsync(ExportKeyRequest export_Key_Request)
         {
-            return ExportPostAsync(export_Key_Request, System.Threading.CancellationToken.None);
+            return ExportKeyAsync(export_Key_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -668,7 +669,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTKeyExportResponse> ExportPostAsync(ExportKeyRequest export_Key_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTKeyExportResponse> ExportKeyAsync(ExportKeyRequest export_Key_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (export_Key_Request == null)
                 throw new System.ArgumentNullException("export_Key_Request");
@@ -743,9 +744,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key/import`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTKeyImportResponse> ImportPostAsync(ImportKeyRequest import_Key_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTKeyImportResponse> ImportKeyAsync(ImportKeyRequest import_Key_Request)
         {
-            return ImportPostAsync(import_Key_Request, System.Threading.CancellationToken.None);
+            return ImportKeyAsync(import_Key_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -754,7 +755,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key/import`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTKeyImportResponse> ImportPostAsync(ImportKeyRequest import_Key_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTKeyImportResponse> ImportKeyAsync(ImportKeyRequest import_Key_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (import_Key_Request == null)
                 throw new System.ArgumentNullException("import_Key_Request");
@@ -829,9 +830,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key/list`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTKeyListResponse> ListPostAsync(ListKeysRequest list_Keys_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTKeyListResponse> ListKeysInWalletAsync(ListKeysRequest list_Keys_Request)
         {
-            return ListPostAsync(list_Keys_Request, System.Threading.CancellationToken.None);
+            return ListKeysInWalletAsync(list_Keys_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -840,7 +841,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/key/list`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTKeyListResponse> ListPostAsync(ListKeysRequest list_Keys_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTKeyListResponse> ListKeysInWalletAsync(ListKeysRequest list_Keys_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (list_Keys_Request == null)
                 throw new System.ArgumentNullException("list_Keys_Request");
@@ -915,9 +916,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/master-key/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTMasterKeyExportResponse> ExportPostAsync(ExportMasterKeyRequest export_Master_Key_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTMasterKeyExportResponse> ExportMasterKeyAsync(ExportMasterKeyRequest export_Master_Key_Request)
         {
-            return ExportPostAsync(export_Master_Key_Request, System.Threading.CancellationToken.None);
+            return ExportMasterKeyAsync(export_Master_Key_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -926,7 +927,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/master-key/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTMasterKeyExportResponse> ExportPostAsync(ExportMasterKeyRequest export_Master_Key_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTMasterKeyExportResponse> ExportMasterKeyAsync(ExportMasterKeyRequest export_Master_Key_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (export_Master_Key_Request == null)
                 throw new System.ArgumentNullException("export_Master_Key_Request");
@@ -1001,9 +1002,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to POST /v1/multisig/delete</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1DELETEMultisigResponse> MultisigAsync(DeleteMultisigRequest delete_Multisig_Request)
+        public virtual System.Threading.Tasks.Task<APIV1DELETEMultisigResponse> DeleteMultisigAsync(DeleteMultisigRequest delete_Multisig_Request)
         {
-            return MultisigAsync(delete_Multisig_Request, System.Threading.CancellationToken.None);
+            return DeleteMultisigAsync(delete_Multisig_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1012,7 +1013,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to POST /v1/multisig/delete</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1DELETEMultisigResponse> MultisigAsync(DeleteMultisigRequest delete_Multisig_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1DELETEMultisigResponse> DeleteMultisigAsync(DeleteMultisigRequest delete_Multisig_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (delete_Multisig_Request == null)
                 throw new System.ArgumentNullException("delete_Multisig_Request");
@@ -1087,9 +1088,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTMultisigExportResponse> ExportPostAsync(ExportMultisigRequest export_Multisig_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTMultisigExportResponse> ExportMultisigAsync(ExportMultisigRequest export_Multisig_Request)
         {
-            return ExportPostAsync(export_Multisig_Request, System.Threading.CancellationToken.None);
+            return ExportMultisigAsync(export_Multisig_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1098,7 +1099,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/export`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTMultisigExportResponse> ExportPostAsync(ExportMultisigRequest export_Multisig_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTMultisigExportResponse> ExportMultisigAsync(ExportMultisigRequest export_Multisig_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (export_Multisig_Request == null)
                 throw new System.ArgumentNullException("export_Multisig_Request");
@@ -1173,9 +1174,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/import`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTMultisigImportResponse> ImportPostAsync(ImportMultisigRequest import_Multisig_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTMultisigImportResponse> ImportMultisigAsync(ImportMultisigRequest import_Multisig_Request)
         {
-            return ImportPostAsync(import_Multisig_Request, System.Threading.CancellationToken.None);
+            return ImportMultisigAsync(import_Multisig_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1184,7 +1185,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/import`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTMultisigImportResponse> ImportPostAsync(ImportMultisigRequest import_Multisig_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTMultisigImportResponse> ImportMultisigAsync(ImportMultisigRequest import_Multisig_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (import_Multisig_Request == null)
                 throw new System.ArgumentNullException("import_Multisig_Request");
@@ -1259,9 +1260,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/list`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTMultisigListResponse> ListPostAsync(ListMultisigRequest list_Multisig_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTMultisigListResponse> ListMultisgAsync(ListMultisigRequest list_Multisig_Request)
         {
-            return ListPostAsync(list_Multisig_Request, System.Threading.CancellationToken.None);
+            return ListMultisgAsync(list_Multisig_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1270,7 +1271,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/list`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTMultisigListResponse> ListPostAsync(ListMultisigRequest list_Multisig_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTMultisigListResponse> ListMultisgAsync(ListMultisigRequest list_Multisig_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (list_Multisig_Request == null)
                 throw new System.ArgumentNullException("list_Multisig_Request");
@@ -1345,9 +1346,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTMultisigTransactionSignResponse> SignPostAsync(SignMultisigRequest sign_Multisig_Transaction_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTMultisigTransactionSignResponse> SignMultisigTransactionAsync(SignMultisigRequest sign_Multisig_Transaction_Request)
         {
-            return SignPostAsync(sign_Multisig_Transaction_Request, System.Threading.CancellationToken.None);
+            return SignMultisigTransactionAsync(sign_Multisig_Transaction_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1356,7 +1357,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTMultisigTransactionSignResponse> SignPostAsync(SignMultisigRequest sign_Multisig_Transaction_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTMultisigTransactionSignResponse> SignMultisigTransactionAsync(SignMultisigRequest sign_Multisig_Transaction_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (sign_Multisig_Transaction_Request == null)
                 throw new System.ArgumentNullException("sign_Multisig_Transaction_Request");
@@ -1431,9 +1432,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/signdata`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTMultisigProgramSignResponse> SignprogramAsync(SignProgramMultisigRequest sign_Multisig_Program_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTMultisigProgramSignResponse> SignMultisigProgramAsync(SignProgramMultisigRequest sign_Multisig_Program_Request)
         {
-            return SignprogramAsync(sign_Multisig_Program_Request, System.Threading.CancellationToken.None);
+            return SignMultisigProgramAsync(sign_Multisig_Program_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1442,7 +1443,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/multisig/signdata`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTMultisigProgramSignResponse> SignprogramAsync(SignProgramMultisigRequest sign_Multisig_Program_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTMultisigProgramSignResponse> SignMultisigProgramAsync(SignProgramMultisigRequest sign_Multisig_Program_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (sign_Multisig_Program_Request == null)
                 throw new System.ArgumentNullException("sign_Multisig_Program_Request");
@@ -1517,9 +1518,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/data/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTProgramSignResponse> SignPostAsync(SignProgramRequest sign_Program_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTProgramSignResponse> SignProgramAsync(SignProgramRequest sign_Program_Request)
         {
-            return SignPostAsync(sign_Program_Request, System.Threading.CancellationToken.None);
+            return SignProgramAsync(sign_Program_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1528,7 +1529,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/data/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTProgramSignResponse> SignPostAsync(SignProgramRequest sign_Program_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTProgramSignResponse> SignProgramAsync(SignProgramRequest sign_Program_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (sign_Program_Request == null)
                 throw new System.ArgumentNullException("sign_Program_Request");
@@ -1603,9 +1604,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/transaction/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTTransactionSignResponse> SignPostAsync(SignTransactionRequest sign_Transaction_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTTransactionSignResponse> SignTransactionAsync(SignTransactionRequest sign_Transaction_Request)
         {
-            return SignPostAsync(sign_Transaction_Request, System.Threading.CancellationToken.None);
+            return SignTransactionAsync(sign_Transaction_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1614,7 +1615,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/transaction/sign`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTTransactionSignResponse> SignPostAsync(SignTransactionRequest sign_Transaction_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTTransactionSignResponse> SignTransactionAsync(SignTransactionRequest sign_Transaction_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (sign_Transaction_Request == null)
                 throw new System.ArgumentNullException("sign_Transaction_Request");
@@ -1689,9 +1690,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTWalletResponse> WalletAsync(CreateWalletRequest create_Wallet_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTWalletResponse> CreateWalletAsync(CreateWalletRequest create_Wallet_Request)
         {
-            return WalletAsync(create_Wallet_Request, System.Threading.CancellationToken.None);
+            return CreateWalletAsync(create_Wallet_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1700,7 +1701,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletResponse> WalletAsync(CreateWalletRequest create_Wallet_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletResponse> CreateWalletAsync(CreateWalletRequest create_Wallet_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (create_Wallet_Request == null)
                 throw new System.ArgumentNullException("create_Wallet_Request");
@@ -1775,9 +1776,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/info`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTWalletInfoResponse> InfoAsync(WalletInfoRequest get_Wallet_Info_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTWalletInfoResponse> GetWalletInfoAsync(WalletInfoRequest get_Wallet_Info_Request)
         {
-            return InfoAsync(get_Wallet_Info_Request, System.Threading.CancellationToken.None);
+            return GetWalletInfoAsync(get_Wallet_Info_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1786,7 +1787,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/info`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletInfoResponse> InfoAsync(WalletInfoRequest get_Wallet_Info_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletInfoResponse> GetWalletInfoAsync(WalletInfoRequest get_Wallet_Info_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (get_Wallet_Info_Request == null)
                 throw new System.ArgumentNullException("get_Wallet_Info_Request");
@@ -1861,9 +1862,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/init`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTWalletInitResponse> InitAsync(InitWalletHandleTokenRequest initialize_Wallet_Handle_Token_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTWalletInitResponse> InitWalletHandleTokenAsync(InitWalletHandleTokenRequest initialize_Wallet_Handle_Token_Request)
         {
-            return InitAsync(initialize_Wallet_Handle_Token_Request, System.Threading.CancellationToken.None);
+            return InitWalletHandleTokenAsync(initialize_Wallet_Handle_Token_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1872,7 +1873,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/init`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletInitResponse> InitAsync(InitWalletHandleTokenRequest initialize_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletInitResponse> InitWalletHandleTokenAsync(InitWalletHandleTokenRequest initialize_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (initialize_Wallet_Handle_Token_Request == null)
                 throw new System.ArgumentNullException("initialize_Wallet_Handle_Token_Request");
@@ -1947,9 +1948,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/release`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTWalletReleaseResponse> ReleaseAsync(ReleaseWalletHandleTokenRequest release_Wallet_Handle_Token_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTWalletReleaseResponse> ReleaseWalletHandleTokenAsync(ReleaseWalletHandleTokenRequest release_Wallet_Handle_Token_Request)
         {
-            return ReleaseAsync(release_Wallet_Handle_Token_Request, System.Threading.CancellationToken.None);
+            return ReleaseWalletHandleTokenAsync(release_Wallet_Handle_Token_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1958,7 +1959,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/release`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletReleaseResponse> ReleaseAsync(ReleaseWalletHandleTokenRequest release_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletReleaseResponse> ReleaseWalletHandleTokenAsync(ReleaseWalletHandleTokenRequest release_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (release_Wallet_Handle_Token_Request == null)
                 throw new System.ArgumentNullException("release_Wallet_Handle_Token_Request");
@@ -2033,9 +2034,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/rename`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTWalletRenameResponse> RenameAsync(RenameWalletRequest rename_Wallet_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTWalletRenameResponse> RenameWalletAsync(RenameWalletRequest rename_Wallet_Request)
         {
-            return RenameAsync(rename_Wallet_Request, System.Threading.CancellationToken.None);
+            return RenameWalletAsync(rename_Wallet_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2044,7 +2045,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `POST /v1/wallet/rename`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletRenameResponse> RenameAsync(RenameWalletRequest rename_Wallet_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletRenameResponse> RenameWalletAsync(RenameWalletRequest rename_Wallet_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (rename_Wallet_Request == null)
                 throw new System.ArgumentNullException("rename_Wallet_Request");
@@ -2119,9 +2120,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response `POST /v1/wallet/renew`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1POSTWalletRenewResponse> RenewAsync(RenewWalletHandleTokenRequest renew_Wallet_Handle_Token_Request)
+        public virtual System.Threading.Tasks.Task<APIV1POSTWalletRenewResponse> RenewWalletHandleTokenAsync(RenewWalletHandleTokenRequest renew_Wallet_Handle_Token_Request)
         {
-            return RenewAsync(renew_Wallet_Handle_Token_Request, System.Threading.CancellationToken.None);
+            return RenewWalletHandleTokenAsync(renew_Wallet_Handle_Token_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2130,7 +2131,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response `POST /v1/wallet/renew`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletRenewResponse> RenewAsync(RenewWalletHandleTokenRequest renew_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1POSTWalletRenewResponse> RenewWalletHandleTokenAsync(RenewWalletHandleTokenRequest renew_Wallet_Handle_Token_Request, System.Threading.CancellationToken cancellationToken)
         {
             if (renew_Wallet_Handle_Token_Request == null)
                 throw new System.ArgumentNullException("renew_Wallet_Handle_Token_Request");
@@ -2205,9 +2206,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `GET /v1/wallets`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIV1GETWalletsResponse> WalletsAsync(ListWalletsRequest list_Wallet_Request)
+        public virtual System.Threading.Tasks.Task<APIV1GETWalletsResponse> ListWalletsAsync(object list_Wallet_Request)
         {
-            return WalletsAsync(list_Wallet_Request, System.Threading.CancellationToken.None);
+            return ListWalletsAsync(list_Wallet_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2216,7 +2217,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `GET /v1/wallets`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIV1GETWalletsResponse> WalletsAsync(ListWalletsRequest list_Wallet_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIV1GETWalletsResponse> ListWalletsAsync(object list_Wallet_Request, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v1/wallets");
@@ -2288,9 +2289,9 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `GET /versions`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<VersionsResponse> VersionsAsync(VersionsRequest versions_Request)
+        public virtual System.Threading.Tasks.Task<VersionsResponse> GetVersionAsync(object versions_Request)
         {
-            return VersionsAsync(versions_Request, System.Threading.CancellationToken.None);
+            return GetVersionAsync(versions_Request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2299,7 +2300,7 @@ namespace Algorand.KMD
         /// </summary>
         /// <returns>Response to `GET /versions`</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<VersionsResponse> VersionsAsync(VersionsRequest versions_Request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<VersionsResponse> GetVersionAsync(object versions_Request, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/versions");
@@ -2570,7 +2571,7 @@ namespace Algorand.KMD
         public string Message { get; set; }
 
         [Newtonsoft.Json.JsonProperty("private_key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PrivateKey Private_key { get; set; }
+        public byte[] Private_key { get; set; }
 
         public string ToJson()
         {
@@ -2691,7 +2692,7 @@ namespace Algorand.KMD
         public bool? Error { get; set; }
 
         [Newtonsoft.Json.JsonProperty("master_derivation_key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public MasterDerivationKey Master_derivation_key { get; set; }
+        public byte[] Master_derivation_key { get; set; }
 
         [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Message { get; set; }
@@ -2728,7 +2729,7 @@ namespace Algorand.KMD
         public int? Multisig_version { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pks", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<PublicKey> Pks { get; set; }
+        public byte[] Pks { get; set; }
 
         [Newtonsoft.Json.JsonProperty("threshold", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? Threshold { get; set; }
@@ -3191,7 +3192,7 @@ namespace Algorand.KMD
     public partial class CreateWalletRequest
     {
         [Newtonsoft.Json.JsonProperty("master_derivation_key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public MasterDerivationKey Master_derivation_key { get; set; }
+        public byte[] Master_derivation_key { get; set; }
 
         [Newtonsoft.Json.JsonProperty("wallet_driver_name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Wallet_driver_name { get; set; }
@@ -3277,24 +3278,7 @@ namespace Algorand.KMD
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class Digest : System.Collections.ObjectModel.Collection<int>
-    {
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static Digest FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Digest>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
+  
 
     /// <summary>
     /// APIV1POSTKeyExportRequest is the request for `POST /v1/key/export`
@@ -3414,7 +3398,7 @@ namespace Algorand.KMD
     public partial class ImportKeyRequest
     {
         [Newtonsoft.Json.JsonProperty("private_key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PrivateKey Private_key { get; set; }
+        public byte[] Private_key { get; set; }
 
         [Newtonsoft.Json.JsonProperty("wallet_handle_token", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Wallet_handle_token { get; set; }
@@ -3444,7 +3428,7 @@ namespace Algorand.KMD
         public int? Multisig_version { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pks", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<PublicKey> Pks { get; set; }
+        public byte[] Pks { get; set; }
 
         [Newtonsoft.Json.JsonProperty("threshold", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? Threshold { get; set; }
@@ -3542,49 +3526,7 @@ namespace Algorand.KMD
 
     }
 
-    /// <summary>
-    /// APIV1GETWalletsRequest is the request for `GET /v1/wallets`
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class ListWalletsRequest
-    {
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static ListWalletsRequest FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListWalletsRequest>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
-
-    /// <summary>
-    /// MasterDerivationKey is used to derive ed25519 keys for use in wallets
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class MasterDerivationKey : System.Collections.ObjectModel.Collection<int>
-    {
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static MasterDerivationKey FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<MasterDerivationKey>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
+   
 
     /// <summary>
     /// MultisigSig is the structure that holds multiple Subsigs
@@ -3624,10 +3566,10 @@ namespace Algorand.KMD
     public partial class MultisigSubsig
     {
         [Newtonsoft.Json.JsonProperty("Key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PublicKey Key { get; set; }
+        public byte[] Key { get; set; }
 
         [Newtonsoft.Json.JsonProperty("Sig", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Signature Sig { get; set; }
+        public byte[] Sig { get; set; }
 
         public string ToJson()
         {
@@ -3644,43 +3586,7 @@ namespace Algorand.KMD
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class PrivateKey : System.Collections.ObjectModel.Collection<int>
-    {
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static PrivateKey FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<PrivateKey>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class PublicKey : System.Collections.ObjectModel.Collection<int>
-    {
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static PublicKey FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<PublicKey>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
+   
 
     /// <summary>
     /// APIV1POSTWalletReleaseRequest is the request for `POST /v1/wallet/release`
@@ -3770,7 +3676,7 @@ namespace Algorand.KMD
         public MultisigSig Partial_multisig { get; set; }
 
         [Newtonsoft.Json.JsonProperty("public_key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PublicKey Public_key { get; set; }
+        public byte[] Public_key { get; set; }
 
         [Newtonsoft.Json.JsonProperty("signer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Digest Signer { get; set; }
@@ -3815,7 +3721,7 @@ namespace Algorand.KMD
         public MultisigSig Partial_multisig { get; set; }
 
         [Newtonsoft.Json.JsonProperty("public_key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PublicKey Public_key { get; set; }
+        public byte[] Public_key { get; set; }
 
         [Newtonsoft.Json.JsonProperty("wallet_handle_token", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Wallet_handle_token { get; set; }
@@ -3878,7 +3784,7 @@ namespace Algorand.KMD
     public partial class SignTransactionRequest
     {
         [Newtonsoft.Json.JsonProperty("public_key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PublicKey Public_key { get; set; }
+        public byte[] Public_key { get; set; }
 
         /// <summary>
         /// Base64 encoding of msgpack encoding of a `Transaction` object
@@ -3910,46 +3816,7 @@ namespace Algorand.KMD
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class Signature : System.Collections.ObjectModel.Collection<int>
-    {
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static Signature FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Signature>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
-
-    /// <summary>
-    /// VersionsRequest is the request for `GET /versions`
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class VersionsRequest
-    {
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static VersionsRequest FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<VersionsRequest>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
+   
 
     /// <summary>
     /// VersionsResponse is the response to `GET /versions`
