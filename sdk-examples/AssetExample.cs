@@ -103,7 +103,7 @@ namespace sdk_examples
                 // Now that the transaction is confirmed we can get the assetID
                 var ptx = await  algodApiInstance.PendingTransactionInformationAsync(id.Txid,null) as AssetCreateTransaction;
                 
-                if (ptx?.Committed??false) assetID = ptx.AssetIndex;
+                if (ptx?.Committed??false) assetID = ptx.AssetIndex.Value;
             }
             catch (ApiException<ErrorResponse> e)
             {
