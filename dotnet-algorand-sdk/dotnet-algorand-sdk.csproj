@@ -121,6 +121,11 @@
 	
 	<ItemGroup>
 		<PackageReference Include="BouncyCastle.NetCore" Version="1.8.8" />
+		<PackageReference Include="docfx.console" Version="2.59.4">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		  <ExcludeAssets>buildtransitive</ExcludeAssets>
+		</PackageReference>
 		<PackageReference Include="JsonSubTypes" Version="1.9.0" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="MsgPack.Cli" Version="1.0.1" />
@@ -403,5 +408,8 @@
 	  </None>
 	</ItemGroup>
 
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="docfx ../docfx/docfx.json" />
+	</Target>
 	
 </Project>
