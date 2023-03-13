@@ -1,0 +1,47 @@
+# NET SDK and UNITY build update using Algorand/Generator
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+        
+        # Set up JDK for the generator app.
+        - name: Set up JDK 17
+          uses: actions/setup-java@v2
+          with:
+            java-version: '17'
+            distribution: 'microsoft'
+            java-package: 'jdk'
+  
+
+        # Get the .NET SDK repo
+        - name: Checkout dotnet-algorand-sdk repo
+          uses: actions/checkout@v3
+          with:
+            path: dotnet-algorand-sdk
+
+        # Check out the algod oas json
+        - name: Download oas2.json file
+          run: curl -L https://raw.githubusercontent.com/algorand/go-algorand/master/daemon/algod/api/algod.oas2.json -o dotnet-algorand-sdk/api-generator/dotnet_templates/algod.oas2.json
+        
+        # Verify
+        - name: List files and folders recursively
+          run: ls -laR
