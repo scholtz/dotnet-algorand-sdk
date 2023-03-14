@@ -47,7 +47,7 @@ jobs:
 
         # Generate the transactions model 
         - name: Generate transactions model
-        - run: java -jar dotnet-algorand-sdk\api-generator\generator-1.0.0-jar-with-dependencies.jar template -s dotnet-algorand-sdk\api-generator\dotnet_templates\Transactions.json -t dotnet-algorand-sdk\api-generator\dotnet_templates\ -m dotnet-algorand-sdk\dotnet-algorand-sdk\Algod\Model\Transactions  -p "dotnet-algorand-sdk\api-generator\dotnet_templates\transactions_model_config.properties"
+          run: java -jar dotnet-algorand-sdk\api-generator\generator-1.0.0-jar-with-dependencies.jar template -s dotnet-algorand-sdk\api-generator\dotnet_templates\Transactions.json -t dotnet-algorand-sdk\api-generator\dotnet_templates\ -m dotnet-algorand-sdk\dotnet-algorand-sdk\Algod\Model\Transactions  -p "dotnet-algorand-sdk\api-generator\dotnet_templates\transactions_model_config.properties"
 
         # Verify
         - name: List files
