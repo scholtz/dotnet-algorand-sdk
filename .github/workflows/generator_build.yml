@@ -36,24 +36,37 @@ jobs:
         - name: Download oas2.json file
           run: curl -L https://raw.githubusercontent.com/algorand/go-algorand/master/daemon/algod/api/algod.oas2.json -o api-generator/dotnet_templates/algod.oas2.json
         
-        # Clear 
-        - name: Remove the generated transactions
-          run: del dotnet-algorand-sdk\Algod\Model\Transactions\*.Generated.cs
-        
-        # Verify
-        - name: List files
-          run: dir dotnet-algorand-sdk\Algod\Model\Transactions
-
 
         # Generate the transactions model 
         - name: Generate transactions model
           run: java -jar api-generator\generator-1.0.0-jar-with-dependencies.jar template -s api-generator\dotnet_templates\Transactions.json -t api-generator\dotnet_templates\ -m dotnet-algorand-sdk\Algod\Model\Transactions  -p "api-generator\dotnet_templates\transactions_model_config.properties"
 
-        # Verify
-        - name: List files
-          run: dir dotnet-algorand-sdk\Algod\Model\Transactions
+        # Generate the algod model
+        - name: Generate  model
+          run:  java -jar api-generator\generator-1.0.0-jar-with-dependencies.jar template -s api-generator\dotnet_templates\algod.oas2.json -t api-generator\dotnet_templates -m dotnet-algorand-sdk\Algod\Model\  -p "api-generator\dotnet_templates\algod_model_config.properties"
+      
+        # Generate the algod client
+        - name: Generate algod client
+          run:  java -jar api-generator\generator-1.0.0-jar-with-dependencies.jar template -s api-generator\dotnet_templates\algod.oas2.json -t api-generator\dotnet_templates -c dotnet-algorand-sdk\Algod\  -p "api-generator\dotnet_templates\algod_common_config.properties"
+        
+        # Get .NET Core
+        - name: Setup .NET Core
+          uses: actions/setup-dotnet@v1
+          with:
+            dotnet-version: 3.1.402
+        
+        # Install dependencies
+        - name: Install dependencies
+          run: dotnet restore
+        
+        # Build dotnetsdk project Release
+        - name: Build Release
+          run: dotnet build dotnet-algorand-sdk/dotnet-algorand-sdk.cs --configuration Release --no-restore
 
-
-        # Verify
-        #  name: List files and folders recursively
-        #  run: dir -Recurse
+        # Build dotnetsdk project Unity
+        - name: Build Unity
+          run: dotnet build dotnet-algorand-sdk/dotnet-algorand-sdk.cs --configuration Unity --no-restore
+        
+        # Verify 
+        - name: Verify Contents
+          run: dir -Recurse
