@@ -44,4 +44,4 @@ jobs:
         
         # Verify
         - name: List files and folders recursively
-          run: ls -laR
+          run: dir /s
