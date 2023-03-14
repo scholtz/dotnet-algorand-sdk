@@ -51,7 +51,7 @@ jobs:
 
         # Verify
         - name: List files
-          run: dotnet-algorand-sdk\Algod\Model\Transactions
+          run: dir dotnet-algorand-sdk\Algod\Model\Transactions
 
 
         # Verify
