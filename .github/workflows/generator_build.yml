@@ -31,6 +31,10 @@ jobs:
         # Get the .NET SDK repo
         - name: Checkout dotnet-algorand-sdk repo
           uses: actions/checkout@v3
+
+        # Get the .NET SDK repo
+        - name: Set folder
+          run: cd ..
           
         # Check out the algod oas json
         - name: Download oas2.json file
