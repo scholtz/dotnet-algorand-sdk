@@ -61,11 +61,11 @@ jobs:
         
         # Build dotnetsdk project Release
         - name: Build Release
-          run: dotnet build dotnet-algorand-sdk.csproj --configuration Release --no-restore
+          run: dotnet build dotnet-algorand-sdk --configuration Release --no-restore
 
         # Build dotnetsdk project Unity
         - name: Build Unity
-          run: dotnet build dotnet-algorand-sdk.csproj --configuration Unity --no-restore
+          run: dotnet build dotnet-algorand-sdk --configuration Unity --no-restore
         
         # Verify 
         - name: Verify Contents
