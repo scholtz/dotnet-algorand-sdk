@@ -119,12 +119,12 @@ namespace Algorand.Algod
 #end
     }
 
-    public partial class ${str.capitalize($propFile.api)}Api : I${str.capitalize($propFile.api)}Api
+    public partial class ${str.capitalize($propFile.apiAlias)}Api : I${str.capitalize($propFile.apiAlias)}Api
     {
        private System.Net.Http.HttpClient _httpClient;
        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-       public ${str.capitalize($propFile.api)}Api(System.Net.Http.HttpClient httpClient)
+       public ${str.capitalize($propFile.apiAlias)}Api(System.Net.Http.HttpClient httpClient)
        {
               _httpClient = httpClient;
               _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
