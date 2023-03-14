@@ -47,7 +47,7 @@ jobs:
       
         # Generate the algod client
         - name: Generate algod client
-          run:  java -jar api-generator\generator-1.0.0-jar-with-dependencies.jar template -s api-generator\dotnet_templates\algod.oas2.json -t api-generator\dotnet_templates -c dotnet-algorand-sdk\Algod\  -p "api-generator\dotnet_templates\algod_common_config.properties"
+          run:  java -jar api-generator\generator-1.0.0-jar-with-dependencies.jar template -s api-generator\dotnet_templates\algod.oas2.json -t api-generator\dotnet_templates -c dotnet-algorand-sdk\Algod\  -p "api-generator\dotnet_templates\algod_default_config.properties"
         
         # Get .NET Core
         - name: Setup .NET Core
