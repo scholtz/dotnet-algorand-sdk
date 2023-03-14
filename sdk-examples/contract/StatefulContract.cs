@@ -3,7 +3,6 @@ using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
 using Algorand.Utils;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,25 +19,12 @@ namespace sdk_examples.contract
             string ALGOD_API_ADDR = "http://localhost:4001/";
             string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-            if (ALGOD_API_ADDR.IndexOf("//") == -1)
-            {
-                ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
-            }
-       
-            string adminMnemonic = "allow already artwork safe unaware promote celery baby december museum reveal tool laptop federal joy speak kit endless glare wonder prevent lecture exclude abstract raccoon";
-            Account admin = new Account(adminMnemonic);
-            string creatorMnemonic = "wave elevator silk crazy note convince adjust faculty above breeze shove cattle neither battle vacuum segment mean rent genre negative excess large coyote abandon wait";
-            string userMnemonic = "degree paddle team casual fortune antique lemon just you cereal pony forget garlic mobile potato fork awkward easy girl clock buzz dad noodle abstract giant";
+            var creator = new Account("shaft web sell outdoor brick above promote call disease gift fun course grief hurdle key bamboo choice camp law lucky bitter skill term able ignore");
+            var user = new Account("pipe want hockey shoulder gallery inner woman salute wrestle fashion define bonus broom start disease portion salt gesture measure prosper just draw engage ability dizzy");
 
-
-
-            // create two accounts to create and uses the stateful contract
-            var creator = new Account(creatorMnemonic);
-            var user = new Account(userMnemonic);
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-            DefaultApi client = new DefaultApi(httpClient);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
-            
             // declare application state storage (immutable)
             ulong localInts = 1;
             ulong localBytes = 1;
@@ -46,13 +32,13 @@ namespace sdk_examples.contract
             ulong globalBytes = 0;
 
             // user declared approval program (initial)
-            string approvalProgramSourceInitial = File.ReadAllText("contract/stateful_approval_init.teal");
+            string approvalProgramSourceInitial = TEALExamples.StatefulApprovalInit(creator.Address.ToString());
 
             // user declared approval program (refactored)
-            string approvalProgramSourceRefactored = File.ReadAllText("contract/stateful_approval_refact.teal");
-         
+            string approvalProgramSourceRefactored = TEALExamples.StatefulApprovalRefact(creator.Address.ToString());
+
             // declare clear state program source
-            string clearProgramSource = File.ReadAllText("contract/stateful_clear.teal");
+            string clearProgramSource = TEALExamples.StatefulClear();
 
             CompileResponse approvalProgram;
             CompileResponse clearProgram;
@@ -60,39 +46,38 @@ namespace sdk_examples.contract
 
             using (var datams = new MemoryStream(Encoding.UTF8.GetBytes(approvalProgramSourceInitial)))
             {
-                approvalProgram = await client.TealCompileAsync(datams);
+                approvalProgram = await algodApiInstance.TealCompileAsync(datams);
             }
             using (var datams = new MemoryStream(Encoding.UTF8.GetBytes(clearProgramSource)))
             {
-                clearProgram = await client.TealCompileAsync(datams);
+                clearProgram = await algodApiInstance.TealCompileAsync(datams);
             }
             using (var datams = new MemoryStream(Encoding.UTF8.GetBytes(approvalProgramSourceRefactored)))
             {
-                approvalProgramRefactored = await client.TealCompileAsync(datams);
+                approvalProgramRefactored = await algodApiInstance.TealCompileAsync(datams);
             }
-
-
 
             try
             {
                 // create new application
-                var appid = await CreateApp(client, creator, new TEALProgram(approvalProgram.Result),
+                var appid = await CreateApp(algodApiInstance, creator, new TEALProgram(approvalProgram.Result),
                     new TEALProgram(clearProgram.Result), globalInts, globalBytes, localInts, localBytes);
 
                 // opt-in to application
-                await OptIn(client, user, appid);
+                await OptIn(algodApiInstance, user, appid);
                 // call application without arguments
-                await CallApp(client, user, appid, null);
+                await CallApp(algodApiInstance, user, appid, null);
                 // read local state of application from user account
-                await ReadLocalState(client, user, appid);
+                await ReadLocalState(algodApiInstance, user, appid);
 
                 // read global state of application
-                await ReadGlobalState(client, creator, appid);
+                await ReadGlobalState(algodApiInstance, creator, appid);
 
                 // update application
-                await UpdateApp(client, creator, appid,
+                await UpdateApp(algodApiInstance, creator, appid,
                     new TEALProgram(approvalProgramRefactored.Result),
                     new TEALProgram(clearProgram.Result));
+
                 // call application with arguments
                 var date = DateTime.Now;
                 Console.WriteLine(date.ToString("yyyy-MM-dd 'at' HH:mm:ss"));
@@ -100,32 +85,33 @@ namespace sdk_examples.contract
                 {
                     Encoding.UTF8.GetBytes(date.ToString("yyyy-MM-dd 'at' HH:mm:ss"))
                 };
-                await CallApp(client, user, appid, appArgs);
+
+                await CallApp(algodApiInstance, user, appid, appArgs);
 
                 // read local state of application from user account
-                await ReadLocalState(client, user, appid);
+                await ReadLocalState(algodApiInstance, user, appid);
 
                 // close-out from application
-                await CloseOutApp(client, user, (ulong)appid);
+                await CloseOutApp(algodApiInstance, user, (ulong)appid);
 
                 // opt-in again to application
-                await OptIn(client, user, appid);
+                await OptIn(algodApiInstance, user, appid);
 
                 // call application with arguments
-                await CallApp(client, user, appid, appArgs);
+                await CallApp(algodApiInstance, user, appid, appArgs);
 
                 // read local state of application from user account
-                await ReadLocalState(client, user, appid);
+                await ReadLocalState(algodApiInstance, user, appid);
 
                 // delete application
-                await DeleteApp(client, creator, appid);
+                await DeleteApp(algodApiInstance, creator, appid);
 
                 // clear application from user account
-                await ClearApp(client, user, appid);
+                await ClearApp(algodApiInstance, user, appid);
 
                 Console.WriteLine("You have successefully arrived the end of this test, please press and key to exist.");
             }
-            catch (Algorand.ApiException e)
+            catch (ApiException e)
             {
                 // This is generally expected, but should give us an informative error message.
                 Console.WriteLine("Exception when calling algod#sendTransaction: " + e.Message);
@@ -190,9 +176,9 @@ namespace sdk_examples.contract
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
                 Console.WriteLine("Application ID is: " + appid);
             }
-            catch (ApiException e)
+            catch (ApiException<ErrorResponse> e)
             {
-                Console.WriteLine("Exception when calling create application: " + e.Message);
+                Console.WriteLine("Exception when calling create application: " + e.Result.Message);
             }
         }
 
@@ -216,7 +202,7 @@ namespace sdk_examples.contract
                     GlobalStateSchema = new StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes },
                     LocalStateSchema = new StateSchema() { NumUint = localInts, NumByteSlice = localBytes }
                 };
-          
+
                 var signedTx = tx.Sign(creator);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
@@ -256,7 +242,7 @@ namespace sdk_examples.contract
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationOptInTransaction;
-                Console.WriteLine(string.Format("Address {0} optin to Application({1})",   sender.Address.ToString(), resp.ApplicationId));
+                Console.WriteLine(string.Format("Address {0} optin to Application({1})", sender.Address.ToString(), resp.ApplicationId));
             }
             catch (Algorand.ApiException<ErrorResponse> e)
             {
@@ -310,7 +296,7 @@ namespace sdk_examples.contract
                     GenesisHash = new Digest(transParams.GenesisHash),
                     ApplicationId = applicationId.Value,
                 };
-                
+
                 var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
@@ -350,8 +336,8 @@ namespace sdk_examples.contract
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationNoopTransaction;
                 Console.WriteLine("Confirmed at round: " + resp.ConfirmedRound);
-                Console.WriteLine(string.Format("Call Application({0}) success.",      resp.ApplicationId));
-                
+                Console.WriteLine(string.Format("Call Application({0}) success.", resp.ApplicationId));
+
                 if (resp.GlobalStateDelta != null)
                 {
                     var outStr = "    Global state: ";
@@ -379,7 +365,7 @@ namespace sdk_examples.contract
 
         static public async Task ReadLocalState(DefaultApi client, Account account, ulong? appId)
         {
-            var acctResponse = await client.AccountInformationAsync(account.Address.ToString(),null, null);
+            var acctResponse = await client.AccountInformationAsync(account.Address.ToString(), null, null);
             var applicationLocalState = acctResponse.AppsLocalState;
             foreach (var state in applicationLocalState)
             {
@@ -397,7 +383,7 @@ namespace sdk_examples.contract
 
         static public async Task ReadGlobalState(DefaultApi client, Account account, ulong? appId)
         {
-            var acctResponse = await client.AccountInformationAsync(account.Address.ToString(), null,null);
+            var acctResponse = await client.AccountInformationAsync(account.Address.ToString(), null, null);
             var createdApplications = acctResponse.CreatedApps;
             foreach (var app in createdApplications)
             {

@@ -3,11 +3,11 @@ using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
 using Algorand.Utils;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 
 
@@ -20,59 +20,41 @@ namespace sdk_examples.contract
             string ALGOD_API_ADDR = "http://localhost:4001/";
             string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-            if (ALGOD_API_ADDR.IndexOf("//") == -1)
-            {
-                ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
-            }
-
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             var client = new DefaultApi(httpClient);
-
-            string creatorMnemonic = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
 
             ulong localInts = 1;
             ulong localBytes = 0;
             ulong globalInts = 1;
             ulong globalBytes = 0;
 
-            byte[] data = File.ReadAllBytes("contract/hello_world.teal");
+
+            byte[] data = Encoding.ASCII.GetBytes(TEALExamples.HelloWorld()); // TODO: Turn into a method and parametrize
             CompileResponse approval_program_compiled;
             using (var datams = new MemoryStream(data))
             {
                 approval_program_compiled = await client.TealCompileAsync(datams);
             }
-            data = File.ReadAllBytes("contract/hello_world_clear.teal");
+
+            data = Encoding.ASCII.GetBytes(TEALExamples.HelloWorldClear()); // TODO: Turn into a method and parametrize
             CompileResponse clear_program_compiled;
             using (var datams = new MemoryStream(data))
             {
                 clear_program_compiled = await client.TealCompileAsync(datams);
             }
-            data = File.ReadAllBytes("contract/hello_world_updated.teal");
+
+            data = Encoding.ASCII.GetBytes(TEALExamples.HelloWorldUpdated());// TODO: Turn into a method and parametrize
             CompileResponse approval_program_refactored_compiled;
             using (var datams = new MemoryStream(data))
             {
                 approval_program_refactored_compiled = await client.TealCompileAsync(datams);
             }
 
-            var admin = new Account(creatorMnemonic);
-            var creator = new Account();
-            var user = new Account();
+            var creator = new Account("shaft web sell outdoor brick above promote call disease gift fun course grief hurdle key bamboo choice camp law lucky bitter skill term able ignore");
+            var user = new Account("pipe want hockey shoulder gallery inner woman salute wrestle fashion define bonus broom start disease portion salt gesture measure prosper just draw engage ability dizzy");
+
             try
             {
-                // transfer to creator and user
-                var transParams = await client.TransactionParamsAsync();
-                var amount = Utils.AlgosToMicroalgos(1);
-                var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(admin.Address, creator.Address, amount, "", transParams);
-                var signedTx = tx.Sign(admin);
-                var id = await Utils.SubmitTransaction(client, signedTx);
-                var resp = await Utils.WaitTransactionToComplete(client, id.Txid);
-                Console.WriteLine("Transfer to creator at round: " + resp.ConfirmedRound);
-                tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(admin.Address, user.Address, amount, "", transParams);
-                signedTx = tx.Sign(admin);
-                id = await Utils.SubmitTransaction(client, signedTx);
-                resp = await Utils.WaitTransactionToComplete(client, id.Txid);
-                Console.WriteLine("Transfer to user at round: " + resp.ConfirmedRound);
-
                 var appid = await CreateApp(client, creator, new TEALProgram(approval_program_compiled.Result),
                     new TEALProgram(clear_program_compiled.Result), globalInts, globalBytes, localInts, localBytes);
 
@@ -149,7 +131,7 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid);
                 Console.WriteLine("Close out Application ID is: " + appId);
             }
-            catch (Algorand.ApiException e)
+            catch (ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -180,7 +162,7 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid);
                 Console.WriteLine("Updated the application ID is: " + appid);
             }
-            catch (Algorand.ApiException e)
+            catch (ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -202,7 +184,7 @@ namespace sdk_examples.contract
                     GenesisHash = new Digest(transParams.GenesisHash),
                     ApprovalProgram = approvalProgram,
                     ClearStateProgram = clearProgram,
-                    GlobalStateSchema= new StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes },
+                    GlobalStateSchema = new StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes },
                     LocalStateSchema = new StateSchema() { NumUint = localInts, NumByteSlice = localBytes }
                 };
 
@@ -211,7 +193,7 @@ namespace sdk_examples.contract
                 var id = await Utils.SubmitTransaction(client, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationCreateTransaction;
-                
+
                 Console.WriteLine("Application ID is: " + resp.ApplicationIndex);
                 return resp.ApplicationIndex;
             }
@@ -238,7 +220,7 @@ namespace sdk_examples.contract
                     GenesisHash = new Digest(transParams.GenesisHash),
                     ApplicationId = applicationId
                 };
-                
+
                 var signedTx = tx.Sign(sender);
                 var id = await Utils.SubmitTransaction(client, signedTx);
 
@@ -267,8 +249,6 @@ namespace sdk_examples.contract
                     GenesisHash = new Digest(transParams.GenesisHash),
                     ApplicationId = applicationId
                 };
-                
-
 
                 var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
@@ -308,7 +288,7 @@ namespace sdk_examples.contract
                 var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationClearStateTransaction;
                 Console.WriteLine("Success cleared the application " + resp.ApplicationId);
             }
-            catch (Algorand.ApiException e)
+            catch (ApiException e)
             {
                 Console.WriteLine("Exception when calling create application: " + e.Message);
             }
@@ -331,14 +311,14 @@ namespace sdk_examples.contract
                     GenesisID = transParams.GenesisId,
                     GenesisHash = new Digest(transParams.GenesisHash),
                     ApplicationId = applicationId.Value,
-                    ApplicationArgs= args
-                    
+                    ApplicationArgs = args
+
                 };
                 var signedTx = tx.Sign(user);
-                
+
 
                 var cr = await client.AccountInformationAsync(creator.Address.ToString(), null, null);
-                var usr = await client.AccountInformationAsync(user.Address.ToString(), null,null);
+                var usr = await client.AccountInformationAsync(user.Address.ToString(), null, null);
                 var mydrr = DryrunDrr(signedTx, program, cr, usr);
                 var drrFile = "mydrr.dr";
                 WriteDrr(drrFile, mydrr);
@@ -395,7 +375,7 @@ namespace sdk_examples.contract
 
         private static void WriteDrr(string filePath, DryrunRequest content)
         {
-            var data = Encoder.EncodeToMsgPackOrdered(content);
+            var data = Algorand.Utils.Encoder.EncodeToMsgPackOrdered(content);
             File.WriteAllBytes("./V2/contract/" + filePath, data);
         }
 
@@ -410,7 +390,7 @@ namespace sdk_examples.contract
             var drr = new DryrunRequest()
             {
                 Txns = new List<SignedTransaction>() { signTx },
-                Accounts = new List<Algorand.Algod.Model.Account>() { cr, usr },
+                Accounts = new List<Account>() { cr, usr },
                 Sources = sources
             };
             return drr;
@@ -436,7 +416,7 @@ namespace sdk_examples.contract
 
         async static public Task ReadGlobalState(DefaultApi client, Account account, ulong? appId)
         {
-            var acctResponse = await client.AccountInformationAsync(account.Address.ToString(),null, null);
+            var acctResponse = await client.AccountInformationAsync(account.Address.ToString(), null, null);
             var createdApplications = acctResponse.CreatedApps;
             foreach (var app in createdApplications)
             {

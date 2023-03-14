@@ -3,9 +3,9 @@ using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
 using Algorand.Utils;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace sdk_examples
 {
@@ -13,63 +13,44 @@ namespace sdk_examples
     {
         public static async Task Main(params string[] args)
         {
-            string ALGOD_API_ADDR = "http://localhost:4001/";
-            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            string SRC_ACCOUNT = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
- 
-            if (ALGOD_API_ADDR.IndexOf("//") == -1)
-            {
-                ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
-            }
-        
-            string DEST_ADDR = "KV2XGKMXGYJ6PWYQA5374BYIQBL3ONRMSIARPCFCJEAMAHQEVYPB7PL3KU";
-            string DEST_ADDR2 = "OAMCXDCH7LIVYUF2HSNQLPENI2ZXCWBSOLUAOITT47E4FAMFGAMI4NFLYU";
+            string DEST_ADDR1 = "DVGHT4N3CNSN6SAJROZ2CI26VCB5L4GKAWIAWZQIA5RRLKTDRXIR27OURQ";
+            string DEST_ADDR2 = "OKG56GEYDGDR33TY2D7D37RCHCVQ7PGZL2DQKMPGA5LYYUQPKNBTQ5F3D4";
 
-            Account src = new Account(SRC_ACCOUNT);
+            var srcAccount = new Account("stone heavy gossip quick swing vast raw hover sock butter onion intact dune latin beef captain ceiling grape belt marble example broken sustain about cigar");
+
+            // Get a connection to the Sandbox node
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
-            TransactionParametersResponse transParams;
-            try
-            {
-                transParams = await algodApiInstance.TransactionParamsAsync();
-            }
-            catch (Algorand.ApiException e)
-            {
-                throw new Exception("Could not get params", e);
-            }
 
-            // let's create a transaction group
+            var transParams = await algodApiInstance.TransactionParamsAsync();
+
+            // Create a transaction group
             var amount = Utils.AlgosToMicroalgos(1);
-            var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(src.Address, new Address(DEST_ADDR), amount, "pay message", transParams);
-            var tx2 = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(src.Address, new Address(DEST_ADDR2), amount, "pay message", transParams);
+            var tx1 = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(srcAccount.Address, new Address(DEST_ADDR1), amount, "pay message", transParams);
+            var tx2 = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(srcAccount.Address, new Address(DEST_ADDR2), amount, "pay message", transParams);
 
-            Digest gid = TxGroup.ComputeGroupID(new Transaction[] { tx, tx2 });
-            tx.Group = gid;
-            tx2.Group = gid;
+            var groupID = TxGroup.ComputeGroupID(new Transaction[] { tx1, tx2 });
+            tx1.Group = groupID;
+            tx2.Group = groupID;
 
-            var signedTx = tx.Sign(src);
-            var signedTx2 = tx2.Sign(src);
+            var signedTx = tx1.Sign(srcAccount);
+            var signedTx2 = tx2.Sign(srcAccount);
+
+            var signedTxGroup = new List<SignedTransaction>() { signedTx, signedTx2 };
 
             try
             {
-              
-                List<SignedTransaction> group = new List<SignedTransaction>() { signedTx, signedTx2};
-
-                PostTransactionsResponse id; //this only returns the id of the 1st in the list (for backward compatibility apparently)
-                id = await algodApiInstance.TransactionsAsync(group);
-
-                Console.WriteLine("Successfully sent tx group with first tx id: " + id);
-                Console.WriteLine("Confirmed Round is: " +
-                    Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
+                var response = await algodApiInstance.TransactionsAsync(signedTxGroup);
+                var round = Utils.WaitTransactionToComplete(algodApiInstance, response.Txid).Result.ConfirmedRound;
+                Console.WriteLine($"Transaction ID: {response.Txid}\nConfirmed round: {round}");
             }
-            catch (Algorand.ApiException e)
+            catch (ApiException<ErrorResponse> e)
             {
-                // This is generally expected, but should give us an informative error message.
-                Console.WriteLine("Exception when calling algod#rawTransaction: " + e.Message);
+                Console.WriteLine(e.Result.Message);
             }
-            Console.WriteLine("You have successefully arrived the end of this test, please press and key to exist.");
-            Console.ReadKey();
         }
     }
 }

@@ -1,44 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
-using Algorand.Algod.Model.Transactions;
-using Algorand.Utils;
-using MessagePack;
 
 namespace sdk_examples
 {
+    // This SDK Example shows how to connect to the Algorand Sandbox node
+    // and retrieve information about an account.
     class AccountTest
     {
         public static async Task Main(string[] args)
         {
-            string ALGOD_API_ADDR = "http://localhost:4001/";
-            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            string SRC_ACCOUNT = "wave elevator silk crazy note convince adjust faculty above breeze shove cattle neither battle vacuum segment mean rent genre negative excess large coyote abandon wait";
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-            if (ALGOD_API_ADDR.IndexOf("//") == -1)
-            {
-                ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
-            }
+            // This boilerplate creates an Account object with a private key represented by a mnemnonic.
+            //
+            //   If using Sandbox, please use the following commands to replace the below mnemonic:
+            //   ./sandbox goal account list
+            //   ./sandbox goal account export -a <address>
+            var srcAccount = new Account("stone heavy gossip quick swing vast raw hover sock butter onion intact dune latin beef captain ceiling grape belt marble example broken sustain about cigar");
 
-
-
-
-
-            Account src = new Account(SRC_ACCOUNT);
-            Console.WriteLine("My account address is:" + src.Address.ToString());
+            // Create a connection to our sandbox node
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
-            var accountInfo = await algodApiInstance.AccountInformationAsync(src.Address.ToString(),null,null);
-            Console.WriteLine(string.Format("Account Balance: {0} microAlgos", accountInfo.Amount));
+            try
+            {
+                // Call the sandbox node via the http api to get information about our Account
+                var accountInfo = await algodApiInstance.AccountInformationAsync(srcAccount.Address.ToString(), null, null);
 
-            
-            
-            
-            Console.WriteLine("You have successefully arrived the end of this test, please press and key to exist.");
+                // Display the info
+                Console.WriteLine($"For account address {srcAccount.Address} the account balance is {accountInfo.Amount}");
+            }
+            catch (ApiException<ErrorResponse> apiException)
+            {
+                Console.WriteLine($"An error was returned by the Sandbox: {apiException.Result.Message}");
+            }
         }
     }
 }
