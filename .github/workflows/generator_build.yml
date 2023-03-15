@@ -62,8 +62,8 @@ jobs:
         # Get DocFx
         - name: Install Chocolatey
           uses: crazy-max/ghaction-chocolatey@v2.1.0
-        - name: Install DocFx
-          run: choco install docfx -y
+        - with:
+            args: install docfx -y
           
 
         
