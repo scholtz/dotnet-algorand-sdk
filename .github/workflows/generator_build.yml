@@ -56,8 +56,9 @@ jobs:
             dotnet-version: 3.1.402
         
         # Ensure Nuget is available
-        - name: Setup NuGet.exe
-          uses: NuGet/setup-nuget@v2
+        - name: Setup Nuget
+          uses: NuGet/setup-nuget@v1.1.1
+        
         
         # Install dependencies
         - name: Install dependencies
