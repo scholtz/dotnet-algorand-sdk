@@ -31,12 +31,12 @@ public partial class SimulateTransactionResult{
     [Newtonsoft.Json.JsonProperty("txn-result", Required = Newtonsoft.Json.Required.Always)]
     [System.ComponentModel.DataAnnotations.Required]
 #if UNITY
-    [field:SerializeField]
+    [field:SerializeReference]
     [Tooltip(@"Details about a pending transaction. If the transaction was recently confirmed, includes confirmation details like the round and reward details.")]
     [field:InspectorName(@"TxnResult")]
-    public PendingTransactionResponse TxnResult {get;set;}
+    public IReturnableTransaction TxnResult {get;set;}
 #else
-    public PendingTransactionResponse TxnResult {get;set;}
+    public IReturnableTransaction TxnResult {get;set;}
 #endif
 
 
