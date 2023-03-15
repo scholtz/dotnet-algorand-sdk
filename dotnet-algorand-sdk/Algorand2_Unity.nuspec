@@ -19,8 +19,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="C:\Users\frank\source\repos\dotnet-algorand-sdk\dotnet-algorand-sdk\bin\Unity\netstandard2.0\Algorand.dll" target="lib\netstandard2.0\Algorand.dll" />
-    <file src="C:\Users\frank\source\repos\dotnet-algorand-sdk\LICENSE" target="LICENSE" />
-    <file src="C:\Users\frank\source\repos\dotnet-algorand-sdk\README.md" target="\README.md" />
+    <file src="Algorand.dll" target="lib\netstandard2.0\Algorand.dll" />
+    <file src="LICENSE" target="LICENSE" />
+    <file src="README.md" target="\README.md" />
   </files>
 </package>
