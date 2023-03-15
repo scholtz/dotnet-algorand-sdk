@@ -1,4 +1,7 @@
-# This is the **HOMEPAGE**.
-Refer to [Markdown](http://daringfireball.net/projects/markdown/) for how to write markdown files.
-## Quick Start Notes:
-1. Add images to the *images* folder if the file is referencing an image.
+# Welcome to the .NET SDK.
+
+## API Documentation
+Please click on API Documentation above to get detailed information on the .NET SDK class library.
+
+## SDK Example
+For examples on how to use the .NET SDK please follow [the latest SDK Examples](https://github.com/FrankSzendzielarz/dotnet-algorand-sdk/tree/master/sdk-examples)

@@ -1,2 +1,6 @@
-# PLACEHOLDER
-TODO: Add .NET projects to the *src* folder and run `docfx` to generate **REAL** *API Documentation*!
+# API Documentation
+
+
+Welcome to the .NET SDK technical reference.
+
+The complete SDK technical documentation catalogue is available in the sidebar.
