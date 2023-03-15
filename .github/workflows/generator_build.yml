@@ -66,6 +66,7 @@ jobs:
           uses: chocolatey/choco
           with:
             args: install docfx -y
+
         
         # Install dependencies
         - name: Install dependencies
