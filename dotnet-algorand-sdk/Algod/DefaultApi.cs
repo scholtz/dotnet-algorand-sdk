@@ -67,14 +67,16 @@ namespace Algorand.Algod
         /// </summary>
         /// <param name="exclude">When set to `all` will exclude asset holdings, application local state, created
         /// asset parameters, any created application parameters. Defaults to `none`.</param>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Account> AccountInformationAsync(string address, string? exclude = null, Format? format = null);
 
         /// <param name="exclude">When set to `all` will exclude asset holdings, application local state, created
         /// asset parameters, any created application parameters. Defaults to `none`.</param>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Account> AccountInformationAsync(System.Threading.CancellationToken cancellationToken, string address, string? exclude = null, Format? format = null);
@@ -83,13 +85,15 @@ namespace Algorand.Algod
         /// account's asset holding and asset parameters (if either exist). Asset parameters
         /// will only be returned if the provided address is the asset's creator.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <param name="asset-id">An asset identifier</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AccountAssetResponse> AccountAssetInformationAsync(string address, ulong assetId, Format? format = null);
 
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <param name="asset-id">An asset identifier</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -100,13 +104,15 @@ namespace Algorand.Algod
         /// if either exists). Global state will only be returned if the provided address is
         /// the application's creator.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <param name="application-id">An application identifier</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AccountApplicationResponse> AccountApplicationInformationAsync(string address, ulong applicationId, Format? format = null);
 
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <param name="application-id">An application identifier</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -116,13 +122,15 @@ namespace Algorand.Algod
         /// decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending
         /// transactions.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
         /// <param name="address">An account public key</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PendingTransactions> GetPendingTransactionsByAddressAsync(string address, Format? format = null, ulong? max = null);
 
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
         /// <param name="address">An account public key</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -130,12 +138,14 @@ namespace Algorand.Algod
 
         /// <summary>Get the block for the given round.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="round">The round from which to fetch block information.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(ulong round, Format? format = null);
 
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="round">The round from which to fetch block information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null);
@@ -152,7 +162,8 @@ namespace Algorand.Algod
 
         /// <summary>Get a proof for a transaction in a block.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="hashtype">The type of hash function used to create the proof, must be one of:
         /// * sha512_256
         /// * sha256</param>
@@ -161,7 +172,8 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         System.Threading.Tasks.Task<TransactionProofResponse> GetTransactionProofAsync(ulong round, string txid, Format? format = null, string? hashtype = null);
 
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="hashtype">The type of hash function used to create the proof, must be one of:
         /// * sha512_256
         /// * sha256</param>
@@ -197,7 +209,7 @@ namespace Algorand.Algod
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<NodeStatusResponse> WaitForBlockAsync(System.Threading.CancellationToken cancellationToken, ulong round);
 
-        /// <summary>Broadcasts a raw transaction to the network.
+        /// <summary>Broadcasts a raw transaction or transaction group to the network.
         /// </summary>
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -206,6 +218,22 @@ namespace Algorand.Algod
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn);
+
+        /// <summary>Simulates a raw transaction or transaction group as it would be evaluated on the
+        /// network. The simulation will use blockchain state from the latest committed
+        /// round.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="rawtxn">The byte encoded transaction to simulate</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(List<SignedTransaction> rawtxn, Format? format = null);
+
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="rawtxn">The byte encoded transaction to simulate</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn, Format? format = null);
 
         /// <summary>Get parameters for constructing a new transaction
         /// </summary>
@@ -218,12 +246,14 @@ namespace Algorand.Algod
         /// <summary>Get the list of pending transactions, sorted by priority, in decreasing order,
         /// truncated at the end at MAX. If MAX = 0, returns all pending transactions.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PendingTransactions> GetPendingTransactionsAsync(Format? format = null, ulong? max = null);
 
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<PendingTransactions> GetPendingTransactionsAsync(System.Threading.CancellationToken cancellationToken, Format? format = null, ulong? max = null);
@@ -237,25 +267,31 @@ namespace Algorand.Algod
         /// Or the transaction may have happened sufficiently long ago that the node no
         /// longer remembers it, and this will return an error.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="txid">A transaction ID</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         System.Threading.Tasks.Task<IReturnableTransaction> PendingTransactionInformationAsync(string txid, Format? format = null);
 
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="txid">A transaction ID</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<IReturnableTransaction> PendingTransactionInformationAsync(System.Threading.CancellationToken cancellationToken, string txid, Format? format = null);
 
         /// <summary>Get ledger deltas for a round.
         /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="round">The round for which the deltas are desired.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaAsync(ulong round);
+        System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaAsync(ulong round, Format? format = null);
 
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="round">The round for which the deltas are desired.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaAsync(System.Threading.CancellationToken cancellationToken, ulong round);
+        System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null);
 
         /// <summary>Get a state proof that covers a given round
         /// </summary>
@@ -400,6 +436,14 @@ namespace Algorand.Algod
         /// <param name="request">Transaction (or group) and any accompanying state-simulation data.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<DryrunResponse> TealDryrunAsync(System.Threading.CancellationToken cancellationToken, DryrunRequest request);
+
+        /// <summary>Returns OK if experimental API is enabled.
+        /// </summary>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> ExperimentalCheckAsync();
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<string> ExperimentalCheckAsync(System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -862,7 +906,8 @@ namespace Algorand.Algod
         /// </summary>
         /// <param name="exclude">When set to `all` will exclude asset holdings, application local state, created
         /// asset parameters, any created application parameters. Defaults to `none`.</param>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Account> AccountInformationAsync(string address, string? exclude = null, Format? format = null)
@@ -875,7 +920,8 @@ namespace Algorand.Algod
         /// </summary>
         /// <param name="exclude">When set to `all` will exclude asset holdings, application local state, created
         /// asset parameters, any created application parameters. Defaults to `none`.</param>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -967,7 +1013,8 @@ namespace Algorand.Algod
         /// account's asset holding and asset parameters (if either exist). Asset parameters
         /// will only be returned if the provided address is the asset's creator.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <param name="asset-id">An asset identifier</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -980,7 +1027,8 @@ namespace Algorand.Algod
         /// account's asset holding and asset parameters (if either exist). Asset parameters
         /// will only be returned if the provided address is the asset's creator.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <param name="asset-id">An asset identifier</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1072,7 +1120,8 @@ namespace Algorand.Algod
         /// if either exists). Global state will only be returned if the provided address is
         /// the application's creator.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <param name="application-id">An application identifier</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1086,7 +1135,8 @@ namespace Algorand.Algod
         /// if either exists). Global state will only be returned if the provided address is
         /// the application's creator.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="address">An account public key</param>
         /// <param name="application-id">An application identifier</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1177,7 +1227,8 @@ namespace Algorand.Algod
         /// decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending
         /// transactions.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
         /// <param name="address">An account public key</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1190,7 +1241,8 @@ namespace Algorand.Algod
         /// decreasing order, truncated at the end at MAX. If MAX = 0, returns all pending
         /// transactions.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
         /// <param name="address">An account public key</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1281,7 +1333,8 @@ namespace Algorand.Algod
 
         /// <summary>Get the block for the given round.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="round">The round from which to fetch block information.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(ulong round, Format? format = null)
@@ -1291,7 +1344,8 @@ namespace Algorand.Algod
 
         /// <summary>>Get the block for the given round.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="round">The round from which to fetch block information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -1466,7 +1520,8 @@ namespace Algorand.Algod
 
         /// <summary>Get a proof for a transaction in a block.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="hashtype">The type of hash function used to create the proof, must be one of:
         /// * sha512_256
         /// * sha256</param>
@@ -1480,7 +1535,8 @@ namespace Algorand.Algod
 
         /// <summary>>Get a proof for a transaction in a block.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="hashtype">The type of hash function used to create the proof, must be one of:
         /// * sha512_256
         /// * sha256</param>
@@ -1835,7 +1891,7 @@ namespace Algorand.Algod
 
 
 
-        /// <summary>Broadcasts a raw transaction to the network.
+        /// <summary>Broadcasts a raw transaction or transaction group to the network.
         /// </summary>
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1844,7 +1900,7 @@ namespace Algorand.Algod
             return TransactionsAsync(System.Threading.CancellationToken.None, rawtxn);
         }
 
-        /// <summary>>Broadcasts a raw transaction to the network.
+        /// <summary>>Broadcasts a raw transaction or transaction group to the network.
         /// </summary>
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1891,6 +1947,110 @@ namespace Algorand.Algod
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<PostTransactionsResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
+        /// <summary>Simulates a raw transaction or transaction group as it would be evaluated on the
+        /// network. The simulation will use blockchain state from the latest committed
+        /// round.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="rawtxn">The byte encoded transaction to simulate</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(List<SignedTransaction> rawtxn, Format? format = null)
+        {
+            return SimulateTransactionAsync(System.Threading.CancellationToken.None, rawtxn, format);
+        }
+
+        /// <summary>>Simulates a raw transaction or transaction group as it would be evaluated on the
+        /// network. The simulation will use blockchain state from the latest committed
+        /// round.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="rawtxn">The byte encoded transaction to simulate</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn, Format? format = null)
+        {
+            if (rawtxn == null) throw new System.ArgumentNullException("rawtxn");
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/transactions/simulate?");
+            if (format != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    System.Net.Http.ByteArrayContent content_ = new System.Net.Http.ByteArrayContent(Encoder.EncodeToMsgPackOrdered(rawtxn));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/msgpack");
+                    request_.Content = content_;
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<SimulateResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -2014,7 +2174,8 @@ namespace Algorand.Algod
         /// <summary>Get the list of pending transactions, sorted by priority, in decreasing order,
         /// truncated at the end at MAX. If MAX = 0, returns all pending transactions.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<PendingTransactions> GetPendingTransactionsAsync(Format? format = null, ulong? max = null)
@@ -2025,7 +2186,8 @@ namespace Algorand.Algod
         /// <summary>>Get the list of pending transactions, sorted by priority, in decreasing order,
         /// truncated at the end at MAX. If MAX = 0, returns all pending transactions.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="max">Truncated number of transactions to display. If max=0, returns all pending txns.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -2120,7 +2282,8 @@ namespace Algorand.Algod
         /// Or the transaction may have happened sufficiently long ago that the node no
         /// longer remembers it, and this will return an error.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="txid">A transaction ID</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<IReturnableTransaction> PendingTransactionInformationAsync(string txid, Format? format = null)
@@ -2137,7 +2300,8 @@ namespace Algorand.Algod
         /// Or the transaction may have happened sufficiently long ago that the node no
         /// longer remembers it, and this will return an error.
         /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded.</param>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="txid">A transaction ID</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -2223,24 +2387,33 @@ namespace Algorand.Algod
 
         /// <summary>Get ledger deltas for a round.
         /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="round">The round for which the deltas are desired.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaAsync(ulong round)
+        public System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaAsync(ulong round, Format? format = null)
         {
-            return GetLedgerStateDeltaAsync(System.Threading.CancellationToken.None, round);
+            return GetLedgerStateDeltaAsync(System.Threading.CancellationToken.None, round, format);
         }
 
         /// <summary>>Get ledger deltas for a round.
         /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
         /// <param name="round">The round for which the deltas are desired.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaAsync(System.Threading.CancellationToken cancellationToken, ulong round)
+        public async System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null)
         {
             if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("v2/deltas/{round}");
+            urlBuilder_.Append("v2/deltas/{round}?");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
+            if (format != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -3398,6 +3571,91 @@ namespace Algorand.Algod
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<DryrunResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
+        /// <summary>Returns OK if experimental API is enabled.
+        /// </summary>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<string> ExperimentalCheckAsync()
+        {
+            return ExperimentalCheckAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <summary>>Returns OK if experimental API is enabled.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<string> ExperimentalCheckAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/experimental");
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);

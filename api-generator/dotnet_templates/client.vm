@@ -200,7 +200,7 @@ namespace Algorand.Algod
                      request_.Method = new System.Net.Http.HttpMethod("$q.method.toUpperCase()");
                      request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 #if($q.bodyParameters.size()>0)
-#if($q.Name=="RawTransaction" || $q.Name=="TealDryrun") 
+#if($q.Name=="RawTransaction" || $q.Name=="TealDryrun" || $q.Name=="SimulateTransaction" )
                      System.Net.Http.ByteArrayContent content_ = new System.Net.Http.ByteArrayContent(Encoder.EncodeToMsgPackOrdered($q.bodyParameters.get(0).propertyName));
                      content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/msgpack");
 #else
