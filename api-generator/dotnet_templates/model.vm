@@ -55,7 +55,7 @@ public partial class $className{
 #if ($className == "Account" && $prop.propertyName=="address") 
     #set( $propType = "Address" )
     #set( $propTypeUnity = "Address" )
-#elseif ( $prop.type == "PendingTransactionResponse" )
+#elseif ( $prop.type == "PendingTransactionResponse" || $prop.refType == "PendingTransactionResponse")
     #set( $propType = "IReturnableTransaction" )
     #set( $propTypeUnity = "IReturnableTransaction" )
     #set($unityAttrib = "[field:SerializeReference]" )

@@ -239,6 +239,102 @@ public partial class NodeStatusResponse{
 #endif
 
 
+
+    [Newtonsoft.Json.JsonProperty("upgrade-delay", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Upgrade delay")]
+    [field:InspectorName(@"UpgradeDelay")]
+    public ulong UpgradeDelay {get;set;}
+#else
+    public ulong? UpgradeDelay {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("upgrade-next-protocol-vote-before", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Next protocol round")]
+    [field:InspectorName(@"UpgradeNextProtocolVoteBefore")]
+    public ulong UpgradeNextProtocolVoteBefore {get;set;}
+#else
+    public ulong? UpgradeNextProtocolVoteBefore {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("upgrade-no-votes", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"No votes cast for consensus upgrade")]
+    [field:InspectorName(@"UpgradeNoVotes")]
+    public ulong UpgradeNoVotes {get;set;}
+#else
+    public ulong? UpgradeNoVotes {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("upgrade-node-vote", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"This node's upgrade vote")]
+    [field:InspectorName(@"UpgradeNodeVote")]
+    public bool UpgradeNodeVote {get;set;}
+#else
+    public bool? UpgradeNodeVote {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("upgrade-vote-rounds", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Total voting ounds for current upgrade")]
+    [field:InspectorName(@"UpgradeVoteRounds")]
+    public ulong UpgradeVoteRounds {get;set;}
+#else
+    public ulong? UpgradeVoteRounds {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("upgrade-votes", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Total votes cast for consensus upgrade")]
+    [field:InspectorName(@"UpgradeVotes")]
+    public ulong UpgradeVotes {get;set;}
+#else
+    public ulong? UpgradeVotes {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("upgrade-votes-required", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Yes votes required for consensus upgrade")]
+    [field:InspectorName(@"UpgradeVotesRequired")]
+    public ulong UpgradeVotesRequired {get;set;}
+#else
+    public ulong? UpgradeVotesRequired {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("upgrade-yes-votes", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Yes votes cast for consensus upgrade")]
+    [field:InspectorName(@"UpgradeYesVotes")]
+    public ulong UpgradeYesVotes {get;set;}
+#else
+    public ulong? UpgradeYesVotes {get;set;}
+#endif
+
+
     
 }
 
