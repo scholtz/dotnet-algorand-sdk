@@ -60,7 +60,7 @@ jobs:
           uses: NuGet/setup-nuget@v1.1.1
 
         # Get DocFx
-        - name: Install Chocolatey
+        - name: Install Docfx
           uses: crazy-max/ghaction-chocolatey@v2.1.0
           with:
             args: install docfx -y
