@@ -58,7 +58,10 @@ jobs:
         # Ensure Nuget is available
         - name: Setup Nuget
           uses: NuGet/setup-nuget@v1.1.1
-        
+
+        # Get DocFx
+        - name: docfx-action
+          uses: nikeee/docfx-action@v1.0.0
         
         # Install dependencies
         - name: Install dependencies
