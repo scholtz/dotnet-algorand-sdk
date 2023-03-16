@@ -9,7 +9,7 @@ public partial class DryrunResponse{
 
         public string ToJson()
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
         }
 
         public static DryrunResponse FromJson(string data)

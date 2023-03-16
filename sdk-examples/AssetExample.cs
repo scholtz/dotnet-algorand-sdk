@@ -22,39 +22,32 @@ namespace sdk_examples
             //   ./sandbox goal account list
             //   ./sandbox goal account export -a <address>
             //   Repeat the second command foreach account.
-            Account acct1 = new Account("shaft web sell outdoor brick above promote call disease gift fun course grief hurdle key bamboo choice camp law lucky bitter skill term able ignore");
-            Account acct2 = new Account("pipe want hockey shoulder gallery inner woman salute wrestle fashion define bonus broom start disease portion salt gesture measure prosper just draw engage ability dizzy");
-            Account acct3 = new Account("above magic coast refuse poet world deputy shield index fork race crawl olympic glare improve aware valid drill orchard invest topic vault spend abandon high");
+            Account acct1 = new Account("move sell junior vast verb stove bracket filter place child fame bone story science miss injury put cancel already session cheap furnace void able minimum");
+            Account acct2 = new Account("gravity maid again grass ozone execute exotic vapor fringe snack club monitor where jar pyramid receive tattoo science scene high sound degree bless above good");
+            Account acct3 = new Account("pencil ostrich net alpha need vivid elevator gadget bundle meadow flash hamster pig young ten clown before grace arch tennis absent knock peanut ability alarm");
 
             // Create a connection to our sandbox node
-            
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
             // PART 1: CREATE ASSET
-
             var ap = new AssetParams()
             {
                 Name = "Asset Name",
                 UnitName = "AST",
                 Total = 10000,
-
                 Manager = acct1.Address
             };
-
             var assetCreateTx = new AssetCreateTransaction()
             {
                 AssetParams = ap
             };
-
             var tx = await MakeTransaction(assetCreateTx, acct1, algodApiInstance) as AssetCreateTransaction;
-
             var assetId = (ulong)tx.AssetIndex;
             Console.WriteLine($"Asset id is {assetId}\n");
             var ast = await algodApiInstance.GetAssetByIDAsync(assetId);
 
             // PART 2: UPDATE ASSET PARAMETERS
-
             // Now that we have a reference to our asset, we can update its parameters
             // Let's change the asset manager for example
             Console.WriteLine($"Current manager: {ast.Params.Manager}\n");
@@ -64,46 +57,38 @@ namespace sdk_examples
             {
                 AssetParams = ast.Params
             };
-
             await MakeTransaction(assetUpdateTx, acct1, algodApiInstance); 
 
             ast = await algodApiInstance.GetAssetByIDAsync(assetId);
             Console.WriteLine($"Current manager: {ast.Params.Manager}\n");
 
             // PART 3: OPT INTO RECEIVING THE ASSET
-
             var assetOptInTx = new AssetAcceptTransaction()
             {
                 XferAsset = assetId,
                 AssetReceiver = acct3.Address
             };
-
             await MakeTransaction(assetOptInTx, acct3, algodApiInstance);
 
             // PART 4: TRANSFER ASSET
-
             var assetTransferTx = new AssetTransferTransaction()
             {
                 XferAsset = assetId,
                 AssetReceiver = acct3.Address,
                 AssetAmount = 100
             };
-
             await MakeTransaction(assetTransferTx, acct1, algodApiInstance);
 
             // PART 5: FREEZE ASSET
-
             var assetFreezeTx = new AssetFreezeTransaction()
             {
-                AssetFreezeID = assetId,
+                AssetFreezeId = assetId,
                 FreezeState = true,
                 FreezeTarget = acct3.Address,
             };
-
             await MakeTransaction(assetFreezeTx, acct2, algodApiInstance);
 
             // PART 6: ASSET CLAWBACK
-
             var artx = new AssetClawbackTransaction()
             {
                 XferAsset = assetId,
@@ -111,16 +96,13 @@ namespace sdk_examples
                 AssetReceiver = acct1.Address,
                 AssetAmount = 10
             };
-
             await MakeTransaction(artx, acct2, algodApiInstance);
 
             // PART 7: DESTROY ASSET
-
             var assetDestroyTx = new AssetDestroyTransaction()
             {
                 AssetIndex = assetId,
             };
-
             await MakeTransaction(assetDestroyTx, acct2, algodApiInstance);
         }
 
@@ -138,7 +120,7 @@ namespace sdk_examples
                 tx.FirstValid = transParams.LastRound;
                 tx.LastValid = transParams.LastRound + 1000;
                 tx.GenesisHash = new Digest(transParams.GenesisHash);
-                tx.GenesisID = transParams.GenesisId;
+                tx.GenesisId = transParams.GenesisId;
             }
             catch (HttpRequestException e)
             {

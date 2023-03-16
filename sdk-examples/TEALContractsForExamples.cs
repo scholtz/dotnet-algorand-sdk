@@ -1,9 +1,9 @@
-﻿namespace sdk_examples.contract
+﻿namespace sdk_examples
 {
     /// <summary>
     /// Helper class for accessing the TEAL Examples
     /// </summary>
-    static class TEALExamples
+    static class TEALContractsForExamples
     {
         public static string Sample()
         {

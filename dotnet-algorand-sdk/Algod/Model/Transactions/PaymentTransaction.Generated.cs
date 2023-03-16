@@ -48,16 +48,6 @@ public partial class PaymentTransaction : Transaction{
 
 
 
-    [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-#if UNITY
-    [field:SerializeField]
-    [Tooltip(@"")]
-    [field:InspectorName(@"Type")]
-    public string Type {get;set;}
-#else
-    public string Type {get;set;}
-#endif
-
 
     
 }

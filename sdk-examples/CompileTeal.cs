@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sdk_examples.contract
+namespace sdk_examples
 {
     public class CompileTeal
     {
@@ -18,7 +18,7 @@ namespace sdk_examples.contract
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
-            byte[] data = Encoding.ASCII.GetBytes(TEALExamples.Sample());
+            byte[] data = Encoding.ASCII.GetBytes(TEALContractsForExamples.Sample());
 
             using (var datams = new MemoryStream(data))
             {
