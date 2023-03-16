@@ -212,8 +212,7 @@ namespace Algorand
         /// <param name="version"></param>
         /// <param name="threshold"></param>
         /// <param name="publicKeys"></param>
-        public MultisigAddress(int version, int threshold,
-                List<Ed25519PublicKeyParameters> publicKeys)
+        public MultisigAddress(int version, int threshold, List<Ed25519PublicKeyParameters> publicKeys)
         {
             this.version = version;
             this.threshold = threshold;
