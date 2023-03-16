@@ -4,8 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>sdk_examples</RootNamespace>
-    <StartupObject>sdk_examples.KMDExample</StartupObject>
-    <Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity;Unity_debug</Configurations>
+    <StartupObject>sdk_examples.contract.StatefulContract</StartupObject>
+    <Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,27 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="contract\hello_world.teal">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="contract\hello_world_clear.teal">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="contract\hello_world_updated.teal">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="contract\sample.teal">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="contract\stateful_approval_init.teal">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="contract\stateful_approval_refact.teal">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="contract\stateful_clear.teal">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="V2\contract\hello_world.teal">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

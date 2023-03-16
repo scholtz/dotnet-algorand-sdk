@@ -15,67 +15,36 @@ namespace sdk_examples.contract
 
             string ALGOD_API_ADDR = "http://localhost:4001/";
             string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            if (ALGOD_API_ADDR.IndexOf("//") == -1)
-            {
-                ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
-            }
 
+            Account acct1 = new Account("shaft web sell outdoor brick above promote call disease gift fun course grief hurdle key bamboo choice camp law lucky bitter skill term able ignore");
+            Account acct2 = new Account("pipe want hockey shoulder gallery inner woman salute wrestle fashion define bonus broom start disease portion salt gesture measure prosper just draw engage ability dizzy");
 
-            string SRC_ACCOUNT = "lift gold aim couch filter amount novel scrap annual grow amazing pioneer disagree sense phrase menu unknown dolphin style blouse guide tell also about case";
-
-            Account acct1 = new Account(SRC_ACCOUNT);
-            byte[] program = Convert.FromBase64String("ASABASI="); //int 1
-                                                                   //byte[] program = Convert.FromBase64String("ASABACI="); //int 0
-
-
-            LogicsigSignature lsig = new LogicsigSignature(program, null);
-            
-
-            // sign the logic signaure with an account sk
-
-            lsig.Sign(acct1);
-            var contractSig = Convert.ToBase64String(lsig.Sig.Bytes);
-
-
-
-            string account2_mnemonic = "oval brown real consider grow someone impulse palace elegant code elegant victory observe nerve thunder trash mutual viable patient ask below imitate gallery able text";
-            Account acct2 = new Account(account2_mnemonic);
-
-
-
-            LogicsigSignature lsig2 = new LogicsigSignature(program, null, Convert.FromBase64String(contractSig));
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
-            Algorand.Algod.Model.TransactionParametersResponse transParams;
-            try
-            {
-                transParams = await algodApiInstance.TransactionParamsAsync();
-            }
-            catch (Algorand.ApiException e)
-            {
-                throw new Exception("Could not get params", e);
-            }
+            byte[] program = Convert.FromBase64String("ASABASI=");
+            var lsig1 = new LogicsigSignature(program);
+            lsig1.Sign(acct1);
 
-            var tx= PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct1.Address, acct2.Address,1000000, "draw algo with logic signature", transParams);
+            var contractSig = Convert.ToBase64String(lsig1.Sig.Bytes);
+            var lsig2 = new LogicsigSignature(program, null, Convert.FromBase64String(contractSig));
             
+            var transParams = await algodApiInstance.TransactionParamsAsync();
+            var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct1.Address, acct2.Address, 1000000, "draw algo with logic signature", transParams);
+
+            var signedTx = tx.Sign(lsig2);
+
             try
             {
-                //bypass verify for non-lsig
-                SignedTransaction signedTx = tx.Sign(lsig2);
-
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                Console.WriteLine("Successfully sent tx logic sig tx id: " + id);
+                var response = await Utils.SubmitTransaction(algodApiInstance, signedTx);
+                Console.WriteLine("Successfully sent tx logic sig tx id: " + response.Txid);
                 Console.WriteLine("Confirmed Round is: " +
-                        Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
+                        Utils.WaitTransactionToComplete(algodApiInstance, response.Txid).Result.ConfirmedRound);
             }
-            catch (Algorand.ApiException e)
+            catch (ApiException e)
             {
-                // This is generally expected, but should give us an informative error message.
                 Console.WriteLine("Exception when calling algod#rawTransaction: " + e.Message);
             }
-
-            Console.WriteLine("You have successefully arrived the end of this test, please press and key to exist.");
         }
     }
 }

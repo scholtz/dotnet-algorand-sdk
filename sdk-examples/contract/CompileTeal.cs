@@ -3,6 +3,7 @@ using Algorand.Algod;
 using Algorand.Algod.Model;
 using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace sdk_examples.contract
@@ -11,33 +12,21 @@ namespace sdk_examples.contract
     {
         public static async Task Main(string[] args)
         {
-            string ALGOD_API_ADDR = "http://localhost:4001/";
-            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-      
-            if (ALGOD_API_ADDR.IndexOf("//") == -1)
-            {
-                ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
-            }
-                
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
-            // read file - int 1
-            byte[] data = File.ReadAllBytes("contract\\sample.teal");
-            CompileResponse response;
+            byte[] data = Encoding.ASCII.GetBytes(TEALExamples.Sample());
+
             using (var datams = new MemoryStream(data))
             {
-                response = await algodApiInstance.TealCompileAsync(datams);
+                var response = await algodApiInstance.TealCompileAsync(datams);
+                Console.WriteLine("response: " + response);
+                Console.WriteLine("Hash: " + response.Hash);
+                Console.WriteLine("Result: " + response.Result);
             }
-
-            Console.WriteLine("response: " + response);
-            Console.WriteLine("Hash: " + response.Hash);
-            Console.WriteLine("Result: " + response.Result);
-            Console.ReadKey();
-
-            //result
-            //Hash: 6Z3C3LDVWGMX23BMSYMANACQOSINPFIRF77H7N3AWJZYV6OH6GWTJKVMXY
-            //Result: ASABASI=
         }
     }
 }

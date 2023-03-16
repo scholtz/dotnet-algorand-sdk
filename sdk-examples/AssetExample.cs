@@ -1,461 +1,175 @@
 ﻿using Algorand;
-using Algorand.Algod.Model.Transactions;
-using Algorand.Algod.Model;
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Algorand.Algod;
+using Algorand.Algod.Model;
+using Algorand.Algod.Model.Transactions;
 using Algorand.Utils;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System;
 
 namespace sdk_examples
 {
-    /// <summary>
-    /// Show Creating, modifying, sending and listing assets 
-    /// </summary>
     class AssetExample
     {
-        // Utility function for sending a raw signed transaction to the network        
-        public static async Task Main(params string[] args) //throws Exception
+        public static async Task Main(params string[] args)
         {
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-            /******************
-             * Initiate a connection.....
-             *********************/
+            // These will be our three accounts for the demonstration.
+            //
+            //   If using Sandbox, please use the following commands to replace the below mnemonics:
+            //   ./sandbox goal account list
+            //   ./sandbox goal account export -a <address>
+            //   Repeat the second command foreach account.
+            Account acct1 = new Account("shaft web sell outdoor brick above promote call disease gift fun course grief hurdle key bamboo choice camp law lucky bitter skill term able ignore");
+            Account acct2 = new Account("pipe want hockey shoulder gallery inner woman salute wrestle fashion define bonus broom start disease portion salt gesture measure prosper just draw engage ability dizzy");
+            Account acct3 = new Account("above magic coast refuse poet world deputy shield index fork race crawl olympic glare improve aware valid drill orchard invest topic vault spend abandon high");
 
-            string ALGOD_API_ADDR = "http://localhost:4001/";
-            string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            string SRC_ACCOUNT = "move sell junior vast verb stove bracket filter place child fame bone story science miss injury put cancel already session cheap furnace void able minimum";
-
-            if (ALGOD_API_ADDR.IndexOf("//") == -1)
-            {
-                ALGOD_API_ADDR = "http://" + ALGOD_API_ADDR;
-            }
-
+            // Create a connection to our sandbox node
+            
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
-            // Shown for demonstration purposes. NEVER reveal secret mnemonics in practice.
-            // These three accounts are for testing purposes
-            string account1_mnemonic = SRC_ACCOUNT;
-            string account2_mnemonic = "gravity maid again grass ozone execute exotic vapor fringe snack club monitor where jar pyramid receive tattoo science scene high sound degree bless above good";
-            string account3_mnemonic = "pencil ostrich net alpha need vivid elevator gadget bundle meadow flash hamster pig young ten clown before grace arch tennis absent knock peanut ability alarm";
+            // PART 1: CREATE ASSET
 
-            Account acct1 = new Account(account1_mnemonic);
-            Account acct2 = new Account(account2_mnemonic);
-            Account acct3 = new Account(account3_mnemonic);
-            // get last round and suggested tx fee
-            // We use these to get the latest round and tx fees
-            // These parameters will be required before every 
-            // Transaction
-            // We will account for changing transaction parameters
-            // before every transaction in this example
-            var transParams = await algodApiInstance.TransactionParamsAsync();
-
-            // The following parameters are asset specific
-            // and will be re-used throughout the example. 
-
-            // Create the Asset
-            // Total number of this asset available for circulation            
             var ap = new AssetParams()
             {
-             
-                Name =  "latikum22",
-                UnitName= "LAT",
-                Total= 10000,
-                Decimals= 0,
-                Url = @"http://this.test.com", 
-                MetadataHash = Encoding.ASCII.GetBytes("16efaa3924a6fd9d3a4880099a4ac65d"),
-                Manager = acct2.Address,
-                Freeze = acct1.Address
+                Name = "Asset Name",
+                UnitName = "AST",
+                Total = 10000,
+
+                Manager = acct1.Address
             };
 
-            // Specified address can change reserve, freeze, clawback, and manager
-            // you can leave as default, by default the sender will be manager/reserve/freeze/clawback
-            // the following code only set the freeze to acct1
-            var tx = new AssetCreateTransaction()
+            var assetCreateTx = new AssetCreateTransaction()
             {
-                AssetParams = ap,
-                 
-                FirstValid = transParams.LastRound,
-                GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisId = transParams.GenesisId,
-                LastValid = transParams.LastRound + 1000,
-                Note= Encoding.UTF8.GetBytes("asset tx message"),
-                Sender = acct1.Address,
-         
-                 
+                AssetParams = ap
             };
-            tx.SetFee(transParams.Fee);
-                
-            // Sign the Transaction by sender
-            SignedTransaction signedTx = tx.Sign(acct1);
-            // send the transaction to the network and
-            // wait for the transaction to be confirmed
-            ulong assetID = 0;
-            try
-            {
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                Console.WriteLine("Transaction ID: " + id.Txid);
-                var txCompleted = await Utils.WaitTransactionToComplete(algodApiInstance, id.Txid);
-                Console.WriteLine($"Confirmed Round is: {txCompleted.ConfirmedRound}");
-                // Now that the transaction is confirmed we can get the assetID
-                var ptx = await  algodApiInstance.PendingTransactionInformationAsync(id.Txid,null) as AssetCreateTransaction;
-                
-                if (ptx?.Committed??false) assetID = ptx.AssetIndex.Value;
-            }
-            catch (ApiException<ErrorResponse> e)
-            {
-                Console.WriteLine(e.Result.Message);
-                return;
-            }
-            Console.WriteLine("AssetID = " + assetID);
-            
-            
-            // now the asset already created
-            // Change Asset Configuration:
-            // Next we will change the asset configuration
-            // First we update standard Transaction parameters
-            // To account for changes in the state of the blockchain
-            transParams = await algodApiInstance.TransactionParamsAsync();
-            Asset ast = await algodApiInstance.GetAssetByIDAsync(assetID);
 
-            // Note that configuration changes must be done by
-            // The manager account, which is currently acct2
-            // Note in this transaction we are re-using the asset
-            // creation parameters and only changing the manager
-            // and transaction parameters like first and last round
-            // now update the manager to acct1
-            ast.Params.Manager = acct1.Address;
-            var autx = new AssetUpdateTransaction()
+            var tx = await MakeTransaction(assetCreateTx, acct1, algodApiInstance) as AssetCreateTransaction;
+
+            var assetId = (ulong)tx.AssetIndex;
+            Console.WriteLine($"Asset id is {assetId}\n");
+            var ast = await algodApiInstance.GetAssetByIDAsync(assetId);
+
+            // PART 2: UPDATE ASSET PARAMETERS
+
+            // Now that we have a reference to our asset, we can update its parameters
+            // Let's change the asset manager for example
+            Console.WriteLine($"Current manager: {ast.Params.Manager}\n");
+            ast.Params.Manager = acct2.Address;
+
+            var assetUpdateTx = new AssetUpdateTransaction()
             {
-                AssetParams = ast.Params,
-              
-                FirstValid = transParams.LastRound,
-                GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisId = transParams.GenesisId,
-                LastValid = transParams.LastRound + 1000,
-                Note = Encoding.UTF8.GetBytes("config trans"),
-                AssetIndex= assetID,
-                Sender = acct2.Address
+                AssetParams = ast.Params
             };
-            autx.SetFee(transParams.Fee);
 
+            await MakeTransaction(assetUpdateTx, acct1, algodApiInstance); 
 
-            // The transaction must be signed by the current manager account
-            // We are reusing the signedTx variable from the first transaction in the example    
-            signedTx = autx.Sign(acct2);
-            // send the transaction to the network and
-            // wait for the transaction to be confirmed
-            try
+            ast = await algodApiInstance.GetAssetByIDAsync(assetId);
+            Console.WriteLine($"Current manager: {ast.Params.Manager}\n");
+
+            // PART 3: OPT INTO RECEIVING THE ASSET
+
+            var assetOptInTx = new AssetAcceptTransaction()
             {
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                Console.WriteLine("Transaction ID: " + id.Txid);
-                Console.WriteLine("Confirmed Round is: " +
-                    Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
-            }
-            catch (ApiException<ErrorResponse> e)
+                XferAsset = assetId,
+                AssetReceiver = acct3.Address
+            };
+
+            await MakeTransaction(assetOptInTx, acct3, algodApiInstance);
+
+            // PART 4: TRANSFER ASSET
+
+            var assetTransferTx = new AssetTransferTransaction()
             {
-                Console.WriteLine(e.Result.Message);
-                return;
-            }
-
-            // Next we will list the newly created asset
-            // Get the asset information for the newly changed asset            
-            ast = await algodApiInstance.GetAssetByIDAsync(assetID);
-            //The manager should now be the same as the creator
-            Console.WriteLine(ast.Params.Manager);
-            Console.WriteLine(ast.Params.Creator);
-
-
-
-            // Opt in to Receiving the Asset
-            // Opting in to transact with the new asset
-            // All accounts that want recieve the new asset
-            // Have to opt in. To do this they send an asset transfer
-            // of the new asset to themseleves with an ammount of 0
-            // In this example we are setting up the 3rd recovered account to 
-            // receive the new asset        
-            // First we update standard Transaction parameters
-            // To account for changes in the state of the blockchain
-            transParams = await algodApiInstance.TransactionParamsAsync();
-
-            var aoitx = new AssetAcceptTransaction()
-            {
-                
-                FirstValid = transParams.LastRound,
-                GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisId = transParams.GenesisId,
-                LastValid = transParams.LastRound + 1000,
-                Note = Encoding.UTF8.GetBytes("opt in transaction"),
-                XferAsset = assetID,
+                XferAsset = assetId,
                 AssetReceiver = acct3.Address,
-                Sender = acct3.Address
+                AssetAmount = 100
             };
-            aoitx.SetFee(transParams.Fee);
 
-            // The transaction must be signed by the current manager account
-            // We are reusing the signedTx variable from the first transaction in the example    
-            signedTx = aoitx.Sign(acct3);
-            
-            // send the transaction to the network and
-            // wait for the transaction to be confirmed
-            Account act = null;
-            try
-            {
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                Console.WriteLine("Transaction ID: " + id.Txid);
-                Console.WriteLine("Confirmed Round is: " +
-                    Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
-                // We can now list the account information for acct3 
-                // and see that it can accept the new asseet
-                act  = await algodApiInstance.AccountInformationAsync(acct3.Address.ToString(),null,null);
-     
-            }
-            catch (ApiException<ErrorResponse> e)
-            {
-                Console.WriteLine(e.Result.Message);
-                return;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return;
-            }
+            await MakeTransaction(assetTransferTx, acct1, algodApiInstance);
 
-            // Transfer the Asset:
-            // Now that account3 can recieve the new asset 
-            // we can tranfer assets in from the creator
-            // to account3
-            // First we update standard Transaction parameters
-            // To account for changes in the state of the blockchain
-            transParams = await algodApiInstance.TransactionParamsAsync();
-            // Next we set asset xfer specific parameters
-            // We set the assetCloseTo to null so we do not close the asset out
-            Address assetCloseTo = new Address();
-            ulong assetAmount = 10;
+            // PART 5: FREEZE ASSET
 
-            var attx = new AssetTransferTransaction()
+            var assetFreezeTx = new AssetFreezeTransaction()
             {
-                AssetAmount = assetAmount,
-                FirstValid = transParams.LastRound,
-                GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisId = transParams.GenesisId,
-                LastValid = transParams.LastRound + 1000,
-                Note = Encoding.UTF8.GetBytes("opt in transaction"),
-                XferAsset = assetID,
-                AssetReceiver = acct3.Address,
-                Sender = acct1.Address
-            };
-            attx.SetFee(transParams.Fee);
-            //tx = Utils.GetTransferAssetTransaction(acct1.Address, acct3.Address, assetID, assetAmount, transParams, null, "transfer message");
-            // The transaction must be signed by the sender account
-
-            signedTx = attx.Sign(acct1);
-
-            // send the transaction to the network and
-            // wait for the transaction to be confirmed
-            try
-            {
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                Console.WriteLine("Transaction ID: " + id.Txid);
-                Console.WriteLine("Confirmed Round is: " +
-                    Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
-                // We can now list the account information for acct3 
-                // and see that it now has 5 of the new asset
-                act = await algodApiInstance.AccountInformationAsync(acct3.Address.ToString(),null,null);
-                Console.WriteLine(act.Assets.Where(h => h.AssetId == assetID).FirstOrDefault()?.Amount);
-            }
-            catch (ApiException<ErrorResponse> e)
-            {
-                Console.WriteLine(e.Result.Message);
-                return;
-            }
-            catch (Exception e)
-            {
-                //e.printStackTrace();
-                Console.WriteLine(e.Message);
-                return;
-            }
-
-            // Freeze the Asset:
-            // The asset was created and configured to allow freezing an account
-            // If the freeze address is blank, it will no longer be possible to do this.
-            // In this example we will now freeze account3 from transacting with the 
-            // The newly created asset. 
-            // Thre freeze transaction is sent from the freeze acount
-            // Which in this example is account2 
-            // First we update standard Transaction parameters
-            // To account for changes in the state of the blockchain
-            transParams = await algodApiInstance.TransactionParamsAsync();
-            
-            // Next we set asset xfer specific parameters
-            // The sender should be freeze account acct2
-            // Theaccount to freeze should be set to acct3
-            var aftx = new AssetFreezeTransaction()
-            {
-                
-                FirstValid = transParams.LastRound,
-                GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisId = transParams.GenesisId,
-                LastValid = transParams.LastRound + 1000,
-                Note = Encoding.UTF8.GetBytes("opt in transaction"),
-                AssetFreezeId = assetID,  
-                FreezeState=true,
+                AssetFreezeID = assetId,
+                FreezeState = true,
                 FreezeTarget = acct3.Address,
-                Sender = acct1.Address
             };
-            aftx.SetFee(transParams.Fee);
 
-            //tx = Utils.GetFreezeAssetTransaction(acct2.Address, acct3.Address, assetID, true, transParams, "freeze transaction");
+            await MakeTransaction(assetFreezeTx, acct2, algodApiInstance);
 
-            // The transaction must be signed by the freeze account acct2
-            signedTx = aftx.Sign(acct1);
-            // send the transaction to the network and
-            // wait for the transaction to be confirmed
-            try
-            {
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                Console.WriteLine("Transaction ID: " + id.Txid);
-                Console.WriteLine("Confirmed Round is: " +
-                    Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
-                // We can now list the account information for acct3 
-                // and see that it now frozen 
-                // Note--currently no getter method for frozen state
-                act = await algodApiInstance.AccountInformationAsync(acct3.Address.ToString(),null,null);
-                Console.WriteLine(act.Assets.Where(h => h.AssetId == assetID).FirstOrDefault());
-            }
-            catch (ApiException<ErrorResponse> e)
-            {
-                Console.WriteLine(e.Result.Message);
-                return;
-            }
-            catch (Exception e)
-            {
-                //e.printStackTrace();
-                Console.WriteLine(e.Message);
-                return;
-            }
-
-
-            // Revoke the asset:
-            // The asset was also created with the ability for it to be revoked by 
-            // clawbackaddress. If the asset was created or configured by the manager
-            // not allow this by setting the clawbackaddress to a blank address  
-            // then this would not be possible.
-            // We will now clawback the 10 assets in account3. Account2
-            // is the clawbackaccount and must sign the transaction
-            // The sender will be be the clawback adress.
-            // the recipient will also be be the creator acct1 in this case  
-            // First we update standard Transaction parameters
-            // To account for changes in the state of the blockchain
-            transParams = await algodApiInstance.TransactionParamsAsync();
-            // Next we set asset xfer specific parameters
-            assetAmount = 10;
-
-            //tx = Utils.GetRevokeAssetTransaction(acct2.Address, acct3.Address, acct1.Address, assetID, assetAmount, transParams, "revoke transaction");
+            // PART 6: ASSET CLAWBACK
 
             var artx = new AssetClawbackTransaction()
             {
-                
-                FirstValid = transParams.LastRound,
-                GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisId = transParams.GenesisId,
-                LastValid = transParams.LastRound + 1000,
-                Note = Encoding.UTF8.GetBytes("opt in transaction"),
-                XferAsset= assetID,
-                AssetSender= acct3.Address, //revoked from acct
-                AssetReceiver= acct1.Address, // recipient of clawback
-                AssetAmount = assetAmount,
-                Sender = acct2.Address      // initiator of clawback
+                XferAsset = assetId,
+                AssetSender = acct3.Address,
+                AssetReceiver = acct1.Address,
+                AssetAmount = 10
             };
-            artx.SetFee(transParams.Fee);
-            // The transaction must be signed by the clawback account
-            // We are reusing the signedTx variable from the first transaction in the example    
-            signedTx = artx.Sign(acct2);
-            // send the transaction to the network and
-            // wait for the transaction to be confirmed
+
+            await MakeTransaction(artx, acct2, algodApiInstance);
+
+            // PART 7: DESTROY ASSET
+
+            var assetDestroyTx = new AssetDestroyTransaction()
+            {
+                AssetIndex = assetId,
+            };
+
+            await MakeTransaction(assetDestroyTx, acct2, algodApiInstance);
+        }
+
+        static async Task<Transaction> MakeTransaction(Transaction tx, Account sender, DefaultApi apiInstance)
+        {
+            Console.WriteLine("Making transaction: " + tx.GetType().Name);
+
             try
             {
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                Console.WriteLine("Transaction ID: " + id);
-                Console.WriteLine("Confirmed Round is: " +
-                    Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
-                // We can now list the account information for acct3 
-                // and see that it now has 0 of the new asset
-                act = await algodApiInstance.AccountInformationAsync(acct3.Address.ToString(),null,null);
-                Console.WriteLine(act.Assets.Where(h => h.AssetId == assetID).FirstOrDefault()?.Amount);
+                // Get the prameters for constructing a new transaction.
+                // Required before every transaction in order to get the latest parameters from the blockchain.
+                var transParams = await apiInstance.TransactionParamsAsync();
+
+                tx.SetFee(transParams.Fee);
+                tx.FirstValid = transParams.LastRound;
+                tx.LastValid = transParams.LastRound + 1000;
+                tx.GenesisHash = new Digest(transParams.GenesisHash);
+                tx.GenesisID = transParams.GenesisId;
+            }
+            catch (HttpRequestException e)
+            {
+                Console.Error.WriteLine("Could not get transaction parameters response: " + e.Message);
+                Environment.Exit(1);
+            }
+
+            tx.Sender = sender.Address;
+
+            var signedTx = tx.Sign(sender);
+
+            try
+            {
+                var response = await Utils.SubmitTransaction(apiInstance, signedTx);
+                var result = await Utils.WaitTransactionToComplete(apiInstance, response.Txid);
+                Console.WriteLine($"Transaction ID: {response.Txid}\nConfirmed round: {result.ConfirmedRound}\n");
+
+                if (result is AssetCreateTransaction)
+                { 
+                    return result as AssetCreateTransaction;
+                }
+
+                return result;
             }
             catch (ApiException<ErrorResponse> e)
             {
-                Console.WriteLine(e.Result.Message);
-                return;
-            }
-            catch (Exception e)
-            {
-                //e.printStackTrace();
-                Console.WriteLine(e.Message);
-                return;
+                Console.Error.WriteLine(e.Result.Message);
+                Environment.Exit(1);
             }
 
-            // Destroy the Asset:
-            // All of the created assets should now be back in the creators
-            // Account so we can delete the asset.
-            // If this is not the case the asset deletion will fail
-            // The address for the from field must be the creator
-            // First we update standard Transaction parameters
-            // To account for changes in the state of the blockchain
-            transParams = await  algodApiInstance.TransactionParamsAsync();
-            // Next we set asset xfer specific parameters
-            // The manager must sign and submit the transaction
-            // This is currently set to acct1
-
-            var adtx = new AssetDestroyTransaction()
-            {
-                
-                FirstValid = transParams.LastRound,
-                GenesisHash = new Digest(transParams.GenesisHash),
-                GenesisId = transParams.GenesisId,
-                LastValid = transParams.LastRound + 1000,
-                Note = Encoding.UTF8.GetBytes("opt in transaction"),
-                AssetIndex= assetID,
-                Sender = acct2.Address      // initiator of clawback
-            };
-            adtx.SetFee(transParams.Fee);
-
-            //    tx = Utils.GetDestroyAssetTransaction(acct1.Address, assetID, transParams, "destroy transaction");
-            // The transaction must be signed by the manager account
-            signedTx = tx.Sign(acct1);
-
-            // send the transaction to the network and
-            // wait for the transaction to be confirmed
-            try
-            {
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                Console.WriteLine("Transaction ID: " + id);
-                //waitForTransactionToComplete(algodApiInstance, signedTx.transactionID);
-                //Console.ReadKey();
-                Console.WriteLine("Confirmed Round is: " +
-                    Utils.WaitTransactionToComplete(algodApiInstance, id.Txid).Result.ConfirmedRound);
-                // We can now list the account information for acct1 
-                // and see that the asset is no longer there
-                act = await algodApiInstance.AccountInformationAsync(acct1.Address.ToString(),null,null);
-                //Console.WriteLine("Does AssetID: " + assetID + " exist? " +
-                //    act.Thisassettotal.ContainsKey(assetID));
-            }
-            catch (ApiException<ErrorResponse> e)
-            {
-                Console.WriteLine(e.Result.Message);
-                return;
-            }
-            catch (Exception e)
-            {
-                //e.printStackTrace();
-                Console.WriteLine(e.Message);
-                return;
-            }
-            Console.WriteLine("You have successefully arrived the end of this test, please press and key to exist.");
+            return null;
         }
     }
 }
