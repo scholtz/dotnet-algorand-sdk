@@ -10,8 +10,9 @@ namespace Algorand.Algod.Model.Transactions
     public  partial class ApplicationDeleteTransaction : ApplicationCallTransaction
     {
 
-     
 
+        [JsonProperty(PropertyName = "apan")]
+        public OnCompletion OnCompletion => OnCompletion.Delete;
 
 
 

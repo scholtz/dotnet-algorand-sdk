@@ -8,28 +8,33 @@ using System.Threading.Tasks;
 
 namespace sdk_examples
 {
-    class ContractAccountExample
+    class LogicSignatureContractAccountExample
     {
         public static async Task Main(params string[] args)
         {
             var ALGOD_API_ADDR = "http://localhost:4001/";
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-            var destAddress = "7XVBE6T6FMUR6TI2XGSVSOPJHKQE2SDVPMFA3QUZNWM7IY6D4K2L23ZN2A";
 
+            var destAcc = new Account("gravity maid again grass ozone execute exotic vapor fringe snack club monitor where jar pyramid receive tattoo science scene high sound degree bless above good");
+            
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
             var transParams = await algodApiInstance.TransactionParamsAsync();
             
 
-            // format and send logic sig
+            // logic sig that simply approves
             byte[] program = Convert.FromBase64String("ASABASI=");
             LogicsigSignature lsig = new LogicsigSignature(program);
             Console.WriteLine("Escrow address: " + lsig.Address.ToString());
 
-            var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(lsig.Address, new Address(destAddress), 10000000, "draw algo from contract", transParams);
+            //pay to the escrow address
+            var payEscrow = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(destAcc.Address, lsig.Address, 11000000, "send algo to contract", transParams);
+            var payEscrowTx = payEscrow.Sign(destAcc);
 
+            // pay from the escrow address
+            var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(lsig.Address, destAcc.Address, 10000000, "draw algo from contract", transParams);
             if (!lsig.Verify(tx.Sender))
             {
                 Console.WriteLine("Verification failed");
@@ -38,7 +43,9 @@ namespace sdk_examples
 
             try
             {
-                var signedTx = tx.Sign(lsig);
+                await Utils.SubmitTransaction(algodApiInstance, payEscrowTx);//Fund the escrow
+
+                var signedTx = tx.Sign(lsig); // sign the payment from the logic signature address with the logic sig itself
                 var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
                 Console.WriteLine("Successfully sent tx logic sig tx id: " + id);
                 Console.WriteLine("Confirmed Round is: " +
@@ -46,7 +53,7 @@ namespace sdk_examples
             }
             catch (ApiException<ErrorResponse> e)
             {
-                // This is generally expected, but should give us an informative error message.
+                // This is expected, but should give us an informative error message.
                 Console.WriteLine("Exception when calling algod#sendTransaction: " + e.Result.Message);
             }
         }

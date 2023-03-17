@@ -40,6 +40,8 @@ namespace Algorand.Algod.Model.Transactions
 
         public bool ShouldSerializeLease() { return Lease?.Length > 0; }
 
+        public bool ShouldSerializeGenesisId() { return GenesisId?.Length > 0; }
+
         private byte[] _lease { get; set; }
 #if UNITY
     [field:SerializeField]

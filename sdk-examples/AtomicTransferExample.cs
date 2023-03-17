@@ -16,10 +16,10 @@ namespace sdk_examples
             var ALGOD_API_ADDR = "http://localhost:4001/";
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-            string DEST_ADDR1 = "DVGHT4N3CNSN6SAJROZ2CI26VCB5L4GKAWIAWZQIA5RRLKTDRXIR27OURQ";
-            string DEST_ADDR2 = "OKG56GEYDGDR33TY2D7D37RCHCVQ7PGZL2DQKMPGA5LYYUQPKNBTQ5F3D4";
+            string DEST_ADDR1 = "5KFWCRTIJUMDBXELQGMRBGD2OQ2L3ZQ2MB54KT2XOQ3UWPKUU4Y7TQ4X7U";
+            string DEST_ADDR2 = "7AWVMMX56YR4IG62WRZMULUUQ7ZWQNAKVBGSWMXUYRRWEAOZ27XVRORTGM";
 
-            var srcAccount = new Account("stone heavy gossip quick swing vast raw hover sock butter onion intact dune latin beef captain ceiling grape belt marble example broken sustain about cigar");
+            var srcAccount = new Account("move sell junior vast verb stove bracket filter place child fame bone story science miss injury put cancel already session cheap furnace void able minimum");
 
             // Get a connection to the Sandbox node
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);

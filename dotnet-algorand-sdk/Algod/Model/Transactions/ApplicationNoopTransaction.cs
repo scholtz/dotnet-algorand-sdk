@@ -14,7 +14,8 @@ namespace Algorand.Algod.Model.Transactions
     public partial class ApplicationNoopTransaction : ApplicationCallTransaction
     {
 
-
+        [JsonProperty(PropertyName = "apan")]
+        public OnCompletion OnCompletion => OnCompletion.Noop;
 
 
 

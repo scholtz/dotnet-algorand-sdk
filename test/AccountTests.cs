@@ -2,6 +2,7 @@ using Algorand;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
 using Algorand.Utils;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using Org.BouncyCastle.Crypto.Parameters;
 using System;
@@ -37,6 +38,13 @@ namespace test
             SignedTransaction signedTx = tx.Sign(account);
             byte[] signedTxBytes = Encoder.EncodeToMsgPackOrdered(signedTx);
             string signedTxHex = Encoder.EncodeToHexStr(signedTxBytes);
+
+            //debug
+            var bytes = Encoder.HexStringToByteArray(REF_SIG_TXN);
+            var txn = Encoder.DecodeFromMsgPack<SignedTransaction>(bytes);
+            var reft=JsonConvert.SerializeObject(txn, Formatting.Indented);
+            var sgnt=JsonConvert.SerializeObject(signedTx,Formatting.Indented);
+
 
             Assert.AreEqual(signedTxHex, REF_SIG_TXN);
 
@@ -104,39 +112,39 @@ namespace test
         //        Assert.AreEqual(account.ToMnemonic(), FROM_SK);
         //    }
 
-        //    private MultisigAddress makeTestMsigAddr()
-        //    {
-        //        Address one = new Address("DN7MBMCL5JQ3PFUQS7TMX5AH4EEKOBJVDUF4TCV6WERATKFLQF4MQUPZTA");
-        //        Address two = new Address("BFRTECKTOOE7A5LHCF3TTEOH2A7BW46IYT2SX5VP6ANKEXHZYJY77SJTVM");
-        //        Address three = new Address("47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU");
-        //        return new MultisigAddress(1, 2, new List<Ed25519PublicKeyParameters>
-        //        {
-        //            new Ed25519PublicKeyParameters(one.Bytes, 0),
-        //            new Ed25519PublicKeyParameters(two.Bytes, 0),
-        //            new Ed25519PublicKeyParameters(three.Bytes, 0),
-        //        });
-        //    }
+        private MultisigAddress makeTestMsigAddr()
+        {
+            Address one = new Address("DN7MBMCL5JQ3PFUQS7TMX5AH4EEKOBJVDUF4TCV6WERATKFLQF4MQUPZTA");
+            Address two = new Address("BFRTECKTOOE7A5LHCF3TTEOH2A7BW46IYT2SX5VP6ANKEXHZYJY77SJTVM");
+            Address three = new Address("47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU");
+            return new MultisigAddress(1, 2, new List<Ed25519PublicKeyParameters>
+                {
+                    new Ed25519PublicKeyParameters(one.Bytes, 0),
+                    new Ed25519PublicKeyParameters(two.Bytes, 0),
+                    new Ed25519PublicKeyParameters(three.Bytes, 0),
+                });
+        }
 
-        //    [Test]
-        //    public void testSignMultisigTransaction()
-        //    {
-        //        MultisigAddress addr = makeTestMsigAddr();
+        //[test]
+        //public void testsignmultisigtransaction()
+        //{
+        //    multisigaddress addr = maketestmsigaddr();
 
-        //        // build unsigned transaction
-        //        var tx = new Transaction(addr.ToAddress(), 217000, 972508, 973508,
-        //            Convert.FromBase64String("tFF5Ofz60nE="), 5000,
-        //            new Address("DN7MBMCL5JQ3PFUQS7TMX5AH4EEKOBJVDUF4TCV6WERATKFLQF4MQUPZTA"),
-        //            "testnet-v31.0", new Digest());
+        //    // build unsigned transaction
+        //    var tx = new paymenttransaction(addr.toaddress(), 217000, 972508, 973508,
+        //        convert.frombase64string("tff5ofz60ne="), 5000,
+        //        new address("dn7mbmcl5jq3pfuqs7tmx5ah4eekobjvduf4tcv6weratkflqf4mqupzta"),
+        //        "testnet-v31.0", new digest());
 
-        //        byte[] seed = Mnemonic.ToKey("auction inquiry lava second expand liberty glass involve ginger illness length room item discover ahead table doctor term tackle cement bonus profit right above catch");
-        //        Account account = new Account(seed);
-        //        SignedTransaction stx = account.SignMultisigTransaction(addr, tx);
-        //        byte[] enc = Encoder.EncodeToMsgPack(stx);
+        //    byte[] seed = mnemonic.tokey("auction inquiry lava second expand liberty glass involve ginger illness length room item discover ahead table doctor term tackle cement bonus profit right above catch");
+        //    account account = new account(seed);
+        //    signedtransaction stx = account.signmultisigtransaction(addr, tx);
+        //    byte[] enc = encoder.encodetomsgpack(stx);
 
-        //        // check main signature is correct
-        //        byte[] golden = Convert.FromBase64String("gqRtc2lng6ZzdWJzaWeTgqJwa8QgG37AsEvqYbeWkJfmy/QH4QinBTUdC8mKvrEiCairgXihc8RAdvZ3y9GsInBPutdwKc7Jy+an13CcjSV1lcvRAYQKYOxXwfgT5B/mK14R57ueYJTYyoDO8zBY6kQmBalWkm95AIGicGvEIAljMglTc4nwdWcRdzmRx9A+G3PIxPUr9q/wGqJc+cJxgaJwa8Qg5/D4TQaBHfnzHI2HixFV9GcdUaGFwgCQhmf0SVhwaKGjdGhyAqF2AaN0eG6Jo2FtdM0TiKNmZWXOAANPqKJmds4ADtbco2dlbq10ZXN0bmV0LXYzMS4womx2zgAO2sSkbm90ZcQItFF5Ofz60nGjcmN2xCAbfsCwS+pht5aQl+bL9AfhCKcFNR0LyYq+sSIJqKuBeKNzbmTEII2StImQAXOgTfpDWaNmamr86ixCoF3Zwfc+66VHgDfppHR5cGWjcGF5");
-        //        Assert.AreEqual(enc, golden);
-        //    }
+        //    // check main signature is correct
+        //    byte[] golden = convert.frombase64string("gqrtc2lng6zzdwjzawetgqjwa8qgg37asevqybewkjfmy/qh4qinbtudc8mkvreicairgxihc8radvz3y9gsinbputdwkc7jy+an13ccjsv1lcvrayqkyoxxwfgt5b/mk14r57ueyjtyyodo8zby6kqmbalwkm95aigicgveialjmgltc4nwdwcrdzmrx9a+g3pixpur9q/wgqjc+cjxgajwa8qg5/d4tqabhfnzhi2hixfv9gcduagfwgcqhmf0svhwakgjdghyaqf2aan0eg6jo2ftdm0tiknmzwxoaanpqkjmds4adtbco2dlbq10zxn0bmv0lxyzms4womx2zgao2sskbm90zcqitff5ofz60ngjcmn2xcabfscws+pht5aql+bl9afhckcfnr0lyyq+ssijqkubeknzbmteii2stimqaxogtfpdwanmamr86ixcof3zwfc+66vhgdfpphr5cgwjcgf5");
+        //    assert.areequal(enc, golden);
+        //}
 
         //[Test]
         //public void testDecodeSignedTransaction()
