@@ -85,7 +85,7 @@ jobs:
             name: my-nuget-packages
             path: |
               dotnet-algorand-sdk/bin/Release/*.nupkg
-              dotnet-algorand-sdk/bin/Unity/*.nupkg
+              dotnet-algorand-sdk/bin/Unity/netstandard2.0/*.nupkg
 
         # Verify 
         - name: Verify Contents
