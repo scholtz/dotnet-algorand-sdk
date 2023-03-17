@@ -1,13 +1,19 @@
 
+# .NET Algorand SDK (v2)
 
+The .NET Algorand SDK is a dotnet library for communicating and interacting with the Algorand network from .NET applications. There is also a Unity build which offers a 'wrapped' single assembly (avoiding library conflicts with the Unity environment) and tooltip/serialization compatibility.
 
-# Dotnet Algorand SDK
+**For full documentation and SDK examples please visit the [technical documentation](https://frankszendzielarz.github.io/dotnet-algorand-sdk/api/index.html)**
 
-The dotnet-algorand-skd is a dotnet library for communicating and interacting with the Algorand network.
+Important release note: For this version KMD has been reworked completely, and is a breaking change. There is now full integration with Algorand/Generator, which led to minor capitalisation changes in some fields. The "shape" of the SDK is now stable.
 
-Interaction with the Algorand network is carried out mainly via the Algod HTTP API and Indexer HTTP API endpoints. This SDK offers API clients for both of those endpoints.
+## General Usage
 
 Most operations involve producing, submitting and examining the status of transactions. To help achieve this the SDK offers a class model (Algod/Model/Transactions) of Algorand transactions and their properties. Transactions can then be instantiated, signed, sent and read back using this model. There are additional utility methods, such as on the Account class, which simplify tasks like signing the transaction and correlating transaction identifiers.
+
+The SDK offers client proxies and an HttpClientConfigurator. To interact with the Algorand network, you muse either have the Sandbox running, or have access to an Algod node.
+
+The KMD client allows for use of the local node as a key store. The Sandbox comes with a default "wallet" containing three accounts. 
 
 The Indexer client is used for connecting to the Algorand Indexer, which offers a predefined set of queries over a Postgres database of Algorand Blocks and Transactions. In this SDK the Indexer client and entity model is separate from Algod, mainly because the model in Indexer is expected to be an ongoing superset of fields and properties over historical versions of the model. For example, if a field becomes redundant, changes meaning, or is split into new fields, the Indexer model will continue to offer the historical view.
 
@@ -22,7 +28,7 @@ Or from Project -> Manage NuGet Packages
 
 The Nuget package is here <https://www.nuget.org/packages/Algorand2/>
 
-UPDATE: There is now a Unity build at <https://www.nuget.org/packages/Algorand2_Unity/1.0.0.10>
+The Unity build is at <https://www.nuget.org/packages/Algorand2_Unity/>
 
 The Unity build allows the DLL to be used directly in Unity without Newtonsoft or Codedom conflicts.
 It also offers a new optional parameter to HttpClientConfigurator allowing a shim to be injected
@@ -34,11 +40,7 @@ This legacy implementation is due for replacement. The KMD API as is is barely f
 uses the RestSharp client, and is not connected to Algorand Codegen. Please expect
 the KMD API to be completely changed in the coming months.
 
-## Quick Start
-
-For a set of working examples please see the sdk-examples project.
-
-### Get a node and account(s) 
+## Getting a node and account(s) 
 To get working with the Algorand network you will need access to a node. There are a number of ways to do this. The quickest ways of getting set up are to rent access to a node from a service like PureStake, or to install the Algorand Sandbox.
 
 To install the Algorand Sandbox please see instructions here: <https://github.com/algorand/sandbox>
@@ -192,49 +194,4 @@ The above submits our transaction, gets the id, sends that back to the node and 
 
 That's it! You have used .NET to interact with Algorand, work a bit with Accounts and send a payment from one account to another.
 
-## 4. Quick Start for Indexer
 
-As we all know blockchain has a chain data struct, so it's very different for us to search the data. So algorand retrieve the blockchain data from a PostgreSQL compatible database. Then we can search for the blockchain very easily.
-
-![Algorand Indexer](indexerv2.png)
-
-The indexer has 12 methods to search the blockchain and some of these methods have a lot of variables to control the result. Let's try some code.
-
-```csharp
-string ALGOD_API_ADDR = "your algod api address";
-string ALGOD_API_TOKEN = "your algod api token";
-
-IndexerApi indexer = new IndexerApi(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-//AlgodApi algodApiInstance = new AlgodApi(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-var health = indexer.MakeHealthCheck();
-Console.WriteLine("Make Health Check: " + health.ToJson());
-
-System.Threading.Thread.Sleep(1200); //test in purestake, imit 1 req/sec
-var address = "KV2XGKMXGYJ6PWYQA5374BYIQBL3ONRMSIARPCFCJEAMAHQEVYPB7PL3KU";
-var acctInfo = indexer.LookupAccountByID(address);
-Console.WriteLine("Look up account by id: " + acctInfo.ToJson());
-
-System.Threading.Thread.Sleep(1200); //test in purestake, limit 1 req/sec
-var transInfos = indexer.LookupAccountTransactions(address, 10);
-Console.WriteLine("Look up account transactions(limit 10): " + transInfos.ToJson());
-
-System.Threading.Thread.Sleep(1200); //test in purestake, limit 1 req/sec
-var appsInfo = indexer.SearchForApplications(limit: 10);
-Console.WriteLine("Search for application(limit 10): " + appsInfo.ToJson());
-
-var appIndex = appsInfo.Applications[0].Id;
-System.Threading.Thread.Sleep(1200); //test in purestake, limit 1 req/sec
-var appInfo = indexer.LookupApplicationByID(appIndex);
-Console.WriteLine("Look up application by id: " + appInfo.ToJson());
-
-System.Threading.Thread.Sleep(1200); //test in purestake, limit 1 req/sec
-var assetsInfo = indexer.SearchForAssets(limit: 10, unit: "LAT");
-Console.WriteLine("Search for assets" + assetsInfo.ToJson());
-
-var assetIndex = assetsInfo.Assets[0].Index;
-System.Threading.Thread.Sleep(1200); //test in purestake, limit 1 req/sec
-var assetInfo = indexer.LookupAssetByID(assetIndex);
-Console.WriteLine("Look up asset by id:" + assetInfo.ToJson());
-```
-
-Please enjoy!!!
