@@ -111,7 +111,7 @@ namespace Algorand.Utils
             var settings = new JsonSerializerSettings()
             {
                 DefaultValueHandling = DefaultValueHandling.Ignore,
-                Formatting = Formatting.None
+                Formatting = Formatting.Indented
             };
             var ostr = JsonConvert.SerializeObject(o, settings);
             return ostr;

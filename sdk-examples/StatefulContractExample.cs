@@ -19,8 +19,8 @@ namespace sdk_examples
             string ALGOD_API_ADDR = "http://localhost:4001/";
             string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-            var creator = new Account("shaft web sell outdoor brick above promote call disease gift fun course grief hurdle key bamboo choice camp law lucky bitter skill term able ignore");
-            var user = new Account("pipe want hockey shoulder gallery inner woman salute wrestle fashion define bonus broom start disease portion salt gesture measure prosper just draw engage ability dizzy");
+            var creator = new Account("move sell junior vast verb stove bracket filter place child fame bone story science miss injury put cancel already session cheap furnace void able minimum");
+            var user = new Account("gravity maid again grass ozone execute exotic vapor fringe snack club monitor where jar pyramid receive tattoo science scene high sound degree bless above good");
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
@@ -29,7 +29,7 @@ namespace sdk_examples
             ulong localInts = 1;
             ulong localBytes = 1;
             ulong globalInts = 1;
-            ulong globalBytes = 0;
+            ulong globalBytes =  0;
 
             // user declared approval program (initial)
             string approvalProgramSourceInitial = TEALContractsForExamples.StatefulApprovalInit(creator.Address.ToString());
@@ -202,6 +202,8 @@ namespace sdk_examples
                     GlobalStateSchema = new StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes },
                     LocalStateSchema = new StateSchema() { NumUint = localInts, NumByteSlice = localBytes }
                 };
+
+                var dbg=Algorand.Utils.Encoder.EncodeToJson(tx);
 
                 var signedTx = tx.Sign(creator);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
