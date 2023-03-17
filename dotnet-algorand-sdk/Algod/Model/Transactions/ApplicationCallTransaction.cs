@@ -17,9 +17,9 @@ namespace Algorand.Algod.Model.Transactions
         public string type => "appl";
 
         public bool ShouldSerializeAccounts() { return Accounts?.Count > 0; }
-        public bool ShouldSerializeApplicationargs() { return ApplicationArgs?.Count > 0; }
-        public bool ShouldSerializeForeignapps() { return ForeignApps?.Count > 0; }
-        public bool ShouldSerializeForeignassets() { return ForeignAssets?.Count > 0; }
+        public bool ShouldSerializeApplicationArgs() { return ApplicationArgs?.Count > 0; }
+        public bool ShouldSerializeForeignApps() { return ForeignApps?.Count > 0; }
+        public bool ShouldSerializeForeignAssets() { return ForeignAssets?.Count > 0; }
 
         [JsonIgnore]
         public ICollection<IReturnableTransaction> InnerTxns { get; internal set; }

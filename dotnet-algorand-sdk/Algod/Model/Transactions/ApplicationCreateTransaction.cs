@@ -13,7 +13,7 @@ namespace Algorand.Algod.Model.Transactions
     public partial class ApplicationCreateTransaction : ApplicationNoopTransaction
     {
 
-        public bool ShouldSerializeGlobalstateschema()
+        public bool ShouldSerializeGlobalStateSchema()
         {
             return GlobalStateSchema.NumByteSlice != 0 || GlobalStateSchema.NumUint != 0;
         }

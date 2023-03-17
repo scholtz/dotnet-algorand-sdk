@@ -345,7 +345,7 @@ namespace sdk_examples
                     var outStr = "    Global state: ";
                     foreach (var v in resp.GlobalStateDelta)
                     {
-                        outStr += v.ToString();
+                        outStr += Algorand.Utils.Encoder.EncodeToJson(v);
                     }
                     Console.WriteLine(outStr);
                 }
@@ -354,7 +354,7 @@ namespace sdk_examples
                     var outStr = "    Local state: ";
                     foreach (var v in resp.LocalStateDelta)
                     {
-                        outStr += v.ToString();
+                        outStr += Algorand.Utils.Encoder.EncodeToJson(v);
                     }
                     Console.WriteLine(outStr);
                 }
@@ -376,7 +376,7 @@ namespace sdk_examples
                     var outStr = "User's application local state: ";
                     foreach (var v in state.KeyValue)
                     {
-                        outStr += v.ToString();
+                        outStr += Algorand.Utils.Encoder.EncodeToJson(v);
                     }
                     Console.WriteLine(outStr);
                 }
@@ -394,7 +394,7 @@ namespace sdk_examples
                     var outStr = "Application global state: ";
                     foreach (var v in app.Params.GlobalState)
                     {
-                        outStr += v.ToString();
+                        outStr += Algorand.Utils.Encoder.EncodeToJson(v);
                     }
                     Console.WriteLine(outStr);
                 }
