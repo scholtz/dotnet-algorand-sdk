@@ -7,12 +7,12 @@ namespace Algorand.Algod.Model.Transactions
     {
         public bool ShouldSerializeNumByteSlice()
         {
-            return (NumByteSlice??0) != 0 ;
+            return NumByteSlice != 0 ;
         }
 
         public bool ShouldSerializeNumUint()
         {
-            return (NumUint ?? 0) != 0;
+            return NumUint  != 0;
         }
     }
 }

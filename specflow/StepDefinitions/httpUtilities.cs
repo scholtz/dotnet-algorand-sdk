@@ -1,6 +1,7 @@
 ﻿using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
+using Algorand.KMD;
 using System.Net.Http;
 using TechTalk.SpecFlow;
 
@@ -16,7 +17,7 @@ namespace specflow.StepDefinitions
 
         internal static DefaultApi algodDefaultApiInstance;
 
-        internal static Algorand.Kmd.Api.DefaultApi kmdApi;
+        internal static Algorand.KMD.Api kmdApi;
 
         [Given("mock server recording request paths")]
         public void MockServerRecordingRequestPaths()
@@ -35,8 +36,14 @@ namespace specflow.StepDefinitions
 
         public static void setUpKmd()
         {
-            if (kmdApi == null) kmdApi = new Algorand.Kmd.Api.DefaultApi("http://localhost:60001");
-            kmdApi.Configuration.AddApiKey("X-KMD-API-Token", ALGOD_API_TOKEN);
+            if (kmdApi == null)
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("X-KMD-API-Token", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+                kmdApi = new Api(client);
+                kmdApi.BaseUrl = @"http://localhost:4002";
+            }
         }
     }
 }
