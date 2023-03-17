@@ -5916,45 +5916,45 @@ references:
   isSpec: "True"
   fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeAccounts
   nameWithType: ApplicationCallTransaction.ShouldSerializeAccounts
-- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationargs
-  name: ShouldSerializeApplicationargs()
-  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeApplicationargs
-  commentId: M:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationargs
-  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationargs()
-  nameWithType: ApplicationCallTransaction.ShouldSerializeApplicationargs()
-- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationargs*
-  name: ShouldSerializeApplicationargs
-  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeApplicationargs_
-  commentId: Overload:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationargs
+- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationArgs
+  name: ShouldSerializeApplicationArgs()
+  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeApplicationArgs
+  commentId: M:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationArgs
+  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationArgs()
+  nameWithType: ApplicationCallTransaction.ShouldSerializeApplicationArgs()
+- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationArgs*
+  name: ShouldSerializeApplicationArgs
+  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeApplicationArgs_
+  commentId: Overload:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationArgs
   isSpec: "True"
-  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationargs
-  nameWithType: ApplicationCallTransaction.ShouldSerializeApplicationargs
-- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignapps
-  name: ShouldSerializeForeignapps()
-  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeForeignapps
-  commentId: M:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignapps
-  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignapps()
-  nameWithType: ApplicationCallTransaction.ShouldSerializeForeignapps()
-- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignapps*
-  name: ShouldSerializeForeignapps
-  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeForeignapps_
-  commentId: Overload:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignapps
+  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeApplicationArgs
+  nameWithType: ApplicationCallTransaction.ShouldSerializeApplicationArgs
+- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignApps
+  name: ShouldSerializeForeignApps()
+  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeForeignApps
+  commentId: M:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignApps
+  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignApps()
+  nameWithType: ApplicationCallTransaction.ShouldSerializeForeignApps()
+- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignApps*
+  name: ShouldSerializeForeignApps
+  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeForeignApps_
+  commentId: Overload:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignApps
   isSpec: "True"
-  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignapps
-  nameWithType: ApplicationCallTransaction.ShouldSerializeForeignapps
-- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignassets
-  name: ShouldSerializeForeignassets()
-  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeForeignassets
-  commentId: M:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignassets
-  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignassets()
-  nameWithType: ApplicationCallTransaction.ShouldSerializeForeignassets()
-- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignassets*
-  name: ShouldSerializeForeignassets
-  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeForeignassets_
-  commentId: Overload:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignassets
+  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignApps
+  nameWithType: ApplicationCallTransaction.ShouldSerializeForeignApps
+- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignAssets
+  name: ShouldSerializeForeignAssets()
+  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeForeignAssets
+  commentId: M:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignAssets
+  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignAssets()
+  nameWithType: ApplicationCallTransaction.ShouldSerializeForeignAssets()
+- uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignAssets*
+  name: ShouldSerializeForeignAssets
+  href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_ShouldSerializeForeignAssets_
+  commentId: Overload:Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignAssets
   isSpec: "True"
-  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignassets
-  nameWithType: ApplicationCallTransaction.ShouldSerializeForeignassets
+  fullName: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.ShouldSerializeForeignAssets
+  nameWithType: ApplicationCallTransaction.ShouldSerializeForeignAssets
 - uid: Algorand.Algod.Model.Transactions.ApplicationCallTransaction.type
   name: type
   href: api/Algorand.Algod.Model.Transactions.ApplicationCallTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCallTransaction_type
@@ -6116,19 +6116,19 @@ references:
   isSpec: "True"
   fullName: Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.LocalStateSchema
   nameWithType: ApplicationCreateTransaction.LocalStateSchema
-- uid: Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalstateschema
-  name: ShouldSerializeGlobalstateschema()
-  href: api/Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCreateTransaction_ShouldSerializeGlobalstateschema
-  commentId: M:Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalstateschema
-  fullName: Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalstateschema()
-  nameWithType: ApplicationCreateTransaction.ShouldSerializeGlobalstateschema()
-- uid: Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalstateschema*
-  name: ShouldSerializeGlobalstateschema
-  href: api/Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCreateTransaction_ShouldSerializeGlobalstateschema_
-  commentId: Overload:Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalstateschema
+- uid: Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalStateSchema
+  name: ShouldSerializeGlobalStateSchema()
+  href: api/Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCreateTransaction_ShouldSerializeGlobalStateSchema
+  commentId: M:Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalStateSchema
+  fullName: Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalStateSchema()
+  nameWithType: ApplicationCreateTransaction.ShouldSerializeGlobalStateSchema()
+- uid: Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalStateSchema*
+  name: ShouldSerializeGlobalStateSchema
+  href: api/Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCreateTransaction_ShouldSerializeGlobalStateSchema_
+  commentId: Overload:Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalStateSchema
   isSpec: "True"
-  fullName: Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalstateschema
-  nameWithType: ApplicationCreateTransaction.ShouldSerializeGlobalstateschema
+  fullName: Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeGlobalStateSchema
+  nameWithType: ApplicationCreateTransaction.ShouldSerializeGlobalStateSchema
 - uid: Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.ShouldSerializeLocalStateSchema
   name: ShouldSerializeLocalStateSchema()
   href: api/Algorand.Algod.Model.Transactions.ApplicationCreateTransaction.html#Algorand_Algod_Model_Transactions_ApplicationCreateTransaction_ShouldSerializeLocalStateSchema
@@ -6161,6 +6161,19 @@ references:
   isSpec: "True"
   fullName: Algorand.Algod.Model.Transactions.ApplicationDeleteTransaction.ApplicationId
   nameWithType: ApplicationDeleteTransaction.ApplicationId
+- uid: Algorand.Algod.Model.Transactions.ApplicationDeleteTransaction.OnCompletion
+  name: OnCompletion
+  href: api/Algorand.Algod.Model.Transactions.ApplicationDeleteTransaction.html#Algorand_Algod_Model_Transactions_ApplicationDeleteTransaction_OnCompletion
+  commentId: P:Algorand.Algod.Model.Transactions.ApplicationDeleteTransaction.OnCompletion
+  fullName: Algorand.Algod.Model.Transactions.ApplicationDeleteTransaction.OnCompletion
+  nameWithType: ApplicationDeleteTransaction.OnCompletion
+- uid: Algorand.Algod.Model.Transactions.ApplicationDeleteTransaction.OnCompletion*
+  name: OnCompletion
+  href: api/Algorand.Algod.Model.Transactions.ApplicationDeleteTransaction.html#Algorand_Algod_Model_Transactions_ApplicationDeleteTransaction_OnCompletion_
+  commentId: Overload:Algorand.Algod.Model.Transactions.ApplicationDeleteTransaction.OnCompletion
+  isSpec: "True"
+  fullName: Algorand.Algod.Model.Transactions.ApplicationDeleteTransaction.OnCompletion
+  nameWithType: ApplicationDeleteTransaction.OnCompletion
 - uid: Algorand.Algod.Model.Transactions.ApplicationNoopTransaction
   name: ApplicationNoopTransaction
   href: api/Algorand.Algod.Model.Transactions.ApplicationNoopTransaction.html
@@ -6180,6 +6193,19 @@ references:
   isSpec: "True"
   fullName: Algorand.Algod.Model.Transactions.ApplicationNoopTransaction.ApplicationId
   nameWithType: ApplicationNoopTransaction.ApplicationId
+- uid: Algorand.Algod.Model.Transactions.ApplicationNoopTransaction.OnCompletion
+  name: OnCompletion
+  href: api/Algorand.Algod.Model.Transactions.ApplicationNoopTransaction.html#Algorand_Algod_Model_Transactions_ApplicationNoopTransaction_OnCompletion
+  commentId: P:Algorand.Algod.Model.Transactions.ApplicationNoopTransaction.OnCompletion
+  fullName: Algorand.Algod.Model.Transactions.ApplicationNoopTransaction.OnCompletion
+  nameWithType: ApplicationNoopTransaction.OnCompletion
+- uid: Algorand.Algod.Model.Transactions.ApplicationNoopTransaction.OnCompletion*
+  name: OnCompletion
+  href: api/Algorand.Algod.Model.Transactions.ApplicationNoopTransaction.html#Algorand_Algod_Model_Transactions_ApplicationNoopTransaction_OnCompletion_
+  commentId: Overload:Algorand.Algod.Model.Transactions.ApplicationNoopTransaction.OnCompletion
+  isSpec: "True"
+  fullName: Algorand.Algod.Model.Transactions.ApplicationNoopTransaction.OnCompletion
+  nameWithType: ApplicationNoopTransaction.OnCompletion
 - uid: Algorand.Algod.Model.Transactions.ApplicationOptInTransaction
   name: ApplicationOptInTransaction
   href: api/Algorand.Algod.Model.Transactions.ApplicationOptInTransaction.html
@@ -6936,12 +6962,6 @@ references:
   commentId: P:Algorand.Algod.Model.Transactions.PaymentTransaction.type
   fullName: Algorand.Algod.Model.Transactions.PaymentTransaction.type
   nameWithType: PaymentTransaction.type
-- uid: Algorand.Algod.Model.Transactions.PaymentTransaction.Type
-  name: Type
-  href: api/Algorand.Algod.Model.Transactions.PaymentTransaction.html#Algorand_Algod_Model_Transactions_PaymentTransaction_Type
-  commentId: P:Algorand.Algod.Model.Transactions.PaymentTransaction.Type
-  fullName: Algorand.Algod.Model.Transactions.PaymentTransaction.Type
-  nameWithType: PaymentTransaction.Type
 - uid: Algorand.Algod.Model.Transactions.PaymentTransaction.type*
   name: type
   href: api/Algorand.Algod.Model.Transactions.PaymentTransaction.html#Algorand_Algod_Model_Transactions_PaymentTransaction_type_
@@ -6949,13 +6969,6 @@ references:
   isSpec: "True"
   fullName: Algorand.Algod.Model.Transactions.PaymentTransaction.type
   nameWithType: PaymentTransaction.type
-- uid: Algorand.Algod.Model.Transactions.PaymentTransaction.Type*
-  name: Type
-  href: api/Algorand.Algod.Model.Transactions.PaymentTransaction.html#Algorand_Algod_Model_Transactions_PaymentTransaction_Type_
-  commentId: Overload:Algorand.Algod.Model.Transactions.PaymentTransaction.Type
-  isSpec: "True"
-  fullName: Algorand.Algod.Model.Transactions.PaymentTransaction.Type
-  nameWithType: PaymentTransaction.Type
 - uid: Algorand.Algod.Model.Transactions.SignedTransaction
   name: SignedTransaction
   href: api/Algorand.Algod.Model.Transactions.SignedTransaction.html
@@ -6980,15 +6993,15 @@ references:
   fullName.vb: Algorand.Algod.Model.Transactions.SignedTransaction.New(Algorand.Algod.Model.Transactions.Transaction, Algorand.Signature)
   nameWithType: SignedTransaction.SignedTransaction(Transaction, Signature)
   nameWithType.vb: SignedTransaction.New(Transaction, Signature)
-- uid: Algorand.Algod.Model.Transactions.SignedTransaction.#ctor(Algorand.Algod.Model.Transactions.Transaction,System.Byte[],Algorand.MultisigSignature,Algorand.LogicsigSignature,System.Byte[])
-  name: SignedTransaction(Transaction, byte[], MultisigSignature, LogicsigSignature, byte[])
-  href: api/Algorand.Algod.Model.Transactions.SignedTransaction.html#Algorand_Algod_Model_Transactions_SignedTransaction__ctor_Algorand_Algod_Model_Transactions_Transaction_System_Byte___Algorand_MultisigSignature_Algorand_LogicsigSignature_System_Byte___
-  commentId: M:Algorand.Algod.Model.Transactions.SignedTransaction.#ctor(Algorand.Algod.Model.Transactions.Transaction,System.Byte[],Algorand.MultisigSignature,Algorand.LogicsigSignature,System.Byte[])
-  name.vb: New(Transaction, Byte(), MultisigSignature, LogicsigSignature, Byte())
-  fullName: Algorand.Algod.Model.Transactions.SignedTransaction.SignedTransaction(Algorand.Algod.Model.Transactions.Transaction, byte[], Algorand.MultisigSignature, Algorand.LogicsigSignature, byte[])
-  fullName.vb: Algorand.Algod.Model.Transactions.SignedTransaction.New(Algorand.Algod.Model.Transactions.Transaction, Byte(), Algorand.MultisigSignature, Algorand.LogicsigSignature, Byte())
-  nameWithType: SignedTransaction.SignedTransaction(Transaction, byte[], MultisigSignature, LogicsigSignature, byte[])
-  nameWithType.vb: SignedTransaction.New(Transaction, Byte(), MultisigSignature, LogicsigSignature, Byte())
+- uid: Algorand.Algod.Model.Transactions.SignedTransaction.#ctor(Algorand.Algod.Model.Transactions.Transaction,System.Byte[],Algorand.MultisigSignature,Algorand.LogicsigSignature,Algorand.Address)
+  name: SignedTransaction(Transaction, byte[], MultisigSignature, LogicsigSignature, Address)
+  href: api/Algorand.Algod.Model.Transactions.SignedTransaction.html#Algorand_Algod_Model_Transactions_SignedTransaction__ctor_Algorand_Algod_Model_Transactions_Transaction_System_Byte___Algorand_MultisigSignature_Algorand_LogicsigSignature_Algorand_Address_
+  commentId: M:Algorand.Algod.Model.Transactions.SignedTransaction.#ctor(Algorand.Algod.Model.Transactions.Transaction,System.Byte[],Algorand.MultisigSignature,Algorand.LogicsigSignature,Algorand.Address)
+  name.vb: New(Transaction, Byte(), MultisigSignature, LogicsigSignature, Address)
+  fullName: Algorand.Algod.Model.Transactions.SignedTransaction.SignedTransaction(Algorand.Algod.Model.Transactions.Transaction, byte[], Algorand.MultisigSignature, Algorand.LogicsigSignature, Algorand.Address)
+  fullName.vb: Algorand.Algod.Model.Transactions.SignedTransaction.New(Algorand.Algod.Model.Transactions.Transaction, Byte(), Algorand.MultisigSignature, Algorand.LogicsigSignature, Algorand.Address)
+  nameWithType: SignedTransaction.SignedTransaction(Transaction, byte[], MultisigSignature, LogicsigSignature, Address)
+  nameWithType.vb: SignedTransaction.New(Transaction, Byte(), MultisigSignature, LogicsigSignature, Address)
 - uid: Algorand.Algod.Model.Transactions.SignedTransaction.#ctor*
   name: SignedTransaction
   href: api/Algorand.Algod.Model.Transactions.SignedTransaction.html#Algorand_Algod_Model_Transactions_SignedTransaction__ctor_
@@ -7186,6 +7199,32 @@ references:
   isSpec: "True"
   fullName: Algorand.Algod.Model.Transactions.StateSchema.NumUint
   nameWithType: StateSchema.NumUint
+- uid: Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumByteSlice
+  name: ShouldSerializeNumByteSlice()
+  href: api/Algorand.Algod.Model.Transactions.StateSchema.html#Algorand_Algod_Model_Transactions_StateSchema_ShouldSerializeNumByteSlice
+  commentId: M:Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumByteSlice
+  fullName: Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumByteSlice()
+  nameWithType: StateSchema.ShouldSerializeNumByteSlice()
+- uid: Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumByteSlice*
+  name: ShouldSerializeNumByteSlice
+  href: api/Algorand.Algod.Model.Transactions.StateSchema.html#Algorand_Algod_Model_Transactions_StateSchema_ShouldSerializeNumByteSlice_
+  commentId: Overload:Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumByteSlice
+  isSpec: "True"
+  fullName: Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumByteSlice
+  nameWithType: StateSchema.ShouldSerializeNumByteSlice
+- uid: Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumUint
+  name: ShouldSerializeNumUint()
+  href: api/Algorand.Algod.Model.Transactions.StateSchema.html#Algorand_Algod_Model_Transactions_StateSchema_ShouldSerializeNumUint
+  commentId: M:Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumUint
+  fullName: Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumUint()
+  nameWithType: StateSchema.ShouldSerializeNumUint()
+- uid: Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumUint*
+  name: ShouldSerializeNumUint
+  href: api/Algorand.Algod.Model.Transactions.StateSchema.html#Algorand_Algod_Model_Transactions_StateSchema_ShouldSerializeNumUint_
+  commentId: Overload:Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumUint
+  isSpec: "True"
+  fullName: Algorand.Algod.Model.Transactions.StateSchema.ShouldSerializeNumUint
+  nameWithType: StateSchema.ShouldSerializeNumUint
 - uid: Algorand.Algod.Model.Transactions.Transaction
   name: Transaction
   href: api/Algorand.Algod.Model.Transactions.Transaction.html
@@ -7471,6 +7510,19 @@ references:
   isSpec: "True"
   fullName: Algorand.Algod.Model.Transactions.Transaction.SetFeeByFeePerByte
   nameWithType: Transaction.SetFeeByFeePerByte
+- uid: Algorand.Algod.Model.Transactions.Transaction.ShouldSerializeGenesisId
+  name: ShouldSerializeGenesisId()
+  href: api/Algorand.Algod.Model.Transactions.Transaction.html#Algorand_Algod_Model_Transactions_Transaction_ShouldSerializeGenesisId
+  commentId: M:Algorand.Algod.Model.Transactions.Transaction.ShouldSerializeGenesisId
+  fullName: Algorand.Algod.Model.Transactions.Transaction.ShouldSerializeGenesisId()
+  nameWithType: Transaction.ShouldSerializeGenesisId()
+- uid: Algorand.Algod.Model.Transactions.Transaction.ShouldSerializeGenesisId*
+  name: ShouldSerializeGenesisId
+  href: api/Algorand.Algod.Model.Transactions.Transaction.html#Algorand_Algod_Model_Transactions_Transaction_ShouldSerializeGenesisId_
+  commentId: Overload:Algorand.Algod.Model.Transactions.Transaction.ShouldSerializeGenesisId
+  isSpec: "True"
+  fullName: Algorand.Algod.Model.Transactions.Transaction.ShouldSerializeGenesisId
+  nameWithType: Transaction.ShouldSerializeGenesisId
 - uid: Algorand.Algod.Model.Transactions.Transaction.ShouldSerializeLease
   name: ShouldSerializeLease()
   href: api/Algorand.Algod.Model.Transactions.Transaction.html#Algorand_Algod_Model_Transactions_Transaction_ShouldSerializeLease
