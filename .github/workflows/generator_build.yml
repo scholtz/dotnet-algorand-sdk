@@ -79,6 +79,14 @@ jobs:
         - name: Build Unity
           run: dotnet build dotnet-algorand-sdk --configuration Unity --no-restore
         
+        # Move Nugets
+        - uses: actions/upload-artifact@v3
+          with:
+            name: my-nuget-packages
+            path: |
+              dotnet-algorand-sdk/bin/Release/*.nupkg
+              dotnet-algorand-sdk/bin/Unity/*.nupkg
+
         # Verify 
         - name: Verify Contents
           run: dir -Recurse
