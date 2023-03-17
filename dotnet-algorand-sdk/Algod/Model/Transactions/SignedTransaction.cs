@@ -26,13 +26,13 @@ namespace Algorand.Algod.Model.Transactions
         public SignedTransaction() { }
 
         [JsonConstructor]
-        public SignedTransaction(Transaction txn, byte[] sig, MultisigSignature msig, LogicsigSignature lsig, byte[] sgnr)
+        public SignedTransaction(Transaction txn, byte[] sig, MultisigSignature msig, LogicsigSignature lsig, Address sgnr)
         {
             if (txn != null) Tx = txn;
             if (sig != null) Sig = new Signature(sig);
             if (msig != null) MSig = msig;
             if (lsig != null) LSig = lsig;
-            if (sgnr != null) AuthAddr = new Address(sgnr);
+            if (sgnr != null) AuthAddr = sgnr;
       
         }
 
