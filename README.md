@@ -7,6 +7,8 @@ The .NET Algorand SDK is a dotnet library for communicating and interacting with
 
 Important release note: For this version KMD has been reworked completely, and is a breaking change. There is now full integration with Algorand/Generator, which led to minor capitalisation changes in some fields. The "shape" of the SDK is now stable.
 
+**The version numbers for NuGet packages are now 2.0.* These will be published shortly **
+
 ## General Usage
 
 Most operations involve producing, submitting and examining the status of transactions. To help achieve this the SDK offers a class model (Algod/Model/Transactions) of Algorand transactions and their properties. Transactions can then be instantiated, signed, sent and read back using this model. There are additional utility methods, such as on the Account class, which simplify tasks like signing the transaction and correlating transaction identifiers.
