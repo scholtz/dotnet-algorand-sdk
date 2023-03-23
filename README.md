@@ -7,7 +7,7 @@ The .NET Algorand SDK is a dotnet library for communicating and interacting with
 
 Important release note: For this version KMD has been reworked completely, and is a breaking change. There is now full integration with Algorand/Generator, which led to minor capitalisation changes in some fields. The "shape" of the SDK is now stable.
 
-**The version numbers for NuGet packages are now 2.0 and onwards. These will be published shortly.**
+**The version numbers for NuGet packages are now 2.0 and onwards.**
 
 ## General Usage
 
