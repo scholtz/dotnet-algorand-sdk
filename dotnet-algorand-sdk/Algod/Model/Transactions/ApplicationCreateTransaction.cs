@@ -23,6 +23,11 @@ namespace Algorand.Algod.Model.Transactions
             return LocalStateSchema.NumByteSlice != 0 || LocalStateSchema.NumUint != 0;
         }
 
+        public bool ShouldSerializeExtraProgramPages()
+        {
+            return ExtraProgramPages != 0;
+        }
+
 #if UNITY
         [field: SerializeField]
         [Tooltip(@"")]

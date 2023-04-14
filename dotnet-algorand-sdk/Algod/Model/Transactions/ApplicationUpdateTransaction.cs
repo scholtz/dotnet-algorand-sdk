@@ -22,6 +22,10 @@ namespace Algorand.Algod.Model.Transactions
             return LocalStateSchema != null && (LocalStateSchema.NumByteSlice != 0 || LocalStateSchema.NumUint != 0);
         }
 
+        public bool ShouldSerializeExtraProgramPages()
+        {
+            return ExtraProgramPages != 0;
+        }
 
     }
 }

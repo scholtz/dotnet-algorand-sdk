@@ -55,6 +55,11 @@ namespace Algorand.Algod.Model.Transactions
             }
         }
 
+        public bool ShouldSerializeAmount()
+        {
+            return Amount != 0;
+        }
+
         /// <summary>
         /// Get a payment transaction
         /// </summary>

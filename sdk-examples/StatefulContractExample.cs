@@ -201,6 +201,7 @@ namespace sdk_examples
                     ClearStateProgram = clearProgram,
                     GlobalStateSchema = new StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes },
                     LocalStateSchema = new StateSchema() { NumUint = localInts, NumByteSlice = localBytes }
+       
                 };
 
                 var dbg=Algorand.Utils.Encoder.EncodeToJson(tx);
