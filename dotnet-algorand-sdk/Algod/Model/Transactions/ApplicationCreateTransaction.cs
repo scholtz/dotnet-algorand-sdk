@@ -3,7 +3,9 @@
 
 using Algorand.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 #if UNITY
 using UnityEngine;
 #endif
@@ -28,6 +30,10 @@ namespace Algorand.Algod.Model.Transactions
             return ExtraProgramPages != 0;
         }
 
+       
+
+
+
 #if UNITY
         [field: SerializeField]
         [Tooltip(@"")]
@@ -38,6 +44,21 @@ namespace Algorand.Algod.Model.Transactions
         [JsonIgnore]
         public ulong? ApplicationIndex { get; internal set; }
 #endif
+
+
+        [OnError]
+        public void HandleError(StreamingContext context, ErrorContext errorContext)
+        {
+
+            // check if the error is related to a missing property
+            if (errorContext.Error is JsonSerializationException && errorContext.Error.Message.ToLowerInvariant().Contains("required"))
+            {
+                // ignore the error and continue
+                errorContext.Handled = true;
+            }
+
+            // otherwise, let the error bubble up
+        }
 
 
     }

@@ -3,8 +3,10 @@
 using Algorand.Algod.Model.Transactions;
 using Algorand.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 #if UNITY
 using UnityEngine;
 #endif
@@ -168,7 +170,7 @@ namespace Algorand.Algod.Model
     internal ulong? AssetClosingAmount {get;set;}
 #endif
 
-
+       
 
 
     }

@@ -213,6 +213,8 @@ namespace Algorand.Utils
         /// <returns>Deserialized Object</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+         
+
             if (reader.TokenType == JsonToken.Null)
                 return null;
 
