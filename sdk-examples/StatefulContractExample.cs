@@ -200,7 +200,8 @@ namespace sdk_examples
                     ApprovalProgram = approvalProgram,
                     ClearStateProgram = clearProgram,
                     GlobalStateSchema = new StateSchema() { NumUint = globalInts, NumByteSlice = globalBytes },
-                    LocalStateSchema = new StateSchema() { NumUint = localInts, NumByteSlice = localBytes }
+                    LocalStateSchema = new StateSchema() { NumUint = localInts, NumByteSlice = localBytes },
+                    ExtraProgramPages =0
        
                 };
 

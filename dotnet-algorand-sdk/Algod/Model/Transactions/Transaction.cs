@@ -36,11 +36,13 @@ namespace Algorand.Algod.Model.Transactions
      
         //used by newtonsoft
         public bool ShouldSerializeNote() { return Note?.Length > 0; }
-        
 
+        public bool ShouldSerializeFee() { return Fee!=0; }
         public bool ShouldSerializeLease() { return Lease?.Length > 0; }
 
         public bool ShouldSerializeGenesisId() { return GenesisId?.Length > 0; }
+        public bool ShouldSerializeFirstValid() { return FirstValid!= 0; }
+        public bool ShouldSerializeLastValid() { return LastValid != 0; }
 
         private byte[] _lease { get; set; }
 #if UNITY
