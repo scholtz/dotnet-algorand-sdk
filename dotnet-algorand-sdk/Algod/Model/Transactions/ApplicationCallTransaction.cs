@@ -21,6 +21,8 @@ namespace Algorand.Algod.Model.Transactions
         public bool ShouldSerializeForeignApps() { return ForeignApps?.Count > 0; }
         public bool ShouldSerializeForeignAssets() { return ForeignAssets?.Count > 0; }
 
+        public bool ShouldSerializeBoxes() { return Boxes?.Count > 0; }
+
         [JsonIgnore]
         public ICollection<IReturnableTransaction> InnerTxns { get; internal set; }
 
@@ -31,6 +33,21 @@ namespace Algorand.Algod.Model.Transactions
         public StateDelta GlobalStateDelta { get; internal set; }
         [JsonIgnore]
         public ICollection<AccountStateDelta> LocalStateDelta { get; internal set; }
+
+        //TEMP: Modify the JSON in the Api-generator folder instead
+
+        [Newtonsoft.Json.JsonProperty("apbx", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"Boxes")]
+    public System.Collections.Generic.List<BoxRef> ForeignApps {get;set;} = new System.Collections.Generic.List<BoxRef>();
+#else
+        public System.Collections.Generic.ICollection<BoxRef> Boxes { get; set; } = new System.Collections.ObjectModel.Collection<BoxRef>();
+#endif
+
+
+
 
     }
 

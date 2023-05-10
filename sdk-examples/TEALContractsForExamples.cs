@@ -9,7 +9,28 @@
         {
             return "int 1";
         }
-        
+
+        public static string SimpleBox()
+        {
+            return @"#pragma version 8
+                    txn ApplicationID
+                    int 0
+                    ==
+                    bnz exit
+                    byte ""boxtest""                     
+                    byte ""teststring""
+                    box_put
+                exit:
+                    int 1
+                    ";
+        }
+
+        public static string SimpleBoxClear()
+        {
+            return @"#pragma version 8
+                    int 1";
+        }
+
         public static string HelloWorld()
         {
             return @"#pragma version 2
