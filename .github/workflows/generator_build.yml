@@ -34,7 +34,7 @@ jobs:
           
         # Check out the algod oas json
         - name: Download oas2.json file
-          run: curl -L https://raw.githubusercontent.com/algorand/go-algorand/master/daemon/algod/api/algod.oas2.json -o api-generator/dotnet_templates/algod.oas2.json
+          run: curl -L https://raw.githubusercontent.com/algorand/go-algorand/rel/stable/daemon/algod/api/algod.oas2.json -o api-generator/dotnet_templates/algod.oas2.json
         
 
         # Generate the transactions model 
