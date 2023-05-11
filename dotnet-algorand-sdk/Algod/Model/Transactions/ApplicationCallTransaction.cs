@@ -1,6 +1,9 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+#if UNITY
+using UnityEngine;
+#endif
 
 namespace Algorand.Algod.Model.Transactions
 {
@@ -41,7 +44,7 @@ namespace Algorand.Algod.Model.Transactions
     [field:SerializeField]
     [Tooltip(@"")]
     [field:InspectorName(@"Boxes")]
-    public System.Collections.Generic.List<BoxRef> ForeignApps {get;set;} = new System.Collections.Generic.List<BoxRef>();
+    public System.Collections.Generic.List<BoxRef> Boxes {get;set;} = new System.Collections.Generic.List<BoxRef>();
 #else
         public System.Collections.Generic.ICollection<BoxRef> Boxes { get; set; } = new System.Collections.ObjectModel.Collection<BoxRef>();
 #endif
