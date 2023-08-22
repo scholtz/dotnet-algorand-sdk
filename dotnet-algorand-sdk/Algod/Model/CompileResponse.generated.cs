@@ -2,11 +2,12 @@
 namespace Algorand.Algod.Model
 {
     using Algorand.Algod.Model.Transactions;
+    using Newtonsoft.Json.Linq;
 #if UNITY
     using UnityEngine;
 #endif
 
-using System = global::System;
+    using System = global::System;
 #if UNITY
 using UnityEngine;
 #endif
@@ -49,7 +50,7 @@ public partial class CompileResponse{
     [field:InspectorName(@"Sourcemap")]
     public byte[] Sourcemap {get;set;}
 #else
-    public byte[] Sourcemap {get;set;}
+    public JObject Sourcemap {get;set;}
 #endif
 
 
