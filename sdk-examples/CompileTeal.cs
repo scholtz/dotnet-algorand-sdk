@@ -4,6 +4,7 @@ using Algorand.Algod.Model;
 using Algorand.Utils;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,8 +30,9 @@ namespace sdk_examples
                 Console.WriteLine("Result: " + response.Result);
 
                 // Demonstrate using a source map
+                
                 SourceMap map = new SourceMap(response.Sourcemap);
-                Console.WriteLine($"PC for line 2 is {map.GetLineForPc(2)}");
+                Console.WriteLine($"PC for line 2 is {map.GetPcsForLine(2).First()}");
 
 
 
