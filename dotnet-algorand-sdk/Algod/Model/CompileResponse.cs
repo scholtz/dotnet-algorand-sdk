@@ -3,9 +3,11 @@ namespace Algorand.Algod.Model
 {
     using Newtonsoft.Json.Linq;
     using System = global::System;
+#if UNITY
+    using UnityEngine;
+#endif
 
-
-public partial class CompileResponse{
+    public partial class CompileResponse{
 
         [Newtonsoft.Json.JsonProperty("sourcemap", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
