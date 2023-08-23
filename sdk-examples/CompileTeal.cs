@@ -1,6 +1,7 @@
 ﻿using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
+using Algorand.Utils;
 using System;
 using System.IO;
 using System.Text;
@@ -18,14 +19,21 @@ namespace sdk_examples
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
 
-            byte[] data = Encoding.ASCII.GetBytes(TEALContractsForExamples.Sample());
+            byte[] data = Encoding.ASCII.GetBytes(TEALContractsForExamples.HelloWorld());
 
             using (var datams = new MemoryStream(data))
             {
-                var response = await algodApiInstance.TealCompileAsync(datams);
+                CompileResponse response = await algodApiInstance.TealCompileAsync(datams,true);
                 Console.WriteLine("response: " + response);
                 Console.WriteLine("Hash: " + response.Hash);
                 Console.WriteLine("Result: " + response.Result);
+
+                // Demonstrate using a source map
+                SourceMap map = new SourceMap(response.Sourcemap);
+                Console.WriteLine($"PC for line 2 is {map.GetLineForPc(2)}");
+
+
+
             }
         }
     }
