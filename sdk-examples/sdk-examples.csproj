@@ -174,10 +174,17 @@
 
 
 	<ItemGroup>
-		<PackageReference Include="Algorand2" Version="2.0.0.2023082310" />
 		<PackageReference Include="BouncyCastle.NetCore" Version="1.8.8" />
 		<PackageReference Include="MessagePack" Version="2.2.113" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+	
+
+
+
+	<ItemGroup>
+	  <ProjectReference Include="..\dotnet-algorand-sdk\dotnet-algorand-sdk.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
