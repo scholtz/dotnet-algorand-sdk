@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	
 
 	<PropertyGroup>
-		
+			
 		<ImplicitUsings>disable</ImplicitUsings>
-		<Configurations>AccountExample;AssetExample;AtomicTransferExample;BasicExample;CompileTeal;DryrunDebuggingExample;IndexerExample;KMDExample;LogicSignatureContractAccountExample;LogicSignatureExample;MultisigExample;RekeyExample;StatefulContractExample</Configurations>
+		<Configurations>AccountExample;AssetExample;AtomicTransferExample;BasicExample;CompileTeal;DryrunDebuggingExample;IndexerExample;KMDExample;LogicSignatureContractAccountExample;LogicSignatureExample;MultisigExample;RekeyExample;SimpleBoxExample;StatefulContractExample</Configurations>
 
 	</PropertyGroup>
 	

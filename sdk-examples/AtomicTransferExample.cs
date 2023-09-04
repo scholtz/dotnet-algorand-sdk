@@ -19,7 +19,7 @@ namespace sdk_examples
             string DEST_ADDR1 = "5KFWCRTIJUMDBXELQGMRBGD2OQ2L3ZQ2MB54KT2XOQ3UWPKUU4Y7TQ4X7U";
             string DEST_ADDR2 = "7AWVMMX56YR4IG62WRZMULUUQ7ZWQNAKVBGSWMXUYRRWEAOZ27XVRORTGM";
 
-            var srcAccount = new Account("move sell junior vast verb stove bracket filter place child fame bone story science miss injury put cancel already session cheap furnace void able minimum");
+            var srcAccount = new Account("arrive transfer silent pole congress loyal snap dirt dwarf relief easily plastic federal found siren point know polar quit very vanish ensure humor abstract broken");
 
             // Get a connection to the Sandbox node
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);

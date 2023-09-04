@@ -21,7 +21,7 @@ namespace sdk_examples
             //   If using Sandbox, please use the following commands to replace the below mnemonic:
             //   ./sandbox goal account list
             //   ./sandbox goal account export -a <address>
-            var src = new Account("chalk pig bleak brave despair pencil spin found pigeon exact attend meadow orange decline scare pen festival dog lunch reduce answer broom brush absent public");
+            var src = new Account("arrive transfer silent pole congress loyal snap dirt dwarf relief easily plastic federal found siren point know polar quit very vanish ensure humor abstract broken");
 
             var DEST_ADDR = "5KFWCRTIJUMDBXELQGMRBGD2OQ2L3ZQ2MB54KT2XOQ3UWPKUU4Y7TQ4X7U";
 

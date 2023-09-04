@@ -25,9 +25,9 @@ namespace sdk_examples
                 //   If using Sandbox, please use the following commands to replace the below mnemonic:
                 //   ./sandbox goal account list
                 //   ./sandbox goal account export -a <address>
-                var acc1 = new Account("gravity maid again grass ozone execute exotic vapor fringe snack club monitor where jar pyramid receive tattoo science scene high sound degree bless above good");
-                var acc2 = new Account("move sell junior vast verb stove bracket filter place child fame bone story science miss injury put cancel already session cheap furnace void able minimum");
-                var acc3 = new Account("pencil ostrich net alpha need vivid elevator gadget bundle meadow flash hamster pig young ten clown before grace arch tennis absent knock peanut ability alarm");
+                var acc1 = new Account("arrive transfer silent pole congress loyal snap dirt dwarf relief easily plastic federal found siren point know polar quit very vanish ensure humor abstract broken");
+                Account acc2 = new Account("pole pudding actor purpose spend agree erode account discover chapter adapt supreme excite lamp gospel guilt helmet wrestle meat sustain orphan certain mixture able disease");
+                Account acc3 = new Account("cricket outside win obey swap useless spread detail shallow sunset birth fall innocent deal kiwi bounce okay rude social book brush lava correct abandon innocent");
                 var randomAccount = new Account();
 
                 var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
@@ -39,14 +39,14 @@ namespace sdk_examples
 
                 // Send *to* the multisig address
                 var transParams = await algodApiInstance.TransactionParamsAsync();
-                var payment = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acc1.Address, multiAddress.ToAddress(), 100000, "to multsig", transParams);
+                var payment = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acc1.Address, multiAddress.ToAddress(), 110000, "to multsig", transParams);
                 var signedTx = payment.Sign(acc1);
                 var tx = await Utils.SubmitTransaction(algodApiInstance, signedTx);
                 await Utils.WaitTransactionToComplete(algodApiInstance,tx.Txid);
 
                 // now to send *from* the multi-address we need a certain number of signatures specified by the threshold
                 transParams = await algodApiInstance.TransactionParamsAsync();
-                var payment2 = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(multiAddress.ToAddress(),randomAccount.Address, 100000, "from multisig", transParams);
+                var payment2 = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(multiAddress.ToAddress(),randomAccount.Address, 110000, "from multisig", transParams);
 
                 // sign with 2 addresses (2 of 3 threshold)
                 var signedTx1 = payment2.Sign(multiAddress,acc1);

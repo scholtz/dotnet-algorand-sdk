@@ -16,8 +16,8 @@ namespace sdk_examples
             string ALGOD_API_ADDR = "http://localhost:4001/";
             string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-            Account acct1 = new Account("shaft web sell outdoor brick above promote call disease gift fun course grief hurdle key bamboo choice camp law lucky bitter skill term able ignore");
-            Account acct2 = new Account("pipe want hockey shoulder gallery inner woman salute wrestle fashion define bonus broom start disease portion salt gesture measure prosper just draw engage ability dizzy");
+            Account acct1 = new Account("arrive transfer silent pole congress loyal snap dirt dwarf relief easily plastic federal found siren point know polar quit very vanish ensure humor abstract broken");
+            Account acct2 = new Account("pole pudding actor purpose spend agree erode account discover chapter adapt supreme excite lamp gospel guilt helmet wrestle meat sustain orphan certain mixture able disease");
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
