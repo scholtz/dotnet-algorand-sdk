@@ -9,6 +9,14 @@ Important release note: For this version KMD has been reworked completely, and i
 
 **The version numbers for NuGet packages are now 2.0 and onwards.**
 
+## WebAssembly Support
+
+An experimental WASM build of the SDK is now available! https://www.nuget.org/packages/AlgorandBlazor_Experimental/9.0.5
+
+The Web Assembly source is on the WasmExperiment branch. That includes a demo app called BlazorTest.
+
+A demo app is here  https://calm-dune-04ab9e803-preview.westeurope.3.azurestaticapps.net/
+
 ## General Usage
 
 Most operations involve producing, submitting and examining the status of transactions. To help achieve this the SDK offers a class model (Algod/Model/Transactions) of Algorand transactions and their properties. Transactions can then be instantiated, signed, sent and read back using this model. There are additional utility methods, such as on the Account class, which simplify tasks like signing the transaction and correlating transaction identifiers.
