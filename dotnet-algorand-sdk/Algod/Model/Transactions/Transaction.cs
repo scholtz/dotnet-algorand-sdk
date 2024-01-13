@@ -26,6 +26,7 @@ namespace Algorand.Algod.Model.Transactions
     [JsonSubtypes.KnownSubType(typeof(AssetFreezeTransaction), "afrz")]
     [JsonSubtypes.KnownSubType(typeof(AssetMovementsTransaction), "axfer")]
     [JsonSubtypes.KnownSubType(typeof(AssetConfigurationTransaction), "acfg")]
+    [JsonSubtypes.KnownSubType(typeof(StateProofTransaction), "stpf")]
 
     public abstract partial class Transaction : IReturnableTransaction
     {

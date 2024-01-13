@@ -105,8 +105,8 @@ namespace Algorand
             this.Logic = JavaHelper<byte[]>.RequireNotNull(logic, "program must not be null");
             this.Args = args;
 
-            if (!Algorand.Utils.Logic.CheckProgram(this.Logic, this.Args))
-                throw new Exception("program verified failed!");
+            //if (!Algorand.Utils.Logic.CheckProgram(this.Logic, this.Args))
+            //    throw new Exception("program verified failed!");
 
             if (sig != null)
             {
