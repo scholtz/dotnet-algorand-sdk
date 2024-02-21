@@ -16,15 +16,7 @@ using UnityEngine;
 #endif
 public partial class ErrorResponse{
 
-    [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-#if UNITY
-    [field:SerializeField]
-    [Tooltip(@"")]
-    [field:InspectorName(@"Data")]
-    public byte[] Data {get;set;}
-#else
-    public byte[] Data {get;set;}
-#endif
+ 
 
 
 
