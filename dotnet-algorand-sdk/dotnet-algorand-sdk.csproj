@@ -120,9 +120,17 @@
 	    <Version>2.1.18</Version>
 	  </PackageReference>
 	</ItemGroup>
-	
+
 	<ItemGroup>
-		<PackageReference Include="BouncyCastle.NetCore" Version="1.8.8" />
+		<Content Include="Libs\BouncyCastle.Crypto.dll">
+			<Pack>true</Pack>
+			<PackagePath>lib\$(TargetFramework)</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+
+	<ItemGroup>
 		<PackageReference Include="docfx.console" Version="2.59.4">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -381,9 +389,14 @@
 
 	<ItemGroup>
 	  <Folder Include="Indexer\Model\" />
+	  <Folder Include="NewFolder\" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Reference Include="BouncyCastle.Crypto">
+	    <HintPath>Libs\BouncyCastle.Crypto.dll</HintPath>
+	    <Private>True</Private>
+	  </Reference>
 	  <Reference Include="UnityEditor" Condition="'$(Configuration)|$(Platform)'=='Unity|AnyCPU'">
 	    <HintPath>Libs\UnityEditor.dll</HintPath>
 	  </Reference>
