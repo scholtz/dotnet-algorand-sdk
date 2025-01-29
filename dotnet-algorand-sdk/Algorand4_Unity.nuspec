@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
-    <id>Algorand2_Unity</id>
+    <id>Algorand4_Unity</id>
     <version>$version$</version>
-    <authors>Frank Szendzielarz</authors>
+    <authors>Ludovit Scholtz, Frank Szendzielarz</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="file">LICENSE</license>
     <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
     <readme>README.md</readme>
-    <projectUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</projectUrl>
+    <projectUrl>https://github.com/scholtz/dotnet-algorand-sdk</projectUrl>
     <description>Algorand SDK for .Net 2</description>
-    <repository url="https://github.com/FrankSzendzielarz/dotnet-algorand-sdk" />
+    <repository url="https://github.com/scholtz/dotnet-algorand-sdk" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
         <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />

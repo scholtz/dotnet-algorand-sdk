@@ -16,6 +16,30 @@ using UnityEngine;
 #endif
 public partial class SimulateTransactionGroupResult{
 
+    [Newtonsoft.Json.JsonProperty("app-budget-added", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Total budget added during execution of app calls in the transaction group.")]
+    [field:InspectorName(@"AppBudgetAdded")]
+    public ulong AppBudgetAdded {get;set;}
+#else
+    public ulong? AppBudgetAdded {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("app-budget-consumed", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Total budget consumed during execution of app calls in the transaction group.")]
+    [field:InspectorName(@"AppBudgetConsumed")]
+    public ulong AppBudgetConsumed {get;set;}
+#else
+    public ulong? AppBudgetConsumed {get;set;}
+#endif
+
+
+
     [Newtonsoft.Json.JsonProperty("failed-at", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
     [field:SerializeField]
@@ -48,6 +72,18 @@ public partial class SimulateTransactionGroupResult{
 #else
     public System.Collections.Generic.ICollection<SimulateTransactionResult> TxnResults {get;set;} = new System.Collections.ObjectModel.Collection<SimulateTransactionResult>();
 #endif
+
+    [Newtonsoft.Json.JsonProperty("unnamed-resources-accessed", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"These are resources that were accessed by this group that would normally have caused failure, but were allowed in simulation. Depending on where this object is in the response, the unnamed resources it contains may or may not qualify for group resource sharing. If this is a field in SimulateTransactionGroupResult, the resources do qualify, but if this is a field in SimulateTransactionResult, they do not qualify. In order to make this group valid for actual submission, resources that qualify for group sharing can be made available by any transaction of the group; otherwise, resources must be placed in the same transaction which accessed them.")]
+    [field:InspectorName(@"UnnamedResourcesAccessed")]
+    public SimulateUnnamedResourcesAccessed UnnamedResourcesAccessed {get;set;}
+#else
+    public SimulateUnnamedResourcesAccessed UnnamedResourcesAccessed {get;set;}
+#endif
+
+
     
 }
 

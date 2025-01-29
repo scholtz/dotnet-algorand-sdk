@@ -1,0 +1,48 @@
+
+namespace Algorand.Algod.Model
+{
+    using Algorand.Algod.Model.Transactions;
+#if UNITY
+    using UnityEngine;
+#endif
+
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
+
+#if UNITY
+[System.Serializable]
+#endif
+public partial class AssetHoldingReference{
+
+    [Newtonsoft.Json.JsonProperty("account", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Address of the account holding the asset.")]
+    [field:InspectorName(@"Account")]
+    public Address Account {get;set;}
+#else
+    public Address Account {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("asset", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Asset ID of the holding.")]
+    [field:InspectorName(@"Asset")]
+    public ulong Asset {get;set;}
+#else
+    public ulong Asset {get;set;}
+#endif
+
+
+    
+}
+
+
+}

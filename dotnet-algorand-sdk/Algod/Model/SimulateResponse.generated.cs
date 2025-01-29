@@ -16,6 +16,42 @@ using UnityEngine;
 #endif
 public partial class SimulateResponse{
 
+    [Newtonsoft.Json.JsonProperty("eval-overrides", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"The set of parameters and limits override during simulation. If this set of parameters is present, then evaluation parameters may differ from standard evaluation in certain ways.")]
+    [field:InspectorName(@"EvalOverrides")]
+    public SimulationEvalOverrides EvalOverrides {get;set;}
+#else
+    public SimulationEvalOverrides EvalOverrides {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("exec-trace-config", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"An object that configures simulation execution trace.")]
+    [field:InspectorName(@"ExecTraceConfig")]
+    public SimulateTraceConfig ExecTraceConfig {get;set;}
+#else
+    public SimulateTraceConfig ExecTraceConfig {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("initial-states", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Initial states of resources that were accessed during simulation.")]
+    [field:InspectorName(@"InitialStates")]
+    public SimulateInitialStates InitialStates {get;set;}
+#else
+    public SimulateInitialStates InitialStates {get;set;}
+#endif
+
+
+
     [Newtonsoft.Json.JsonProperty("last-round", Required = Newtonsoft.Json.Required.Always)]
     [System.ComponentModel.DataAnnotations.Required]
 #if UNITY
@@ -49,19 +85,6 @@ public partial class SimulateResponse{
     public ulong Version {get;set;}
 #else
     public ulong Version {get;set;}
-#endif
-
-
-
-    [Newtonsoft.Json.JsonProperty("would-succeed", Required = Newtonsoft.Json.Required.Always)]
-    [System.ComponentModel.DataAnnotations.Required]
-#if UNITY
-    [field:SerializeField]
-    [Tooltip(@"Indicates whether the simulated transactions would have succeeded during an actual submission. If any transaction fails or is missing a signature, this will be false.")]
-    [field:InspectorName(@"WouldSucceed")]
-    public bool WouldSucceed {get;set;}
-#else
-    public bool WouldSucceed {get;set;}
 #endif
 
 

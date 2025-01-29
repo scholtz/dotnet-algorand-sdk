@@ -20,4 +20,10 @@
     <ProjectReference Include="..\dotnet-algorand-sdk\dotnet-algorand-sdk.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>..\dotnet-algorand-sdk\Libs\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

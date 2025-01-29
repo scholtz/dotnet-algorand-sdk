@@ -36,9 +36,9 @@ Install-Package Algorand2
 ```
 Or from Project -> Manage NuGet Packages
 
-The Nuget package is here <https://www.nuget.org/packages/Algorand2/>
+The Nuget package is here <https://www.nuget.org/packages/Algorand4/>
 
-The Unity build is at <https://www.nuget.org/packages/Algorand2_Unity/>
+The Unity build is at <https://www.nuget.org/packages/Algorand4_Unity/>
 
 The Unity build allows the DLL to be used directly in Unity without Newtonsoft or Codedom conflicts.
 It also offers a new optional parameter to HttpClientConfigurator allowing a shim to be injected

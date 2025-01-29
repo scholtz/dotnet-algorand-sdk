@@ -141,6 +141,42 @@ Note: the raw account uses `map[int] -> Asset` for this type.")]
     public System.Collections.Generic.ICollection<Asset> CreatedAssets {get;set;} = new System.Collections.ObjectModel.Collection<Asset>();
 #endif
 
+    [Newtonsoft.Json.JsonProperty("incentive-eligible", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Whether or not the account can receive block incentives if its balance is in range at proposal time.")]
+    [field:InspectorName(@"IncentiveEligible")]
+    public bool IncentiveEligible {get;set;}
+#else
+    public bool? IncentiveEligible {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("last-heartbeat", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"The round in which this account last went online, or explicitly renewed their online status.")]
+    [field:InspectorName(@"LastHeartbeat")]
+    public ulong LastHeartbeat {get;set;}
+#else
+    public ulong? LastHeartbeat {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("last-proposed", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"The round in which this account last proposed the block.")]
+    [field:InspectorName(@"LastProposed")]
+    public ulong LastProposed {get;set;}
+#else
+    public ulong? LastProposed {get;set;}
+#endif
+
+
+
     [Newtonsoft.Json.JsonProperty("min-balance", Required = Newtonsoft.Json.Required.Always)]
     [System.ComponentModel.DataAnnotations.Required]
 #if UNITY

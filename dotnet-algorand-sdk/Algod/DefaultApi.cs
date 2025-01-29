@@ -29,6 +29,14 @@ namespace Algorand.Algod
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<string> HealthCheckAsync(System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>Returns OK if healthy and fully caught up.
+        /// </summary>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> GetReadyAsync();
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<string> GetReadyAsync(System.Threading.CancellationToken cancellationToken);
+
         /// <summary>Return metrics about algod functioning.
         /// </summary>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -62,7 +70,7 @@ namespace Algorand.Algod
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<Version> GetVersionAsync(System.Threading.CancellationToken cancellationToken);
 
-        /// <summary>Given a specific account public key, this call returns the accounts status,
+        /// <summary>Given a specific account public key, this call returns the account's status,
         /// balance and spendable amounts
         /// </summary>
         /// <param name="exclude">When set to `all` will exclude asset holdings, application local state, created
@@ -98,6 +106,20 @@ namespace Algorand.Algod
         /// <param name="asset-id">An asset identifier</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<AccountAssetResponse> AccountAssetInformationAsync(System.Threading.CancellationToken cancellationToken, string address, ulong assetId, Format? format = null);
+
+        /// <summary>Lookup an account's asset holdings.
+        /// </summary>
+        /// <param name="limit">Maximum number of results to return.</param>
+        /// <param name="next">The next page of results. Use the next token provided by the previous results.</param>
+        /// <param name="address">An account public key</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AccountAssetsInformationResponse> AccountAssetsInformationAsync(string address, ulong? limit = null, string? next = null);
+
+        /// <param name="limit">Maximum number of results to return.</param>
+        /// <param name="next">The next page of results. Use the next token provided by the previous results.</param>
+        /// <param name="address">An account public key</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<AccountAssetsInformationResponse> AccountAssetsInformationAsync(System.Threading.CancellationToken cancellationToken, string address, ulong? limit = null, string? next = null);
 
         /// <summary>Given a specific account public key and application ID, this call returns the
         /// account's application local state and global state (AppLocalState and AppParams,
@@ -150,6 +172,16 @@ namespace Algorand.Algod
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null);
 
+        /// <summary>Get the top level transaction IDs for the block on the given round.
+        /// </summary>
+        /// <param name="round">The round from which to fetch block transaction IDs.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<BlockTxidsResponse> GetBlockTxidsAsync(ulong round);
+
+        /// <param name="round">The round from which to fetch block transaction IDs.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<BlockTxidsResponse> GetBlockTxidsAsync(System.Threading.CancellationToken cancellationToken, ulong round);
+
         /// <summary>Get the block hash for the block on the given round.
         /// </summary>
         /// <param name="round">The round from which to fetch block hash information.</param>
@@ -159,6 +191,20 @@ namespace Algorand.Algod
         /// <param name="round">The round from which to fetch block hash information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<BlockHashResponse> GetBlockHashAsync(System.Threading.CancellationToken cancellationToken, ulong round);
+
+        /// <summary>Get the block header for the block on the given round.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="round">The round from which to fetch block header information.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<BlockHeaderResponse> GetBlockHeaderAsync(ulong round, Format? format = null);
+
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="round">The round from which to fetch block header information.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<BlockHeaderResponse> GetBlockHeaderAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null);
 
         /// <summary>Get a proof for a transaction in a block.
         /// </summary>
@@ -182,6 +228,16 @@ namespace Algorand.Algod
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<TransactionProofResponse> GetTransactionProofAsync(System.Threading.CancellationToken cancellationToken, ulong round, string txid, Format? format = null, string? hashtype = null);
 
+        /// <summary>Get all of the logs from outer and inner app calls in the given round
+        /// </summary>
+        /// <param name="round">The round from which to fetch block log information.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<BlockLogsResponse> GetBlockLogsAsync(ulong round);
+
+        /// <param name="round">The round from which to fetch block log information.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<BlockLogsResponse> GetBlockLogsAsync(System.Threading.CancellationToken cancellationToken, ulong round);
+
         /// <summary>Get the current supply reported by the ledger.
         /// </summary>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -199,7 +255,8 @@ namespace Algorand.Algod
         System.Threading.Tasks.Task<NodeStatusResponse> GetStatusAsync(System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Waits for a block to appear after round {round} and returns the node's status at
-        /// the time.
+        /// the time. There is a 1 minute timeout, when reached the current status is
+        /// returned regardless of whether or not it is the round after the given round.
         /// </summary>
         /// <param name="round">The round to wait until returning status</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
@@ -219,21 +276,34 @@ namespace Algorand.Algod
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn);
 
+        /// <summary>Fast track for broadcasting a raw transaction or transaction group to the
+        /// network through the tx handler without performing most of the checks and
+        /// reporting detailed errors. Should be only used for development and performance
+        /// testing.
+        /// </summary>
+        /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(List<SignedTransaction> rawtxn);
+
+        /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn);
+
         /// <summary>Simulates a raw transaction or transaction group as it would be evaluated on the
         /// network. The simulation will use blockchain state from the latest committed
         /// round.
         /// </summary>
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
         /// provided, defaults to JSON.</param>
-        /// <param name="rawtxn">The byte encoded transaction to simulate</param>
+        /// <param name="request">The transactions to simulate, along with any other inputs.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(List<SignedTransaction> rawtxn, Format? format = null);
+        System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(SimulateRequest request, Format? format = null);
 
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
         /// provided, defaults to JSON.</param>
-        /// <param name="rawtxn">The byte encoded transaction to simulate</param>
+        /// <param name="request">The transactions to simulate, along with any other inputs.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn, Format? format = null);
+        System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(System.Threading.CancellationToken cancellationToken, SimulateRequest request, Format? format = null);
 
         /// <summary>Get parameters for constructing a new transaction
         /// </summary>
@@ -293,6 +363,34 @@ namespace Algorand.Algod
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null);
 
+        /// <summary>Get ledger deltas for transaction groups in a given round.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="round">The round for which the deltas are desired.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<TransactionGroupLedgerStateDeltasForRoundResponse> GetTransactionGroupLedgerStateDeltasForRoundAsync(ulong round, Format? format = null);
+
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="round">The round for which the deltas are desired.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<TransactionGroupLedgerStateDeltasForRoundResponse> GetTransactionGroupLedgerStateDeltasForRoundAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null);
+
+        /// <summary>Get a ledger delta for a given transaction group.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="id">A transaction ID, or transaction group ID</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaForTransactionGroupAsync(string id, Format? format = null);
+
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="id">A transaction ID, or transaction group ID</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaForTransactionGroupAsync(System.Threading.CancellationToken cancellationToken, string id, Format? format = null);
+
         /// <summary>Get a state proof that covers a given round
         /// </summary>
         /// <param name="round">The round for which a state proof is desired.</param>
@@ -340,8 +438,8 @@ namespace Algorand.Algod
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<BoxesResponse> GetApplicationBoxesAsync(System.Threading.CancellationToken cancellationToken, ulong applicationId, ulong? max = null);
 
-        /// <summary>Given an application ID and box name, it returns the box name and value (each
-        /// base64 encoded). Box names must be in the goal app call arg encoding form
+        /// <summary>Given an application ID and box name, it returns the round, box name, and value
+        /// (each base64 encoded). Box names must be in the goal app call arg encoding form
         /// 'encoding:value'. For ints, use the form 'int:1234'. For raw bytes, use the form
         /// 'b64:A=='. For printable strings, use the form 'str:hello'. For addresses, use
         /// the form 'addr:XYZ...'.
@@ -445,6 +543,25 @@ namespace Algorand.Algod
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<string> ExperimentalCheckAsync(System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>Gets the current timestamp offset.
+        /// </summary>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<GetBlockTimeStampOffsetResponse> GetBlockTimeStampOffsetAsync();
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<GetBlockTimeStampOffsetResponse> GetBlockTimeStampOffsetAsync(System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>Sets the timestamp offset (seconds) for blocks in dev mode. Providing an offset
+        /// of 0 will unset this value and try to use the real clock for the timestamp.
+        /// </summary>
+        /// <param name="offset">The timestamp offset for blocks in dev mode.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> SetBlockTimeStampOffsetAsync(ulong offset);
+
+        /// <param name="offset">The timestamp offset for blocks in dev mode.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<string> SetBlockTimeStampOffsetAsync(System.Threading.CancellationToken cancellationToken, ulong offset);
+
     }
 
     public partial class DefaultApi : IDefaultApi
@@ -490,6 +607,91 @@ namespace Algorand.Algod
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("health");
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
+        /// <summary>Returns OK if healthy and fully caught up.
+        /// </summary>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<string> GetReadyAsync()
+        {
+            return GetReadyAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <summary>>Returns OK if healthy and fully caught up.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<string> GetReadyAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("ready");
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -901,7 +1103,7 @@ namespace Algorand.Algod
 
 
 
-        /// <summary>Given a specific account public key, this call returns the accounts status,
+        /// <summary>Given a specific account public key, this call returns the account's status,
         /// balance and spendable amounts
         /// </summary>
         /// <param name="exclude">When set to `all` will exclude asset holdings, application local state, created
@@ -915,7 +1117,7 @@ namespace Algorand.Algod
             return AccountInformationAsync(System.Threading.CancellationToken.None, address, exclude, format);
         }
 
-        /// <summary>>Given a specific account public key, this call returns the accounts status,
+        /// <summary>>Given a specific account public key, this call returns the account's status,
         /// balance and spendable amounts
         /// </summary>
         /// <param name="exclude">When set to `all` will exclude asset holdings, application local state, created
@@ -1080,6 +1282,108 @@ namespace Algorand.Algod
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AccountAssetResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
+        /// <summary>Lookup an account's asset holdings.
+        /// </summary>
+        /// <param name="limit">Maximum number of results to return.</param>
+        /// <param name="next">The next page of results. Use the next token provided by the previous results.</param>
+        /// <param name="address">An account public key</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<AccountAssetsInformationResponse> AccountAssetsInformationAsync(string address, ulong? limit = null, string? next = null)
+        {
+            return AccountAssetsInformationAsync(System.Threading.CancellationToken.None, address, limit, next);
+        }
+
+        /// <summary>>Lookup an account's asset holdings.
+        /// </summary>
+        /// <param name="limit">Maximum number of results to return.</param>
+        /// <param name="next">The next page of results. Use the next token provided by the previous results.</param>
+        /// <param name="address">An account public key</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<AccountAssetsInformationResponse> AccountAssetsInformationAsync(System.Threading.CancellationToken cancellationToken, string address, ulong? limit = null, string? next = null)
+        {
+            if (address == null) throw new System.ArgumentNullException("address");
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/accounts/{address}/assets?");
+            urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
+            if (limit != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("limit") + "=").Append(System.Uri.EscapeDataString(ConvertToString(limit, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (next != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("next") + "=").Append(System.Uri.EscapeDataString(ConvertToString(next, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AccountAssetsInformationResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1429,6 +1733,95 @@ namespace Algorand.Algod
 
 
 
+        /// <summary>Get the top level transaction IDs for the block on the given round.
+        /// </summary>
+        /// <param name="round">The round from which to fetch block transaction IDs.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<BlockTxidsResponse> GetBlockTxidsAsync(ulong round)
+        {
+            return GetBlockTxidsAsync(System.Threading.CancellationToken.None, round);
+        }
+
+        /// <summary>>Get the top level transaction IDs for the block on the given round.
+        /// </summary>
+        /// <param name="round">The round from which to fetch block transaction IDs.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<BlockTxidsResponse> GetBlockTxidsAsync(System.Threading.CancellationToken cancellationToken, ulong round)
+        {
+            if (round == null) throw new System.ArgumentNullException("round");
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/blocks/{round}/txids");
+            urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<BlockTxidsResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
         /// <summary>Get the block hash for the block on the given round.
         /// </summary>
         /// <param name="round">The round from which to fetch block hash information.</param>
@@ -1483,6 +1876,104 @@ namespace Algorand.Algod
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<BlockHashResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
+        /// <summary>Get the block header for the block on the given round.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="round">The round from which to fetch block header information.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<BlockHeaderResponse> GetBlockHeaderAsync(ulong round, Format? format = null)
+        {
+            return GetBlockHeaderAsync(System.Threading.CancellationToken.None, round, format);
+        }
+
+        /// <summary>>Get the block header for the block on the given round.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="round">The round from which to fetch block header information.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<BlockHeaderResponse> GetBlockHeaderAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null)
+        {
+            if (round == null) throw new System.ArgumentNullException("round");
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/blocks/{round}/header?");
+            urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
+            if (format != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<BlockHeaderResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1595,6 +2086,95 @@ namespace Algorand.Algod
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<TransactionProofResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
+        /// <summary>Get all of the logs from outer and inner app calls in the given round
+        /// </summary>
+        /// <param name="round">The round from which to fetch block log information.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<BlockLogsResponse> GetBlockLogsAsync(ulong round)
+        {
+            return GetBlockLogsAsync(System.Threading.CancellationToken.None, round);
+        }
+
+        /// <summary>>Get all of the logs from outer and inner app calls in the given round
+        /// </summary>
+        /// <param name="round">The round from which to fetch block log information.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<BlockLogsResponse> GetBlockLogsAsync(System.Threading.CancellationToken cancellationToken, ulong round)
+        {
+            if (round == null) throw new System.ArgumentNullException("round");
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/blocks/{round}/logs");
+            urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<BlockLogsResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1801,7 +2381,8 @@ namespace Algorand.Algod
 
 
         /// <summary>Waits for a block to appear after round {round} and returns the node's status at
-        /// the time.
+        /// the time. There is a 1 minute timeout, when reached the current status is
+        /// returned regardless of whether or not it is the round after the given round.
         /// </summary>
         /// <param name="round">The round to wait until returning status</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1811,7 +2392,8 @@ namespace Algorand.Algod
         }
 
         /// <summary>>Waits for a block to appear after round {round} and returns the node's status at
-        /// the time.
+        /// the time. There is a 1 minute timeout, when reached the current status is
+        /// returned regardless of whether or not it is the round after the given round.
         /// </summary>
         /// <param name="round">The round to wait until returning status</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1982,17 +2564,111 @@ namespace Algorand.Algod
 
 
 
+        /// <summary>Fast track for broadcasting a raw transaction or transaction group to the
+        /// network through the tx handler without performing most of the checks and
+        /// reporting detailed errors. Should be only used for development and performance
+        /// testing.
+        /// </summary>
+        /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(List<SignedTransaction> rawtxn)
+        {
+            return RawTransactionAsyncAsync(System.Threading.CancellationToken.None, rawtxn);
+        }
+
+        /// <summary>>Fast track for broadcasting a raw transaction or transaction group to the
+        /// network through the tx handler without performing most of the checks and
+        /// reporting detailed errors. Should be only used for development and performance
+        /// testing.
+        /// </summary>
+        /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn)
+        {
+            if (rawtxn == null) throw new System.ArgumentNullException("rawtxn");
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/transactions/async");
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
         /// <summary>Simulates a raw transaction or transaction group as it would be evaluated on the
         /// network. The simulation will use blockchain state from the latest committed
         /// round.
         /// </summary>
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
         /// provided, defaults to JSON.</param>
-        /// <param name="rawtxn">The byte encoded transaction to simulate</param>
+        /// <param name="request">The transactions to simulate, along with any other inputs.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(List<SignedTransaction> rawtxn, Format? format = null)
+        public System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(SimulateRequest request, Format? format = null)
         {
-            return SimulateTransactionAsync(System.Threading.CancellationToken.None, rawtxn, format);
+            return SimulateTransactionAsync(System.Threading.CancellationToken.None, request, format);
         }
 
         /// <summary>>Simulates a raw transaction or transaction group as it would be evaluated on the
@@ -2001,12 +2677,11 @@ namespace Algorand.Algod
         /// </summary>
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
         /// provided, defaults to JSON.</param>
-        /// <param name="rawtxn">The byte encoded transaction to simulate</param>
+        /// <param name="request">The transactions to simulate, along with any other inputs.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn, Format? format = null)
+        public async System.Threading.Tasks.Task<SimulateResponse> SimulateTransactionAsync(System.Threading.CancellationToken cancellationToken, SimulateRequest request, Format? format = null)
         {
-            if (rawtxn == null) throw new System.ArgumentNullException("rawtxn");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/transactions/simulate?");
             if (format != null)
@@ -2022,7 +2697,7 @@ namespace Algorand.Algod
                 {
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                    System.Net.Http.ByteArrayContent content_ = new System.Net.Http.ByteArrayContent(Encoder.EncodeToMsgPackOrdered(rawtxn));
+                    System.Net.Http.ByteArrayContent content_ = new System.Net.Http.ByteArrayContent(Encoder.EncodeToMsgPackOrdered(request));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/msgpack");
                     request_.Content = content_;
 
@@ -2483,6 +3158,202 @@ namespace Algorand.Algod
 
 
 
+        /// <summary>Get ledger deltas for transaction groups in a given round.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="round">The round for which the deltas are desired.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<TransactionGroupLedgerStateDeltasForRoundResponse> GetTransactionGroupLedgerStateDeltasForRoundAsync(ulong round, Format? format = null)
+        {
+            return GetTransactionGroupLedgerStateDeltasForRoundAsync(System.Threading.CancellationToken.None, round, format);
+        }
+
+        /// <summary>>Get ledger deltas for transaction groups in a given round.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="round">The round for which the deltas are desired.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<TransactionGroupLedgerStateDeltasForRoundResponse> GetTransactionGroupLedgerStateDeltasForRoundAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null)
+        {
+            if (round == null) throw new System.ArgumentNullException("round");
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/deltas/{round}/txn/group?");
+            urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
+            if (format != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<TransactionGroupLedgerStateDeltasForRoundResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
+        /// <summary>Get a ledger delta for a given transaction group.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="id">A transaction ID, or transaction group ID</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaForTransactionGroupAsync(string id, Format? format = null)
+        {
+            return GetLedgerStateDeltaForTransactionGroupAsync(System.Threading.CancellationToken.None, id, format);
+        }
+
+        /// <summary>>Get a ledger delta for a given transaction group.
+        /// </summary>
+        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
+        /// provided, defaults to JSON.</param>
+        /// <param name="id">A transaction ID, or transaction group ID</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaForTransactionGroupAsync(System.Threading.CancellationToken cancellationToken, string id, Format? format = null)
+        {
+            if (id == null) throw new System.ArgumentNullException("id");
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/deltas/txn/group/{id}?");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            if (format != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<LedgerStateDelta>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
         /// <summary>Get a state proof that covers a given round
         /// </summary>
         /// <param name="round">The round for which a state proof is desired.</param>
@@ -2854,8 +3725,8 @@ namespace Algorand.Algod
 
 
 
-        /// <summary>Given an application ID and box name, it returns the box name and value (each
-        /// base64 encoded). Box names must be in the goal app call arg encoding form
+        /// <summary>Given an application ID and box name, it returns the round, box name, and value
+        /// (each base64 encoded). Box names must be in the goal app call arg encoding form
         /// 'encoding:value'. For ints, use the form 'int:1234'. For raw bytes, use the form
         /// 'b64:A=='. For printable strings, use the form 'str:hello'. For addresses, use
         /// the form 'addr:XYZ...'.
@@ -2870,8 +3741,8 @@ namespace Algorand.Algod
             return GetApplicationBoxByNameAsync(System.Threading.CancellationToken.None, applicationId, name);
         }
 
-        /// <summary>>Given an application ID and box name, it returns the box name and value (each
-        /// base64 encoded). Box names must be in the goal app call arg encoding form
+        /// <summary>>Given an application ID and box name, it returns the round, box name, and value
+        /// (each base64 encoded). Box names must be in the goal app call arg encoding form
         /// 'encoding:value'. For ints, use the form 'int:1234'. For raw bytes, use the form
         /// 'b64:A=='. For printable strings, use the form 'str:hello'. For addresses, use
         /// the form 'addr:XYZ...'.
@@ -3629,6 +4500,182 @@ namespace Algorand.Algod
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
+        /// <summary>Gets the current timestamp offset.
+        /// </summary>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<GetBlockTimeStampOffsetResponse> GetBlockTimeStampOffsetAsync()
+        {
+            return GetBlockTimeStampOffsetAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <summary>>Gets the current timestamp offset.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<GetBlockTimeStampOffsetResponse> GetBlockTimeStampOffsetAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/devmode/blocks/offset");
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<GetBlockTimeStampOffsetResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
+        /// <summary>Sets the timestamp offset (seconds) for blocks in dev mode. Providing an offset
+        /// of 0 will unset this value and try to use the real clock for the timestamp.
+        /// </summary>
+        /// <param name="offset">The timestamp offset for blocks in dev mode.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<string> SetBlockTimeStampOffsetAsync(ulong offset)
+        {
+            return SetBlockTimeStampOffsetAsync(System.Threading.CancellationToken.None, offset);
+        }
+
+        /// <summary>>Sets the timestamp offset (seconds) for blocks in dev mode. Providing an offset
+        /// of 0 will unset this value and try to use the real clock for the timestamp.
+        /// </summary>
+        /// <param name="offset">The timestamp offset for blocks in dev mode.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<string> SetBlockTimeStampOffsetAsync(System.Threading.CancellationToken cancellationToken, ulong offset)
+        {
+            if (offset == null) throw new System.ArgumentNullException("offset");
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/devmode/blocks/offset/{offset}");
+            urlBuilder_.Replace("{offset}", System.Uri.EscapeDataString(ConvertToString(offset, System.Globalization.CultureInfo.InvariantCulture)));
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);

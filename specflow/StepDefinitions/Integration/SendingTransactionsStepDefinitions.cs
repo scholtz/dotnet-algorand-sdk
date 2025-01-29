@@ -46,7 +46,7 @@ namespace algorand_tests.StepDefinitions
                 GenesisHash = new Digest(suggestedParms.GenesisHash),
                 Receiver = new Address(addresses[0]),
                 Amount = 1,
-                GenesisID = suggestedParms.GenesisId,
+                GenesisId = suggestedParms.GenesisId,
                 Sender = multiSigAddress
             };
 
@@ -103,13 +103,13 @@ namespace algorand_tests.StepDefinitions
                         FirstValid = suggestedParms.LastRound,
                         LastValid = suggestedParms.LastRound + 1000,
                         GenesisHash = new Digest(suggestedParms.GenesisHash),
-                        GenesisID = suggestedParms.GenesisId,
+                        GenesisId = suggestedParms.GenesisId,
                         
                         Fee =1000,
                         Sender = new Address(addresses[0]),
                         NonParticipation=false,
-                        VotePK = new ParticipationPublicKey(Convert.FromBase64String("9mr13Ri8rFepxN3ghIUrZNui6LqqM5hEzB45Rri5lkU=")),
-                        SelectionPK = new VRFPublicKey(Convert.FromBase64String("dx717L3uOIIb/jr9OIyls1l5Ei00NFgRa380w7TnPr4=")),
+                        Votepk = new ParticipationPublicKey(Convert.FromBase64String("9mr13Ri8rFepxN3ghIUrZNui6LqqM5hEzB45Rri5lkU=")),
+                        SelectionPk = new VRFPublicKey(Convert.FromBase64String("dx717L3uOIIb/jr9OIyls1l5Ei00NFgRa380w7TnPr4=")),
                         VoteFirst=0,
                         VoteLast=30001,
                         VoteKeyDilution=10000,
@@ -125,7 +125,7 @@ namespace algorand_tests.StepDefinitions
                          FirstValid = suggestedParms.LastRound,
                          LastValid = suggestedParms.LastRound + 1000,
                          GenesisHash = new Digest(suggestedParms.GenesisHash),
-                         GenesisID = suggestedParms.GenesisId,
+                         GenesisId = suggestedParms.GenesisId,
                          NonParticipation = true,
                         
                     };
@@ -138,7 +138,7 @@ namespace algorand_tests.StepDefinitions
                          FirstValid = suggestedParms.LastRound,
                          LastValid = suggestedParms.LastRound + 1000,
                          GenesisHash = new Digest(suggestedParms.GenesisHash),
-                         GenesisID = suggestedParms.GenesisId,
+                         GenesisId = suggestedParms.GenesisId,
                      };
                     break;
             }

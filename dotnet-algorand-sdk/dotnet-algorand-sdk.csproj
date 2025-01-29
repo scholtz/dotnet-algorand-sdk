@@ -7,11 +7,11 @@
 		<AssemblyName>Algorand</AssemblyName>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Version>2.0.0.$([System.DateTime]::Now.ToString(yyyyMMddHH))</Version>
-		<Authors>Frank Szendzielarz</Authors>
+		<Version>4.0.1.$([System.DateTime]::Now.ToString(yyyyMMddHH))</Version>
+		<Authors>Ludovit Scholtz, Frank Szendzielarz</Authors>
 		<Company></Company>
 		<Product>Algorand .NET SDK 2</Product>
-		<PackageProjectUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/scholtz/dotnet-algorand-sdk</PackageProjectUrl>
 		<PackageLicenseUrl></PackageLicenseUrl>
 		<Description>Algorand SDK for .Net 2</Description>
 		<PackageReleaseNotes></PackageReleaseNotes>
@@ -20,8 +20,8 @@
 		<FileVersion>1.0.0.0</FileVersion>
 		<Copyright></Copyright>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<RepositoryUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</RepositoryUrl>
-		<PackageId>Algorand2</PackageId>
+		<RepositoryUrl>https://github.com/scholtz/dotnet-algorand-sdk</RepositoryUrl>
+		<PackageId>Algorand4</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity;Unity_debug</Configurations>
 		<AssemblyOriginatorKeyFile>Algorand.snk</AssemblyOriginatorKeyFile>
@@ -35,10 +35,10 @@
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<Version>1.0.0.16</Version>
-		<Authors>Frank Szendzielarz</Authors>
+		<Authors>Ludovit Scholtz, Frank Szendzielarz</Authors>
 		<Company></Company>
 		<Product>Algorand .NET SDK 2</Product>
-		<PackageProjectUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/scholtz/dotnet-algorand-sdk</PackageProjectUrl>
 		<PackageLicenseUrl></PackageLicenseUrl>
 		<Description>Algorand SDK for .Net 2</Description>
 		<PackageReleaseNotes></PackageReleaseNotes>
@@ -47,8 +47,8 @@
 		<FileVersion>1.0.0.0</FileVersion>
 		<Copyright></Copyright>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<RepositoryUrl>https://github.com/FrankSzendzielarz/dotnet-algorand-sdk</RepositoryUrl>
-		<PackageId>Algorand2</PackageId>
+		<RepositoryUrl>https://github.com/scholtz/dotnet-algorand-sdk</RepositoryUrl>
+		<PackageId>Algorand4</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity;Unity_debug</Configurations>
 		<AssemblyOriginatorKeyFile>Algorand.snk</AssemblyOriginatorKeyFile>
@@ -56,7 +56,7 @@
 
 	
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unity|AnyCPU'">
-			<PostBuildEvent>nuget pack Algorand2_Unity.nuspec -Properties version=2.0.0.$([System.DateTime]::UtcNow.ToString("yyyyMMddHH")) </PostBuildEvent>
+			<PostBuildEvent>nuget pack Algorand4_Unity.nuspec -Properties version=4.0.1.$([System.DateTime]::UtcNow.ToString("yyyyMMddHH")) </PostBuildEvent>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unity|AnyCPU'">
@@ -418,7 +418,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="Algorand2_Unity.nuspec">
+	  <None Update="Algorand4_Unity.nuspec">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

@@ -70,7 +70,7 @@ public partial class ApplicationParams{
     [Newtonsoft.Json.JsonProperty("global-state", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
     [field:SerializeField]
-    [Tooltip(@"[\gs\] global schema")]
+    [Tooltip(@"\[gs\] global state")]
     [field:InspectorName(@"GlobalState")]
     public System.Collections.Generic.List<TealKeyValue> GlobalState {get;set;} = new System.Collections.Generic.List<TealKeyValue>();
 #else
@@ -80,7 +80,7 @@ public partial class ApplicationParams{
     [Newtonsoft.Json.JsonProperty("global-state-schema", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
     [field:SerializeField]
-    [Tooltip(@"[\gsch\] global schema")]
+    [Tooltip(@"\[gsch\] global schema")]
     [field:InspectorName(@"GlobalStateSchema")]
     public ApplicationStateSchema GlobalStateSchema {get;set;}
 #else
@@ -92,7 +92,7 @@ public partial class ApplicationParams{
     [Newtonsoft.Json.JsonProperty("local-state-schema", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
     [field:SerializeField]
-    [Tooltip(@"[\lsch\] local schema")]
+    [Tooltip(@"\[lsch\] local schema")]
     [field:InspectorName(@"LocalStateSchema")]
     public ApplicationStateSchema LocalStateSchema {get;set;}
 #else

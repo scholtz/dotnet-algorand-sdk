@@ -10,7 +10,8 @@ namespace specflow.StepDefinitions
     [Binding]
     public sealed class httpUtilities
     {
-        const string ALGOD_API_ADDR = "http://localhost:60000/";
+        // run "algokit localnet start" before the tests
+        const string ALGOD_API_ADDR = "http://localhost:4001/";
         const string ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
         private static HttpClient httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);

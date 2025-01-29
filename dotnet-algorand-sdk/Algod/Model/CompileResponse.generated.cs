@@ -2,12 +2,11 @@
 namespace Algorand.Algod.Model
 {
     using Algorand.Algod.Model.Transactions;
-    using Newtonsoft.Json.Linq;
 #if UNITY
     using UnityEngine;
 #endif
 
-    using System = global::System;
+using System = global::System;
 #if UNITY
 using UnityEngine;
 #endif
@@ -40,9 +39,6 @@ public partial class CompileResponse{
 #else
     public string Result {get;set;}
 #endif
-
-
-
 
 
     

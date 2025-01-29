@@ -47,8 +47,6 @@ public partial class PaymentTransaction : Transaction{
 #endif
 
 
-
-
     
 }
 

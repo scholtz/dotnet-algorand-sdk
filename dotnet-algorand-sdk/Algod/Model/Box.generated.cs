@@ -29,6 +29,19 @@ public partial class Box{
 
 
 
+    [Newtonsoft.Json.JsonProperty("round", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"The round for which this information is relevant")]
+    [field:InspectorName(@"Round")]
+    public ulong Round {get;set;}
+#else
+    public ulong Round {get;set;}
+#endif
+
+
+
     [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Always)]
     [System.ComponentModel.DataAnnotations.Required]
 #if UNITY

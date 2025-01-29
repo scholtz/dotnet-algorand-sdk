@@ -16,10 +16,6 @@ using UnityEngine;
 #endif
 public partial class ErrorResponse{
 
- 
-
-
-
     [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Always)]
     [System.ComponentModel.DataAnnotations.Required]
 #if UNITY

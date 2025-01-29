@@ -291,7 +291,7 @@ public partial class NodeStatusResponse{
     [Newtonsoft.Json.JsonProperty("upgrade-vote-rounds", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
     [field:SerializeField]
-    [Tooltip(@"Total voting ounds for current upgrade")]
+    [Tooltip(@"Total voting rounds for current upgrade")]
     [field:InspectorName(@"UpgradeVoteRounds")]
     public ulong UpgradeVoteRounds {get;set;}
 #else

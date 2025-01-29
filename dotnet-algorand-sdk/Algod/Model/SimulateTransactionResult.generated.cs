@@ -16,14 +16,50 @@ using UnityEngine;
 #endif
 public partial class SimulateTransactionResult{
 
-    [Newtonsoft.Json.JsonProperty("missing-signature", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+    [Newtonsoft.Json.JsonProperty("app-budget-consumed", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
     [field:SerializeField]
-    [Tooltip(@"A boolean indicating whether this transaction is missing signatures")]
-    [field:InspectorName(@"MissingSignature")]
-    public bool MissingSignature {get;set;}
+    [Tooltip(@"Budget used during execution of an app call transaction. This value includes budged used by inner app calls spawned by this transaction.")]
+    [field:InspectorName(@"AppBudgetConsumed")]
+    public ulong AppBudgetConsumed {get;set;}
 #else
-    public bool? MissingSignature {get;set;}
+    public ulong? AppBudgetConsumed {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("exec-trace", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"The execution trace of calling an app or a logic sig, containing the inner app call trace in a recursive way.")]
+    [field:InspectorName(@"ExecTrace")]
+    public SimulationTransactionExecTrace ExecTrace {get;set;}
+#else
+    public SimulationTransactionExecTrace ExecTrace {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("fixed-signer", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"The account that needed to sign this transaction when no signature was provided and the provided signer was incorrect.")]
+    [field:InspectorName(@"FixedSigner")]
+    public Address FixedSigner {get;set;}
+#else
+    public Address FixedSigner {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("logic-sig-budget-consumed", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Budget used during execution of a logic sig transaction.")]
+    [field:InspectorName(@"LogicSigBudgetConsumed")]
+    public ulong LogicSigBudgetConsumed {get;set;}
+#else
+    public ulong? LogicSigBudgetConsumed {get;set;}
 #endif
 
 
@@ -37,6 +73,18 @@ public partial class SimulateTransactionResult{
     public IReturnableTransaction TxnResult {get;set;}
 #else
     public IReturnableTransaction TxnResult {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("unnamed-resources-accessed", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"These are resources that were accessed by this group that would normally have caused failure, but were allowed in simulation. Depending on where this object is in the response, the unnamed resources it contains may or may not qualify for group resource sharing. If this is a field in SimulateTransactionGroupResult, the resources do qualify, but if this is a field in SimulateTransactionResult, they do not qualify. In order to make this group valid for actual submission, resources that qualify for group sharing can be made available by any transaction of the group; otherwise, resources must be placed in the same transaction which accessed them.")]
+    [field:InspectorName(@"UnnamedResourcesAccessed")]
+    public SimulateUnnamedResourcesAccessed UnnamedResourcesAccessed {get;set;}
+#else
+    public SimulateUnnamedResourcesAccessed UnnamedResourcesAccessed {get;set;}
 #endif
 
 

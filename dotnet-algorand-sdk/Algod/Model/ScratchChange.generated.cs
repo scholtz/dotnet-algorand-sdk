@@ -1,0 +1,48 @@
+
+namespace Algorand.Algod.Model
+{
+    using Algorand.Algod.Model.Transactions;
+#if UNITY
+    using UnityEngine;
+#endif
+
+using System = global::System;
+#if UNITY
+using UnityEngine;
+#endif
+
+#if UNITY
+[System.Serializable]
+#endif
+public partial class ScratchChange{
+
+    [Newtonsoft.Json.JsonProperty("new-value", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Represents an AVM value.")]
+    [field:InspectorName(@"NewValue")]
+    public AvmValue NewValue {get;set;}
+#else
+    public AvmValue NewValue {get;set;}
+#endif
+
+
+
+    [Newtonsoft.Json.JsonProperty("slot", Required = Newtonsoft.Json.Required.Always)]
+    [System.ComponentModel.DataAnnotations.Required]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"The scratch slot written.")]
+    [field:InspectorName(@"Slot")]
+    public ulong Slot {get;set;}
+#else
+    public ulong Slot {get;set;}
+#endif
+
+
+    
+}
+
+
+}
