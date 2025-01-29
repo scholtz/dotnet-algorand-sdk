@@ -32,7 +32,7 @@ The Indexer client is used for connecting to the Algorand Indexer, which offers 
 From the NuGet command line you can execute:
 
 ```powershell
-Install-Package Algorand2
+Install-Package Algorand4
 ```
 Or from Project -> Manage NuGet Packages
 
