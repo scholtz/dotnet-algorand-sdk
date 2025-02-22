@@ -17,7 +17,7 @@ namespace AlgoStudio
 
     public class ProxyException : Exception
     {
-        public ProxyException(string message,Exception inner) : base(message, inner)
+        public ProxyException(string message, Exception inner) : base(message, inner)
         {
             System.Diagnostics.Debug.WriteLine(message);
         }
@@ -34,6 +34,42 @@ namespace AlgoStudio
 
         DefaultApi client;
         ulong appId;
+        /// <summary>
+        /// Base64 TEAL code of approval program
+        /// </summary>
+        protected virtual string SourceApproval { get; set; } = "";
+        /// <summary>
+        /// Base64 TEAL code of clear state program
+        /// </summary>
+        protected virtual string SourceClear { get; set; } = "";
+        /// <summary>
+        /// Base64 AVM code of approval program
+        /// </summary>
+        protected virtual string SourceApprovalAVM { get; set; } = "";
+        /// <summary>
+        /// Base64 AVM code of clear state program
+        /// </summary>
+        protected virtual string SourceClearAVM { get; set; } = "Cg==";
+        /// <summary>
+        /// Number of maximum global byte[] variables
+        /// </summary>
+        protected virtual ulong? GlobalNumByteSlices { get; set; } = 0;
+        /// <summary>
+        /// Number of maximum global uint64 variables
+        /// </summary>
+        protected virtual ulong? GlobalNumUints { get; set; } = 0;
+        /// <summary>
+        /// Number of maximum local byte[] variables
+        /// </summary>
+        protected virtual ulong? LocalNumByteSlices { get; set; } = 0;
+        /// <summary>
+        /// Number of maximum local uint64 variables
+        /// </summary>
+        protected virtual ulong? LocalNumUints { get; set; } = 0;
+        /// <summary>
+        /// Up to 3 extensions to the program size
+        /// </summary>
+        protected virtual ulong? ExtraProgramPages { get; set; } = 0;
 
         public ProxyBase(DefaultApi algodApi, ulong appId)
         {
@@ -67,9 +103,9 @@ namespace AlgoStudio
                 flags = resultBytes.Skip(12).Take(4).ToArray();
             }
 
-            int intlo = BitConverter.ToInt32(lo,0);
-            int intmid = BitConverter.ToInt32(mid,0);
-            int inthi = BitConverter.ToInt32(hi,0);
+            int intlo = BitConverter.ToInt32(lo, 0);
+            int intmid = BitConverter.ToInt32(mid, 0);
+            int inthi = BitConverter.ToInt32(hi, 0);
             int intflags = BitConverter.ToInt32(flags, 0);
             Decimal r = new decimal(new int[] { intlo, intmid, inthi, intflags });
 
@@ -77,7 +113,7 @@ namespace AlgoStudio
 
         }
 
-        
+
         protected BigInteger GetBigIntegerFromByte(byte[] bytes)
         {
             //BigInteger is ALWAYS little endian and bytes is always bigendian, so we must first reverse them, which
@@ -97,7 +133,7 @@ namespace AlgoStudio
             }
 
             //we now have a 64 byte number in little endian format, but we must determine if the highest bit is 1 to see if it is negative
-            bool isNegative = (reversed[reversed.Length-1] & 0x80) != 0;
+            bool isNegative = (reversed[reversed.Length - 1] & 0x80) != 0;
 
             //now we convert it to a BigInteger
             BigInteger result = new BigInteger(reversed);
@@ -106,7 +142,7 @@ namespace AlgoStudio
             if (isNegative)
             {
                 //make a byte array of FF to the length of the 'reversed' array:
-                BigInteger ones = new BigInteger( Enumerable.Repeat((byte)0xFF, reversed.Length).ToArray());
+                BigInteger ones = new BigInteger(Enumerable.Repeat((byte)0xFF, reversed.Length).ToArray());
 
                 result = -((result ^ ones) + 1);
             }
@@ -130,8 +166,8 @@ namespace AlgoStudio
             {
                 throw new ProxyException($"Could not get application state for {appId}");
             }
-            TealValue val=result.Params.GlobalState.Where(tk=>tk.Key==key && tk.Value.Type==1).Select(tk=>tk.Value).FirstOrDefault();
-            if (val==null)
+            TealValue val = result.Params.GlobalState.Where(tk => tk.Key == key && tk.Value.Type == 1).Select(tk => tk.Value).FirstOrDefault();
+            if (val == null)
             {
                 return new byte[] { };
             }
@@ -139,15 +175,15 @@ namespace AlgoStudio
             return Convert.FromBase64String(val.Bytes);
         }
 
-        protected async Task<byte[]> GetLocalByteSlice(Account caller,string key)
+        protected async Task<byte[]> GetLocalByteSlice(Account caller, string key)
         {
             key = Convert.ToBase64String(Encoding.UTF8.GetBytes(key));
-            var result = await client.AccountApplicationInformationAsync(caller.Address.ToString(), appId,null);
+            var result = await client.AccountApplicationInformationAsync(caller.Address.ToString(), appId, null);
             if (result == null)
             {
                 throw new ProxyException($"Could not get application state for {appId}");
             }
-            TealValue val= result.AppLocalState.KeyValue.Where(tk => tk.Key == key && tk.Value.Type == 1).Select(tk => tk.Value).FirstOrDefault();
+            TealValue val = result.AppLocalState.KeyValue.Where(tk => tk.Key == key && tk.Value.Type == 1).Select(tk => tk.Value).FirstOrDefault();
             if (val == null)
             {
                 return new byte[] { };
@@ -168,10 +204,10 @@ namespace AlgoStudio
             {
                 return 0;
             }
-            return val.Uint; 
+            return val.Uint;
         }
 
-        protected async Task<ulong> GetLocalUInt(Account caller,string key)
+        protected async Task<ulong> GetLocalUInt(Account caller, string key)
         {
             key = Convert.ToBase64String(Encoding.UTF8.GetBytes(key));
             var result = await client.AccountApplicationInformationAsync(caller.Address.ToString(), appId, null);
@@ -184,12 +220,12 @@ namespace AlgoStudio
             {
                 throw new ProxyException($"Key of byte slice type not found for app {appId} with key {key}");
             }
-            return val.Uint; 
+            return val.Uint;
         }
 
 
-        protected async Task<List<Transaction>> MakeTransactionList( ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<object> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
-        { 
+        protected async Task<List<Transaction>> MakeTransactionList(ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<object> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+        {
             return await MakeTransactionList(null, fee, onComplete, roundValidity, note, sender, args, foreignApps, foreignAssets, accounts, boxes);
         }
 
@@ -224,7 +260,7 @@ namespace AlgoStudio
                 {
                     txs.Add(tx);
                 }
-                
+
 
                 return txs;
 
@@ -235,7 +271,7 @@ namespace AlgoStudio
             }
         }
 
-        protected async Task<List<Transaction>> MakeArc4TransactionList(List<Transaction> preTransactions, ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender,byte[] selector, List<ABI.ARC4.Types.WireType> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+        protected async Task<List<Transaction>> MakeArc4TransactionList(List<Transaction> preTransactions, ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender, byte[] selector, List<ABI.ARC4.Types.WireType> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
         {
             TransactionParametersResponse transParams;
             try
@@ -249,7 +285,7 @@ namespace AlgoStudio
 
             try
             {
-                ApplicationCallTransaction tx = makeArc4AppCallTxn(fee, onComplete, roundValidity, note, sender, selector,args, foreignApps, foreignAssets, accounts, boxes, transParams);
+                ApplicationCallTransaction tx = makeArc4AppCallTxn(fee, onComplete, roundValidity, note, sender, selector, args, foreignApps, foreignAssets, accounts, boxes, transParams);
 
                 List<Transaction> txs = new List<Transaction>();
                 if (preTransactions != null && preTransactions.Count > 0)
@@ -283,7 +319,7 @@ namespace AlgoStudio
         }
 
 
-        protected async Task<ICollection<byte[]>> CallApp(List<Transaction> preTransactions, ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender,  List<object> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes=null)
+        protected async Task<ICollection<byte[]>> CallApp(List<Transaction> preTransactions, ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<object> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
         {
             TransactionParametersResponse transParams;
             try
@@ -297,10 +333,10 @@ namespace AlgoStudio
 
             try
             {
-                
-                
+
+
                 ApplicationCallTransaction tx = makeStandardAppCallTxn(fee, onComplete, roundValidity, note, sender, args, foreignApps, foreignAssets, accounts, boxes, transParams);
-                
+
                 List<SignedTransaction> txs = new List<SignedTransaction>();
                 if (preTransactions != null && preTransactions.Count > 0)
                 {
@@ -326,11 +362,11 @@ namespace AlgoStudio
             }
             catch (Exception ex)
             {
-                throw new ProxyException("Call failed.",ex);
+                throw new ProxyException("Call failed.", ex);
             }
         }
 
-        private ApplicationCallTransaction makeArc4AppCallTxn(ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender,byte[] selector, List<ABI.ARC4.Types.WireType> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes, TransactionParametersResponse transParams)
+        private ApplicationCallTransaction makeArc4AppCallTxn(ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender, byte[] selector, List<ABI.ARC4.Types.WireType> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes, TransactionParametersResponse transParams)
         {
             //if the arg list is 16 or less, encode each wiretype, otherwise the first 15 args are encoded and the remainder are made into a Tuple WireType and the tuple is passed as the 16th arg:
             List<byte[]> bargs;
@@ -357,11 +393,11 @@ namespace AlgoStudio
 
         private ApplicationCallTransaction makeStandardAppCallTxn(ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<object> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes, TransactionParametersResponse transParams)
         {
-           
-            var bargs = toByteArrays(args);  
+
+            var bargs = toByteArrays(args);
 
             return makeAppCallTxn(fee, onComplete, roundValidity, note, sender, bargs, foreignApps, foreignAssets, accounts, boxes, transParams);
-            
+
         }
 
         private ApplicationCallTransaction makeAppCallTxn(ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<byte[]> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes, TransactionParametersResponse transParams)
@@ -380,7 +416,22 @@ namespace AlgoStudio
                     break;
 
                 case Core.OnCompleteType.CreateApplication:
-                    tx = new ApplicationCreateTransaction() { };
+                    tx = new ApplicationCreateTransaction()
+                    {
+                        ApprovalProgram = new TEALProgram(SourceApprovalAVM),
+                        ClearStateProgram = new TEALProgram(SourceClearAVM),
+                        GlobalStateSchema = new StateSchema()
+                        {
+                            NumByteSlice = GlobalNumByteSlices,
+                            NumUint = GlobalNumUints
+                        },
+                        LocalStateSchema = new StateSchema()
+                        {
+                            NumByteSlice = LocalNumByteSlices,
+                            NumUint = LocalNumUints
+                        },
+                        ExtraProgramPages = ExtraProgramPages
+                    };
                     break;
                 case Core.OnCompleteType.UpdateApplication:
                     tx = new ApplicationUpdateTransaction() { ApplicationId = appId };
@@ -401,13 +452,13 @@ namespace AlgoStudio
             tx.GenesisId = transParams.GenesisId;
             tx.GenesisHash = new Digest(transParams.GenesisHash);
             tx.Note = Encoding.UTF8.GetBytes(note);
-            tx.ApplicationArgs = args;  
+            tx.ApplicationArgs = args;
             tx.ForeignApps = foreignApps;
             tx.ForeignAssets = foreignAssets;
             tx.Accounts = accounts;
             tx.Boxes = boxes;
-            
-            
+
+
 
             return tx;
         }

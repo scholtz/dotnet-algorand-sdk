@@ -8,7 +8,10 @@ namespace AlgoStudio.ABI.ARC32
 {
     public class StorageSection
     {
-
+        [Newtonsoft.Json.JsonProperty("num_byte_slices")]
+        public ulong? NumByteSlices { get; set; } = 0;
+        [Newtonsoft.Json.JsonProperty("num_uints")]
+        public ulong? NumUints { get; set; } = 0;
         public Dictionary<string, StorageElement> Declared { get; set; } = new Dictionary<string, StorageElement>();
 
         internal void ToProxy(Code proxyBody, List<string> structs, bool local)
@@ -67,10 +70,7 @@ namespace AlgoStudio.ABI.ARC32
                 body.AddOpeningLine($"var result= await base.{typeCall};");
                 body.AddOpeningLine(retline);
                 code.AddClosingLine("}");
-
             }
-
-
         }
 
 

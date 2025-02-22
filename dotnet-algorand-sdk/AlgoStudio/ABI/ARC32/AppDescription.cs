@@ -1,11 +1,11 @@
-﻿using Algorand.Algod.Model.Transactions;
+﻿using Algorand.Algod;
+using Algorand.AlgoStudio.ABI.ARC32;
 using AlgoStudio.ABI.ARC4;
 using AlgoStudio.Clients;
 using AlgoStudio.Compiler;
 using AlgoStudio.Core.Attributes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MsgPack.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AlgoStudio.ABI.ARC32
 {
@@ -32,7 +33,11 @@ namespace AlgoStudio.ABI.ARC32
         public CallConfigSpec Bare_call_config { get; set; }
 
         public Dictionary<string, HintSpec> Hints = new Dictionary<string, HintSpec>();
-
+        /// <summary>
+        /// The ARC32 source attribute
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("source")]
+        public SourceDescription Source { get; set; } = new SourceDescription();
         #endregion
 
         #region Methods
@@ -76,7 +81,7 @@ namespace AlgoStudio.ABI.ARC32
             }
             return null;
         }
-        public static AppDescription LoadFromByteArray(byte[] data)
+        public static async Task<AppDescription> LoadFromByteArray(byte[] data, IDefaultApi? algodClient = null)
         {
             try
             {
@@ -84,6 +89,21 @@ namespace AlgoStudio.ABI.ARC32
                 {
                     MissingMemberHandling = MissingMemberHandling.Ignore
                 });
+
+                if (string.IsNullOrEmpty(cd.Source.ApprovalAVM))
+                {
+                    var teal = Convert.FromBase64String(cd.Source.Approval);
+                    var compiled = await algodClient.TealCompileAsync(new MemoryStream(teal));
+                    cd.Source.ApprovalAVM = compiled.Result;
+                }
+
+                if (string.IsNullOrEmpty(cd.Source.ClearAVM))
+                {
+                    var teal = Convert.FromBase64String(cd.Source.Clear);
+                    var compiled = await algodClient.TealCompileAsync(new MemoryStream(teal));
+                    cd.Source.ClearAVM = compiled.Result;
+                }
+
                 return cd;
             }
             catch
@@ -367,6 +387,16 @@ $@"{"\t"}///<summary>
             defineMethods(proxyBody, structs);
             defineArc4Callers(proxyBody);
 
+
+            var sourceVars = proxyBody.AddChild();
+            sourceVars.AddOpeningLine($"protected override string SourceApproval {{ get; set; }}= \"{Source.Approval}\";");
+            sourceVars.AddOpeningLine($"protected override string SourceClear {{ get; set; }} = \"{Source.Clear}\";");
+            sourceVars.AddOpeningLine($"protected override string SourceApprovalAVM {{ get; set; }}= \"{Source.ApprovalAVM}\";");
+            sourceVars.AddOpeningLine($"protected override string SourceClearAVM {{ get; set; }} = \"{Source.ClearAVM}\";");
+            sourceVars.AddOpeningLine($"protected override ulong? GlobalNumByteSlices {{ get; set; }}={State.Global.NumByteSlices};");
+            sourceVars.AddOpeningLine($"protected override ulong? GlobalNumUints {{ get; set; }}={State.Global.NumUints};");
+            sourceVars.AddOpeningLine($"protected override ulong? LocalNumByteSlices {{ get; set; }}={State.Local.NumByteSlices};");
+            sourceVars.AddOpeningLine($"protected override ulong? LocalNumUints {{ get; set; }}={State.Local.NumUints};");
 
             return code.ToString();
         }

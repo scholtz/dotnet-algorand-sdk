@@ -34,19 +34,25 @@ namespace test
             var content = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(content.Trim().StartsWith("{"), "File content is not valid JSON");
 
-            var app = AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+
+            var app = await AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(content), algodApiInstance);
 
             Assert.That(app.Bare_call_config.No_op, Is.EqualTo(CallConfig.NEVER));
             Assert.That(app.Hints.Keys.Count, Is.GreaterThan(1));
             Assert.That(app.State.Global, Is.Not.Null);
             Assert.That(app.Contract.Methods.Count, Is.GreaterThan(1));
+            Assert.That(app.Source.Approval.Length, Is.GreaterThan(1));
 
             var appref = app.ToSmartContractReference("TestNamespace", "");
             Assert.That(appref.Length, Is.GreaterThan(1));
             var appProxy = app.ToProxy("TestNamespace");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
 
-            File.WriteAllText("SmartContractReference.cs", appref);
+            //File.WriteAllText("SmartContractReference.cs", appref);
             File.WriteAllText("SmartContractProxy.cs", appProxy);
         }
         private async Task<Account> GetAccount()
