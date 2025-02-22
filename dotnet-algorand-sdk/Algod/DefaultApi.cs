@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 namespace Algorand.Algod
 {
     using Algorand.Algod.Model;
