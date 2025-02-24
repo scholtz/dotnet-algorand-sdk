@@ -176,6 +176,9 @@ namespace AlgoStudio.ABI
                     if (bitwidth == 32) return ("", checkArrayType(arrayComponent, "uint"));
                     if (bitwidth == 48) return (bitwidthDecorator, checkArrayType(arrayComponent, "uint"));
                     if (bitwidth == 64) return ("", checkArrayType(arrayComponent, "ulong"));
+                    if (bitwidth == 128) return ("", checkArrayType(arrayComponent, "AlgoStudio.ABI.ARC4.Types.UInt128"));
+                    if (bitwidth == 256) return ("", checkArrayType(arrayComponent, "AlgoStudio.ABI.ARC4.Types.UInt256"));
+                    if (bitwidth == 512) return ("", checkArrayType(arrayComponent, "AlgoStudio.ABI.ARC4.Types.UInt512"));
                     if (bitwidth > 64 && bitwidth <= 512) return (bitwidthDecorator, checkArrayType(arrayComponent, $"System.Numerics.BigInteger"));
 
                     throw new Exception($"Unsupported bitwidth{bitwidth}.");

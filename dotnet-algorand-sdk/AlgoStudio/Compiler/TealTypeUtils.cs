@@ -68,7 +68,7 @@ namespace AlgoStudio.Compiler
             { "ushort", (ABIEncodingType.FixedInteger,2)},
             { typeof(UInt16).FullName, (ABIEncodingType.FixedInteger,2)},
             { typeof(UInt16).Name, (ABIEncodingType.FixedInteger,2)},
-            {  typeof(BigInteger).FullName, (ABIEncodingType.VariableByteArray,0)},
+            //{  typeof(BigInteger).FullName, (ABIEncodingType.VariableByteArray,0)},
             {  "decimal", (ABIEncodingType.VariableByteArray,0)},
             {  typeof(Decimal).FullName, (ABIEncodingType.VariableByteArray,0)},
             {  typeof(Decimal).Name, (ABIEncodingType.VariableByteArray,0)},
@@ -221,6 +221,13 @@ namespace AlgoStudio.Compiler
 
         public static byte[] ToByteArray(object runtimeValue)
         {
+
+            var valueAsWireType = runtimeValue as ABI.ARC4.Types.WireType;
+            if(valueAsWireType != null)
+            {
+                return valueAsWireType.Encode();
+            }
+
             Type runtimeType = runtimeValue.GetType();
             string typeName = runtimeType.Name;
 
@@ -295,6 +302,11 @@ namespace AlgoStudio.Compiler
         internal static byte[] EncodeArgument(object runtimeValue)
         {
 
+            var valueAsWireType = runtimeValue as ABI.ARC4.Types.WireType;
+            if (valueAsWireType != null)
+            {
+                return valueAsWireType.Encode();
+            }
             Type runtimeType = runtimeValue.GetType();
             return EncodeElement(runtimeValue, runtimeType, null, out bool _);
         }

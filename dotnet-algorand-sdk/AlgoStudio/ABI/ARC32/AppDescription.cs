@@ -288,7 +288,7 @@ namespace AlgoStudio.ABI.ARC32
             {
                 crb.AppendLine(
 $@"{"\t"}///<summary>
-{"\t"}///{Contract.Desc}
+{"\t"}///{Contract.Desc?.Replace("\n","\n///")}
 {"\t"}///</summary>");
             }
 
@@ -366,7 +366,7 @@ $@"{"\t"}///<summary>
             if (!string.IsNullOrEmpty(Contract.Desc))
             {
                 proxyBody.AddOpeningLine("//");
-                proxyBody.AddOpeningLine($"// {Contract.Desc}");
+                proxyBody.AddOpeningLine($"// {Contract.Desc?.Replace("\n","\n//")}");
                 proxyBody.AddOpeningLine("//");
             }
 
@@ -505,8 +505,8 @@ $@"{"\t"}///<summary>
 
                 abiMethod.AddOpeningLine(
 $@"///<summary>
-        ///{method.Desc ?? ""}
-        ///{method.OnCompletion.Summary}
+        ///{method.Desc?.Replace("\n","\n///") ?? ""}
+        ///{method.OnCompletion.Summary?.Replace("\n", "\n///")}
         ///</summary>");
 
                 foreach (var parm in method.Args)
@@ -516,7 +516,7 @@ $@"///<summary>
                     {
                         parmDefaultSummary = method.Defaults[parm.Name].Summary;
                     }
-                    abiMethod.AddOpeningLine($@"/// <param name=""{parm.Name}"">{parm.Desc} {parm.Summary} {parmDefaultSummary} </param>");
+                    abiMethod.AddOpeningLine($@"/// <param name=""{parm.Name}"">{parm.Desc?.Replace("\n", "\n///")} {parm.Summary?.Replace("\n", "\n///")} {parmDefaultSummary} </param>");
 
                 }
 

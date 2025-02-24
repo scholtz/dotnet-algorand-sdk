@@ -181,11 +181,11 @@ namespace TestNamespace
         /// <param name="assetA">Asset A ABI Type is uint64  </param>
         /// <param name="assetB">Asset B ABI Type is uint64  </param>
         /// <param name="assetLp">LP pool asset ABI Type is uint64  </param>
-        public async Task<System.Numerics.BigInteger> removeLiquidity(Account sender, ulong? fee, AssetTransferTransaction txLpXfer, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong assetA, ulong assetB, ulong assetLp, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> removeLiquidity(Account sender, ulong? fee, AssetTransferTransaction txLpXfer, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong assetA, ulong assetB, ulong assetLp, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 84, 154, 144, 164 };
             var result = await base.CallApp(new List<Transaction> { txLpXfer }, fee, callType, 1000, note, sender, new List<object> { abiHandle, appBiatecConfigProvider, appBiatecIdentityProvider, assetA, assetB, assetLp }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
@@ -205,15 +205,15 @@ namespace TestNamespace
         /// <param name="assetB">Asset B ABI Type is uint64  </param>
         /// <param name="assetLp"> ABI Type is uint64  </param>
         /// <param name="amount">Amount to withdraw. If zero, removes all available lps from fees. ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> removeLiquidityAdmin(Account sender, ulong? fee, ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, System.Numerics.BigInteger amount, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> removeLiquidityAdmin(Account sender, ulong? fee, ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, AlgoStudio.ABI.ARC4.Types.UInt256 amount, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 137, 74, 147, 79 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, assetLp, amount }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> removeLiquidityAdmin_Transactions(Account sender, ulong? fee, ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, System.Numerics.BigInteger amount, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> removeLiquidityAdmin_Transactions(Account sender, ulong? fee, ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, AlgoStudio.ABI.ARC4.Types.UInt256 amount, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 137, 74, 147, 79 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, assetLp, amount }, null, null, null, boxes);
@@ -231,11 +231,11 @@ namespace TestNamespace
         /// <param name="assetA">Asset A ABI Type is uint64  </param>
         /// <param name="assetB">Asset B ABI Type is uint64  </param>
         /// <param name="minimumToReceive">If number greater then zero, the check is performed for the output of the other asset ABI Type is uint64  </param>
-        public async Task<System.Numerics.BigInteger> swap(Account sender, ulong? fee, Transaction txSwap, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider, ulong assetA, ulong assetB, ulong minimumToReceive, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> swap(Account sender, ulong? fee, Transaction txSwap, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider, ulong assetA, ulong assetB, ulong minimumToReceive, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 32, 19, 52, 158 };
             var result = await base.CallApp(new List<Transaction> { txSwap }, fee, callType, 1000, note, sender, new List<object> { abiHandle, appBiatecConfigProvider, appBiatecIdentityProvider, appBiatecPoolProvider, assetA, assetB, minimumToReceive }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
@@ -255,15 +255,15 @@ namespace TestNamespace
         /// <param name="assetB">Asset B ABI Type is uint64  </param>
         /// <param name="amountA">Amount of asset A to be deposited to the liquidity. In base decimals (9) ABI Type is uint256  </param>
         /// <param name="amountB">Amount of asset B to be deposited to the liquidity. In base decimals (9) ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> distributeExcessAssets(Account sender, ulong? fee, ulong appBiatecConfigProvider, ulong assetA, ulong assetB, System.Numerics.BigInteger amountA, System.Numerics.BigInteger amountB, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> distributeExcessAssets(Account sender, ulong? fee, ulong appBiatecConfigProvider, ulong assetA, ulong assetB, AlgoStudio.ABI.ARC4.Types.UInt256 amountA, AlgoStudio.ABI.ARC4.Types.UInt256 amountB, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 206, 86, 68, 18 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, amountA, amountB }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> distributeExcessAssets_Transactions(Account sender, ulong? fee, ulong appBiatecConfigProvider, ulong assetA, ulong assetB, System.Numerics.BigInteger amountA, System.Numerics.BigInteger amountB, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> distributeExcessAssets_Transactions(Account sender, ulong? fee, ulong appBiatecConfigProvider, ulong assetA, ulong assetB, AlgoStudio.ABI.ARC4.Types.UInt256 amountA, AlgoStudio.ABI.ARC4.Types.UInt256 amountB, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 206, 86, 68, 18 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, amountA, amountB }, null, null, null, boxes);
@@ -344,15 +344,15 @@ namespace TestNamespace
         ///</summary>
         /// <param name="assetLp"> ABI Type is uint64  </param>
         /// <param name="currentDeposit"> ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> calculateDistributedLiquidity(Account sender, ulong? fee, ulong assetLp, System.Numerics.BigInteger currentDeposit, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> calculateDistributedLiquidity(Account sender, ulong? fee, ulong assetLp, AlgoStudio.ABI.ARC4.Types.UInt256 currentDeposit, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 57, 236, 168, 84 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, assetLp, currentDeposit }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> calculateDistributedLiquidity_Transactions(Account sender, ulong? fee, ulong assetLp, System.Numerics.BigInteger currentDeposit, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> calculateDistributedLiquidity_Transactions(Account sender, ulong? fee, ulong assetLp, AlgoStudio.ABI.ARC4.Types.UInt256 currentDeposit, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 57, 236, 168, 84 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, assetLp, currentDeposit }, null, null, null, boxes);
@@ -366,15 +366,15 @@ namespace TestNamespace
         /// <param name="x"> ABI Type is uint256  </param>
         /// <param name="y"> ABI Type is uint256  </param>
         /// <param name="price"> ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> calculateLiquidityFlatPrice(Account sender, ulong? fee, System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger price, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> calculateLiquidityFlatPrice(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 price, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 255, 105, 88, 22 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, x, y, price }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> calculateLiquidityFlatPrice_Transactions(Account sender, ulong? fee, System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger price, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> calculateLiquidityFlatPrice_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 price, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 255, 105, 88, 22 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, x, y, price }, null, null, null, boxes);
@@ -391,15 +391,15 @@ namespace TestNamespace
         /// <param name="priceMax">Maximum price variable in base scale decimals (pb) ABI Type is uint256  </param>
         /// <param name="priceMinSqrt">sqrt(priceMin) in base scale decimals Variable pas ABI Type is uint256  </param>
         /// <param name="priceMaxSqrt">sqrt(priceMax) in base scale decimals Variable pbs ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> calculateLiquidityD(Account sender, ulong? fee, System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger priceMin, System.Numerics.BigInteger priceMax, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> calculateLiquidityD(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 priceMin, AlgoStudio.ABI.ARC4.Types.UInt256 priceMax, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 220, 163, 212, 214 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, x, y, priceMin, priceMax, priceMinSqrt, priceMaxSqrt }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> calculateLiquidityD_Transactions(Account sender, ulong? fee, System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger priceMin, System.Numerics.BigInteger priceMax, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> calculateLiquidityD_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 priceMin, AlgoStudio.ABI.ARC4.Types.UInt256 priceMax, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 220, 163, 212, 214 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, x, y, priceMin, priceMax, priceMinSqrt, priceMaxSqrt }, null, null, null, boxes);
@@ -415,15 +415,15 @@ namespace TestNamespace
         /// <param name="priceMinSqrt">sqrt(priceMin) in base scale decimals Variable pas ABI Type is uint256  </param>
         /// <param name="priceMaxSqrt">sqrt(priceMax) in base scale decimals Variable pbs ABI Type is uint256  </param>
         /// <param name="dSqrt"> ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> calculateLiquidityWithD(Account sender, ulong? fee, System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger dSqrt, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> calculateLiquidityWithD(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 dSqrt, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 105, 214, 35, 177 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, x, y, priceMinSqrt, priceMaxSqrt, dSqrt }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> calculateLiquidityWithD_Transactions(Account sender, ulong? fee, System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger dSqrt, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> calculateLiquidityWithD_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 dSqrt, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 105, 214, 35, 177 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, x, y, priceMinSqrt, priceMaxSqrt, dSqrt }, null, null, null, boxes);
@@ -439,15 +439,15 @@ namespace TestNamespace
         /// <param name="priceMinSqrt">sqrt(priceMin) ABI Type is uint256  </param>
         /// <param name="priceMaxSqrt">sqrt(priceMax) ABI Type is uint256  </param>
         /// <param name="liquidity">Current pool liquidity - L variable ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> calculatePrice(Account sender, ulong? fee, System.Numerics.BigInteger assetAQuantity, System.Numerics.BigInteger assetBQuantity, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger liquidity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> calculatePrice(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 assetAQuantity, AlgoStudio.ABI.ARC4.Types.UInt256 assetBQuantity, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liquidity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 60, 44, 126, 74 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, assetAQuantity, assetBQuantity, priceMinSqrt, priceMaxSqrt, liquidity }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> calculatePrice_Transactions(Account sender, ulong? fee, System.Numerics.BigInteger assetAQuantity, System.Numerics.BigInteger assetBQuantity, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger liquidity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> calculatePrice_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 assetAQuantity, AlgoStudio.ABI.ARC4.Types.UInt256 assetBQuantity, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liquidity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 60, 44, 126, 74 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, assetAQuantity, assetBQuantity, priceMinSqrt, priceMaxSqrt, liquidity }, null, null, null, boxes);
@@ -464,15 +464,15 @@ namespace TestNamespace
         /// <param name="priceMinSqrt">sqrt(Min price). Variable pMinS, in base scale ABI Type is uint256  </param>
         /// <param name="priceMaxSqrt">sqrt(Max price). Variable pMaxS, in base scale ABI Type is uint256  </param>
         /// <param name="liqudity">sqrt(Max price). Variable L, in base scale ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> calculateAssetBWithdrawOnAssetADeposit(Account sender, ulong? fee, System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> calculateAssetBWithdrawOnAssetADeposit(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 75, 245, 113, 182 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmount, assetABalance, assetBBalance, priceMinSqrt, priceMaxSqrt, liqudity }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> calculateAssetBWithdrawOnAssetADeposit_Transactions(Account sender, ulong? fee, System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> calculateAssetBWithdrawOnAssetADeposit_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 75, 245, 113, 182 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmount, assetABalance, assetBBalance, priceMinSqrt, priceMaxSqrt, liqudity }, null, null, null, boxes);
@@ -489,15 +489,15 @@ namespace TestNamespace
         /// <param name="priceMinSqrt">sqrt(Min price). Variable pMinS, in base scale ABI Type is uint256  </param>
         /// <param name="priceMaxSqrt">sqrt(Max price). Variable pMaxS, in base scale ABI Type is uint256  </param>
         /// <param name="liqudity">sqrt(Max price). Variable L, in base scale ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> calculateAssetAWithdrawOnAssetBDeposit(Account sender, ulong? fee, System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> calculateAssetAWithdrawOnAssetBDeposit(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 82, 247, 146, 63 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmount, assetABalance, assetBBalance, priceMinSqrt, priceMaxSqrt, liqudity }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> calculateAssetAWithdrawOnAssetBDeposit_Transactions(Account sender, ulong? fee, System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> calculateAssetAWithdrawOnAssetBDeposit_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 82, 247, 146, 63 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmount, assetABalance, assetBBalance, priceMinSqrt, priceMaxSqrt, liqudity }, null, null, null, boxes);
@@ -511,15 +511,15 @@ namespace TestNamespace
         /// <param name="inAmount">LP Asset amount in Base decimal representation.. ABI Type is uint256  </param>
         /// <param name="assetABalance">Asset A balance. Variable ab, in base scale ABI Type is uint256  </param>
         /// <param name="liqudity">Current liqudity. Variable L, in base scale ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> calculateAssetAWithdrawOnLpDeposit(Account sender, ulong? fee, System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> calculateAssetAWithdrawOnLpDeposit(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 108, 37, 179, 243 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmount, assetABalance, liqudity }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> calculateAssetAWithdrawOnLpDeposit_Transactions(Account sender, ulong? fee, System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> calculateAssetAWithdrawOnLpDeposit_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 108, 37, 179, 243 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmount, assetABalance, liqudity }, null, null, null, boxes);
@@ -533,15 +533,15 @@ namespace TestNamespace
         /// <param name="inAmount">LP Asset amount in Base decimal representation.. ABI Type is uint256  </param>
         /// <param name="assetBBalance">Asset B balance. Variable ab, in base scale ABI Type is uint256  </param>
         /// <param name="liqudity">Current liqudity. Variable L, in base scale ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> calculateAssetBWithdrawOnLpDeposit(Account sender, ulong? fee, System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetBBalance, System.Numerics.BigInteger liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> calculateAssetBWithdrawOnLpDeposit(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 5, 252, 35, 140 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmount, assetBBalance, liqudity }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> calculateAssetBWithdrawOnLpDeposit_Transactions(Account sender, ulong? fee, System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetBBalance, System.Numerics.BigInteger liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> calculateAssetBWithdrawOnLpDeposit_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 5, 252, 35, 140 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmount, assetBBalance, liqudity }, null, null, null, boxes);
@@ -556,15 +556,15 @@ namespace TestNamespace
         /// <param name="inAmountB">Asset B amount in Base decimal representation ABI Type is uint256  </param>
         /// <param name="assetABalance">Asset A balance. Variable ab, in base scale ABI Type is uint256  </param>
         /// <param name="assetBBalance">Asset B balance. Variable bb, in base scale ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> calculateAssetBDepositOnAssetADeposit(Account sender, ulong? fee, System.Numerics.BigInteger inAmountA, System.Numerics.BigInteger inAmountB, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> calculateAssetBDepositOnAssetADeposit(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountA, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountB, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 230, 77, 221, 130 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmountA, inAmountB, assetABalance, assetBBalance }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> calculateAssetBDepositOnAssetADeposit_Transactions(Account sender, ulong? fee, System.Numerics.BigInteger inAmountA, System.Numerics.BigInteger inAmountB, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> calculateAssetBDepositOnAssetADeposit_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountA, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountB, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 230, 77, 221, 130 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmountA, inAmountB, assetABalance, assetBBalance }, null, null, null, boxes);
@@ -579,15 +579,15 @@ namespace TestNamespace
         /// <param name="inAmountB">Asset B amount in Base decimal representation ABI Type is uint256  </param>
         /// <param name="assetABalance">Asset A balance. Variable ab, in base scale ABI Type is uint256  </param>
         /// <param name="assetBBalance">Asset B balance. Variable bb, in base scale ABI Type is uint256  </param>
-        public async Task<System.Numerics.BigInteger> calculateAssetADepositOnAssetBDeposit(Account sender, ulong? fee, System.Numerics.BigInteger inAmountA, System.Numerics.BigInteger inAmountB, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AlgoStudio.ABI.ARC4.Types.UInt256> calculateAssetADepositOnAssetBDeposit(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountA, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountB, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 73, 246, 131, 112 };
             var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmountA, inAmountB, assetABalance, assetBBalance }, null, null, null, boxes);
-            return new System.Numerics.BigInteger(result.First());
+            return new AlgoStudio.ABI.ARC4.Types.UInt256(result.First());
 
         }
 
-        public async Task<List<Transaction>> calculateAssetADepositOnAssetBDeposit_Transactions(Account sender, ulong? fee, System.Numerics.BigInteger inAmountA, System.Numerics.BigInteger inAmountB, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> calculateAssetADepositOnAssetBDeposit_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountA, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountB, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 73, 246, 131, 112 };
             return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, inAmountA, inAmountB, assetABalance, assetBBalance }, null, null, null, boxes);
@@ -636,7 +636,7 @@ namespace TestNamespace
             public updateApplication_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private updateApplication_Arc4GroupTransaction() : base(null, 0) { }
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
             public AlgoStudio.ABI.ARC4.Types.VariableArray<AlgoStudio.ABI.ARC4.Types.Byte> newVersion { get; set; } = (AlgoStudio.ABI.ARC4.Types.VariableArray<AlgoStudio.ABI.ARC4.Types.Byte>)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("byte[]");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
@@ -696,23 +696,23 @@ namespace TestNamespace
             public bootstrap_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private bootstrap_Arc4GroupTransaction() : base(null, 0) { }
             //Asset A ID must be lower then Asset B ID
-            public AlgoStudio.ABI.ARC4.Types.UInt assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset B
-            public AlgoStudio.ABI.ARC4.Types.UInt assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Biatec amm provider
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Pool provider
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecPoolProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecPoolProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Fee in base level (9 decimals). value 1_000_000_000 = 1 = 100%. 10_000_000 = 1%. 1_000_000 = 0.1%
-            public AlgoStudio.ABI.ARC4.Types.UInt fee1 { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 fee1 { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Min price range. At this point all assets are in asset A.
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMin { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMin { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Max price range. At this point all assets are in asset B.
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMax { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMax { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Deployer can specify the current price for easier deployemnt.
-            public AlgoStudio.ABI.ARC4.Types.UInt currentPrice { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 currentPrice { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Minimum verification level from the biatec identity. Level 0 means no kyc.
-            public AlgoStudio.ABI.ARC4.Types.UInt verificationClass { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint8");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 verificationClass { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint8");
             public async Task<List<Transaction>> Invoke(PaymentTransaction txSeed, ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -728,15 +728,15 @@ namespace TestNamespace
             public addLiquidity_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private addLiquidity_Arc4GroupTransaction() : base(null, 0) { }
             //Configuration reference
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Identity service reference
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecIdentityProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecIdentityProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset A
-            public AlgoStudio.ABI.ARC4.Types.UInt assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset B
-            public AlgoStudio.ABI.ARC4.Types.UInt assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Liquidity pool asset
-            public AlgoStudio.ABI.ARC4.Types.UInt assetLp { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetLp { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             public async Task<List<Transaction>> Invoke(Transaction txAssetADeposit, Transaction txAssetBDeposit, ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -752,15 +752,15 @@ namespace TestNamespace
             public removeLiquidity_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private removeLiquidity_Arc4GroupTransaction() : base(null, 0) { }
             //Configuration reference
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Identity service reference
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecIdentityProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecIdentityProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset A
-            public AlgoStudio.ABI.ARC4.Types.UInt assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset B
-            public AlgoStudio.ABI.ARC4.Types.UInt assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //LP pool asset
-            public AlgoStudio.ABI.ARC4.Types.UInt assetLp { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetLp { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             public async Task<List<Transaction>> Invoke(AssetTransferTransaction txLpXfer, ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -776,15 +776,15 @@ namespace TestNamespace
             public removeLiquidityAdmin_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private removeLiquidityAdmin_Arc4GroupTransaction() : base(null, 0) { }
             //Biatec config app. Only addressExecutiveFee is allowed to execute this method.
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset A
-            public AlgoStudio.ABI.ARC4.Types.UInt assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset B
-            public AlgoStudio.ABI.ARC4.Types.UInt assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt assetLp { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetLp { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Amount to withdraw. If zero, removes all available lps from fees.
-            public AlgoStudio.ABI.ARC4.Types.UInt amount { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 amount { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -800,17 +800,17 @@ namespace TestNamespace
             public swap_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private swap_Arc4GroupTransaction() : base(null, 0) { }
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecIdentityProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecIdentityProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecPoolProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecPoolProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset A
-            public AlgoStudio.ABI.ARC4.Types.UInt assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset B
-            public AlgoStudio.ABI.ARC4.Types.UInt assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //If number greater then zero, the check is performed for the output of the other asset
-            public AlgoStudio.ABI.ARC4.Types.UInt minimumToReceive { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 minimumToReceive { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             public async Task<List<Transaction>> Invoke(Transaction txSwap, ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -826,15 +826,15 @@ namespace TestNamespace
             public distributeExcessAssets_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private distributeExcessAssets_Arc4GroupTransaction() : base(null, 0) { }
             //Biatec config app. Only addressExecutiveFee is allowed to execute this method.
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset A
-            public AlgoStudio.ABI.ARC4.Types.UInt assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset B
-            public AlgoStudio.ABI.ARC4.Types.UInt assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Amount of asset A to be deposited to the liquidity. In base decimals (9)
-            public AlgoStudio.ABI.ARC4.Types.UInt amountA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 amountA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Amount of asset B to be deposited to the liquidity. In base decimals (9)
-            public AlgoStudio.ABI.ARC4.Types.UInt amountB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 amountB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -850,15 +850,15 @@ namespace TestNamespace
             public withdrawExcessAssets_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private withdrawExcessAssets_Arc4GroupTransaction() : base(null, 0) { }
             //Biatec config app. Only addressExecutiveFee is allowed to execute this method.
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset A
-            public AlgoStudio.ABI.ARC4.Types.UInt assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Asset B
-            public AlgoStudio.ABI.ARC4.Types.UInt assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Amount of asset A to be deposited to the liquidity. In asset a decimals
-            public AlgoStudio.ABI.ARC4.Types.UInt amountA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 amountA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Amount of asset B to be deposited to the liquidity. In asset b decimals
-            public AlgoStudio.ABI.ARC4.Types.UInt amountB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 amountB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -874,7 +874,7 @@ namespace TestNamespace
             public sendOnlineKeyRegistration_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private sendOnlineKeyRegistration_Arc4GroupTransaction() : base(null, 0) { }
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
             public AlgoStudio.ABI.ARC4.Types.VariableArray<AlgoStudio.ABI.ARC4.Types.Byte> votePk { get; set; } = (AlgoStudio.ABI.ARC4.Types.VariableArray<AlgoStudio.ABI.ARC4.Types.Byte>)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("byte[]");
             //
@@ -882,11 +882,11 @@ namespace TestNamespace
             //
             public AlgoStudio.ABI.ARC4.Types.VariableArray<AlgoStudio.ABI.ARC4.Types.Byte> stateProofPk { get; set; } = (AlgoStudio.ABI.ARC4.Types.VariableArray<AlgoStudio.ABI.ARC4.Types.Byte>)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("byte[]");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt voteFirst { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 voteFirst { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt voteLast { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 voteLast { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt voteKeyDilution { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 voteKeyDilution { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -902,7 +902,7 @@ namespace TestNamespace
             public sendOfflineKeyRegistration_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private sendOfflineKeyRegistration_Arc4GroupTransaction() : base(null, 0) { }
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -918,9 +918,9 @@ namespace TestNamespace
             public calculateDistributedLiquidity_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private calculateDistributedLiquidity_Arc4GroupTransaction() : base(null, 0) { }
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt assetLp { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetLp { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt currentDeposit { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 currentDeposit { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -936,11 +936,11 @@ namespace TestNamespace
             public calculateLiquidityFlatPrice_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private calculateLiquidityFlatPrice_Arc4GroupTransaction() : base(null, 0) { }
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt x { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 x { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt y { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 y { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt price { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 price { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -956,17 +956,17 @@ namespace TestNamespace
             public calculateLiquidityD_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private calculateLiquidityD_Arc4GroupTransaction() : base(null, 0) { }
             //Asset A position balanced on the curve
-            public AlgoStudio.ABI.ARC4.Types.UInt x { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 x { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset B position balanced on the curve
-            public AlgoStudio.ABI.ARC4.Types.UInt y { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 y { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Minimum price variable in base scale decimals (pa)
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMin { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMin { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Maximum price variable in base scale decimals (pb)
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMax { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMax { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(priceMin) in base scale decimals Variable pas
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMinSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(priceMax) in base scale decimals Variable pbs
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMaxSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -982,15 +982,15 @@ namespace TestNamespace
             public calculateLiquidityWithD_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private calculateLiquidityWithD_Arc4GroupTransaction() : base(null, 0) { }
             //Asset A position balanced on the curve
-            public AlgoStudio.ABI.ARC4.Types.UInt x { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 x { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset B position balanced on the curve
-            public AlgoStudio.ABI.ARC4.Types.UInt y { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 y { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(priceMin) in base scale decimals Variable pas
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMinSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(priceMax) in base scale decimals Variable pbs
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMaxSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt dSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 dSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -1006,15 +1006,15 @@ namespace TestNamespace
             public calculatePrice_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private calculatePrice_Arc4GroupTransaction() : base(null, 0) { }
             //x
-            public AlgoStudio.ABI.ARC4.Types.UInt assetAQuantity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetAQuantity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //y
-            public AlgoStudio.ABI.ARC4.Types.UInt assetBQuantity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetBQuantity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(priceMin)
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMinSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(priceMax)
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMaxSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Current pool liquidity - L variable
-            public AlgoStudio.ABI.ARC4.Types.UInt liquidity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 liquidity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -1030,17 +1030,17 @@ namespace TestNamespace
             public calculateAssetBWithdrawOnAssetADeposit_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private calculateAssetBWithdrawOnAssetADeposit_Arc4GroupTransaction() : base(null, 0) { }
             //Asset A amount in Base decimal representation.. If asset has 6 decimals, 1 is represented as 1000000000
-            public AlgoStudio.ABI.ARC4.Types.UInt inAmount { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 inAmount { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset A balance. Variable ab, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt assetABalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset B balance. Variable bb, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt assetBBalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(Min price). Variable pMinS, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMinSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(Max price). Variable pMaxS, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMaxSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(Max price). Variable L, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt liqudity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 liqudity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -1056,17 +1056,17 @@ namespace TestNamespace
             public calculateAssetAWithdrawOnAssetBDeposit_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private calculateAssetAWithdrawOnAssetBDeposit_Arc4GroupTransaction() : base(null, 0) { }
             //Asset B amount in Base decimal representation.. If asset has 6 decimals, 1 is represented as 1000000000
-            public AlgoStudio.ABI.ARC4.Types.UInt inAmount { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 inAmount { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset A balance. Variable ab, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt assetABalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset B balance. Variable bb, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt assetBBalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(Min price). Variable pMinS, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMinSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(Max price). Variable pMaxS, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt priceMaxSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //sqrt(Max price). Variable L, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt liqudity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 liqudity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -1082,11 +1082,11 @@ namespace TestNamespace
             public calculateAssetAWithdrawOnLpDeposit_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private calculateAssetAWithdrawOnLpDeposit_Arc4GroupTransaction() : base(null, 0) { }
             //LP Asset amount in Base decimal representation..
-            public AlgoStudio.ABI.ARC4.Types.UInt inAmount { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 inAmount { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset A balance. Variable ab, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt assetABalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Current liqudity. Variable L, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt liqudity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 liqudity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -1102,11 +1102,11 @@ namespace TestNamespace
             public calculateAssetBWithdrawOnLpDeposit_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private calculateAssetBWithdrawOnLpDeposit_Arc4GroupTransaction() : base(null, 0) { }
             //LP Asset amount in Base decimal representation..
-            public AlgoStudio.ABI.ARC4.Types.UInt inAmount { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 inAmount { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset B balance. Variable ab, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt assetBBalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Current liqudity. Variable L, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt liqudity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 liqudity { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -1122,13 +1122,13 @@ namespace TestNamespace
             public calculateAssetBDepositOnAssetADeposit_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private calculateAssetBDepositOnAssetADeposit_Arc4GroupTransaction() : base(null, 0) { }
             //Asset A amount in Base decimal representation
-            public AlgoStudio.ABI.ARC4.Types.UInt inAmountA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 inAmountA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset B amount in Base decimal representation
-            public AlgoStudio.ABI.ARC4.Types.UInt inAmountB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 inAmountB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset A balance. Variable ab, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt assetABalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset B balance. Variable bb, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt assetBBalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -1144,13 +1144,13 @@ namespace TestNamespace
             public calculateAssetADepositOnAssetBDeposit_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private calculateAssetADepositOnAssetBDeposit_Arc4GroupTransaction() : base(null, 0) { }
             //Asset A amount in Base decimal representation
-            public AlgoStudio.ABI.ARC4.Types.UInt inAmountA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 inAmountA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset B amount in Base decimal representation
-            public AlgoStudio.ABI.ARC4.Types.UInt inAmountB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 inAmountB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset A balance. Variable ab, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt assetABalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             //Asset B balance. Variable bb, in base scale
-            public AlgoStudio.ABI.ARC4.Types.UInt assetBBalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 
@@ -1166,13 +1166,13 @@ namespace TestNamespace
             public status_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private status_Arc4GroupTransaction() : base(null, 0) { }
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 appBiatecConfigProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetA { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetB { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
-            public AlgoStudio.ABI.ARC4.Types.UInt assetLp { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+            public AlgoStudio.ABI.ARC4.Types.UInt256 assetLp { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt256)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
             {
 

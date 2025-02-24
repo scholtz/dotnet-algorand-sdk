@@ -33,7 +33,14 @@ namespace AlgoStudio
     {
 
         DefaultApi client;
-        ulong appId;
+        public ulong appId { get; protected set; }
+        public Address AppAddress
+        {
+            get
+            {
+                return Address.ForApplication(appId);
+            }
+        }
         /// <summary>
         /// Base64 TEAL code of approval program
         /// </summary>
@@ -76,6 +83,7 @@ namespace AlgoStudio
             this.client = algodApi;
             this.appId = appId;
         }
+
 
         protected byte[] ReverseIfLittleEndian(byte[] bytes)
         {
@@ -354,10 +362,19 @@ namespace AlgoStudio
                 }
                 //TODO verify it's the last txn that's returned when a group is sent
                 await client.TransactionsAsync(txs);
+                if (onComplete == Core.OnCompleteType.CreateApplication)
+                {
 
-                var resp = await AlgoUtils.Utils.WaitTransactionToComplete(client, tx.TxID()) as ApplicationCallTransaction;
+                    var resp = await AlgoUtils.Utils.WaitTransactionToComplete(client, tx.TxID()) as ApplicationCreateTransaction;
+                    this.appId = resp.ApplicationIndex ?? throw new Exception("Application index is null after successful call to create aplication");
+                    return resp.Logs;
+                }
+                else
+                {
+                    var resp = await AlgoUtils.Utils.WaitTransactionToComplete(client, tx.TxID()) as ApplicationCallTransaction;
 
-                return resp.Logs;
+                    return resp.Logs;
+                }
 
             }
             catch (Exception ex)

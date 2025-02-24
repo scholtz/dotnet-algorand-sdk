@@ -76,6 +76,18 @@ namespace AlgoStudio.ABI.ARC4.Types
 
         private static WireType IsUInt(string abiType)
         {
+            if (abiType == "utin128")
+            {
+                return new UInt128();
+            }
+            if (abiType == "utin256")
+            {
+                return new UInt256();
+            }
+            if (abiType == "utin512")
+            {
+                return new UInt512();
+            }
             if (abiType.StartsWith("uint"))
             {
                 return new UInt(uint.Parse(abiType.Replace("uint","") ));

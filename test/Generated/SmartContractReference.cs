@@ -123,7 +123,7 @@ namespace TestNamespace
         ///<param name="assetLp">LP pool asset</param>
         ///<param name="result">LP position reduced</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract (AssetTransfer txLpXfer, AppCall) removeLiquidity(AssetTransfer txLpXfer, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong assetA, ulong assetB, ulong assetLp, out System.Numerics.BigInteger result);
+        public abstract (AssetTransfer txLpXfer, AppCall) removeLiquidity(AssetTransfer txLpXfer, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong assetA, ulong assetB, ulong assetLp, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///This method allows biatec admin to reduce the lp position created by lp fees allocation.Only addressExecutiveFee is allowed to execute this method.
@@ -135,7 +135,7 @@ namespace TestNamespace
         ///<param name="amount">Amount to withdraw. If zero, removes all available lps from fees.</param>
         ///<param name="result">LP position reduced</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> removeLiquidityAdmin(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, System.Numerics.BigInteger amount, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> removeLiquidityAdmin(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, AlgoStudio.ABI.ARC4.Types.UInt256 amount, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Swap Asset A to Asset B or Asset B to Asst A
@@ -148,7 +148,7 @@ namespace TestNamespace
         ///<param name="minimumToReceive">If number greater then zero, the check is performed for the output of the other asset</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract (InnerTransaction txSwap, AppCall) swap(InnerTransaction txSwap, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider, ulong assetA, ulong assetB, ulong minimumToReceive, out System.Numerics.BigInteger result);
+        public abstract (InnerTransaction txSwap, AppCall) swap(InnerTransaction txSwap, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider, ulong assetA, ulong assetB, ulong minimumToReceive, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///If someone deposits excess assets to the LP pool, addressExecutiveFee can either distribute them to the lp tokens or withdraw it, depending on the use case.If someone sent there assets in fault, the withrawing can be use to return them back. If the pool received assets for example for having its algo stake online and recieved rewards it is prefered to distribute them to the current LP holders.This method is used to distribute amount a and amount b of asset a and asset b to holders as the fee income.Only addressExecutiveFee is allowed to execute this method.
@@ -160,7 +160,7 @@ namespace TestNamespace
         ///<param name="amountB">Amount of asset B to be deposited to the liquidity. In base decimals (9)</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> distributeExcessAssets(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, System.Numerics.BigInteger amountA, System.Numerics.BigInteger amountB, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> distributeExcessAssets(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, AlgoStudio.ABI.ARC4.Types.UInt256 amountA, AlgoStudio.ABI.ARC4.Types.UInt256 amountB, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///If someone deposits excess assets to the LP pool, addressExecutiveFee can either distribute them to the lp tokens or withdraw it, depending on the use case.If someone sent there assets in fault, the withrawing can be use to return them back. If the pool received assets for example for having its algo stake online and recieved rewards it is prefered to distribute them to the current LP holders.This method is used to distribute amount a and amount b of asset a and asset b to addressExecutiveFee account.Only addressExecutiveFee is allowed to execute this method.
@@ -203,7 +203,7 @@ namespace TestNamespace
         ///<param name="currentDeposit"></param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> calculateDistributedLiquidity(ulong assetLp, System.Numerics.BigInteger currentDeposit, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> calculateDistributedLiquidity(ulong assetLp, AlgoStudio.ABI.ARC4.Types.UInt256 currentDeposit, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///
@@ -213,7 +213,7 @@ namespace TestNamespace
         ///<param name="price"></param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> calculateLiquidityFlatPrice(System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger price, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> calculateLiquidityFlatPrice(AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 price, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates the liquidity  from the x - Asset A position and y - Asset B positionThis method calculates discriminant - first part of the calculation.It is divided so that the readonly method does not need to charge fees
@@ -226,7 +226,7 @@ namespace TestNamespace
         ///<param name="priceMaxSqrt">sqrt(priceMax) in base scale decimals Variable pbs</param>
         ///<param name="result">Liquidity is constant in swapping each direction. On deposit the diff between the liquidity is number of LP tokens received by user.</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> calculateLiquidityD(System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger priceMin, System.Numerics.BigInteger priceMax, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> calculateLiquidityD(AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 priceMin, AlgoStudio.ABI.ARC4.Types.UInt256 priceMax, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates the liquidity  from the x - Asset A position and y - Asset B position
@@ -238,7 +238,7 @@ namespace TestNamespace
         ///<param name="dSqrt"></param>
         ///<param name="result">Liquidity is constant in swapping each direction. On deposit the diff between the liquidity is number of LP tokens received by user.</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> calculateLiquidityWithD(System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger dSqrt, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> calculateLiquidityWithD(AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 dSqrt, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Get the current price when asset a has x
@@ -250,7 +250,7 @@ namespace TestNamespace
         ///<param name="liquidity">Current pool liquidity - L variable</param>
         ///<param name="result">the price with specified quantity with the price range set in the contract</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> calculatePrice(System.Numerics.BigInteger assetAQuantity, System.Numerics.BigInteger assetBQuantity, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger liquidity, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> calculatePrice(AlgoStudio.ABI.ARC4.Types.UInt256 assetAQuantity, AlgoStudio.ABI.ARC4.Types.UInt256 assetBQuantity, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liquidity, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset B will be taken from the smart contract on asset A deposit
@@ -263,7 +263,7 @@ namespace TestNamespace
         ///<param name="liqudity">sqrt(Max price). Variable L, in base scale</param>
         ///<param name="result">Amount of asset B to be given to the caller before fees. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> calculateAssetBWithdrawOnAssetADeposit(System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger liqudity, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> calculateAssetBWithdrawOnAssetADeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset A will be taken from the smart contract on asset B deposit
@@ -276,7 +276,7 @@ namespace TestNamespace
         ///<param name="liqudity">sqrt(Max price). Variable L, in base scale</param>
         ///<param name="result">Amount of asset A to be given to the caller before fees. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> calculateAssetAWithdrawOnAssetBDeposit(System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, System.Numerics.BigInteger priceMinSqrt, System.Numerics.BigInteger priceMaxSqrt, System.Numerics.BigInteger liqudity, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> calculateAssetAWithdrawOnAssetBDeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset A will be taken from the smart contract on LP asset deposit
@@ -286,7 +286,7 @@ namespace TestNamespace
         ///<param name="liqudity">Current liqudity. Variable L, in base scale</param>
         ///<param name="result">Amount of asset A to be given to the caller before fees. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> calculateAssetAWithdrawOnLpDeposit(System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger liqudity, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> calculateAssetAWithdrawOnLpDeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset B will be taken from the smart contract on LP asset deposit
@@ -296,7 +296,7 @@ namespace TestNamespace
         ///<param name="liqudity">Current liqudity. Variable L, in base scale</param>
         ///<param name="result">Amount of asset B to be given to the caller before fees. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> calculateAssetBWithdrawOnLpDeposit(System.Numerics.BigInteger inAmount, System.Numerics.BigInteger assetBBalance, System.Numerics.BigInteger liqudity, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> calculateAssetBWithdrawOnLpDeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset B should be deposited when user deposit asset a and b.On deposit min(calculateAssetBDepositOnAssetADeposit, calculateAssetADepositOnAssetBDeposit) should be considered for the real deposit and rest should be swapped or returned back to user
@@ -307,7 +307,7 @@ namespace TestNamespace
         ///<param name="assetBBalance">Asset B balance. Variable bb, in base scale</param>
         ///<param name="result">Amount of asset B to be given to the caller before fees. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> calculateAssetBDepositOnAssetADeposit(System.Numerics.BigInteger inAmountA, System.Numerics.BigInteger inAmountB, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> calculateAssetBDepositOnAssetADeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmountA, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountB, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset A should be deposited when user deposit asset a and bOn deposit min(calculateAssetBDepositOnAssetADeposit, calculateAssetADepositOnAssetBDeposit) should be considered for the real deposit and rest should be swapped or returned back to user
@@ -318,7 +318,7 @@ namespace TestNamespace
         ///<param name="assetBBalance">Asset B balance. Variable bb, in base scale</param>
         ///<param name="result">Amount of asset A to be deposited. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> calculateAssetADepositOnAssetBDeposit(System.Numerics.BigInteger inAmountA, System.Numerics.BigInteger inAmountB, System.Numerics.BigInteger assetABalance, System.Numerics.BigInteger assetBBalance, out System.Numerics.BigInteger result);
+        public abstract ValueTuple<AppCall> calculateAssetADepositOnAssetBDeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmountA, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountB, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///

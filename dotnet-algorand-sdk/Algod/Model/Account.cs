@@ -36,7 +36,7 @@ namespace Algorand.Algod.Model
         public KeyPair KeyPair { get; private set; }
 
 
-  
+
 
 
         //TODO - omit this from the .generated codegen
@@ -74,16 +74,18 @@ namespace Algorand.Algod.Model
         /// <summary>
         /// Generate a new, random account.
         /// </summary>
-        public Account() : this(new SecureRandom()) {
-           
+        public Account() : this(new SecureRandom())
+        {
+
         }
 
         /// <summary>
         /// Generate a newc account with seed(master derivation key)
         /// </summary>
         /// <param name="seed">seed(master derivation key)</param>
-        public Account(byte[] seed)  : this(new FixedSecureRandom(seed))  {
-        
+        public Account(byte[] seed) : this(new FixedSecureRandom(seed))
+        {
+
         }
 
 
@@ -114,7 +116,7 @@ namespace Algorand.Algod.Model
             return new Signature(signature);
         }
 
-        public Signature SignBytes(byte[] bytes) 
+        public Signature SignBytes(byte[] bytes)
         {
             List<byte> retByte = new List<byte>();
             retByte.AddRange(BYTES_SIGN_PREFIX);
@@ -136,6 +138,16 @@ namespace Algorand.Algod.Model
             baos.AddRange(rawAddress);
             baos.AddRange(data);
             return SignRawBytes(baos.ToArray());
+        }
+
+        public override string ToString()
+        {
+            var str = this.Address.EncodeAsString();
+            if (string.IsNullOrEmpty(str))
+            {
+                return "?Address?";
+            }
+            return $"{str.Substring(0, 4)}..{str.Substring(str.Length-4)}";
         }
     }
 }
