@@ -175,7 +175,7 @@
 
 
 	<ItemGroup>
-		<PackageReference Include="Algorand4" Version="4.0.1.2025012917" />
+		<PackageReference Include="Algorand4" Version="4.0.2.2025022408" />
 		<PackageReference Include="MessagePack" Version="2.2.113" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	</ItemGroup>

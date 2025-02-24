@@ -152,15 +152,19 @@ namespace Algorand.Algod
         /// </summary>
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
         /// provided, defaults to JSON.</param>
+        /// <param name="header-only">If true, only the block header (exclusive of payset or certificate) may be
+        /// included in response.</param>
         /// <param name="round">The round from which to fetch block information.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(ulong round, Format? format = null);
+        System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(ulong round, Format? format = null, bool? headerOnly = null);
 
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
         /// provided, defaults to JSON.</param>
+        /// <param name="header-only">If true, only the block header (exclusive of payset or certificate) may be
+        /// included in response.</param>
         /// <param name="round">The round from which to fetch block information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null);
+        System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null, bool? headerOnly = null);
 
         /// <summary>Get the top level transaction IDs for the block on the given round.
         /// </summary>
@@ -181,20 +185,6 @@ namespace Algorand.Algod
         /// <param name="round">The round from which to fetch block hash information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<BlockHashResponse> GetBlockHashAsync(System.Threading.CancellationToken cancellationToken, ulong round);
-
-        /// <summary>Get the block header for the block on the given round.
-        /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
-        /// provided, defaults to JSON.</param>
-        /// <param name="round">The round from which to fetch block header information.</param>
-        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<BlockHeaderResponse> GetBlockHeaderAsync(ulong round, Format? format = null);
-
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
-        /// provided, defaults to JSON.</param>
-        /// <param name="round">The round from which to fetch block header information.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<BlockHeaderResponse> GetBlockHeaderAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null);
 
         /// <summary>Get a proof for a transaction in a block.
         /// </summary>
@@ -1629,21 +1619,25 @@ namespace Algorand.Algod
         /// </summary>
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
         /// provided, defaults to JSON.</param>
+        /// <param name="header-only">If true, only the block header (exclusive of payset or certificate) may be
+        /// included in response.</param>
         /// <param name="round">The round from which to fetch block information.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(ulong round, Format? format = null)
+        public System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(ulong round, Format? format = null, bool? headerOnly = null)
         {
-            return GetBlockAsync(System.Threading.CancellationToken.None, round, format);
+            return GetBlockAsync(System.Threading.CancellationToken.None, round, format, headerOnly);
         }
 
         /// <summary>>Get the block for the given round.
         /// </summary>
         /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
         /// provided, defaults to JSON.</param>
+        /// <param name="header-only">If true, only the block header (exclusive of payset or certificate) may be
+        /// included in response.</param>
         /// <param name="round">The round from which to fetch block information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null)
+        public async System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null, bool? headerOnly = null)
         {
             if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -1652,6 +1646,10 @@ namespace Algorand.Algod
             if (format != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (headerOnly != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("header-only") + "=").Append(System.Uri.EscapeDataString(ConvertToString(headerOnly, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
             var client_ = _httpClient;
@@ -1866,104 +1864,6 @@ namespace Algorand.Algod
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<BlockHashResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        //Algorand Generator cannot distinguish between response codes
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-
-        }
-
-
-
-
-        /// <summary>Get the block header for the block on the given round.
-        /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
-        /// provided, defaults to JSON.</param>
-        /// <param name="round">The round from which to fetch block header information.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<BlockHeaderResponse> GetBlockHeaderAsync(ulong round, Format? format = null)
-        {
-            return GetBlockHeaderAsync(System.Threading.CancellationToken.None, round, format);
-        }
-
-        /// <summary>>Get the block header for the block on the given round.
-        /// </summary>
-        /// <param name="format">Configures whether the response object is JSON or MessagePack encoded. If not
-        /// provided, defaults to JSON.</param>
-        /// <param name="round">The round from which to fetch block header information.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<BlockHeaderResponse> GetBlockHeaderAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null)
-        {
-            if (round == null) throw new System.ArgumentNullException("round");
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("v2/blocks/{round}/header?");
-            urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
-            if (format != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            urlBuilder_.Length--;
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<BlockHeaderResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -2587,7 +2487,7 @@ namespace Algorand.Algod
                 {
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
+                    
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();

@@ -7,7 +7,7 @@
 		<AssemblyName>Algorand</AssemblyName>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Version>4.0.1.$([System.DateTime]::Now.ToString(yyyyMMddHH))</Version>
+		<Version>4.0.2.$([System.DateTime]::Now.ToString(yyyyMMddHH))</Version>
 		<Authors>Ludovit Scholtz, Frank Szendzielarz</Authors>
 		<Company></Company>
 		<Product>Algorand .NET SDK 2</Product>
@@ -56,7 +56,7 @@
 
 	
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unity|AnyCPU'">
-			<PostBuildEvent>nuget pack Algorand4_Unity.nuspec -Properties version=4.0.1.$([System.DateTime]::UtcNow.ToString("yyyyMMddHH")) </PostBuildEvent>
+			<PostBuildEvent>nuget pack Algorand4_Unity.nuspec -Properties version=4.0.2.$([System.DateTime]::UtcNow.ToString("yyyyMMddHH")) </PostBuildEvent>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unity|AnyCPU'">
@@ -425,7 +425,7 @@
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	  <Exec Command="docfx ../docfx/docfx.json" />
+	  <!--<Exec Command="docfx ../docfx/docfx.json" />-->
 	</Target>
 	
 </Project>

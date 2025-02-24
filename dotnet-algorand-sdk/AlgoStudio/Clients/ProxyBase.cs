@@ -366,7 +366,12 @@ namespace AlgoStudio
                 {
 
                     var resp = await AlgoUtils.Utils.WaitTransactionToComplete(client, tx.TxID()) as ApplicationCreateTransaction;
+
+#if UNITY
+                    this.appId = resp.ApplicationIndex;
+#else
                     this.appId = resp.ApplicationIndex ?? throw new Exception("Application index is null after successful call to create aplication");
+#endif
                     return resp.Logs;
                 }
                 else
@@ -433,6 +438,24 @@ namespace AlgoStudio
                     break;
 
                 case Core.OnCompleteType.CreateApplication:
+#if UNITY
+                    tx = new ApplicationCreateTransaction()
+                    {
+                        ApprovalProgram = new TEALProgram(SourceApprovalAVM),
+                        ClearStateProgram = new TEALProgram(SourceClearAVM),
+                        GlobalStateSchema = new StateSchema()
+                        {
+                            NumByteSlice = GlobalNumByteSlices.Value,
+                            NumUint = GlobalNumUints.Value
+                        },
+                        LocalStateSchema = new StateSchema()
+                        {
+                            NumByteSlice = LocalNumByteSlices.Value,
+                            NumUint = LocalNumUints.Value
+                        },
+                        ExtraProgramPages = ExtraProgramPages.Value
+                    };
+#else
                     tx = new ApplicationCreateTransaction()
                     {
                         ApprovalProgram = new TEALProgram(SourceApprovalAVM),
@@ -449,6 +472,7 @@ namespace AlgoStudio
                         },
                         ExtraProgramPages = ExtraProgramPages
                     };
+#endif
                     break;
                 case Core.OnCompleteType.UpdateApplication:
                     tx = new ApplicationUpdateTransaction() { ApplicationId = appId };
