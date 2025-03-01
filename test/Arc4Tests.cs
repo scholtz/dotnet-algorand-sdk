@@ -17,20 +17,20 @@ using Algorand.KMD;
 using System.Reflection.Metadata;
 using System.Linq;
 using Algorand.Algod.Model.Transactions;
+using BiatecClammPool;
+using BiatecConfig;
 
 namespace test
 {
     [TestFixture]
     public class Arc4Tests
     {
-        private const string URL_CLAMM = "https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecClammPool.arc32.json";
-        private const string URL_CONFIG = "https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecConfigProvider.arc32.json";
 
         [Test]
         public async Task GenerateClient1()
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync(URL_CLAMM);
+            var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecClammPool.arc32.json");
 
             Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
             var content = await response.Content.ReadAsStringAsync();
@@ -49,19 +49,50 @@ namespace test
             Assert.That(app.Contract.Methods.Count, Is.GreaterThan(1));
             Assert.That(app.Source.Approval.Length, Is.GreaterThan(1));
 
-            var appref = app.ToSmartContractReference("TestNamespace", "");
+            var appref = app.ToSmartContractReference("BiatecClammPool", "");
             Assert.That(appref.Length, Is.GreaterThan(1));
-            var appProxy = app.ToProxy("TestNamespace");
+            var appProxy = app.ToProxy("BiatecClammPool");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
 
-            //File.WriteAllText("SmartContractReference.cs", appref);
-            File.WriteAllText("SmartContractProxy.cs", appProxy);
+            File.WriteAllText("BiatecClammPoolRef.cs", appref);
+            File.WriteAllText("BiatecClammPoolProxy.cs", appProxy);
         }
         [Test]
         public async Task GenerateClient2()
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync(URL_CONFIG);
+            var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecConfigProvider.arc32.json");
+
+            Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(content.Trim().StartsWith("{"), "File content is not valid JSON");
+
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+
+            var app = await AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(content), algodApiInstance);
+
+            Assert.That(app.Bare_call_config.No_op, Is.EqualTo(CallConfig.NEVER));
+            Assert.That(app.Hints.Keys.Count, Is.GreaterThan(1));
+            Assert.That(app.State.Global, Is.Not.Null);
+            Assert.That(app.Contract.Methods.Count, Is.GreaterThan(1));
+            Assert.That(app.Source.Approval.Length, Is.GreaterThan(1));
+
+            var appref = app.ToSmartContractReference("BiatecConfig", "");
+            Assert.That(appref.Length, Is.GreaterThan(1));
+            var appProxy = app.ToProxy("BiatecConfig");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+
+            File.WriteAllText("BiatecConfigProviderRef.cs", appref);
+            File.WriteAllText("BiatecConfigProviderProxy.cs", appProxy);
+        }
+        [Test]
+        public async Task GenerateClient3()
+        {
+            using var client = new HttpClient();
+            var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecIdentityProvider.arc32.json");
 
             Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
             var content = await response.Content.ReadAsStringAsync();
@@ -85,8 +116,8 @@ namespace test
             var appProxy = app.ToProxy("TestNamespace");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
 
-            File.WriteAllText("BiatecConfigProviderRef.cs", appref);
-            File.WriteAllText("BiatecConfigProviderProxy.cs", appProxy);
+            File.WriteAllText("BiatecIdentityProviderRef.cs", appref);
+            File.WriteAllText("BiatecIdentityProviderProxy.cs", appProxy);
         }
         private async Task<Account> GetAccount()
         {
@@ -167,13 +198,13 @@ namespace test
             {
                 await contract.createApplication(acct1, 1000, "", new List<BoxRef>(), AlgoStudio.Core.OnCompleteType.CreateApplication);
                 await contract.bootstrap(
-                    sender: acct1,
-                    fee: 1000,
+                    _tx_sender: acct1,
+                    _tx_fee: 1000,
                     biatecFee: new AlgoStudio.ABI.ARC4.Types.UInt256(1),
                     appBiatecIdentityProvider: 101,
                     appBiatecPoolProvider: 102,
-                    note: "",
-                    boxes: new List<BoxRef>()
+                    _tx_note: "",
+                    _tx_boxes: new List<BoxRef>()
                     );
             }
             catch (Algorand.ApiException<Algorand.Algod.Model.ErrorResponse> e)

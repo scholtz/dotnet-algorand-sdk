@@ -13,6 +13,8 @@ using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Bcpg;
 using AlgoStudio.ABI.ARC32;
 using AlgoStudio.ABI.ARC4.Types;
+using RestSharp.Extensions;
+using System.Globalization;
 
 
 namespace AlgoStudio.ABI.ARC4
@@ -53,7 +55,7 @@ namespace AlgoStudio.ABI.ARC4
             {
                 md = new MethodDescription();
 
-               
+
                 var callTypeConst = ABImethod.ConstructorArguments.Where(kv => kv.Type.Name == nameof(Core.OnCompleteType)).First();
                 var callType = (Core.OnCompleteType)callTypeConst.Value;
 
@@ -75,9 +77,9 @@ namespace AlgoStudio.ABI.ARC4
                     case Core.OnCompleteType.DeleteApplication:
                         md.OnCompletion.Delete_application = CallConfig.CALL;
                         break;
-                    
+
                 }
-                
+
 
                 var returnType = methodSymbol.ReturnType;
                 md.Returns = new ReturnTypeDescription()
@@ -149,30 +151,25 @@ namespace AlgoStudio.ABI.ARC4
                 }
 
                 var selectorConst = ABImethod.ConstructorArguments.Where(kv => kv.Type.Name == "String").First();
-                
+
                 if (!string.IsNullOrWhiteSpace((string)selectorConst.Value))
                 {
                     md.Selector = Encoding.UTF8.GetBytes((string)selectorConst.Value);
                     md.Identifier = (string)selectorConst.Value;
-                    
+
                 }
-                else {
-                    md.Selector = md.ToARC4MethodSelector(); 
+                else
+                {
+                    md.Selector = md.ToARC4MethodSelector();
                     md.Identifier = md.ARC4MethodSignature;
-                    
+
                 }
-                
-                
-
-
             }
-
-
             return md;
         }
         public string ARC4MethodSignature => $"{Name}({string.Join(",", Args.Select(a => a.Type))}){Returns.Type}";
 
-        
+
 
         public byte[] ToARC4MethodSelector()
         {
@@ -245,22 +242,22 @@ namespace AlgoStudio.ABI.ARC4
             else
                 txNameList = "null";
 
-            string argNameList = "new List<AlgoStudio.ABI.ARC4.Types.WireType> {" + string.Join(",", nonTransactionParameters.Select(p => $"{p.Name}")) + "}"; 
-            
-                
+            string argNameList = "new List<AlgoStudio.ABI.ARC4.Types.WireType> {" + string.Join(",", nonTransactionParameters.Select(p => $"{p.Name}")) + "}";
+
+
             string invokerArgsString;
-            if (invokerArgs.Count > 0) invokerArgsString = string.Join(",", invokerArgs)+",";
+            if (invokerArgs.Count > 0) invokerArgsString = string.Join(",", invokerArgs) + ",";
             else
                 invokerArgsString = "";
 
-            
 
-            arc4MethodCallerClass.AppendLine($"\tpublic async Task<List<Transaction>> Invoke({invokerArgsString}ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)");
+
+            arc4MethodCallerClass.AppendLine($"\tpublic async Task<List<Transaction>> Invoke({invokerArgsString}ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)");
             arc4MethodCallerClass.AppendLine("\t{");
             arc4MethodCallerClass.AppendLine($"\t\t");
             arc4MethodCallerClass.AppendLine($"\t\tbyte[] abiHandle = {{{string.Join(",", Selector)}}};");
             //TODO: If the arg list length is >15, wrap up the 15th and remaining into a Tuple and encode like that.
-            arc4MethodCallerClass.AppendLine($"return await base.MakeArc4TransactionList({txNameList}, fee, onComplete, roundValidity, note, sender, abiHandle, {argNameList}, foreignApps, foreignAssets,accounts,boxes);");
+            arc4MethodCallerClass.AppendLine($"return await base.MakeArc4TransactionList({txNameList}, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, {argNameList}, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);");
 
 
             arc4MethodCallerClass.AppendLine("\t}");
@@ -284,10 +281,7 @@ namespace AlgoStudio.ABI.ARC4
 
         internal void ToSmartContractReference(StringBuilder scr, List<string> structs)
         {
-
-
-            var argsAndTransactionReferences = Args
-                .Select(a =>
+            var argsAndTransactionReferences = Args.Select(a =>
                 {
                     var txRef = "";
                     if (a.TypeDetail != null)
@@ -308,7 +302,7 @@ namespace AlgoStudio.ABI.ARC4
 
             scr.AppendLine(
 $@"{"\t\t"}///<summary>
-{"\t\t"}///{Desc}
+{"\t\t"}///{Desc?.Replace("\n", "\n///")}
 {"\t\t"}///</summary>");
             foreach (var arg in nonTxRefArgs)
             {
@@ -331,8 +325,9 @@ $@"{"\t\t"}///<summary>
                 retType = $"({string.Join(",", txRefArgs.Select(a => $"{a.refType} {a.arg.Name}").Concat(new List<string> { "AppCall" }))})";
             }
 
-            var t = TypeHelpers.GetCSType(Name + "return", Returns.Type, Returns.TypeDetail, structs, false);
+            var t = TypeHelpers.GetCSType(FormatStructName($"{Name}Return"), Returns.Type, Returns.TypeDetail, structs, false);
             var retParm = $"out {t.type} result";
+            if (t.type == "void") retParm = "";
 
             if (Enumerable.SequenceEqual(Selector, ToARC4MethodSelector()))
             {
@@ -342,24 +337,30 @@ $@"{"\t\t"}///<summary>
             {
                 scr.AppendLine($"\t\t[SmartContractMethod(OnCompleteType.NoOp, \"{Encoding.UTF8.GetString(Selector)}\")]");
             }
-            
-            scr.Append($"\t\tpublic abstract {retType} {Name}(");
+
+            scr.Append($"\t\tpublic abstract {retType} {FormatMethodName(Name)}(");
             scr.Append(string.Join(",", txRefArgs
                 .Select(s => $"{s.refType} {s.arg.Name}")
-                )
-
-                );
+                ));
             if (txRefArgs.Count > 0) { scr.Append(","); }
             scr.Append(string.Join(",", nonTxRefArgs
-                .Select(s => $"{TypeHelpers.GetCSType(Name + "_arg_" + s.arg.Name, s.arg.Type, s.arg.TypeDetail, structs, false).type} {s.arg.Name}")
-                .Append(retParm)
-                )
-
-                );
+                .Select(s => $"{TypeHelpers.GetCSType(MethodDescription.FormatStructName(Name + "_arg_" + s.arg.Name), s.arg.Type, s.arg.TypeDetail, structs, false).type} {s.arg.Name}")
+                ));
+            /// out var
+            if (!string.IsNullOrEmpty(retParm))
+            {
+                if (nonTxRefArgs.Count > 0) scr.Append(",");
+                scr.Append(retParm);
+            }
             scr.AppendLine(");");
-
-
-
+        }
+        public static string FormatStructName(string name)
+        {
+            return name.ToPascalCase(CultureInfo.InvariantCulture);
+        }
+        public static string FormatMethodName(string name)
+        {
+            return name.ToPascalCase(CultureInfo.InvariantCulture);
         }
     }
 }

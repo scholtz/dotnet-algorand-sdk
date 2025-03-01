@@ -1,10 +1,9 @@
 using Algorand;
-using AlgoStudio.ABI.ARC4.Types;
 using AlgoStudio.Core;
 using AlgoStudio.Core.Attributes;
 using System;
 
-namespace TestNamespace
+namespace BiatecConfig
 {
     public abstract class BiatecConfigProviderReference : SmartContractReference
     {
@@ -14,7 +13,7 @@ namespace TestNamespace
         ///</summary>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> createApplication();
+        public abstract ValueTuple<AppCall> CreateApplication();
 
         ///<summary>
         ///addressUdpater from global biatec configuration is allowed to update application
@@ -22,7 +21,7 @@ namespace TestNamespace
         ///<param name="newVersion"></param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> updateApplication(byte[] newVersion);
+        public abstract ValueTuple<AppCall> UpdateApplication(byte[] newVersion);
 
         ///<summary>
         ///Setup the contract
@@ -32,7 +31,7 @@ namespace TestNamespace
         ///<param name="appBiatecPoolProvider"></param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> bootstrap(AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider);
+        public abstract ValueTuple<AppCall> Bootstrap(AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider);
 
         ///<summary>
         ///Top secret account with which it is possible update contracts or identity provider
@@ -40,7 +39,7 @@ namespace TestNamespace
         ///<param name="a">Address</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> setAddressUdpater(byte[] a);
+        public abstract ValueTuple<AppCall> SetAddressUdpater(byte[] a);
 
         ///<summary>
         ///Kill switch. In the extreme case all services (deposit, trading, withdrawal, identity modifications and more) can be suspended.
@@ -48,7 +47,7 @@ namespace TestNamespace
         ///<param name="a">Address</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> setPaused(ulong a);
+        public abstract ValueTuple<AppCall> SetPaused(ulong a);
 
         ///<summary>
         ///Execution address with which it is possible to opt in for governance
@@ -56,7 +55,7 @@ namespace TestNamespace
         ///<param name="a">Address</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> setAddressGov(byte[] a);
+        public abstract ValueTuple<AppCall> SetAddressGov(byte[] a);
 
         ///<summary>
         ///Execution address with which it is possible to change global biatec fees
@@ -64,7 +63,7 @@ namespace TestNamespace
         ///<param name="a">Address</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> setAddressExecutive(byte[] a);
+        public abstract ValueTuple<AppCall> SetAddressExecutive(byte[] a);
 
         ///<summary>
         ///Execution fee address is address which can take fees from pools.
@@ -72,7 +71,7 @@ namespace TestNamespace
         ///<param name="a">Address</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> setAddressExecutiveFee(byte[] a);
+        public abstract ValueTuple<AppCall> SetAddressExecutiveFee(byte[] a);
 
         ///<summary>
         ///App identity setter
@@ -80,7 +79,7 @@ namespace TestNamespace
         ///<param name="a">Address</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> setBiatecIdentity(ulong a);
+        public abstract ValueTuple<AppCall> SetBiatecIdentity(ulong a);
 
         ///<summary>
         ///App identity setter
@@ -88,22 +87,25 @@ namespace TestNamespace
         ///<param name="a">Address</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> setBiatecPool(ulong a);
+        public abstract ValueTuple<AppCall> SetBiatecPool(ulong a);
 
         ///<summary>
         ///Fees in 9 decimals. 1_000_000_000 = 100%
         ///Fees in 9 decimals. 10_000_000 = 1%
         ///Fees in 9 decimals. 100_000 = 0,01%
-        ///Fees are respectful from the all fees taken to the LP providers.If LPs charge 1% fee, and biatec charges 10% fee, LP will receive 0.09% fee and biatec 0.01% fee
+        ///
+        ///
+        ///Fees are respectful from the all fees taken to the LP providers. If LPs charge 1% fee, and biatec charges 10% fee, LP will receive 0.09% fee and biatec 0.01% fee
         ///</summary>
         ///<param name="biatecFee">Fee</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-
-        public abstract ValueTuple<AppCall> setBiatecFee(AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee);
+        public abstract ValueTuple<AppCall> SetBiatecFee(AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee);
 
         ///<summary>
         ///addressExecutiveFee can perfom key registration for this LP pool
+        ///
+        ///
         ///Only addressExecutiveFee is allowed to execute this method.
         ///</summary>
         ///<param name="votePK"></param>
@@ -114,11 +116,11 @@ namespace TestNamespace
         ///<param name="voteKeyDilution"></param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-
-        public abstract ValueTuple<AppCall> sendOnlineKeyRegistration(byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution);
+        public abstract ValueTuple<AppCall> SendOnlineKeyRegistration(byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution);
 
         ///<summary>
         ///If someone deposits excess assets to this smart contract biatec can use them.
+        ///
         ///
         ///Only addressExecutiveFee is allowed to execute this method.
         ///</summary>
@@ -126,7 +128,6 @@ namespace TestNamespace
         ///<param name="amount">Amount of the asset to be withdrawn</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-
-        public abstract ValueTuple<AppCall> withdrawExcessAssets(ulong asset, ulong amount, out ulong result);
+        public abstract ValueTuple<AppCall> WithdrawExcessAssets(ulong asset, ulong amount, out ulong result);
     }
 }

@@ -288,7 +288,7 @@ namespace AlgoStudio.ABI.ARC32
             {
                 crb.AppendLine(
 $@"{"\t"}///<summary>
-{"\t"}///{Contract.Desc?.Replace("\n","\n///")}
+{"\t"}///{Contract.Desc?.Replace("\n", "\n///")}
 {"\t"}///</summary>");
             }
 
@@ -366,7 +366,7 @@ $@"{"\t"}///<summary>
             if (!string.IsNullOrEmpty(Contract.Desc))
             {
                 proxyBody.AddOpeningLine("//");
-                proxyBody.AddOpeningLine($"// {Contract.Desc?.Replace("\n","\n//")}");
+                proxyBody.AddOpeningLine($"// {Contract.Desc?.Replace("\n", "\n//")}");
                 proxyBody.AddOpeningLine("//");
             }
 
@@ -505,7 +505,7 @@ $@"{"\t"}///<summary>
 
                 abiMethod.AddOpeningLine(
 $@"///<summary>
-        ///{method.Desc?.Replace("\n","\n///") ?? ""}
+        ///{method.Desc?.Replace("\n", "\n///") ?? ""}
         ///{method.OnCompletion.Summary?.Replace("\n", "\n///")}
         ///</summary>");
 
@@ -521,11 +521,11 @@ $@"///<summary>
                 }
 
 
-                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName} (Account sender, ulong? fee,{parameters},string note,  List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
+                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName} (Account _tx_sender, ulong? _tx_fee,{parameters},string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethod.AddOpeningLine("{");
                 abiMethod.AddClosingLine("}");
 
-                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName}_Transactions (Account sender, ulong? fee, {parameters},string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
+                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName}_Transactions (Account _tx_sender, ulong? _tx_fee, {parameters},string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethodForTransactions.AddOpeningLine("{");
                 abiMethodForTransactions.AddClosingLine("}");
 
@@ -534,8 +534,7 @@ $@"///<summary>
 
 
                 abiMethodBody.AddOpeningLine($"byte[] abiHandle = {{{String.Join(",", method.Selector)}}};");
-                abiMethodBody.AddOpeningLine($"var result = await base.CallApp({txNameList}, fee, callType, 1000, note, sender,  {argsList}, {appsList}, {assetsList},{accountsList}, boxes);");
-
+                abiMethodBody.AddOpeningLine($"var result = await base.CallApp({txNameList}, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, {argsList}, {appsList}, {assetsList},{accountsList}, _tx_boxes);");
 
                 if (t.type != "void")
                 {
@@ -551,7 +550,7 @@ $@"///<summary>
 
                 var abiMethodBodyForTransactions = abiMethodForTransactions.AddChild();
                 abiMethodBodyForTransactions.AddOpeningLine($"byte[] abiHandle = {{{String.Join(",", method.Selector)}}};");
-                abiMethodBodyForTransactions.AddOpeningLine($"return await base.MakeTransactionList({txNameList}, fee, callType, 1000, note, sender,  {argsList}, {appsList}, {assetsList},{accountsList},boxes);");
+                abiMethodBodyForTransactions.AddOpeningLine($"return await base.MakeTransactionList({txNameList}, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender,  {argsList}, {appsList}, {assetsList},{accountsList}, _tx_boxes);");
 
 
             }
@@ -562,7 +561,7 @@ $@"///<summary>
 
         private static string defineArgParameter(ArgumentDescription p, string methodName, List<string> structs)
         {
-            var type = TypeHelpers.GetCSType(methodName + "_arg_" + p.Name, p.Type, p.TypeDetail, structs, false).type;
+            var type = TypeHelpers.GetCSType(MethodDescription.FormatStructName(methodName + "_arg_" + p.Name), p.Type, p.TypeDetail, structs, false).type;
             return $"{type} {p.Name}";
         }
 

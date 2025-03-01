@@ -108,9 +108,6 @@ namespace AlgoStudio.ABI
 
         internal static void TypeToStructs(string structName, string methodABITypeString, List<string> structs)
         {
-
-
-
             if (methodABITypeString[0] != '(' || methodABITypeString[methodABITypeString.Length - 1] != ')')
                 throw new Exception($"Invalid struct type declaration {methodABITypeString}.");
 
@@ -133,11 +130,9 @@ namespace AlgoStudio.ABI
                 structBody.AppendLine(prop);
                 c++;
             }
-            structBody.AppendLine("\t\t}}");
-
+            structBody.AppendLine("\t\t}");
 
             structs.Add(structBody.ToString());
-
         }
 
 
@@ -278,7 +273,7 @@ namespace AlgoStudio.ABI
 
                 if (methodABIType.StartsWith("("))
                 {
-                    TypeToStructs(parentStructName, methodABIType, structs);
+                    TypeToStructs(ARC4.MethodDescription.FormatStructName(parentStructName), methodABIType, structs);
                     return ("", checkArrayType(arrayComponent, parentStructName));
                 }
 

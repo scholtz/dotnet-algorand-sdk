@@ -23,7 +23,7 @@ namespace AlgoStudio.ABI.ARC32
                 {
                     code.AddOpeningLine(
                     $@"{"\t"}///<summary>
-                        {"\t"}///{kv.Value.Descr}
+                        {"\t"}///{kv.Value.Descr?.Replace("\n", "\n///")}
                         {"\t"}///</summary>");
 
 

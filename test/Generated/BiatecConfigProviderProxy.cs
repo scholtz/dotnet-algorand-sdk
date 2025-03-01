@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestNamespace
+namespace BiatecConfig
 {
 
 
@@ -25,17 +25,17 @@ namespace TestNamespace
         ///Initial setup
         ///No_op: CREATE, Opt_in: NEVER, Close_out: NEVER, Update_application: NEVER, Delete_application: NEVER
         ///</summary>
-        public async Task createApplication(Account sender, ulong? fee, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task createApplication(Account _tx_sender, ulong? _tx_fee, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 184, 68, 123, 54 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle }, null, null, null, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle }, null, null, null, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> createApplication_Transactions(Account sender, ulong? fee, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> createApplication_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 184, 68, 123, 54 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle }, null, null, null, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle }, null, null, null, _tx_boxes);
 
         }
 
@@ -44,17 +44,17 @@ namespace TestNamespace
         ///No_op: NEVER, Opt_in: NEVER, Close_out: NEVER, Update_application: CALL, Delete_application: NEVER
         ///</summary>
         /// <param name="newVersion"> ABI Type is byte[]  </param>
-        public async Task updateApplication(Account sender, ulong? fee, byte[] newVersion, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task updateApplication(Account _tx_sender, ulong? _tx_fee, byte[] newVersion, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 105, 54, 198, 47 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, newVersion }, null, null, null, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, newVersion }, null, null, null, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> updateApplication_Transactions(Account sender, ulong? fee, byte[] newVersion, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> updateApplication_Transactions(Account _tx_sender, ulong? _tx_fee, byte[] newVersion, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 105, 54, 198, 47 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, newVersion }, null, null, null, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, newVersion }, null, null, null, _tx_boxes);
 
         }
 
@@ -65,17 +65,17 @@ namespace TestNamespace
         /// <param name="biatecFee">Biatec fees ABI Type is uint256  </param>
         /// <param name="appBiatecIdentityProvider"> ABI Type is uint64  </param>
         /// <param name="appBiatecPoolProvider"> ABI Type is uint64  </param>
-        public async Task bootstrap(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task bootstrap(Account _tx_sender, ulong? _tx_fee, AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 73, 92, 231, 237 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, biatecFee, appBiatecIdentityProvider, appBiatecPoolProvider }, null, null, null, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, biatecFee, appBiatecIdentityProvider, appBiatecPoolProvider }, null, null, null, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> bootstrap_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> bootstrap_Transactions(Account _tx_sender, ulong? _tx_fee, AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 73, 92, 231, 237 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, biatecFee, appBiatecIdentityProvider, appBiatecPoolProvider }, null, null, null, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, biatecFee, appBiatecIdentityProvider, appBiatecPoolProvider }, null, null, null, _tx_boxes);
 
         }
 
@@ -84,17 +84,17 @@ namespace TestNamespace
         ///No_op: CALL, Opt_in: NEVER, Close_out: NEVER, Update_application: NEVER, Delete_application: NEVER
         ///</summary>
         /// <param name="a">Address ABI Type is address  </param>
-        public async Task setAddressUdpater(Account sender, ulong? fee, Address a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task setAddressUdpater(Account _tx_sender, ulong? _tx_fee, Address a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 191, 194, 8, 96 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> setAddressUdpater_Transactions(Account sender, ulong? fee, Address a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> setAddressUdpater_Transactions(Account _tx_sender, ulong? _tx_fee, Address a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 191, 194, 8, 96 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, _tx_boxes);
 
         }
 
@@ -103,17 +103,17 @@ namespace TestNamespace
         ///No_op: CALL, Opt_in: NEVER, Close_out: NEVER, Update_application: NEVER, Delete_application: NEVER
         ///</summary>
         /// <param name="a">Address ABI Type is uint64  </param>
-        public async Task setPaused(Account sender, ulong? fee, ulong a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task setPaused(Account _tx_sender, ulong? _tx_fee, ulong a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 12, 220, 16, 252 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, a }, null, null, null, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, a }, null, null, null, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> setPaused_Transactions(Account sender, ulong? fee, ulong a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> setPaused_Transactions(Account _tx_sender, ulong? _tx_fee, ulong a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 12, 220, 16, 252 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, a }, null, null, null, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, a }, null, null, null, _tx_boxes);
 
         }
 
@@ -122,17 +122,17 @@ namespace TestNamespace
         ///No_op: CALL, Opt_in: NEVER, Close_out: NEVER, Update_application: NEVER, Delete_application: NEVER
         ///</summary>
         /// <param name="a">Address ABI Type is address  </param>
-        public async Task setAddressGov(Account sender, ulong? fee, Address a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task setAddressGov(Account _tx_sender, ulong? _tx_fee, Address a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 107, 149, 95, 75 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> setAddressGov_Transactions(Account sender, ulong? fee, Address a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> setAddressGov_Transactions(Account _tx_sender, ulong? _tx_fee, Address a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 107, 149, 95, 75 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, _tx_boxes);
 
         }
 
@@ -141,17 +141,17 @@ namespace TestNamespace
         ///No_op: CALL, Opt_in: NEVER, Close_out: NEVER, Update_application: NEVER, Delete_application: NEVER
         ///</summary>
         /// <param name="a">Address ABI Type is address  </param>
-        public async Task setAddressExecutive(Account sender, ulong? fee, Address a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task setAddressExecutive(Account _tx_sender, ulong? _tx_fee, Address a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 139, 24, 123, 61 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> setAddressExecutive_Transactions(Account sender, ulong? fee, Address a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> setAddressExecutive_Transactions(Account _tx_sender, ulong? _tx_fee, Address a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 139, 24, 123, 61 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, _tx_boxes);
 
         }
 
@@ -160,17 +160,17 @@ namespace TestNamespace
         ///No_op: CALL, Opt_in: NEVER, Close_out: NEVER, Update_application: NEVER, Delete_application: NEVER
         ///</summary>
         /// <param name="a">Address ABI Type is address  </param>
-        public async Task setAddressExecutiveFee(Account sender, ulong? fee, Address a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task setAddressExecutiveFee(Account _tx_sender, ulong? _tx_fee, Address a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 80, 224, 125, 136 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> setAddressExecutiveFee_Transactions(Account sender, ulong? fee, Address a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> setAddressExecutiveFee_Transactions(Account _tx_sender, ulong? _tx_fee, Address a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 80, 224, 125, 136 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle }, null, null, new List<Address> { a }, _tx_boxes);
 
         }
 
@@ -179,17 +179,17 @@ namespace TestNamespace
         ///No_op: CALL, Opt_in: NEVER, Close_out: NEVER, Update_application: NEVER, Delete_application: NEVER
         ///</summary>
         /// <param name="a">Address ABI Type is uint64  </param>
-        public async Task setBiatecIdentity(Account sender, ulong? fee, ulong a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task setBiatecIdentity(Account _tx_sender, ulong? _tx_fee, ulong a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 186, 190, 30, 17 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, a }, null, null, null, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, a }, null, null, null, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> setBiatecIdentity_Transactions(Account sender, ulong? fee, ulong a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> setBiatecIdentity_Transactions(Account _tx_sender, ulong? _tx_fee, ulong a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 186, 190, 30, 17 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, a }, null, null, null, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, a }, null, null, null, _tx_boxes);
 
         }
 
@@ -198,17 +198,17 @@ namespace TestNamespace
         ///No_op: CALL, Opt_in: NEVER, Close_out: NEVER, Update_application: NEVER, Delete_application: NEVER
         ///</summary>
         /// <param name="a">Address ABI Type is uint64  </param>
-        public async Task setBiatecPool(Account sender, ulong? fee, ulong a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task setBiatecPool(Account _tx_sender, ulong? _tx_fee, ulong a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 197, 139, 157, 164 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, a }, null, null, null, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, a }, null, null, null, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> setBiatecPool_Transactions(Account sender, ulong? fee, ulong a, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> setBiatecPool_Transactions(Account _tx_sender, ulong? _tx_fee, ulong a, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 197, 139, 157, 164 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, a }, null, null, null, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, a }, null, null, null, _tx_boxes);
 
         }
 
@@ -222,17 +222,17 @@ namespace TestNamespace
         ///No_op: CALL, Opt_in: NEVER, Close_out: NEVER, Update_application: NEVER, Delete_application: NEVER
         ///</summary>
         /// <param name="biatecFee">Fee ABI Type is uint256  </param>
-        public async Task setBiatecFee(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task setBiatecFee(Account _tx_sender, ulong? _tx_fee, AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 202, 52, 74, 52 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, biatecFee }, null, null, null, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, biatecFee }, null, null, null, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> setBiatecFee_Transactions(Account sender, ulong? fee, AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> setBiatecFee_Transactions(Account _tx_sender, ulong? _tx_fee, AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 202, 52, 74, 52 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, biatecFee }, null, null, null, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, biatecFee }, null, null, null, _tx_boxes);
 
         }
 
@@ -249,17 +249,17 @@ namespace TestNamespace
         /// <param name="voteFirst"> ABI Type is uint64  </param>
         /// <param name="voteLast"> ABI Type is uint64  </param>
         /// <param name="voteKeyDilution"> ABI Type is uint64  </param>
-        public async Task sendOnlineKeyRegistration(Account sender, ulong? fee, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task sendOnlineKeyRegistration(Account _tx_sender, ulong? _tx_fee, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 73, 243, 161, 127 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, votePK, selectionPK, stateProofPK, voteFirst, voteLast, voteKeyDilution }, null, null, null, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, votePK, selectionPK, stateProofPK, voteFirst, voteLast, voteKeyDilution }, null, null, null, _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> sendOnlineKeyRegistration_Transactions(Account sender, ulong? fee, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> sendOnlineKeyRegistration_Transactions(Account _tx_sender, ulong? _tx_fee, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 73, 243, 161, 127 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, votePK, selectionPK, stateProofPK, voteFirst, voteLast, voteKeyDilution }, null, null, null, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, votePK, selectionPK, stateProofPK, voteFirst, voteLast, voteKeyDilution }, null, null, null, _tx_boxes);
 
         }
 
@@ -272,18 +272,18 @@ namespace TestNamespace
         ///</summary>
         /// <param name="asset">Asset to withdraw. If native token, then zero ABI Type is uint64  </param>
         /// <param name="amount">Amount of the asset to be withdrawn ABI Type is uint64  </param>
-        public async Task<ulong> withdrawExcessAssets(Account sender, ulong? fee, ulong asset, ulong amount, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<ulong> withdrawExcessAssets(Account _tx_sender, ulong? _tx_fee, ulong asset, ulong amount, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 135, 40, 55, 48 };
-            var result = await base.CallApp(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, asset, amount }, null, null, null, boxes);
+            var result = await base.CallApp(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, asset, amount }, null, null, null, _tx_boxes);
             return BitConverter.ToUInt64(ReverseIfLittleEndian(result.First().ToArray()), 0);
 
         }
 
-        public async Task<List<Transaction>> withdrawExcessAssets_Transactions(Account sender, ulong? fee, ulong asset, ulong amount, string note, List<BoxRef> boxes, AlgoStudio.Core.OnCompleteType callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> withdrawExcessAssets_Transactions(Account _tx_sender, ulong? _tx_fee, ulong asset, ulong amount, string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 135, 40, 55, 48 };
-            return await base.MakeTransactionList(null, fee, callType, 1000, note, sender, new List<object> { abiHandle, asset, amount }, null, null, null, boxes);
+            return await base.MakeTransactionList(null, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, new List<object> { abiHandle, asset, amount }, null, null, null, _tx_boxes);
 
         }
 
@@ -292,11 +292,11 @@ namespace TestNamespace
         {
             public createApplication_Arc4GroupTransaction(DefaultApi algodApi, ulong appId) : base(algodApi, appId) { }
             private createApplication_Arc4GroupTransaction() : base(null, 0) { }
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 184, 68, 123, 54 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -308,11 +308,11 @@ namespace TestNamespace
             private updateApplication_Arc4GroupTransaction() : base(null, 0) { }
             //
             public AlgoStudio.ABI.ARC4.Types.VariableArray<AlgoStudio.ABI.ARC4.Types.Byte> newVersion { get; set; } = (AlgoStudio.ABI.ARC4.Types.VariableArray<AlgoStudio.ABI.ARC4.Types.Byte>)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("byte[]");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 105, 54, 198, 47 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { newVersion }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { newVersion }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -328,11 +328,11 @@ namespace TestNamespace
             public AlgoStudio.ABI.ARC4.Types.UInt appBiatecIdentityProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
             public AlgoStudio.ABI.ARC4.Types.UInt appBiatecPoolProvider { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 73, 92, 231, 237 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { biatecFee, appBiatecIdentityProvider, appBiatecPoolProvider }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { biatecFee, appBiatecIdentityProvider, appBiatecPoolProvider }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -344,11 +344,11 @@ namespace TestNamespace
             private setAddressUdpater_Arc4GroupTransaction() : base(null, 0) { }
             //Address
             public AlgoStudio.ABI.ARC4.Types.Address a { get; set; } = (AlgoStudio.ABI.ARC4.Types.Address)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("address");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 191, 194, 8, 96 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -360,11 +360,11 @@ namespace TestNamespace
             private setPaused_Arc4GroupTransaction() : base(null, 0) { }
             //Address
             public AlgoStudio.ABI.ARC4.Types.UInt a { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 12, 220, 16, 252 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -376,11 +376,11 @@ namespace TestNamespace
             private setAddressGov_Arc4GroupTransaction() : base(null, 0) { }
             //Address
             public AlgoStudio.ABI.ARC4.Types.Address a { get; set; } = (AlgoStudio.ABI.ARC4.Types.Address)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("address");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 107, 149, 95, 75 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -392,11 +392,11 @@ namespace TestNamespace
             private setAddressExecutive_Arc4GroupTransaction() : base(null, 0) { }
             //Address
             public AlgoStudio.ABI.ARC4.Types.Address a { get; set; } = (AlgoStudio.ABI.ARC4.Types.Address)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("address");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 139, 24, 123, 61 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -408,11 +408,11 @@ namespace TestNamespace
             private setAddressExecutiveFee_Arc4GroupTransaction() : base(null, 0) { }
             //Address
             public AlgoStudio.ABI.ARC4.Types.Address a { get; set; } = (AlgoStudio.ABI.ARC4.Types.Address)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("address");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 80, 224, 125, 136 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -424,11 +424,11 @@ namespace TestNamespace
             private setBiatecIdentity_Arc4GroupTransaction() : base(null, 0) { }
             //Address
             public AlgoStudio.ABI.ARC4.Types.UInt a { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 186, 190, 30, 17 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -440,11 +440,11 @@ namespace TestNamespace
             private setBiatecPool_Arc4GroupTransaction() : base(null, 0) { }
             //Address
             public AlgoStudio.ABI.ARC4.Types.UInt a { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 197, 139, 157, 164 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { a }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -456,11 +456,11 @@ namespace TestNamespace
             private setBiatecFee_Arc4GroupTransaction() : base(null, 0) { }
             //Fee
             public AlgoStudio.ABI.ARC4.Types.UInt biatecFee { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 202, 52, 74, 52 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { biatecFee }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { biatecFee }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -482,11 +482,11 @@ namespace TestNamespace
             public AlgoStudio.ABI.ARC4.Types.UInt voteLast { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //
             public AlgoStudio.ABI.ARC4.Types.UInt voteKeyDilution { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 73, 243, 161, 127 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { votePK, selectionPK, stateProofPK, voteFirst, voteLast, voteKeyDilution }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { votePK, selectionPK, stateProofPK, voteFirst, voteLast, voteKeyDilution }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
@@ -500,11 +500,11 @@ namespace TestNamespace
             public AlgoStudio.ABI.ARC4.Types.UInt asset { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
             //Amount of the asset to be withdrawn
             public AlgoStudio.ABI.ARC4.Types.UInt amount { get; set; } = (AlgoStudio.ABI.ARC4.Types.UInt)AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-            public async Task<List<Transaction>> Invoke(ulong? fee, OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+            public async Task<List<Transaction>> Invoke(ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)
             {
 
                 byte[] abiHandle = { 135, 40, 55, 48 };
-                return await base.MakeArc4TransactionList(null, fee, onComplete, roundValidity, note, sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { asset, amount }, foreignApps, foreignAssets, accounts, boxes);
+                return await base.MakeArc4TransactionList(null, _tx_fee, _tx_onComplete, _tx_roundValidity, _tx_note, _tx_sender, abiHandle, new List<AlgoStudio.ABI.ARC4.Types.WireType> { asset, amount }, _tx_foreignApps, _tx_foreignAssets, _tx_accounts, _tx_boxes);
             }
         }
 
