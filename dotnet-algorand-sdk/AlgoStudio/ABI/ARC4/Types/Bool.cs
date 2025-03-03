@@ -14,7 +14,7 @@ namespace AlgoStudio.ABI.ARC4.Types
         {
             if (data.Length != 1)
                 throw new ArgumentException("Invalid data length");
-            Value= data[0] == 0x80;
+            Value = data[0] == 0x80;
             return 1;
         }
 
@@ -22,6 +22,21 @@ namespace AlgoStudio.ABI.ARC4.Types
         {
             return new byte[] { (byte)(Value ? 0x80 : 0) };
         }
+
+        public override bool From(object instance)
+        {
+            if (instance is bool boolV)
+            {
+                Value = boolV;
+                return true;
+            }
+            throw new NotImplementedException();
+        }
+
+        public override object ToValue()
+        {
+            return Value;
+        }
     }
-    
+
 }

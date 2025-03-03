@@ -17,15 +17,23 @@ namespace AlgoStudio.ABI.ARC4.Types
         public UInt(uint bitwidth)
         {
             //check if bitwidth is modulo 8 and between 8 and 512. also make sure the value fits in the bitwidth:
-            if (bitwidth % 8 != 0 || bitwidth < 8 || bitwidth > 512 )
+            if (bitwidth % 8 != 0 || bitwidth < 8 || bitwidth > 512)
             {
                 throw new ArgumentException("Invalid bitwidth.");
             }
-            
+
             BitWidth = bitwidth;
         }
         private UInt()
         {
+        }
+        /// <summary>
+        /// Create UInt instance with value
+        /// </summary>
+        /// <param name="value"></param>
+        public UInt(object value)
+        {
+            From(value);
         }
 
         public override byte[] Encode()
@@ -43,7 +51,7 @@ namespace AlgoStudio.ABI.ARC4.Types
             {
                 throw new InvalidOperationException("Value does not fit in bitwidth");
             }
-            
+
             return bytes;
 
         }
@@ -60,6 +68,56 @@ namespace AlgoStudio.ABI.ARC4.Types
             Array.Reverse(bytes);
             Value = new BigInteger(bytes);
             return (uint)byteLength;
+        }
+
+        public override bool From(object instance)
+        {
+            if (instance is BigInteger sInstance)
+            {
+                Value = sInstance;
+                return true;
+            }
+            if (instance is ulong ulongV)
+            {
+                Value = new BigInteger(ulongV);
+                return true;
+            }
+            if (instance is uint uintV)
+            {
+                Value = new BigInteger(uintV);
+                return true;
+            }
+            if (instance is long longV)
+            {
+                Value = new BigInteger(longV);
+                return true;
+            }
+            if (instance is int intV)
+            {
+                Value = new BigInteger(intV);
+                return true;
+            }
+            if (instance is decimal decimalV)
+            {
+                Value = new BigInteger(decimalV);
+                return true;
+            }
+            if (instance is double doubleV)
+            {
+                Value = new BigInteger(doubleV);
+                return true;
+            }
+            if (instance is float floatV)
+            {
+                Value = new BigInteger(floatV);
+                return true;
+            }
+            throw new NotImplementedException();
+        }
+
+        public override object ToValue()
+        {
+            return Value;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -8,13 +9,12 @@ namespace AlgoStudio.ABI.ARC4.Types
     public class VariableArray<T> : WireType where T : WireType
     {
         public List<T> Value { get; set; } = new List<T>();
+        public override bool IsDynamic => Value.Exists(v => v.IsDynamic);
 
-        public override bool IsDynamic => Value.Exists(v=> v.IsDynamic);
-
-        public string ElementSpec { get; private set; } 
+        public string ElementSpec { get; private set; }
         public VariableArray(string elementSpec)
         {
-            ElementSpec= elementSpec; 
+            ElementSpec = elementSpec;
         }
 
         public override uint Decode(byte[] data)
@@ -43,14 +43,28 @@ namespace AlgoStudio.ABI.ARC4.Types
             else
             {
                 var lengthBytes = BitConverter.GetBytes((ushort)(Value.Count));
-                if (BitConverter.IsLittleEndian) lengthBytes= lengthBytes.Reverse().ToArray();
+                if (BitConverter.IsLittleEndian) lengthBytes = lengthBytes.Reverse().ToArray();
                 Tuple tuple = new Tuple();
                 tuple.Value.AddRange(Value);
-                var tupleBytes= tuple.Encode();
+                var tupleBytes = tuple.Encode();
                 bytes = lengthBytes.Concat(tupleBytes).ToArray();
 
             }
             return bytes;
+        }
+
+        public override bool From(object instance)
+        {
+            if (instance is List<T> listV)
+            {
+                Value = listV;
+                return true;
+            }
+            throw new NotImplementedException();
+        }
+        public override object ToValue()
+        {
+            return Value;
         }
     }
 }

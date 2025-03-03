@@ -12,20 +12,12 @@ namespace AlgoStudio.ABI.ARC4.Types
         {
         }
         /// <summary>
-        /// Create uint256 instance from bigint value
+        /// Create uint256 instance with value
         /// </summary>
         /// <param name="value"></param>
-        public UInt256(BigInteger value) : base(256)
+        public UInt256(object value) : base(256)
         {
-            base.Value = value;
-        }
-        /// <summary>
-        /// Create UInt256 instance from byte array
-        /// </summary>
-        /// <param name="value"></param>
-        public UInt256(byte[] value) : base(256)
-        {
-            base.Decode(value);
+            base.From(value);
         }
     }
 }

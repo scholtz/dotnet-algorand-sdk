@@ -538,5 +538,61 @@ namespace AlgoStudio.ABI
             }
             return abiType.ToString();
         }
+
+        internal static string CSTypeToAbiType(Type ts)
+        {
+
+            string abiType = ABI.ABIType["unsupported"];
+            var arrayType = ts as IArrayTypeSymbol;
+            if (arrayType != null)
+            {
+                if (predefinedTypeConversions.TryGetValue(arrayType.ElementType.ToString(), out string at))
+                {
+                    return $"{at}[]";
+                }
+
+                if (Utilities.IsAbiStruct(ts))
+                {
+                    return $"byte[][]";
+                }
+
+            }
+            else
+            {
+                if (predefinedTypeConversions.TryGetValue(ts.ToString(), out string at))
+                {
+                    return $"{at}";
+                }
+
+                if (Utilities.IsAbiStruct(ts))
+                {
+                    return $"byte[]";
+                }
+            }
+
+            //check if it's a transaction type
+            switch (ts.ToString())
+            {
+                case "AlgoStudio.Core.TransactionReference":
+                    return ABI.ABIType["txn"];
+                case "AlgoStudio.Core.PaymentTransactionReference":
+                    return ABI.ABIType["pay"];
+                case "AlgoStudio.Core.KeyRegistrationTransactionReference":
+                    return ABI.ABIType["keyreg"];
+                case "AlgoStudio.Core.AssetAcceptTransactionReference":
+                    return ABI.ABIType["axfer"];
+                case "AlgoStudio.Core.AssetClawbackTransactionReference":
+                    return ABI.ABIType["axfer"];
+                case "AlgoStudio.Core.AssetConfigurationTransactionReference":
+                    return ABI.ABIType["acfg"];
+                case "AlgoStudio.Core.AssetFreezeTransactionReference":
+                    return ABI.ABIType["afrz"];
+                case "AlgoStudio.Core.AssetTransferTransactionReference":
+                    return ABI.ABIType["axfer"];
+                case "AlgoStudio.Core.AppCallTransactionReference":
+                    return ABI.ABIType["appl"];
+            }
+            return abiType.ToString();
+        }
     }
 }

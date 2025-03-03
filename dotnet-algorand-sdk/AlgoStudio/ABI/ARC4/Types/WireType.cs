@@ -9,6 +9,17 @@ namespace AlgoStudio.ABI.ARC4.Types
         public abstract bool IsDynamic { get; }
         public abstract byte[] Encode();
         public abstract uint Decode(byte[] data);
+        /// <summary>
+        /// Create instance of the object from the value
+        /// </summary>
+        /// <param name="instance">C# variable</param>
+        /// <returns></returns>
+        public abstract bool From(object instance);
+        /// <summary>
+        /// Converts WireType to c# value
+        /// </summary>
+        /// <returns></returns>
+        public abstract object ToValue();
 
         public static WireType FromABIDescription(string description)
         {
@@ -237,11 +248,5 @@ namespace AlgoStudio.ABI.ARC4.Types
 
             return elements;
         }
-
-
-
-
-
-
     }
 }

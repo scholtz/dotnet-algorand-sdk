@@ -8,6 +8,4 @@ namespace AlgoStudio.ABI.ARC4.Types
     {
         public Application() : base(8) { }
     }
-    
-    
 }

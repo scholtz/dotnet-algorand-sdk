@@ -17,7 +17,5 @@ namespace AlgoStudio.ABI.ARC4.Types
             Bitwidth = bitwidth;
             Divisor = divisor;
         }
-
-      
     }
 }

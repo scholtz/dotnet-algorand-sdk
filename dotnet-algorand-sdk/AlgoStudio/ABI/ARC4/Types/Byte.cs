@@ -10,5 +10,4 @@ namespace AlgoStudio.ABI.ARC4.Types
         {
         }
     }
-    
 }

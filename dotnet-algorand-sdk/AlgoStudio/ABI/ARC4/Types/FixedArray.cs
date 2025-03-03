@@ -14,10 +14,6 @@ namespace AlgoStudio.ABI.ARC4.Types
             {
                 Value.Add(WireType.FromABIDescription(elementSpec));
             }
-            
         }
-       
-
-       
     }
 }
