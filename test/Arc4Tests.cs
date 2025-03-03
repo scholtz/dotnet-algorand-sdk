@@ -10,15 +10,17 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using TestNamespace;
 using Algorand.Algod.Model;
 using System.Diagnostics;
 using Algorand.KMD;
 using System.Reflection.Metadata;
 using System.Linq;
 using Algorand.Algod.Model.Transactions;
+using System.Diagnostics.Contracts;
 using BiatecClammPool;
 using BiatecConfig;
+using BiatecIdentity;
+using BiatecPoolProvider;
 
 namespace test
 {
@@ -27,7 +29,7 @@ namespace test
     {
 
         [Test]
-        public async Task GenerateClient1()
+        public async Task GenerateClientAmm()
         {
             using var client = new HttpClient();
             var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecClammPool.arc32.json");
@@ -58,7 +60,38 @@ namespace test
             File.WriteAllText("BiatecClammPoolProxy.cs", appProxy);
         }
         [Test]
-        public async Task GenerateClient2()
+        public async Task GenerateClientPP()
+        {
+            using var client = new HttpClient();
+            var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecPoolProvider.arc32.json");
+
+            Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(content.Trim().StartsWith("{"), "File content is not valid JSON");
+
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+
+            var app = await AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(content), algodApiInstance);
+
+            Assert.That(app.Bare_call_config.No_op, Is.EqualTo(CallConfig.NEVER));
+            Assert.That(app.Hints.Keys.Count, Is.GreaterThan(1));
+            Assert.That(app.State.Global, Is.Not.Null);
+            Assert.That(app.Contract.Methods.Count, Is.GreaterThan(1));
+            Assert.That(app.Source.Approval.Length, Is.GreaterThan(1));
+
+            var appref = app.ToSmartContractReference("BiatecPoolProvider", "");
+            Assert.That(appref.Length, Is.GreaterThan(1));
+            var appProxy = app.ToProxy("BiatecPoolProvider");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+
+            File.WriteAllText("BiatecPoolProviderRef.cs", appref);
+            File.WriteAllText("BiatecPoolProviderProxy.cs", appProxy);
+        }
+        [Test]
+        public async Task GenerateClientConf()
         {
             using var client = new HttpClient();
             var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecConfigProvider.arc32.json");
@@ -89,7 +122,7 @@ namespace test
             File.WriteAllText("BiatecConfigProviderProxy.cs", appProxy);
         }
         [Test]
-        public async Task GenerateClient3()
+        public async Task GenerateClientBI()
         {
             using var client = new HttpClient();
             var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecIdentityProvider.arc32.json");
@@ -111,9 +144,9 @@ namespace test
             Assert.That(app.Contract.Methods.Count, Is.GreaterThan(1));
             Assert.That(app.Source.Approval.Length, Is.GreaterThan(1));
 
-            var appref = app.ToSmartContractReference("TestNamespace", "");
+            var appref = app.ToSmartContractReference("BiatecIdentity", "");
             Assert.That(appref.Length, Is.GreaterThan(1));
-            var appProxy = app.ToProxy("TestNamespace");
+            var appProxy = app.ToProxy("BiatecIdentity");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
 
             File.WriteAllText("BiatecIdentityProviderRef.cs", appref);
@@ -156,7 +189,7 @@ namespace test
             var contract = new BiatecClammPoolProxy(algodApiInstance, 0);
             try
             {
-                await contract.createApplication(acct1, 1000, "", new List<BoxRef>(), AlgoStudio.Core.OnCompleteType.CreateApplication);
+                await contract.createApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
             }
             catch (Algorand.ApiException<Algorand.Algod.Model.ErrorResponse> e)
             {
@@ -196,7 +229,7 @@ namespace test
             var contract = new BiatecConfigProviderProxy(algodApiInstance, 0);
             try
             {
-                await contract.createApplication(acct1, 1000, "", new List<BoxRef>(), AlgoStudio.Core.OnCompleteType.CreateApplication);
+                await contract.createApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
                 await contract.bootstrap(
                     _tx_sender: acct1,
                     _tx_fee: 1000,
@@ -230,6 +263,75 @@ namespace test
             }
 
         }
+
+
+        [Test]
+        public async Task DeployBI()
+        {
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+            var trans = await algodApiInstance.TransactionParamsAsync();
+            Account acct1 = await GetAccount();
+
+            var contractConf = new BiatecConfigProviderProxy(algodApiInstance, 0);
+            var contractBI = new BiatecIdentityProviderProxy(algodApiInstance, 0);
+            var contractPP = new BiatecPoolProviderProxy(algodApiInstance, 0);
+            try
+            {
+                await contractConf.createApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
+                await contractBI.createApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
+                await contractPP.createApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
+
+                await contractConf.bootstrap(
+                    _tx_sender: acct1,
+                    _tx_fee: 1000,
+                    biatecFee: new AlgoStudio.ABI.ARC4.Types.UInt256(1),
+                    appBiatecIdentityProvider: contractBI.appId,
+                    appBiatecPoolProvider: contractPP.appId,
+                    _tx_note: "",
+                    _tx_boxes: new List<BoxRef>()
+                    );
+                await contractPP.bootstrap(
+                    _tx_sender: acct1,
+                    _tx_fee: 1000,
+                    appBiatecConfigProvider: contractConf.appId,
+                    _tx_note: "",
+                    _tx_apps: new List<ulong>() { contractConf.appId }
+                    );
+                await contractBI.bootstrap(
+
+                    _tx_sender: acct1,
+                    _tx_fee: 1000,
+                    appBiatecConfigProvider: contractConf.appId,
+                    _tx_note: "",
+                    _tx_apps: new List<ulong>() { contractConf.appId }
+                    );
+            }
+            catch (Algorand.ApiException<Algorand.Algod.Model.ErrorResponse> e)
+            {
+                Trace.TraceError(e.Message);
+                throw;
+            }
+            catch (Algorand.ApiException e)
+            {
+
+                Trace.TraceError(e.Message);
+                throw;
+            }
+            catch (AlgoStudio.ProxyException e)
+            {
+                var eApi = e.InnerException as Algorand.ApiException<Algorand.Algod.Model.ErrorResponse>;
+                if (eApi != null)
+                {
+                    Trace.TraceError(eApi.Result.Message.ToString());
+                }
+                Trace.TraceError(e.Message);
+                throw;
+            }
+        }
+
         //[Test]
         //public async Task DeployAppMakeAppCall()
         //{
@@ -285,5 +387,6 @@ namespace test
         //    }
 
         //}
+        /**/
     }
 }

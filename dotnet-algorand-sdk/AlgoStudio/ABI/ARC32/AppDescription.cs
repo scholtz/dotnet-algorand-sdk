@@ -466,28 +466,8 @@ $@"{"\t"}///<summary>
                 var allParameters = transactionParameterDefinitions.Concat(appRefParameterDefinitions).Concat(accountRefParameterDefinitions).Concat(assetRefParameterDefinitions).Concat(argParameterDefinitions);
 
                 string parameters = string.Join(",", allParameters);
-                string txNameList;
-                if (transactionParameters.Count > 0) txNameList = "new List<Transaction> {" + string.Join(",", transactionParameters.Select(p => p.Name)) + "}";
-                else
-                    txNameList = "null";
 
                 string argsList = "new List<object> {" + string.Join(",", new List<string> { "abiHandle" }.Concat(argParameters.Select(p => p.Name))) + "}";
-
-
-                string appsList;
-                if (appRefParameters.Count > 0) appsList = "new List<ulong> {" + string.Join(",", appRefParameters.Select(p => p.Name)) + "}";
-                else
-                    appsList = "null";
-
-                string assetsList;
-                if (assetRefParameters.Count > 0) assetsList = "new List<ulong> {" + string.Join(",", assetRefParameters.Select(p => p.Name)) + "}";
-                else
-                    assetsList = "null";
-
-                string accountsList;
-                if (acctRefParameters.Count > 0) accountsList = "new List<Address> {" + string.Join(",", acctRefParameters.Select(p => p.Name)) + "}";
-                else
-                    accountsList = "null";
 
                 var t = TypeHelpers.GetCSType(Contract.Name + "return", returnType.Type, returnType.TypeDetail, structs, false);
                 string methodReturnType;
@@ -520,21 +500,50 @@ $@"///<summary>
 
                 }
 
+                if (!string.IsNullOrEmpty(parameters))
+                {
+                    parameters += ", ";
+                }
 
-                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName} (Account _tx_sender, ulong? _tx_fee,{parameters},string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
+                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName} ({parameters}Account _tx_sender, ulong? _tx_fee,string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethod.AddOpeningLine("{");
                 abiMethod.AddClosingLine("}");
 
-                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName}_Transactions (Account _tx_sender, ulong? _tx_fee, {parameters},string _tx_note, List<BoxRef> _tx_boxes, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
+                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName}_Transactions ({parameters}Account _tx_sender, ulong? _tx_fee, string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethodForTransactions.AddOpeningLine("{");
                 abiMethodForTransactions.AddClosingLine("}");
 
                 var abiMethodBody = abiMethod.AddChild();
 
+                abiMethodBody.AddOpeningLine($"_tx_boxes ??= new List<BoxRef>();");
+                abiMethodBody.AddOpeningLine($"_tx_transactions ??= new List<Transaction>();");
+                abiMethodBody.AddOpeningLine($"_tx_assets ??= new List<ulong>();");
+                abiMethodBody.AddOpeningLine($"_tx_apps ??= new List<ulong>();");
+                abiMethodBody.AddOpeningLine($"_tx_accounts ??= new List<Address>();");
+
+                if (transactionParameters.Count > 0)
+                {
+                    abiMethodBody.AddOpeningLine("_tx_transactions.AddRange(new List<Transaction> {" + string.Join(",", transactionParameters.Select(p => p.Name)) + "});");
+                }
+
+                if (appRefParameters.Count > 0)
+                {
+                    abiMethodBody.AddOpeningLine("_tx_apps.AddRange(new List<ulong> {" + string.Join(",", appRefParameters.Select(p => p.Name)) + "});");
+                }
+
+                if (assetRefParameters.Count > 0)
+                {
+                    abiMethodBody.AddOpeningLine("_tx_assets.AddRange(new List<ulong> {" + string.Join(",", assetRefParameters.Select(p => p.Name)) + "});");
+                }
+
+                if (acctRefParameters.Count > 0)
+                {
+                    abiMethodBody.AddOpeningLine("_tx_accounts.AddRange(new List<Address> {" + string.Join(",", acctRefParameters.Select(p => p.Name)) + "});");
+                }
 
 
                 abiMethodBody.AddOpeningLine($"byte[] abiHandle = {{{String.Join(",", method.Selector)}}};");
-                abiMethodBody.AddOpeningLine($"var result = await base.CallApp({txNameList}, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender, {argsList}, {appsList}, {assetsList},{accountsList}, _tx_boxes);");
+                abiMethodBody.AddOpeningLine($"var result = await base.CallApp({argsList}, _tx_fee: _tx_fee,  _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions , _tx_apps: _tx_apps, _tx_assets:_tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);");
 
                 if (t.type != "void")
                 {
@@ -550,13 +559,8 @@ $@"///<summary>
 
                 var abiMethodBodyForTransactions = abiMethodForTransactions.AddChild();
                 abiMethodBodyForTransactions.AddOpeningLine($"byte[] abiHandle = {{{String.Join(",", method.Selector)}}};");
-                abiMethodBodyForTransactions.AddOpeningLine($"return await base.MakeTransactionList({txNameList}, _tx_fee, _tx_callType, 1000, _tx_note, _tx_sender,  {argsList}, {appsList}, {assetsList},{accountsList}, _tx_boxes);");
-
-
+                abiMethodBodyForTransactions.AddOpeningLine($"return await base.MakeTransactionList({argsList}, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions , _tx_apps: _tx_apps, _tx_assets:_tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);");
             }
-
-
-
         }
 
         private static string defineArgParameter(ArgumentDescription p, string methodName, List<string> structs)

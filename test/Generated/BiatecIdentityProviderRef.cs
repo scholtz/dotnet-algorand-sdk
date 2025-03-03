@@ -3,7 +3,7 @@ using AlgoStudio.Core;
 using AlgoStudio.Core.Attributes;
 using System;
 
-namespace TestNamespace
+namespace BiatecIdentity
 {
     public abstract class BiatecIdentityProviderReference : SmartContractReference
     {

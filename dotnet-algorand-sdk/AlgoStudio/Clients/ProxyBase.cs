@@ -232,12 +232,7 @@ namespace AlgoStudio
         }
 
 
-        protected async Task<List<Transaction>> MakeTransactionList(ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<object> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
-        {
-            return await MakeTransactionList(null, fee, onComplete, roundValidity, note, sender, args, foreignApps, foreignAssets, accounts, boxes);
-        }
-
-        protected async Task<List<Transaction>> MakeTransactionList(List<Transaction> preTransactions, ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<object> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+        protected async Task<List<Transaction>> MakeTransactionList(List<object> args, Account _tx_sender, ulong? _tx_fee, string _tx_note, ulong _tx_roundValidity, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             TransactionParametersResponse transParams;
             try
@@ -251,14 +246,14 @@ namespace AlgoStudio
 
             try
             {
-                ApplicationCallTransaction tx = makeStandardAppCallTxn(fee, onComplete, roundValidity, note, sender, args, foreignApps, foreignAssets, accounts, boxes, transParams);
+                ApplicationCallTransaction tx = makeStandardAppCallTxn(_tx_fee, _tx_callType, _tx_roundValidity, _tx_note, _tx_sender, args, _tx_apps, _tx_assets, _tx_accounts, _tx_boxes, transParams);
 
                 List<Transaction> txs = new List<Transaction>();
-                if (preTransactions != null && preTransactions.Count > 0)
+                if (_tx_transactions != null && _tx_transactions.Count > 0)
                 {
-                    preTransactions.Add(tx);
-                    Digest gid = TxGroup.ComputeGroupID(preTransactions.ToArray());
-                    foreach (var txToSign in preTransactions)
+                    _tx_transactions.Add(tx);
+                    Digest gid = TxGroup.ComputeGroupID(_tx_transactions.ToArray());
+                    foreach (var txToSign in _tx_transactions)
                     {
                         txToSign.Group = gid;
                         txs.Add(txToSign);
@@ -321,13 +316,8 @@ namespace AlgoStudio
             }
         }
 
-        protected async Task<ICollection<byte[]>> CallApp(Core.OnCompleteType onComplete, ulong? fee, ulong roundValidity, string note, Account sender, List<object> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
-        {
-            return await CallApp(null, fee, onComplete, roundValidity, note, sender, args, foreignApps, foreignAssets, accounts, boxes);
-        }
 
-
-        protected async Task<ICollection<byte[]>> CallApp(List<Transaction> preTransactions, ulong? fee, Core.OnCompleteType onComplete, ulong roundValidity, string note, Account sender, List<object> args, List<ulong> foreignApps, List<ulong> foreignAssets, List<Address> accounts, List<BoxRef> boxes = null)
+        protected async Task<ICollection<byte[]>> CallApp(List<object> args, Account _tx_sender, ulong? _tx_fee, string _tx_note, ulong _tx_roundValidity, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             TransactionParametersResponse transParams;
             try
@@ -343,26 +333,26 @@ namespace AlgoStudio
             {
 
 
-                ApplicationCallTransaction tx = makeStandardAppCallTxn(fee, onComplete, roundValidity, note, sender, args, foreignApps, foreignAssets, accounts, boxes, transParams);
+                ApplicationCallTransaction tx = makeStandardAppCallTxn(_tx_fee, _tx_callType, _tx_roundValidity, _tx_note, _tx_sender, args, _tx_apps, _tx_assets, _tx_accounts, _tx_boxes, transParams);
 
                 List<SignedTransaction> txs = new List<SignedTransaction>();
-                if (preTransactions != null && preTransactions.Count > 0)
+                if (_tx_transactions != null && _tx_transactions.Count > 0)
                 {
-                    preTransactions.Add(tx);
-                    Digest gid = TxGroup.ComputeGroupID(preTransactions.ToArray());
-                    foreach (var txToSign in preTransactions)
+                    _tx_transactions.Add(tx);
+                    Digest gid = TxGroup.ComputeGroupID(_tx_transactions.ToArray());
+                    foreach (var txToSign in _tx_transactions)
                     {
                         txToSign.Group = gid;
-                        txs.Add(txToSign.Sign(sender));
+                        txs.Add(txToSign.Sign(_tx_sender));
                     }
                 }
                 else
                 {
-                    txs.Add(tx.Sign(sender));
+                    txs.Add(tx.Sign(_tx_sender));
                 }
                 //TODO verify it's the last txn that's returned when a group is sent
                 await client.TransactionsAsync(txs);
-                if (onComplete == Core.OnCompleteType.CreateApplication)
+                if (_tx_callType == Core.OnCompleteType.CreateApplication)
                 {
 
                     var resp = await AlgoUtils.Utils.WaitTransactionToComplete(client, tx.TxID()) as ApplicationCreateTransaction;
