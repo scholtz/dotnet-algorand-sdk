@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AlgoStudio.ABI.ARC56;
+using Algorand.AlgoStudio.ABI.ARC56;
 
 namespace BiatecIdentityArc56
 {
@@ -16,7 +18,7 @@ namespace BiatecIdentityArc56
 
     public class BiatecIdentityProviderProxy : ProxyBase
     {
-        private readonly AlgoStudio.ABI.ARC56.AppDescriptionArc56 App = null;
+        public override AppDescriptionArc56 App { get; set; } = null;
 
         public BiatecIdentityProviderProxy(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId)
         {
@@ -24,7 +26,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public class IdentityInfo
+        public class IdentityInfo : AVMObjectType
         {
             public ulong VerificationStatus { get; set; }
 
@@ -59,6 +61,7 @@ namespace BiatecIdentityArc56
             public byte[] ToByteArray()
             {
                 var ret = new List<byte>();
+                var stringRef = new Dictionary<int, byte[]>();
                 AlgoStudio.ABI.ARC4.Types.WireType vVerificationStatus = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vVerificationStatus.From(VerificationStatus);
                 ret.AddRange(vVerificationStatus.Encode());
@@ -70,10 +73,12 @@ namespace BiatecIdentityArc56
                 ret.AddRange(vIsCompany.Encode());
                 AlgoStudio.ABI.ARC4.Types.WireType vPersonUUID = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("string");
                 vPersonUUID.From(PersonUUID);
-                ret.AddRange(vPersonUUID.Encode());
+                stringRef[ret.Count] = vPersonUUID.Encode();
+                ret.AddRange(new byte[2]);
                 AlgoStudio.ABI.ARC4.Types.WireType vLegalEntityUUID = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("string");
                 vLegalEntityUUID.From(LegalEntityUUID);
-                ret.AddRange(vLegalEntityUUID.Encode());
+                stringRef[ret.Count] = vLegalEntityUUID.Encode();
+                ret.AddRange(new byte[2]);
                 AlgoStudio.ABI.ARC4.Types.WireType vBiatecEngagementPoints = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vBiatecEngagementPoints.From(BiatecEngagementPoints);
                 ret.AddRange(vBiatecEngagementPoints.Encode());
@@ -104,6 +109,13 @@ namespace BiatecIdentityArc56
                 AlgoStudio.ABI.ARC4.Types.WireType vIsProfessionalInvestor = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("bool");
                 vIsProfessionalInvestor.From(IsProfessionalInvestor);
                 ret.AddRange(vIsProfessionalInvestor.Encode());
+                foreach (var item in stringRef)
+                {
+                    var b1 = ret.Count;
+                    ret[item.Key] = Convert.ToByte(b1 / 256);
+                    ret[item.Key + 1] = Convert.ToByte(b1 % 256);
+                    ret.AddRange(item.Value);
+                }
                 return ret.ToArray();
 
             }
@@ -194,7 +206,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public class UserInfoV1
+        public class UserInfoV1 : AVMObjectType
         {
             public byte Version { get; set; }
 
@@ -229,6 +241,7 @@ namespace BiatecIdentityArc56
             public byte[] ToByteArray()
             {
                 var ret = new List<byte>();
+                var stringRef = new Dictionary<int, byte[]>();
                 AlgoStudio.ABI.ARC4.Types.WireType vVersion = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint8");
                 vVersion.From(Version);
                 ret.AddRange(vVersion.Encode());
@@ -274,6 +287,13 @@ namespace BiatecIdentityArc56
                 AlgoStudio.ABI.ARC4.Types.WireType vIsProfessionalInvestor = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("bool");
                 vIsProfessionalInvestor.From(IsProfessionalInvestor);
                 ret.AddRange(vIsProfessionalInvestor.Encode());
+                foreach (var item in stringRef)
+                {
+                    var b1 = ret.Count;
+                    ret[item.Key] = Convert.ToByte(b1 / 256);
+                    ret[item.Key + 1] = Convert.ToByte(b1 % 256);
+                    ret.AddRange(item.Value);
+                }
                 return ret.ToArray();
 
             }
@@ -367,7 +387,7 @@ namespace BiatecIdentityArc56
         ///<summary>
         ///Initial setup
         ///</summary>
-        public async Task createApplication(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task CreateApplication(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -379,7 +399,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> createApplication_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> CreateApplication_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 184, 68, 123, 54 };
             return await base.MakeTransactionList(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -390,7 +410,7 @@ namespace BiatecIdentityArc56
         ///Biatec deploys single identity provider smart contract
         ///</summary>
         /// <param name="appBiatecConfigProvider">Biatec amm provider </param>
-        public async Task bootstrap(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task Bootstrap(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -402,7 +422,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> bootstrap_Transactions(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> Bootstrap_Transactions(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 160, 202, 223, 138 };
             return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -414,7 +434,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="appBiatecConfigProvider"> </param>
         /// <param name="newVersion"> </param>
-        public async Task updateApplication(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task UpdateApplication(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -426,7 +446,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> updateApplication_Transactions(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> UpdateApplication_Transactions(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 95, 200, 133, 160 };
             return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, newVersion }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -438,7 +458,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="user"> </param>
         /// <param name="info"> IdentityInfo</param>
-        public async Task selfRegistration(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task SelfRegistration(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -447,14 +467,14 @@ namespace BiatecIdentityArc56
             _tx_accounts ??= new List<Address>();
             _tx_accounts.AddRange(new List<Address> { user });
             byte[] abiHandle = { 232, 200, 238, 217 };
-            var result = await base.CallApp(new List<object> { abiHandle, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var result = await base.CallApp(new List<object> { abiHandle, user, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> selfRegistration_Transactions(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> SelfRegistration_Transactions(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 232, 200, 238, 217 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            return await base.MakeTransactionList(new List<object> { abiHandle, user, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -463,7 +483,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="user"> </param>
         /// <param name="info"> IdentityInfo</param>
-        public async Task setInfo(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task SetInfo(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -472,14 +492,14 @@ namespace BiatecIdentityArc56
             _tx_accounts ??= new List<Address>();
             _tx_accounts.AddRange(new List<Address> { user });
             byte[] abiHandle = { 213, 131, 167, 89 };
-            var result = await base.CallApp(new List<object> { abiHandle, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var result = await base.CallApp(new List<object> { abiHandle, user, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> setInfo_Transactions(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> SetInfo_Transactions(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 213, 131, 167, 89 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            return await base.MakeTransactionList(new List<object> { abiHandle, user, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -496,7 +516,7 @@ namespace BiatecIdentityArc56
         /// <param name="voteFirst"> </param>
         /// <param name="voteLast"> </param>
         /// <param name="voteKeyDilution"> </param>
-        public async Task sendOnlineKeyRegistration(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task SendOnlineKeyRegistration(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -508,7 +528,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> sendOnlineKeyRegistration_Transactions(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> SendOnlineKeyRegistration_Transactions(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 131, 146, 92, 23 };
             return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, votePK, selectionPK, stateProofPK, voteFirst, voteLast, voteKeyDilution }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -520,7 +540,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="user">Get info for specific user address </param>
         /// <param name="v">Version of the data structure to return </param>
-        public async Task<UserInfoV1> getUser(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<UserInfoV1> GetUser(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -529,15 +549,15 @@ namespace BiatecIdentityArc56
             _tx_accounts ??= new List<Address>();
             _tx_accounts.AddRange(new List<Address> { user });
             byte[] abiHandle = { 153, 54, 161, 109 };
-            var result = await base.CallApp(new List<object> { abiHandle, v }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var result = await base.CallApp(new List<object> { abiHandle, user, v }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
             throw new Exception("Conversion not implemented"); // <unknown return conversion>
 
         }
 
-        public async Task<List<Transaction>> getUser_Transactions(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> GetUser_Transactions(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 153, 54, 161, 109 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, v }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            return await base.MakeTransactionList(new List<object> { abiHandle, user, v }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -550,7 +570,7 @@ namespace BiatecIdentityArc56
         /// <param name="appBiatecConfigProvider">Biatec config app. Only addressExecutiveFee is allowed to execute this method. </param>
         /// <param name="asset">Asset to withdraw. If native token, then zero </param>
         /// <param name="amount">Amount of the asset to be withdrawn </param>
-        public async Task<ulong> withdrawExcessAssets(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<ulong> WithdrawExcessAssets(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -563,7 +583,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> withdrawExcessAssets_Transactions(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> WithdrawExcessAssets_Transactions(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 203, 162, 233, 93 };
             return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, asset, amount }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);

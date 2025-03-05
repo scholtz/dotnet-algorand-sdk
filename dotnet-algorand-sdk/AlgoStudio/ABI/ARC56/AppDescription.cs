@@ -176,10 +176,10 @@ namespace AlgoStudio.ABI.ARC56
     public class SchemaValues
     {
         [JsonProperty("ints")]
-        public int Ints { get; set; } = 0;
+        public ulong Ints { get; set; } = 0;
 
         [JsonProperty("bytes")]
-        public int Bytes { get; set; } = 0;
+        public ulong Bytes { get; set; } = 0;
     }
     /// <summary>
     /// Supported bare actions for the contract. An action is a combination of call/create and an OnComplete

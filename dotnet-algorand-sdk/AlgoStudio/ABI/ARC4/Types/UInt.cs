@@ -112,6 +112,11 @@ namespace AlgoStudio.ABI.ARC4.Types
                 Value = new BigInteger(floatV);
                 return true;
             }
+            if (instance is byte byteV)
+            {
+                Value = new BigInteger(byteV);
+                return true;
+            }
             throw new NotImplementedException();
         }
 

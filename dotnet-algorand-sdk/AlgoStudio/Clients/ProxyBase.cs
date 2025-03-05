@@ -31,6 +31,7 @@ namespace AlgoStudio
 
     public class ProxyBase
     {
+        public virtual AlgoStudio.ABI.ARC56.AppDescriptionArc56 App { get; set; } = null;
 
         DefaultApi client;
         public ulong appId { get; protected set; }
@@ -448,17 +449,17 @@ namespace AlgoStudio
 #else
                     tx = new ApplicationCreateTransaction()
                     {
-                        ApprovalProgram = new TEALProgram(SourceApprovalAVM),
-                        ClearStateProgram = new TEALProgram(SourceClearAVM),
+                        ApprovalProgram = new TEALProgram(App?.ByteCode?.Approval ?? SourceApprovalAVM),
+                        ClearStateProgram = new TEALProgram(App?.ByteCode?.Clear ?? SourceClearAVM),
                         GlobalStateSchema = new StateSchema()
                         {
-                            NumByteSlice = GlobalNumByteSlices,
-                            NumUint = GlobalNumUints
+                            NumByteSlice = App?.State?.Schema?.Global?.Bytes ?? GlobalNumByteSlices,
+                            NumUint = App?.State?.Schema?.Global?.Ints ?? GlobalNumUints
                         },
                         LocalStateSchema = new StateSchema()
                         {
-                            NumByteSlice = LocalNumByteSlices,
-                            NumUint = LocalNumUints
+                            NumByteSlice = App?.State?.Schema?.Local?.Bytes ?? LocalNumByteSlices,
+                            NumUint = App?.State?.Schema?.Local?.Ints ?? LocalNumUints
                         },
                         ExtraProgramPages = ExtraProgramPages
                     };

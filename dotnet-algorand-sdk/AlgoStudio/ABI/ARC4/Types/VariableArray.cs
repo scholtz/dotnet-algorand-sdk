@@ -60,6 +60,12 @@ namespace AlgoStudio.ABI.ARC4.Types
                 Value = listV;
                 return true;
             }
+            if (instance is string stringV)
+            {
+                var bytes = Encoding.ASCII.GetBytes(stringV);
+                Value.AddRange(bytes.Select(b => new Byte(b) as T));
+                return true;
+            }
             throw new NotImplementedException();
         }
         public override object ToValue()

@@ -1,4 +1,6 @@
-﻿using AlgoStudio.ABI.ARC4;
+﻿using Algorand;
+using Algorand.AlgoStudio.ABI.ARC56;
+using AlgoStudio.ABI.ARC4;
 using AlgoStudio.Compiler.Variables;
 
 using AlgoStudio.Core.Attributes;
@@ -18,7 +20,7 @@ namespace AlgoStudio.Compiler
 {
     public static class TealTypeUtils
     {
-        internal static List<string> PredefinedIntegerStoredTypes = new List<string>() { "bool", typeof(Boolean).Name, "byte", typeof(Byte).Name, "sbyte", typeof(SByte).Name, "char", typeof(Char).Name, "int", typeof(Int32).Name, "uint", typeof(UInt32).Name, "long", typeof(Int64).Name, "ulong", typeof(UInt64).Name, "short", typeof(Int16).Name, "ushort", typeof(UInt16).Name};
+        internal static List<string> PredefinedIntegerStoredTypes = new List<string>() { "bool", typeof(Boolean).Name, "byte", typeof(Byte).Name, "sbyte", typeof(SByte).Name, "char", typeof(Char).Name, "int", typeof(Int32).Name, "uint", typeof(UInt32).Name, "long", typeof(Int64).Name, "ulong", typeof(UInt64).Name, "short", typeof(Int16).Name, "ushort", typeof(UInt16).Name };
         internal static List<string> PredefinedByteSliceStoreTypes = new List<string>() { "decimal", typeof(Decimal).Name, "byte[]", "int[]", "uint[]", "byte[]", "sbyte[]", "short[]", "ushort[]", "long[]", "ulong[]", "string", "String", "AlgoStudio.Core.AssetReference[]", typeof(BigInteger).FullName };
         internal static List<string> PredefinedSignedIntegerTypes = new List<string>() { "sbyte", typeof(SByte).Name, "int", typeof(Int32).Name, "long", typeof(Int64).Name, "ushort", typeof(UInt16).Name };
 
@@ -77,7 +79,7 @@ namespace AlgoStudio.Compiler
             {  typeof(String).FullName, (ABIEncodingType.VariableByteArray,0)},
 
         };
-       
+
 
         internal enum UnaryModifier
         {
@@ -143,8 +145,8 @@ namespace AlgoStudio.Compiler
 
         internal static string GetMethodSelector(this IMethodSymbol method, SemanticModel model)
         {
-            var methodSyntaxRef = method.DeclaringSyntaxReferences.FirstOrDefault() ;
-            if (methodSyntaxRef!=null)
+            var methodSyntaxRef = method.DeclaringSyntaxReferences.FirstOrDefault();
+            if (methodSyntaxRef != null)
             {
                 SyntaxNode syntaxNode = methodSyntaxRef.GetSyntax();
                 MethodDeclarationSyntax methodDeclarationSyntax = syntaxNode as MethodDeclarationSyntax;
@@ -154,7 +156,8 @@ namespace AlgoStudio.Compiler
                     if (Enumerable.SequenceEqual(md.Selector, md.ToARC4MethodSelector()))
                     {
                         return md.Selector.ToHex();
-                    }else
+                    }
+                    else
                     {
                         return Encoding.UTF8.GetString(md.Selector);
                     }
@@ -184,15 +187,16 @@ namespace AlgoStudio.Compiler
         private static byte[] bigIntegerToBytes(BigInteger value)
         {
             byte[] bytes;
-            if (value<0) 
+            if (value < 0)
             {
-                
-                bytes = value.ToByteArray().Reverse().ToArray();
-                bytes= Enumerable.Repeat((byte)0xff, 64 - bytes.Length).Concat(bytes).ToArray();
 
-            }else
+                bytes = value.ToByteArray().Reverse().ToArray();
+                bytes = Enumerable.Repeat((byte)0xff, 64 - bytes.Length).Concat(bytes).ToArray();
+
+            }
+            else
             {
-                bytes = value.ToByteArray().Reverse().ToArray(); 
+                bytes = value.ToByteArray().Reverse().ToArray();
             }
 
 
@@ -223,7 +227,7 @@ namespace AlgoStudio.Compiler
         {
 
             var valueAsWireType = runtimeValue as ABI.ARC4.Types.WireType;
-            if(valueAsWireType != null)
+            if (valueAsWireType != null)
             {
                 return valueAsWireType.Encode();
             }
@@ -301,6 +305,14 @@ namespace AlgoStudio.Compiler
         //TODO move this stuff to the Clients area
         internal static byte[] EncodeArgument(object runtimeValue)
         {
+            if (runtimeValue is AVMObjectType AVMObjectTypeInstance)
+            {
+                return AVMObjectTypeInstance.ToByteArray();
+            }
+            if (runtimeValue is Address addr)
+            {
+                return addr.Bytes;
+            }
 
             var valueAsWireType = runtimeValue as ABI.ARC4.Types.WireType;
             if (valueAsWireType != null)

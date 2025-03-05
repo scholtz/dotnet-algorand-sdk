@@ -56,6 +56,8 @@ namespace Algorand.AlgoStudio.ABI.ARC56
             code.AddOpeningLine("using System.Linq;");
             code.AddOpeningLine("using System.Text;");
             code.AddOpeningLine("using System.Threading.Tasks;");
+            code.AddOpeningLine("using AlgoStudio.ABI.ARC56;");
+            code.AddOpeningLine("using Algorand.AlgoStudio.ABI.ARC56;");
 
 
 
@@ -84,7 +86,7 @@ namespace Algorand.AlgoStudio.ABI.ARC56
             proxyBody.AddClosingLine("}");
 
             var ctor = proxyBody.AddChild();
-            ctor.AddOpeningLine("private readonly AlgoStudio.ABI.ARC56.AppDescriptionArc56 App = null;");
+            ctor.AddOpeningLine("public override AppDescriptionArc56 App { get; set; } = null;");
             ctor.AddOpeningLine("");
             ctor.AddOpeningLine($"public {className}(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId) ");
             ctor.AddOpeningLine("{");
@@ -105,7 +107,7 @@ namespace Algorand.AlgoStudio.ABI.ARC56
             foreach (var item in Contract.Structs)
             {
                 var structObj = proxyBody.AddChild();
-                structObj.AddOpeningLine($"public class {item.Key.ToPascalCase(CultureInfo.InvariantCulture)}");
+                structObj.AddOpeningLine($"public class {item.Key.ToPascalCase(CultureInfo.InvariantCulture)} : AVMObjectType");
                 structObj.AddOpeningLine("{");
                 structObj.AddClosingLine("}");
 
@@ -124,13 +126,27 @@ namespace Algorand.AlgoStudio.ABI.ARC56
                 var structF1In = structF1.AddChild();
 
                 structF1.AddOpeningLine("var ret = new List<byte>();");
+                structF1.AddOpeningLine("var stringRef = new Dictionary<int, byte[]>();");
 
                 foreach (var structItem in item.Value)
                 {
-                    structF1.AddOpeningLine($"AlgoStudio.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)} = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
-                    structF1.AddOpeningLine($"v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.From({structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)});");
-                    structF1.AddOpeningLine($"ret.AddRange(v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.Encode());");
+                    if (structItem.Type == "string")
+                    {
+                        structF1.AddOpeningLine($"AlgoStudio.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)} = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
+                        structF1.AddOpeningLine($"v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.From({structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)});");
+                        structF1.AddOpeningLine($"stringRef[ret.Count] = v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.Encode();");
+                        structF1.AddOpeningLine($"ret.AddRange(new byte[2]);");
+                    }
+                    else
+                    {
+
+                        structF1.AddOpeningLine($"AlgoStudio.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)} = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
+                        structF1.AddOpeningLine($"v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.From({structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)});");
+                        structF1.AddOpeningLine($"ret.AddRange(v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.Encode());");
+                    }
+
                 }
+                structF1.AddOpeningLine("foreach (var item in stringRef)\r\n                {\r\n                    var b1 = ret.Count;\r\n                    ret[item.Key] = Convert.ToByte(b1 / 256);\r\n                    ret[item.Key + 1] = Convert.ToByte(b1 % 256);\r\n                    ret.AddRange(item.Value);\r\n                }");
                 structF1.AddOpeningLine("return ret.ToArray();");
 
 
@@ -210,7 +226,7 @@ namespace Algorand.AlgoStudio.ABI.ARC56
 
                 string parameters = string.Join(",", allParameters);
 
-                string argsList = "new List<object> {" + string.Join(",", new List<string> { "abiHandle" }.Concat(argParameters.Select(p => p.Name))) + "}";
+                string argsList = "new List<object> {" + string.Join(",", new List<string> { "abiHandle" }.Concat(method.Args.Select(p => p.Name))) + "}";
 
                 var t = TypeHelpers.GetCSType(Contract.Name + "return", returnType.Type, returnType.Struct, structs, false);
                 string methodReturnType;
@@ -241,11 +257,11 @@ $@"///<summary>
                     parameters += ", ";
                 }
 
-                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName} ({parameters}Account _tx_sender, ulong? _tx_fee,string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
+                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName.ToPascalCase(CultureInfo.InvariantCulture)} ({parameters}Account _tx_sender, ulong? _tx_fee,string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethod.AddOpeningLine("{");
                 abiMethod.AddClosingLine("}");
 
-                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName}_Transactions ({parameters}Account _tx_sender, ulong? _tx_fee, string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
+                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName.ToPascalCase(CultureInfo.InvariantCulture)}_Transactions ({parameters}Account _tx_sender, ulong? _tx_fee, string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethodForTransactions.AddOpeningLine("{");
                 abiMethodForTransactions.AddClosingLine("}");
 
