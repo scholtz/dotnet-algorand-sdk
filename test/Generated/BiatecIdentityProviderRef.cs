@@ -1,6 +1,6 @@
 using Algorand;
-using AlgoStudio.Core;
-using AlgoStudio.Core.Attributes;
+using AVM.ClientGenerator.Core;
+using AVM.ClientGenerator.Core.Attributes;
 using System;
 
 namespace BiatecIdentity
@@ -96,9 +96,9 @@ namespace BiatecIdentity
 
             public ulong field8 { get; set; }
 
-            public AlgoStudio.ABI.ARC4.Types.UInt256 field9 { get; set; }
+            public AVM.ClientGenerator.ABI.ARC4.Types.UInt256 field9 { get; set; }
 
-            public AlgoStudio.ABI.ARC4.Types.UInt256 field10 { get; set; }
+            public AVM.ClientGenerator.ABI.ARC4.Types.UInt256 field10 { get; set; }
 
             public bool field11 { get; set; }
 

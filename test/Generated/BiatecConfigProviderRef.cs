@@ -1,6 +1,6 @@
 using Algorand;
-using AlgoStudio.Core;
-using AlgoStudio.Core.Attributes;
+using AVM.ClientGenerator.Core;
+using AVM.ClientGenerator.Core.Attributes;
 using System;
 
 namespace BiatecConfig
@@ -31,7 +31,7 @@ namespace BiatecConfig
         ///<param name="appBiatecPoolProvider"></param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> Bootstrap(AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider);
+        public abstract ValueTuple<AppCall> Bootstrap(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 biatecFee, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider);
 
         ///<summary>
         ///Top secret account with which it is possible update contracts or identity provider
@@ -100,7 +100,7 @@ namespace BiatecConfig
         ///<param name="biatecFee">Fee</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> SetBiatecFee(AlgoStudio.ABI.ARC4.Types.UInt256 biatecFee);
+        public abstract ValueTuple<AppCall> SetBiatecFee(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 biatecFee);
 
         ///<summary>
         ///addressExecutiveFee can perfom key registration for this LP pool

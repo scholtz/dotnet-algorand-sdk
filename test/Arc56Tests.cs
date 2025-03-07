@@ -2,7 +2,7 @@
 using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
-using Algorand.AlgoStudio.ABI.ARC56;
+using Algorand.AVM.ClientGenerator.ABI.ARC56;
 using Algorand.KMD;
 using Algorand.Utils;
 using NUnit.Framework;
@@ -203,14 +203,14 @@ namespace test
             var contractPP = new BiatecPoolProviderArc56.BiatecPoolProviderProxy(algodApiInstance, 0);
             try
             {
-                await contractConf.CreateApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
-                await contractBI.CreateApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
-                await contractPP.CreateApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
+                await contractConf.CreateApplication(acct1, 1000, "", _tx_callType: AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
+                await contractBI.CreateApplication(acct1, 1000, "", _tx_callType: AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
+                await contractPP.CreateApplication(acct1, 1000, "", _tx_callType: AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
 
                 await contractConf.Bootstrap(
                     _tx_sender: acct1,
                     _tx_fee: 1000,
-                    biatecFee: new AlgoStudio.ABI.ARC4.Types.UInt256(1),
+                    biatecFee: new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(1),
                     appBiatecIdentityProvider: contractBI.appId,
                     appBiatecPoolProvider: contractPP.appId,
                     _tx_note: "",
@@ -331,7 +331,7 @@ namespace test
                 Trace.TraceError(e.Message);
                 throw;
             }
-            catch (AlgoStudio.ProxyException e)
+            catch (AVM.ClientGenerator.ProxyException e)
             {
                 var eApi = e.InnerException as Algorand.ApiException<Algorand.Algod.Model.ErrorResponse>;
                 if (eApi != null)

@@ -1,6 +1,6 @@
 using Algorand;
-using AlgoStudio.Core;
-using AlgoStudio.Core.Attributes;
+using AVM.ClientGenerator.Core;
+using AVM.ClientGenerator.Core.Attributes;
 using System;
 
 namespace BiatecPoolProvider

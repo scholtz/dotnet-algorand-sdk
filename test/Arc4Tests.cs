@@ -1,7 +1,7 @@
 ﻿using Algorand.Algod;
 using Algorand;
 using Algorand.Utils;
-using AlgoStudio.ABI.ARC32;
+using AVM.ClientGenerator.ABI.ARC32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -189,7 +189,7 @@ namespace test
             var contract = new BiatecClammPoolProxy(algodApiInstance, 0);
             try
             {
-                await contract.createApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
+                await contract.createApplication(acct1, 1000, "", _tx_callType: AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
             }
             catch (Algorand.ApiException<Algorand.Algod.Model.ErrorResponse> e)
             {
@@ -202,7 +202,7 @@ namespace test
                 Trace.TraceError(e.Message);
                 throw;
             }
-            catch (AlgoStudio.ProxyException e)
+            catch (AVM.ClientGenerator.ProxyException e)
             {
                 var eApi = e.InnerException as Algorand.ApiException<Algorand.Algod.Model.ErrorResponse>;
                 if (eApi != null)
@@ -229,11 +229,11 @@ namespace test
             var contract = new BiatecConfigProviderProxy(algodApiInstance, 0);
             try
             {
-                await contract.createApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
+                await contract.createApplication(acct1, 1000, "", _tx_callType: AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
                 await contract.bootstrap(
                     _tx_sender: acct1,
                     _tx_fee: 1000,
-                    biatecFee: new AlgoStudio.ABI.ARC4.Types.UInt256(1),
+                    biatecFee: new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(1),
                     appBiatecIdentityProvider: 101,
                     appBiatecPoolProvider: 102,
                     _tx_note: "",
@@ -251,7 +251,7 @@ namespace test
                 Trace.TraceError(e.Message);
                 throw;
             }
-            catch (AlgoStudio.ProxyException e)
+            catch (AVM.ClientGenerator.ProxyException e)
             {
                 var eApi = e.InnerException as Algorand.ApiException<Algorand.Algod.Model.ErrorResponse>;
                 if (eApi != null)
@@ -280,14 +280,14 @@ namespace test
             var contractPP = new BiatecPoolProviderProxy(algodApiInstance, 0);
             try
             {
-                await contractConf.createApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
-                await contractBI.createApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
-                await contractPP.createApplication(acct1, 1000, "", _tx_callType: AlgoStudio.Core.OnCompleteType.CreateApplication);
+                await contractConf.createApplication(acct1, 1000, "", _tx_callType: AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
+                await contractBI.createApplication(acct1, 1000, "", _tx_callType: AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
+                await contractPP.createApplication(acct1, 1000, "", _tx_callType: AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
 
                 await contractConf.bootstrap(
                     _tx_sender: acct1,
                     _tx_fee: 1000,
-                    biatecFee: new AlgoStudio.ABI.ARC4.Types.UInt256(1),
+                    biatecFee: new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(1),
                     appBiatecIdentityProvider: contractBI.appId,
                     appBiatecPoolProvider: contractPP.appId,
                     _tx_note: "",
@@ -320,7 +320,7 @@ namespace test
                 Trace.TraceError(e.Message);
                 throw;
             }
-            catch (AlgoStudio.ProxyException e)
+            catch (AVM.ClientGenerator.ProxyException e)
             {
                 var eApi = e.InnerException as Algorand.ApiException<Algorand.Algod.Model.ErrorResponse>;
                 if (eApi != null)
@@ -346,7 +346,7 @@ namespace test
         //    var contract = new BiatecClammPoolProxy(algodApiInstance, 0);
         //    try
         //    {
-        //        await contract.createApplication(acct1, 1000, "", new List<BoxRef>(), AlgoStudio.Core.OnCompleteType.CreateApplication);
+        //        await contract.createApplication(acct1, 1000, "", new List<BoxRef>(), AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
         //        await contract.bootstrap(
         //            acct1,
         //            2000,
@@ -375,7 +375,7 @@ namespace test
         //        Trace.TraceError(e.Message);
         //        throw;
         //    }
-        //    catch (AlgoStudio.ProxyException e)
+        //    catch (AVM.ClientGenerator.ProxyException e)
         //    {
         //        var eApi = e.InnerException as Algorand.ApiException<Algorand.Algod.Model.ErrorResponse>;
         //        if (eApi != null)

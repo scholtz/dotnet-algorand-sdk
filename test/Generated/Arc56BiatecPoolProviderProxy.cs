@@ -3,14 +3,14 @@ using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
-using AlgoStudio;
-using AlgoStudio.Core;
+using AVM.ClientGenerator;
+using AVM.ClientGenerator.Core;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AlgoStudio.ABI.ARC56;
-using Algorand.AlgoStudio.ABI.ARC56;
+using AVM.ClientGenerator.ABI.ARC56;
+using Algorand.AVM.ClientGenerator.ABI.ARC56;
 
 namespace BiatecPoolProviderArc56
 {
@@ -22,7 +22,7 @@ namespace BiatecPoolProviderArc56
 
         public BiatecPoolProviderProxy(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId)
         {
-            App = Newtonsoft.Json.JsonConvert.DeserializeObject<AlgoStudio.ABI.ARC56.AppDescriptionArc56>(Encoding.UTF8.GetString(Convert.FromBase64String(_ARC56DATA)));
+            App = Newtonsoft.Json.JsonConvert.DeserializeObject<AVM.ClientGenerator.ABI.ARC56.AppDescriptionArc56>(Encoding.UTF8.GetString(Convert.FromBase64String(_ARC56DATA)));
 
         }
 
@@ -198,253 +198,253 @@ namespace BiatecPoolProviderArc56
             {
                 var ret = new List<byte>();
                 var stringRef = new Dictionary<int, byte[]>();
-                AlgoStudio.ABI.ARC4.Types.WireType vIsVerified = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsVerified = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vIsVerified.From(IsVerified);
                 ret.AddRange(vIsVerified.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vAssetA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vAssetA.From(AssetA);
                 ret.AddRange(vAssetA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vAssetB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vAssetB.From(AssetB);
                 ret.AddRange(vAssetB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vVerificationClass = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vVerificationClass.From(VerificationClass);
                 ret.AddRange(vVerificationClass.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vLatestPrice = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vLatestPrice = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vLatestPrice.From(LatestPrice);
                 ret.AddRange(vLatestPrice.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1Duration.From(Period1Duration);
                 ret.AddRange(vPeriod1Duration.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1NowVolumeA.From(Period1NowVolumeA);
                 ret.AddRange(vPeriod1NowVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1NowVolumeB.From(Period1NowVolumeB);
                 ret.AddRange(vPeriod1NowVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1NowFeeA.From(Period1NowFeeA);
                 ret.AddRange(vPeriod1NowFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1NowFeeB.From(Period1NowFeeB);
                 ret.AddRange(vPeriod1NowFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1NowVwap.From(Period1NowVwap);
                 ret.AddRange(vPeriod1NowVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1NowTime.From(Period1NowTime);
                 ret.AddRange(vPeriod1NowTime.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1PrevVolumeA.From(Period1PrevVolumeA);
                 ret.AddRange(vPeriod1PrevVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1PrevVolumeB.From(Period1PrevVolumeB);
                 ret.AddRange(vPeriod1PrevVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1PrevFeeA.From(Period1PrevFeeA);
                 ret.AddRange(vPeriod1PrevFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1PrevFeeB.From(Period1PrevFeeB);
                 ret.AddRange(vPeriod1PrevFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1PrevVwap.From(Period1PrevVwap);
                 ret.AddRange(vPeriod1PrevVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod1PrevTime.From(Period1PrevTime);
                 ret.AddRange(vPeriod1PrevTime.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2Duration.From(Period2Duration);
                 ret.AddRange(vPeriod2Duration.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2NowVolumeA.From(Period2NowVolumeA);
                 ret.AddRange(vPeriod2NowVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2NowVolumeB.From(Period2NowVolumeB);
                 ret.AddRange(vPeriod2NowVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2NowFeeA.From(Period2NowFeeA);
                 ret.AddRange(vPeriod2NowFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2NowFeeB.From(Period2NowFeeB);
                 ret.AddRange(vPeriod2NowFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2NowVwap.From(Period2NowVwap);
                 ret.AddRange(vPeriod2NowVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2NowTime.From(Period2NowTime);
                 ret.AddRange(vPeriod2NowTime.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2PrevVolumeA.From(Period2PrevVolumeA);
                 ret.AddRange(vPeriod2PrevVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2PrevVolumeB.From(Period2PrevVolumeB);
                 ret.AddRange(vPeriod2PrevVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2PrevFeeA.From(Period2PrevFeeA);
                 ret.AddRange(vPeriod2PrevFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2PrevFeeB.From(Period2PrevFeeB);
                 ret.AddRange(vPeriod2PrevFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2PrevVwap.From(Period2PrevVwap);
                 ret.AddRange(vPeriod2PrevVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod2PrevTime.From(Period2PrevTime);
                 ret.AddRange(vPeriod2PrevTime.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3Duration.From(Period3Duration);
                 ret.AddRange(vPeriod3Duration.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3NowVolumeA.From(Period3NowVolumeA);
                 ret.AddRange(vPeriod3NowVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3NowVolumeB.From(Period3NowVolumeB);
                 ret.AddRange(vPeriod3NowVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3NowFeeA.From(Period3NowFeeA);
                 ret.AddRange(vPeriod3NowFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3NowFeeB.From(Period3NowFeeB);
                 ret.AddRange(vPeriod3NowFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3NowVwap.From(Period3NowVwap);
                 ret.AddRange(vPeriod3NowVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3NowTime.From(Period3NowTime);
                 ret.AddRange(vPeriod3NowTime.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3PrevVolumeA.From(Period3PrevVolumeA);
                 ret.AddRange(vPeriod3PrevVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3PrevVolumeB.From(Period3PrevVolumeB);
                 ret.AddRange(vPeriod3PrevVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3PrevFeeA.From(Period3PrevFeeA);
                 ret.AddRange(vPeriod3PrevFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3PrevFeeB.From(Period3PrevFeeB);
                 ret.AddRange(vPeriod3PrevFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3PrevVwap.From(Period3PrevVwap);
                 ret.AddRange(vPeriod3PrevVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod3PrevTime.From(Period3PrevTime);
                 ret.AddRange(vPeriod3PrevTime.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4Duration.From(Period4Duration);
                 ret.AddRange(vPeriod4Duration.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4NowVolumeA.From(Period4NowVolumeA);
                 ret.AddRange(vPeriod4NowVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4NowVolumeB.From(Period4NowVolumeB);
                 ret.AddRange(vPeriod4NowVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4NowFeeA.From(Period4NowFeeA);
                 ret.AddRange(vPeriod4NowFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4NowFeeB.From(Period4NowFeeB);
                 ret.AddRange(vPeriod4NowFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4NowVwap.From(Period4NowVwap);
                 ret.AddRange(vPeriod4NowVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4NowTime.From(Period4NowTime);
                 ret.AddRange(vPeriod4NowTime.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4PrevVolumeA.From(Period4PrevVolumeA);
                 ret.AddRange(vPeriod4PrevVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4PrevVolumeB.From(Period4PrevVolumeB);
                 ret.AddRange(vPeriod4PrevVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4PrevFeeA.From(Period4PrevFeeA);
                 ret.AddRange(vPeriod4PrevFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4PrevFeeB.From(Period4PrevFeeB);
                 ret.AddRange(vPeriod4PrevFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4PrevVwap.From(Period4PrevVwap);
                 ret.AddRange(vPeriod4PrevVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod4PrevTime.From(Period4PrevTime);
                 ret.AddRange(vPeriod4PrevTime.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5Duration.From(Period5Duration);
                 ret.AddRange(vPeriod5Duration.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5NowVolumeA.From(Period5NowVolumeA);
                 ret.AddRange(vPeriod5NowVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5NowVolumeB.From(Period5NowVolumeB);
                 ret.AddRange(vPeriod5NowVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5NowFeeA.From(Period5NowFeeA);
                 ret.AddRange(vPeriod5NowFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5NowFeeB.From(Period5NowFeeB);
                 ret.AddRange(vPeriod5NowFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5NowVwap.From(Period5NowVwap);
                 ret.AddRange(vPeriod5NowVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5NowTime.From(Period5NowTime);
                 ret.AddRange(vPeriod5NowTime.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5PrevVolumeA.From(Period5PrevVolumeA);
                 ret.AddRange(vPeriod5PrevVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5PrevVolumeB.From(Period5PrevVolumeB);
                 ret.AddRange(vPeriod5PrevVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5PrevFeeA.From(Period5PrevFeeA);
                 ret.AddRange(vPeriod5PrevFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5PrevFeeB.From(Period5PrevFeeB);
                 ret.AddRange(vPeriod5PrevFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5PrevVwap.From(Period5PrevVwap);
                 ret.AddRange(vPeriod5PrevVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod5PrevTime.From(Period5PrevTime);
                 ret.AddRange(vPeriod5PrevTime.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6Duration.From(Period6Duration);
                 ret.AddRange(vPeriod6Duration.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6NowVolumeA.From(Period6NowVolumeA);
                 ret.AddRange(vPeriod6NowVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6NowVolumeB.From(Period6NowVolumeB);
                 ret.AddRange(vPeriod6NowVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6NowFeeA.From(Period6NowFeeA);
                 ret.AddRange(vPeriod6NowFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6NowFeeB.From(Period6NowFeeB);
                 ret.AddRange(vPeriod6NowFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6NowVwap.From(Period6NowVwap);
                 ret.AddRange(vPeriod6NowVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6NowTime.From(Period6NowTime);
                 ret.AddRange(vPeriod6NowTime.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6PrevVolumeA.From(Period6PrevVolumeA);
                 ret.AddRange(vPeriod6PrevVolumeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6PrevVolumeB.From(Period6PrevVolumeB);
                 ret.AddRange(vPeriod6PrevVolumeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6PrevFeeA.From(Period6PrevFeeA);
                 ret.AddRange(vPeriod6PrevFeeA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6PrevFeeB.From(Period6PrevFeeB);
                 ret.AddRange(vPeriod6PrevFeeB.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6PrevVwap.From(Period6PrevVwap);
                 ret.AddRange(vPeriod6PrevVwap.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vPeriod6PrevTime.From(Period6PrevTime);
                 ret.AddRange(vPeriod6PrevTime.Encode());
                 foreach (var item in stringRef)
@@ -470,417 +470,417 @@ namespace BiatecPoolProviderArc56
                 }
                 var ret = new AppPoolInfo();
                 uint count = 0;
-                AlgoStudio.ABI.ARC4.Types.WireType vIsVerified = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsVerified = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vIsVerified.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valueIsVerified = vIsVerified.ToValue();
                 if (valueIsVerified is ulong vIsVerifiedValue) { ret.IsVerified = vIsVerifiedValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vAssetA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vAssetA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valueAssetA = vAssetA.ToValue();
                 if (valueAssetA is ulong vAssetAValue) { ret.AssetA = vAssetAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vAssetB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vAssetB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valueAssetB = vAssetB.ToValue();
                 if (valueAssetB is ulong vAssetBValue) { ret.AssetB = vAssetBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vVerificationClass = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vVerificationClass.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valueVerificationClass = vVerificationClass.ToValue();
                 if (valueVerificationClass is ulong vVerificationClassValue) { ret.VerificationClass = vVerificationClassValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vLatestPrice = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vLatestPrice = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vLatestPrice.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valueLatestPrice = vLatestPrice.ToValue();
                 if (valueLatestPrice is ulong vLatestPriceValue) { ret.LatestPrice = vLatestPriceValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1Duration.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1Duration = vPeriod1Duration.ToValue();
                 if (valuePeriod1Duration is ulong vPeriod1DurationValue) { ret.Period1Duration = vPeriod1DurationValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1NowVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1NowVolumeA = vPeriod1NowVolumeA.ToValue();
                 if (valuePeriod1NowVolumeA is ulong vPeriod1NowVolumeAValue) { ret.Period1NowVolumeA = vPeriod1NowVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1NowVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1NowVolumeB = vPeriod1NowVolumeB.ToValue();
                 if (valuePeriod1NowVolumeB is ulong vPeriod1NowVolumeBValue) { ret.Period1NowVolumeB = vPeriod1NowVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1NowFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1NowFeeA = vPeriod1NowFeeA.ToValue();
                 if (valuePeriod1NowFeeA is ulong vPeriod1NowFeeAValue) { ret.Period1NowFeeA = vPeriod1NowFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1NowFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1NowFeeB = vPeriod1NowFeeB.ToValue();
                 if (valuePeriod1NowFeeB is ulong vPeriod1NowFeeBValue) { ret.Period1NowFeeB = vPeriod1NowFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1NowVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1NowVwap = vPeriod1NowVwap.ToValue();
                 if (valuePeriod1NowVwap is ulong vPeriod1NowVwapValue) { ret.Period1NowVwap = vPeriod1NowVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1NowTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1NowTime = vPeriod1NowTime.ToValue();
                 if (valuePeriod1NowTime is ulong vPeriod1NowTimeValue) { ret.Period1NowTime = vPeriod1NowTimeValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1PrevVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1PrevVolumeA = vPeriod1PrevVolumeA.ToValue();
                 if (valuePeriod1PrevVolumeA is ulong vPeriod1PrevVolumeAValue) { ret.Period1PrevVolumeA = vPeriod1PrevVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1PrevVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1PrevVolumeB = vPeriod1PrevVolumeB.ToValue();
                 if (valuePeriod1PrevVolumeB is ulong vPeriod1PrevVolumeBValue) { ret.Period1PrevVolumeB = vPeriod1PrevVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1PrevFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1PrevFeeA = vPeriod1PrevFeeA.ToValue();
                 if (valuePeriod1PrevFeeA is ulong vPeriod1PrevFeeAValue) { ret.Period1PrevFeeA = vPeriod1PrevFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1PrevFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1PrevFeeB = vPeriod1PrevFeeB.ToValue();
                 if (valuePeriod1PrevFeeB is ulong vPeriod1PrevFeeBValue) { ret.Period1PrevFeeB = vPeriod1PrevFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1PrevVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1PrevVwap = vPeriod1PrevVwap.ToValue();
                 if (valuePeriod1PrevVwap is ulong vPeriod1PrevVwapValue) { ret.Period1PrevVwap = vPeriod1PrevVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod1PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod1PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod1PrevTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod1PrevTime = vPeriod1PrevTime.ToValue();
                 if (valuePeriod1PrevTime is ulong vPeriod1PrevTimeValue) { ret.Period1PrevTime = vPeriod1PrevTimeValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2Duration.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2Duration = vPeriod2Duration.ToValue();
                 if (valuePeriod2Duration is ulong vPeriod2DurationValue) { ret.Period2Duration = vPeriod2DurationValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2NowVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2NowVolumeA = vPeriod2NowVolumeA.ToValue();
                 if (valuePeriod2NowVolumeA is ulong vPeriod2NowVolumeAValue) { ret.Period2NowVolumeA = vPeriod2NowVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2NowVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2NowVolumeB = vPeriod2NowVolumeB.ToValue();
                 if (valuePeriod2NowVolumeB is ulong vPeriod2NowVolumeBValue) { ret.Period2NowVolumeB = vPeriod2NowVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2NowFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2NowFeeA = vPeriod2NowFeeA.ToValue();
                 if (valuePeriod2NowFeeA is ulong vPeriod2NowFeeAValue) { ret.Period2NowFeeA = vPeriod2NowFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2NowFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2NowFeeB = vPeriod2NowFeeB.ToValue();
                 if (valuePeriod2NowFeeB is ulong vPeriod2NowFeeBValue) { ret.Period2NowFeeB = vPeriod2NowFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2NowVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2NowVwap = vPeriod2NowVwap.ToValue();
                 if (valuePeriod2NowVwap is ulong vPeriod2NowVwapValue) { ret.Period2NowVwap = vPeriod2NowVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2NowTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2NowTime = vPeriod2NowTime.ToValue();
                 if (valuePeriod2NowTime is ulong vPeriod2NowTimeValue) { ret.Period2NowTime = vPeriod2NowTimeValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2PrevVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2PrevVolumeA = vPeriod2PrevVolumeA.ToValue();
                 if (valuePeriod2PrevVolumeA is ulong vPeriod2PrevVolumeAValue) { ret.Period2PrevVolumeA = vPeriod2PrevVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2PrevVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2PrevVolumeB = vPeriod2PrevVolumeB.ToValue();
                 if (valuePeriod2PrevVolumeB is ulong vPeriod2PrevVolumeBValue) { ret.Period2PrevVolumeB = vPeriod2PrevVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2PrevFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2PrevFeeA = vPeriod2PrevFeeA.ToValue();
                 if (valuePeriod2PrevFeeA is ulong vPeriod2PrevFeeAValue) { ret.Period2PrevFeeA = vPeriod2PrevFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2PrevFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2PrevFeeB = vPeriod2PrevFeeB.ToValue();
                 if (valuePeriod2PrevFeeB is ulong vPeriod2PrevFeeBValue) { ret.Period2PrevFeeB = vPeriod2PrevFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2PrevVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2PrevVwap = vPeriod2PrevVwap.ToValue();
                 if (valuePeriod2PrevVwap is ulong vPeriod2PrevVwapValue) { ret.Period2PrevVwap = vPeriod2PrevVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod2PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod2PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod2PrevTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod2PrevTime = vPeriod2PrevTime.ToValue();
                 if (valuePeriod2PrevTime is ulong vPeriod2PrevTimeValue) { ret.Period2PrevTime = vPeriod2PrevTimeValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3Duration.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3Duration = vPeriod3Duration.ToValue();
                 if (valuePeriod3Duration is ulong vPeriod3DurationValue) { ret.Period3Duration = vPeriod3DurationValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3NowVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3NowVolumeA = vPeriod3NowVolumeA.ToValue();
                 if (valuePeriod3NowVolumeA is ulong vPeriod3NowVolumeAValue) { ret.Period3NowVolumeA = vPeriod3NowVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3NowVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3NowVolumeB = vPeriod3NowVolumeB.ToValue();
                 if (valuePeriod3NowVolumeB is ulong vPeriod3NowVolumeBValue) { ret.Period3NowVolumeB = vPeriod3NowVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3NowFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3NowFeeA = vPeriod3NowFeeA.ToValue();
                 if (valuePeriod3NowFeeA is ulong vPeriod3NowFeeAValue) { ret.Period3NowFeeA = vPeriod3NowFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3NowFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3NowFeeB = vPeriod3NowFeeB.ToValue();
                 if (valuePeriod3NowFeeB is ulong vPeriod3NowFeeBValue) { ret.Period3NowFeeB = vPeriod3NowFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3NowVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3NowVwap = vPeriod3NowVwap.ToValue();
                 if (valuePeriod3NowVwap is ulong vPeriod3NowVwapValue) { ret.Period3NowVwap = vPeriod3NowVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3NowTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3NowTime = vPeriod3NowTime.ToValue();
                 if (valuePeriod3NowTime is ulong vPeriod3NowTimeValue) { ret.Period3NowTime = vPeriod3NowTimeValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3PrevVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3PrevVolumeA = vPeriod3PrevVolumeA.ToValue();
                 if (valuePeriod3PrevVolumeA is ulong vPeriod3PrevVolumeAValue) { ret.Period3PrevVolumeA = vPeriod3PrevVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3PrevVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3PrevVolumeB = vPeriod3PrevVolumeB.ToValue();
                 if (valuePeriod3PrevVolumeB is ulong vPeriod3PrevVolumeBValue) { ret.Period3PrevVolumeB = vPeriod3PrevVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3PrevFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3PrevFeeA = vPeriod3PrevFeeA.ToValue();
                 if (valuePeriod3PrevFeeA is ulong vPeriod3PrevFeeAValue) { ret.Period3PrevFeeA = vPeriod3PrevFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3PrevFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3PrevFeeB = vPeriod3PrevFeeB.ToValue();
                 if (valuePeriod3PrevFeeB is ulong vPeriod3PrevFeeBValue) { ret.Period3PrevFeeB = vPeriod3PrevFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3PrevVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3PrevVwap = vPeriod3PrevVwap.ToValue();
                 if (valuePeriod3PrevVwap is ulong vPeriod3PrevVwapValue) { ret.Period3PrevVwap = vPeriod3PrevVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod3PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod3PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod3PrevTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod3PrevTime = vPeriod3PrevTime.ToValue();
                 if (valuePeriod3PrevTime is ulong vPeriod3PrevTimeValue) { ret.Period3PrevTime = vPeriod3PrevTimeValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4Duration.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4Duration = vPeriod4Duration.ToValue();
                 if (valuePeriod4Duration is ulong vPeriod4DurationValue) { ret.Period4Duration = vPeriod4DurationValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4NowVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4NowVolumeA = vPeriod4NowVolumeA.ToValue();
                 if (valuePeriod4NowVolumeA is ulong vPeriod4NowVolumeAValue) { ret.Period4NowVolumeA = vPeriod4NowVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4NowVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4NowVolumeB = vPeriod4NowVolumeB.ToValue();
                 if (valuePeriod4NowVolumeB is ulong vPeriod4NowVolumeBValue) { ret.Period4NowVolumeB = vPeriod4NowVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4NowFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4NowFeeA = vPeriod4NowFeeA.ToValue();
                 if (valuePeriod4NowFeeA is ulong vPeriod4NowFeeAValue) { ret.Period4NowFeeA = vPeriod4NowFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4NowFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4NowFeeB = vPeriod4NowFeeB.ToValue();
                 if (valuePeriod4NowFeeB is ulong vPeriod4NowFeeBValue) { ret.Period4NowFeeB = vPeriod4NowFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4NowVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4NowVwap = vPeriod4NowVwap.ToValue();
                 if (valuePeriod4NowVwap is ulong vPeriod4NowVwapValue) { ret.Period4NowVwap = vPeriod4NowVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4NowTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4NowTime = vPeriod4NowTime.ToValue();
                 if (valuePeriod4NowTime is ulong vPeriod4NowTimeValue) { ret.Period4NowTime = vPeriod4NowTimeValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4PrevVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4PrevVolumeA = vPeriod4PrevVolumeA.ToValue();
                 if (valuePeriod4PrevVolumeA is ulong vPeriod4PrevVolumeAValue) { ret.Period4PrevVolumeA = vPeriod4PrevVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4PrevVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4PrevVolumeB = vPeriod4PrevVolumeB.ToValue();
                 if (valuePeriod4PrevVolumeB is ulong vPeriod4PrevVolumeBValue) { ret.Period4PrevVolumeB = vPeriod4PrevVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4PrevFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4PrevFeeA = vPeriod4PrevFeeA.ToValue();
                 if (valuePeriod4PrevFeeA is ulong vPeriod4PrevFeeAValue) { ret.Period4PrevFeeA = vPeriod4PrevFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4PrevFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4PrevFeeB = vPeriod4PrevFeeB.ToValue();
                 if (valuePeriod4PrevFeeB is ulong vPeriod4PrevFeeBValue) { ret.Period4PrevFeeB = vPeriod4PrevFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4PrevVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4PrevVwap = vPeriod4PrevVwap.ToValue();
                 if (valuePeriod4PrevVwap is ulong vPeriod4PrevVwapValue) { ret.Period4PrevVwap = vPeriod4PrevVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod4PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod4PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod4PrevTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod4PrevTime = vPeriod4PrevTime.ToValue();
                 if (valuePeriod4PrevTime is ulong vPeriod4PrevTimeValue) { ret.Period4PrevTime = vPeriod4PrevTimeValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5Duration.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5Duration = vPeriod5Duration.ToValue();
                 if (valuePeriod5Duration is ulong vPeriod5DurationValue) { ret.Period5Duration = vPeriod5DurationValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5NowVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5NowVolumeA = vPeriod5NowVolumeA.ToValue();
                 if (valuePeriod5NowVolumeA is ulong vPeriod5NowVolumeAValue) { ret.Period5NowVolumeA = vPeriod5NowVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5NowVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5NowVolumeB = vPeriod5NowVolumeB.ToValue();
                 if (valuePeriod5NowVolumeB is ulong vPeriod5NowVolumeBValue) { ret.Period5NowVolumeB = vPeriod5NowVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5NowFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5NowFeeA = vPeriod5NowFeeA.ToValue();
                 if (valuePeriod5NowFeeA is ulong vPeriod5NowFeeAValue) { ret.Period5NowFeeA = vPeriod5NowFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5NowFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5NowFeeB = vPeriod5NowFeeB.ToValue();
                 if (valuePeriod5NowFeeB is ulong vPeriod5NowFeeBValue) { ret.Period5NowFeeB = vPeriod5NowFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5NowVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5NowVwap = vPeriod5NowVwap.ToValue();
                 if (valuePeriod5NowVwap is ulong vPeriod5NowVwapValue) { ret.Period5NowVwap = vPeriod5NowVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5NowTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5NowTime = vPeriod5NowTime.ToValue();
                 if (valuePeriod5NowTime is ulong vPeriod5NowTimeValue) { ret.Period5NowTime = vPeriod5NowTimeValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5PrevVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5PrevVolumeA = vPeriod5PrevVolumeA.ToValue();
                 if (valuePeriod5PrevVolumeA is ulong vPeriod5PrevVolumeAValue) { ret.Period5PrevVolumeA = vPeriod5PrevVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5PrevVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5PrevVolumeB = vPeriod5PrevVolumeB.ToValue();
                 if (valuePeriod5PrevVolumeB is ulong vPeriod5PrevVolumeBValue) { ret.Period5PrevVolumeB = vPeriod5PrevVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5PrevFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5PrevFeeA = vPeriod5PrevFeeA.ToValue();
                 if (valuePeriod5PrevFeeA is ulong vPeriod5PrevFeeAValue) { ret.Period5PrevFeeA = vPeriod5PrevFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5PrevFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5PrevFeeB = vPeriod5PrevFeeB.ToValue();
                 if (valuePeriod5PrevFeeB is ulong vPeriod5PrevFeeBValue) { ret.Period5PrevFeeB = vPeriod5PrevFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5PrevVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5PrevVwap = vPeriod5PrevVwap.ToValue();
                 if (valuePeriod5PrevVwap is ulong vPeriod5PrevVwapValue) { ret.Period5PrevVwap = vPeriod5PrevVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod5PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod5PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod5PrevTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod5PrevTime = vPeriod5PrevTime.ToValue();
                 if (valuePeriod5PrevTime is ulong vPeriod5PrevTimeValue) { ret.Period5PrevTime = vPeriod5PrevTimeValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6Duration = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6Duration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6Duration.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6Duration = vPeriod6Duration.ToValue();
                 if (valuePeriod6Duration is ulong vPeriod6DurationValue) { ret.Period6Duration = vPeriod6DurationValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6NowVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6NowVolumeA = vPeriod6NowVolumeA.ToValue();
                 if (valuePeriod6NowVolumeA is ulong vPeriod6NowVolumeAValue) { ret.Period6NowVolumeA = vPeriod6NowVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6NowVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6NowVolumeB = vPeriod6NowVolumeB.ToValue();
                 if (valuePeriod6NowVolumeB is ulong vPeriod6NowVolumeBValue) { ret.Period6NowVolumeB = vPeriod6NowVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6NowFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6NowFeeA = vPeriod6NowFeeA.ToValue();
                 if (valuePeriod6NowFeeA is ulong vPeriod6NowFeeAValue) { ret.Period6NowFeeA = vPeriod6NowFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6NowFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6NowFeeB = vPeriod6NowFeeB.ToValue();
                 if (valuePeriod6NowFeeB is ulong vPeriod6NowFeeBValue) { ret.Period6NowFeeB = vPeriod6NowFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6NowVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6NowVwap = vPeriod6NowVwap.ToValue();
                 if (valuePeriod6NowVwap is ulong vPeriod6NowVwapValue) { ret.Period6NowVwap = vPeriod6NowVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6NowTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6NowTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6NowTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6NowTime = vPeriod6NowTime.ToValue();
                 if (valuePeriod6NowTime is ulong vPeriod6NowTimeValue) { ret.Period6NowTime = vPeriod6NowTimeValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevVolumeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevVolumeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6PrevVolumeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6PrevVolumeA = vPeriod6PrevVolumeA.ToValue();
                 if (valuePeriod6PrevVolumeA is ulong vPeriod6PrevVolumeAValue) { ret.Period6PrevVolumeA = vPeriod6PrevVolumeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevVolumeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevVolumeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6PrevVolumeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6PrevVolumeB = vPeriod6PrevVolumeB.ToValue();
                 if (valuePeriod6PrevVolumeB is ulong vPeriod6PrevVolumeBValue) { ret.Period6PrevVolumeB = vPeriod6PrevVolumeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevFeeA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevFeeA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6PrevFeeA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6PrevFeeA = vPeriod6PrevFeeA.ToValue();
                 if (valuePeriod6PrevFeeA is ulong vPeriod6PrevFeeAValue) { ret.Period6PrevFeeA = vPeriod6PrevFeeAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevFeeB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevFeeB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6PrevFeeB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6PrevFeeB = vPeriod6PrevFeeB.ToValue();
                 if (valuePeriod6PrevFeeB is ulong vPeriod6PrevFeeBValue) { ret.Period6PrevFeeB = vPeriod6PrevFeeBValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevVwap = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevVwap = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6PrevVwap.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6PrevVwap = vPeriod6PrevVwap.ToValue();
                 if (valuePeriod6PrevVwap is ulong vPeriod6PrevVwapValue) { ret.Period6PrevVwap = vPeriod6PrevVwapValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vPeriod6PrevTime = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPeriod6PrevTime = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vPeriod6PrevTime.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valuePeriod6PrevTime = vPeriod6PrevTime.ToValue();
@@ -901,10 +901,10 @@ namespace BiatecPoolProviderArc56
             {
                 var ret = new List<byte>();
                 var stringRef = new Dictionary<int, byte[]>();
-                AlgoStudio.ABI.ARC4.Types.WireType vAssetA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vAssetA.From(AssetA);
                 ret.AddRange(vAssetA.Encode());
-                AlgoStudio.ABI.ARC4.Types.WireType vAssetB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 vAssetB.From(AssetB);
                 ret.AddRange(vAssetB.Encode());
                 foreach (var item in stringRef)
@@ -930,12 +930,12 @@ namespace BiatecPoolProviderArc56
                 }
                 var ret = new AssetsCombined();
                 uint count = 0;
-                AlgoStudio.ABI.ARC4.Types.WireType vAssetA = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vAssetA.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valueAssetA = vAssetA.ToValue();
                 if (valueAssetA is ulong vAssetAValue) { ret.AssetA = vAssetAValue; }
-                AlgoStudio.ABI.ARC4.Types.WireType vAssetB = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
                 count = vAssetB.Decode(queue.ToArray());
                 for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                 var valueAssetB = vAssetB.ToValue();
@@ -950,7 +950,7 @@ namespace BiatecPoolProviderArc56
         ///Biatec deploys single pool provider smart contract
         ///</summary>
         /// <param name="appBiatecConfigProvider">Biatec amm provider </param>
-        public async Task Bootstrap(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task Bootstrap(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -962,7 +962,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> Bootstrap_Transactions(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> Bootstrap_Transactions(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 160, 202, 223, 138 };
             return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -973,7 +973,7 @@ namespace BiatecPoolProviderArc56
         ///Returns current status
         ///</summary>
         /// <param name="appPoolId">Pool id to retrieve the stats </param>
-        public async Task<AppPoolInfo> GetCurrentStatus(ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<AppPoolInfo> GetCurrentStatus(ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -986,7 +986,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> GetCurrentStatus_Transactions(ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> GetCurrentStatus_Transactions(ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 221, 170, 171, 206 };
             return await base.MakeTransactionList(new List<object> { abiHandle, appPoolId }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -996,7 +996,7 @@ namespace BiatecPoolProviderArc56
         ///<summary>
         ///Initial setup
         ///</summary>
-        public async Task CreateApplication(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task CreateApplication(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1008,7 +1008,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> CreateApplication_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> CreateApplication_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 184, 68, 123, 54 };
             return await base.MakeTransactionList(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -1020,7 +1020,7 @@ namespace BiatecPoolProviderArc56
         ///</summary>
         /// <param name="appBiatecConfigProvider"> </param>
         /// <param name="newVersion"> </param>
-        public async Task UpdateApplication(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task UpdateApplication(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1032,7 +1032,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> UpdateApplication_Transactions(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> UpdateApplication_Transactions(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 95, 200, 133, 160 };
             return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, newVersion }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -1046,7 +1046,7 @@ namespace BiatecPoolProviderArc56
         /// <param name="assetA">Asset A </param>
         /// <param name="assetB">Asset B </param>
         /// <param name="verificationClass">Verification class </param>
-        public async Task RegisterPool(ulong appPoolId, ulong assetA, ulong assetB, byte verificationClass, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task RegisterPool(ulong appPoolId, ulong assetA, ulong assetB, byte verificationClass, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1058,7 +1058,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> RegisterPool_Transactions(ulong appPoolId, ulong assetA, ulong assetB, byte verificationClass, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> RegisterPool_Transactions(ulong appPoolId, ulong assetA, ulong assetB, byte verificationClass, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 209, 76, 169, 4 };
             return await base.MakeTransactionList(new List<object> { abiHandle, appPoolId, assetA, assetB, verificationClass }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -1078,7 +1078,7 @@ namespace BiatecPoolProviderArc56
         /// <param name="feeAmountA">Fees paid in asset A if any </param>
         /// <param name="feeAmountB">Fees paid in asset B if any </param>
         /// <param name="s">Scale multiplier </param>
-        public async Task RegisterTrade(ulong appPoolId, ulong assetA, ulong assetB, ulong priceFrom, ulong priceTo, ulong amountA, ulong amountB, ulong feeAmountA, ulong feeAmountB, ulong s, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task RegisterTrade(ulong appPoolId, ulong assetA, ulong assetB, ulong priceFrom, ulong priceTo, ulong amountA, ulong amountB, ulong feeAmountA, ulong feeAmountB, ulong s, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1090,7 +1090,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> RegisterTrade_Transactions(ulong appPoolId, ulong assetA, ulong assetB, ulong priceFrom, ulong priceTo, ulong amountA, ulong amountB, ulong feeAmountA, ulong feeAmountB, ulong s, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> RegisterTrade_Transactions(ulong appPoolId, ulong assetA, ulong assetB, ulong priceFrom, ulong priceTo, ulong amountA, ulong amountB, ulong feeAmountA, ulong feeAmountB, ulong s, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 225, 62, 79, 90 };
             return await base.MakeTransactionList(new List<object> { abiHandle, appPoolId, assetA, assetB, priceFrom, priceTo, amountA, amountB, feeAmountA, feeAmountB, s }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -1102,7 +1102,7 @@ namespace BiatecPoolProviderArc56
         ///</summary>
         /// <param name="defaultVerified"> </param>
         /// <param name="requirement"> </param>
-        public async Task SetGlobalVerifiedValues(ulong defaultVerified, ulong requirement, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task SetGlobalVerifiedValues(ulong defaultVerified, ulong requirement, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1114,7 +1114,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> SetGlobalVerifiedValues_Transactions(ulong defaultVerified, ulong requirement, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> SetGlobalVerifiedValues_Transactions(ulong defaultVerified, ulong requirement, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 101, 208, 212, 88 };
             return await base.MakeTransactionList(new List<object> { abiHandle, defaultVerified, requirement }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -1134,7 +1134,7 @@ namespace BiatecPoolProviderArc56
         /// <param name="voteFirst"> </param>
         /// <param name="voteLast"> </param>
         /// <param name="voteKeyDilution"> </param>
-        public async Task SendOnlineKeyRegistration(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task SendOnlineKeyRegistration(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1146,7 +1146,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> SendOnlineKeyRegistration_Transactions(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> SendOnlineKeyRegistration_Transactions(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 131, 146, 92, 23 };
             return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, votePK, selectionPK, stateProofPK, voteFirst, voteLast, voteKeyDilution }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
@@ -1162,7 +1162,7 @@ namespace BiatecPoolProviderArc56
         /// <param name="appBiatecConfigProvider">Biatec config app. Only addressExecutiveFee is allowed to execute this method. </param>
         /// <param name="asset">Asset to withdraw. If native token, then zero </param>
         /// <param name="amount">Amount of the asset to be withdrawn </param>
-        public async Task<ulong> WithdrawExcessAssets(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<ulong> WithdrawExcessAssets(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1175,7 +1175,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> WithdrawExcessAssets_Transactions(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> WithdrawExcessAssets_Transactions(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 203, 162, 233, 93 };
             return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, asset, amount }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);

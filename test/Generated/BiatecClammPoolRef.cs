@@ -1,6 +1,6 @@
 using Algorand;
-using AlgoStudio.Core;
-using AlgoStudio.Core.Attributes;
+using AVM.ClientGenerator.Core;
+using AVM.ClientGenerator.Core.Attributes;
 using System;
 
 namespace BiatecClammPool
@@ -123,7 +123,7 @@ namespace BiatecClammPool
         ///<param name="assetLp">LP pool asset</param>
         ///<param name="result">LP position reduced</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract (AssetTransfer txLpXfer, AppCall) RemoveLiquidity(AssetTransfer txLpXfer, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong assetA, ulong assetB, ulong assetLp, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract (AssetTransfer txLpXfer, AppCall) RemoveLiquidity(AssetTransfer txLpXfer, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong assetA, ulong assetB, ulong assetLp, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///This method allows biatec admin to reduce the lp position created by lp fees allocation.
@@ -138,7 +138,7 @@ namespace BiatecClammPool
         ///<param name="amount">Amount to withdraw. If zero, removes all available lps from fees.</param>
         ///<param name="result">LP position reduced</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> RemoveLiquidityAdmin(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, AlgoStudio.ABI.ARC4.Types.UInt256 amount, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> RemoveLiquidityAdmin(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 amount, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Swap Asset A to Asset B or Asset B to Asst A
@@ -151,7 +151,7 @@ namespace BiatecClammPool
         ///<param name="minimumToReceive">If number greater then zero, the check is performed for the output of the other asset</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract (InnerTransaction txSwap, AppCall) Swap(InnerTransaction txSwap, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider, ulong assetA, ulong assetB, ulong minimumToReceive, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract (InnerTransaction txSwap, AppCall) Swap(InnerTransaction txSwap, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider, ulong assetA, ulong assetB, ulong minimumToReceive, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///If someone deposits excess assets to the LP pool, addressExecutiveFee can either distribute them to the lp tokens or withdraw it, depending on the use case.
@@ -170,7 +170,7 @@ namespace BiatecClammPool
         ///<param name="amountB">Amount of asset B to be deposited to the liquidity. In base decimals (9)</param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> DistributeExcessAssets(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, AlgoStudio.ABI.ARC4.Types.UInt256 amountA, AlgoStudio.ABI.ARC4.Types.UInt256 amountB, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> DistributeExcessAssets(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 amountA, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 amountB, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///If someone deposits excess assets to the LP pool, addressExecutiveFee can either distribute them to the lp tokens or withdraw it, depending on the use case.
@@ -226,7 +226,7 @@ namespace BiatecClammPool
         ///<param name="currentDeposit"></param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> CalculateDistributedLiquidity(ulong assetLp, AlgoStudio.ABI.ARC4.Types.UInt256 currentDeposit, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> CalculateDistributedLiquidity(ulong assetLp, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 currentDeposit, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///
@@ -236,7 +236,7 @@ namespace BiatecClammPool
         ///<param name="price"></param>
         ///<param name="result"></param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> CalculateLiquidityFlatPrice(AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 price, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> CalculateLiquidityFlatPrice(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 x, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 y, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 price, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates the liquidity  from the x - Asset A position and y - Asset B position
@@ -251,7 +251,7 @@ namespace BiatecClammPool
         ///<param name="priceMaxSqrt">sqrt(priceMax) in base scale decimals Variable pbs</param>
         ///<param name="result">Liquidity is constant in swapping each direction. On deposit the diff between the liquidity is number of LP tokens received by user.</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> CalculateLiquidityD(AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 priceMin, AlgoStudio.ABI.ARC4.Types.UInt256 priceMax, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> CalculateLiquidityD(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 x, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 y, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMin, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMax, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMinSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMaxSqrt, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates the liquidity  from the x - Asset A position and y - Asset B position
@@ -263,7 +263,7 @@ namespace BiatecClammPool
         ///<param name="dSqrt"></param>
         ///<param name="result">Liquidity is constant in swapping each direction. On deposit the diff between the liquidity is number of LP tokens received by user.</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> CalculateLiquidityWithD(AlgoStudio.ABI.ARC4.Types.UInt256 x, AlgoStudio.ABI.ARC4.Types.UInt256 y, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 dSqrt, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> CalculateLiquidityWithD(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 x, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 y, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMinSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMaxSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 dSqrt, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Get the current price when asset a has x
@@ -275,7 +275,7 @@ namespace BiatecClammPool
         ///<param name="liquidity">Current pool liquidity - L variable</param>
         ///<param name="result">the price with specified quantity with the price range set in the contract</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> CalculatePrice(AlgoStudio.ABI.ARC4.Types.UInt256 assetAQuantity, AlgoStudio.ABI.ARC4.Types.UInt256 assetBQuantity, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liquidity, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> CalculatePrice(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetAQuantity, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBQuantity, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMinSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMaxSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liquidity, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset B will be taken from the smart contract on asset A deposit
@@ -288,7 +288,7 @@ namespace BiatecClammPool
         ///<param name="liqudity">sqrt(Max price). Variable L, in base scale</param>
         ///<param name="result">Amount of asset B to be given to the caller before fees. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> CalculateAssetBWithdrawOnAssetADeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> CalculateAssetBWithdrawOnAssetADeposit(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetABalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMinSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMaxSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset A will be taken from the smart contract on asset B deposit
@@ -301,7 +301,7 @@ namespace BiatecClammPool
         ///<param name="liqudity">sqrt(Max price). Variable L, in base scale</param>
         ///<param name="result">Amount of asset A to be given to the caller before fees. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> CalculateAssetAWithdrawOnAssetBDeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 priceMinSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 priceMaxSqrt, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> CalculateAssetAWithdrawOnAssetBDeposit(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetABalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMinSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMaxSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset A will be taken from the smart contract on LP asset deposit
@@ -311,7 +311,7 @@ namespace BiatecClammPool
         ///<param name="liqudity">Current liqudity. Variable L, in base scale</param>
         ///<param name="result">Amount of asset A to be given to the caller before fees. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> CalculateAssetAWithdrawOnLpDeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> CalculateAssetAWithdrawOnLpDeposit(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetABalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset B will be taken from the smart contract on LP asset deposit
@@ -321,7 +321,7 @@ namespace BiatecClammPool
         ///<param name="liqudity">Current liqudity. Variable L, in base scale</param>
         ///<param name="result">Amount of asset B to be given to the caller before fees. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> CalculateAssetBWithdrawOnLpDeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmount, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, AlgoStudio.ABI.ARC4.Types.UInt256 liqudity, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> CalculateAssetBWithdrawOnLpDeposit(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset B should be deposited when user deposit asset a and b.
@@ -335,7 +335,7 @@ namespace BiatecClammPool
         ///<param name="assetBBalance">Asset B balance. Variable bb, in base scale</param>
         ///<param name="result">Amount of asset B to be given to the caller before fees. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> CalculateAssetBDepositOnAssetADeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmountA, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountB, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> CalculateAssetBDepositOnAssetADeposit(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmountA, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmountB, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetABalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///Calculates how much asset A should be deposited when user deposit asset a and b
@@ -349,7 +349,7 @@ namespace BiatecClammPool
         ///<param name="assetBBalance">Asset B balance. Variable bb, in base scale</param>
         ///<param name="result">Amount of asset A to be deposited. The result is in Base decimals (9)</param>
         [SmartContractMethod(OnCompleteType.NoOp)]
-        public abstract ValueTuple<AppCall> CalculateAssetADepositOnAssetBDeposit(AlgoStudio.ABI.ARC4.Types.UInt256 inAmountA, AlgoStudio.ABI.ARC4.Types.UInt256 inAmountB, AlgoStudio.ABI.ARC4.Types.UInt256 assetABalance, AlgoStudio.ABI.ARC4.Types.UInt256 assetBBalance, out AlgoStudio.ABI.ARC4.Types.UInt256 result);
+        public abstract ValueTuple<AppCall> CalculateAssetADepositOnAssetBDeposit(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmountA, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmountB, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetABalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, out AVM.ClientGenerator.ABI.ARC4.Types.UInt256 result);
 
         ///<summary>
         ///
