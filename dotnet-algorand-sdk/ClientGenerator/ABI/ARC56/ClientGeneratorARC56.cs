@@ -39,6 +39,10 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             });
             return true;
         }
+        public string GetOutputFileName()
+        {
+            return Contract.Name + ".cs";
+        }
 
 
         public async Task<string> ToProxy(string namespaceName)

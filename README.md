@@ -1,5 +1,5 @@
 
-# .NET Algorand SDK (v2)
+# .NET Algorand SDK (v4)
 
 The .NET Algorand SDK is a dotnet library for communicating and interacting with the Algorand network from .NET applications. There is also a Unity build which offers a 'wrapped' single assembly (avoiding library conflicts with the Unity environment) and tooltip/serialization compatibility.
 
@@ -7,7 +7,7 @@ The .NET Algorand SDK is a dotnet library for communicating and interacting with
 
 Important release note: For this version KMD has been reworked completely, and is a breaking change. There is now full integration with Algorand/Generator, which led to minor capitalisation changes in some fields. The "shape" of the SDK is now stable.
 
-**The version numbers for NuGet packages are now 2.0 and onwards.**
+**The version numbers for NuGet packages are now 4.0 and onwards and corresponds to the version of the algod build.**
 
 ## WebAssembly Support
 
@@ -199,4 +199,30 @@ The above submits our transaction, gets the id, sends that back to the node and 
 
 That's it! You have used .NET to interact with Algorand, work a bit with Accounts and send a payment from one account to another.
 
+## ARC56 DotNet c# Client generator
 
+See examples how to generate the client to connect to the smart contract which supports arc56:
+
+https://github.com/scholtz/dotnet-algorand-sdk/blob/443b7d1210ad91725bf933d567bd7a33644e6471/test/Arc56Tests.cs#L29
+
+### Docker in local environment
+
+```bash
+docker run --rm -v ".:/app/out" scholtz2/dotnet-avm-generated-client:latest dotnet client-generator.dll --url https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecConfigProvider.arc56.json
+```
+
+Configuration options:
+
+```
+  -f, --file         Specify the AR56 file path - File from local filesystem.
+
+  -u, --url          Specify the AR56 URL.
+
+  -n, --namespace    Specify the namespace.
+
+  -o, --output       Specify the output folder.
+
+  --help             Display this help screen.
+
+  --version          Display version information.
+```
