@@ -12,7 +12,7 @@ namespace AlgoStudio.ABI.ARC4.Types
 
         public override uint Decode(byte[] data)
         {
-            if (data.Length != 1)
+            if (data.Length == 0)
                 throw new ArgumentException("Invalid data length");
             Value = data[0] == 0x80;
             return 1;

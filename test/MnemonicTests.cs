@@ -15,9 +15,9 @@ namespace test
             string expectedMn = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon invest";
             string mn = Mnemonic.FromKey(zeroKeys);
 
-            Assert.AreEqual(mn, expectedMn);
+            Assert.That(mn, Is.EqualTo(expectedMn));
             byte[] goBack = Mnemonic.ToKey(mn);
-            Assert.AreEqual(goBack, zeroKeys);
+            Assert.That(goBack, Is.EqualTo(zeroKeys));
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace test
             string mn = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon zzz invest";
 
             var ex = Assert.Throws<ArgumentException>(() => { Mnemonic.ToKey(mn); });
-            Assert.AreEqual("mnemonic contains word that is not in word list", ex.Message);
+            Assert.That(ex.Message, Is.EqualTo("mnemonic contains word that is not in word list"));
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace test
                 r.NextBytes(randKey);
                 string mn = Mnemonic.FromKey(randKey);
                 byte[] regenKey = Mnemonic.ToKey(mn);
-                Assert.AreEqual(regenKey, randKey);
+                Assert.That(regenKey, Is.EqualTo(randKey));
             }
         }
 
@@ -69,8 +69,8 @@ namespace test
                     corruptedMn += words[j];
                 }
                 var ex = Assert.Throws<ArgumentException>(() => { Mnemonic.ToKey(corruptedMn); });
-                Assert.AreEqual("checksum failed to validate", ex.Message);
-           
+                Assert.That(ex.Message, Is.EqualTo("checksum failed to validate"));
+
             }
         }
 
@@ -84,7 +84,7 @@ namespace test
                 byte[] randKey = new byte[badlen];
                 r.NextBytes(randKey);
                 var ex = Assert.Throws<ArgumentException>(() => { Mnemonic.FromKey(randKey); });
-                Assert.AreEqual("key must not be null and the key length must be 32 bytes", ex.Message);
+                Assert.That(ex.Message, Is.EqualTo("key must not be null and the key length must be 32 bytes"));
             }
         }
     }

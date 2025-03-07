@@ -46,11 +46,11 @@ namespace test
             var sgnt=JsonConvert.SerializeObject(signedTx,Formatting.Indented);
 
 
-            Assert.AreEqual(signedTxHex, REF_SIG_TXN);
+            Assert.That(signedTxHex, Is.EqualTo(REF_SIG_TXN));
 
             // verify transaction ID
             string txID = signedTx.Tx.TxID();
-            Assert.AreEqual(txID, REF_TX_ID);
+            Assert.That(txID, Is.EqualTo(REF_TX_ID));
         }
 
         //    [Test]

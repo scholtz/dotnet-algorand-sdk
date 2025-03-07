@@ -15,6 +15,7 @@ using AlgoStudio.ABI.ARC32;
 using AlgoStudio.ABI.ARC4.Types;
 using RestSharp.Extensions;
 using System.Globalization;
+using Algorand.AlgoStudio.Extensions;
 
 
 namespace AlgoStudio.ABI.ARC4
@@ -356,11 +357,11 @@ $@"{"\t\t"}///<summary>
         }
         public static string FormatStructName(string name)
         {
-            return name.ToPascalCase(CultureInfo.InvariantCulture);
+            return name.ToPascalCase();
         }
         public static string FormatMethodName(string name)
         {
-            return name.ToPascalCase(CultureInfo.InvariantCulture);
+            return name.ToPascalCase();
         }
     }
 }

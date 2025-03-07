@@ -122,6 +122,14 @@ namespace AlgoStudio.ABI.ARC4.Types
 
         public override object ToValue()
         {
+            if (BitWidth == 8)
+            {
+                return Value.ToByteArray()[0]; 
+            }
+            if (BitWidth == 64)
+            {
+                return (ulong) Value;
+            }
             return Value;
         }
     }

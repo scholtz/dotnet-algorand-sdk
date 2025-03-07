@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AlgoUtils = Algorand.Utils;
 
@@ -352,6 +353,7 @@ namespace AlgoStudio
                     txs.Add(tx.Sign(_tx_sender));
                 }
                 //TODO verify it's the last txn that's returned when a group is sent
+
                 await client.TransactionsAsync(txs);
                 if (_tx_callType == Core.OnCompleteType.CreateApplication)
                 {
@@ -375,6 +377,99 @@ namespace AlgoStudio
             }
             catch (Exception ex)
             {
+                if (ex is ApiException<ErrorResponse> exApi)
+                {
+                    Match match = Regex.Match(exApi.Result.Message, @"pc\s*=\s*(\d+)");
+                    if (match.Success)
+                    {
+                        if (int.TryParse(match.Groups[1].Value, out var pc))
+                        {
+                            var si = App.SourceInfo.Approval.SourceInfo.Where(si => si.Pc.Contains(pc) && !string.IsNullOrEmpty(si.ErrorMessage)).FirstOrDefault();
+                            throw new ProxyException(si.ErrorMessage, ex);
+                        }
+                    }
+
+                }
+                throw new ProxyException("Call failed.", ex);
+            }
+        }
+
+        protected async Task<ICollection<byte[]>> SimApp(List<object> args, Account _tx_sender, ulong? _tx_fee, string _tx_note, ulong _tx_roundValidity, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp)
+        {
+            TransactionParametersResponse transParams;
+            try
+            {
+                transParams = await client.TransactionParamsAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new ProxyException("Unable to get transaction parameters.", ex);
+            }
+
+            try
+            {
+
+
+                ApplicationCallTransaction tx = makeStandardAppCallTxn(_tx_fee, _tx_callType, _tx_roundValidity, _tx_note, _tx_sender, args, _tx_apps, _tx_assets, _tx_accounts, _tx_boxes, transParams);
+
+                List<SignedTransaction> txs = new List<SignedTransaction>();
+                if (_tx_transactions != null && _tx_transactions.Count > 0)
+                {
+                    _tx_transactions.Add(tx);
+                    Digest gid = TxGroup.ComputeGroupID(_tx_transactions.ToArray());
+                    foreach (var txToSign in _tx_transactions)
+                    {
+                        txToSign.Group = gid;
+                        txs.Add(txToSign.Sign(_tx_sender));
+                    }
+                }
+                else
+                {
+                    txs.Add(tx.Sign(_tx_sender));
+                }
+                //TODO verify it's the last txn that's returned when a group is sent
+                var simResult = await client.SimulateTransactionAsync(new SimulateRequest()
+                {
+                    AllowEmptySignatures = true,
+                    AllowMoreLogging = true,
+                    AllowUnnamedResources = true,
+                    ExecTraceConfig = new SimulateTraceConfig()
+                    {
+                        Enable = true,
+                        ScratchChange = true,
+                        StackChange = true,
+                        StateChange = true
+                    },
+                    TxnGroups = new List<SimulateRequestTransactionGroup>()
+                    {
+                        new SimulateRequestTransactionGroup()
+                        {
+                            Txns = txs
+                        }
+                    }
+                });
+                if(simResult.TxnGroups.FirstOrDefault().TxnResults.LastOrDefault().TxnResult is Algorand.Algod.Model.Transactions.ApplicationNoopTransaction appTx)
+                {
+                    return appTx.Logs;
+                }
+                var ret = new List<byte[]>();
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                if (ex is ApiException<ErrorResponse> exApi)
+                {
+                    Match match = Regex.Match(exApi.Result.Message, @"pc\s*=\s*(\d+)");
+                    if (match.Success)
+                    {
+                        if (int.TryParse(match.Groups[1].Value, out var pc))
+                        {
+                            var si = App.SourceInfo.Approval.SourceInfo.Where(si => si.Pc.Contains(pc) && !string.IsNullOrEmpty(si.ErrorMessage)).FirstOrDefault();
+                            throw new ProxyException(si.ErrorMessage, ex);
+                        }
+                    }
+
+                }
                 throw new ProxyException("Call failed.", ex);
             }
         }

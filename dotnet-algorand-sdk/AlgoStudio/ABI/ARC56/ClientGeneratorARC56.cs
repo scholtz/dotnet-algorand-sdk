@@ -12,6 +12,12 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Algorand.AlgoStudio.Extensions;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Formatting;
+using Microsoft.CodeAnalysis.Formatting;
 
 namespace Algorand.AlgoStudio.ABI.ARC56
 {
@@ -35,7 +41,7 @@ namespace Algorand.AlgoStudio.ABI.ARC56
         }
 
 
-        public string ToProxy(string namespaceName)
+        public async Task<string> ToProxy(string namespaceName)
         {
             if (Contract == null) throw new Exception("Load the contract first");
 
@@ -82,6 +88,7 @@ namespace Algorand.AlgoStudio.ABI.ARC56
 
             proxyBody.AddOpeningLine($"public class {className} : ProxyBase");
             proxyBody.AddOpeningLine("{");
+            proxyBody.AddClosingLine($"protected override ulong? ExtraProgramPages {{get; set; }} = {Convert.FromBase64String(Contract.ByteCode.Approval).Length / 2048};");
             proxyBody.AddClosingLine($"protected string _ARC56DATA = \"{Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(Contract)))}\";");
             proxyBody.AddClosingLine("}");
 
@@ -100,14 +107,26 @@ namespace Algorand.AlgoStudio.ABI.ARC56
 
 
 
-            return code.ToString();
+            return await FormatCode(code.ToString());
+        }
+        static async Task<string> FormatCode(string sourceCode)
+        {
+            var workspace = new AdhocWorkspace();
+            var options = workspace.Options
+                .WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInMethods, true)
+                .WithChangedOption(CSharpFormattingOptions.IndentBraces, false);
+
+            var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
+            var root = await syntaxTree.GetRootAsync();
+            var formattedRoot = Formatter.Format(root, workspace, options);
+            return formattedRoot.ToFullString();
         }
         private void defineStructs(Code proxyBody)
         {
             foreach (var item in Contract.Structs)
             {
                 var structObj = proxyBody.AddChild();
-                structObj.AddOpeningLine($"public class {item.Key.ToPascalCase(CultureInfo.InvariantCulture)} : AVMObjectType");
+                structObj.AddOpeningLine($"public class {item.Key.ToPascalCase()} : AVMObjectType");
                 structObj.AddOpeningLine("{");
                 structObj.AddClosingLine("}");
 
@@ -115,7 +134,7 @@ namespace Algorand.AlgoStudio.ABI.ARC56
                 {
                     var structItemObj = structObj.AddChild();
                     var p = TypeHelpers.ABITypeToCSType(structItem.Type, structItem.Type, new List<string>(), false);
-                    structItemObj.AddOpeningLine($"public {p.Item2} {structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)} {{get; set;}}");
+                    structItemObj.AddOpeningLine($"public {p.Item2} {structItem.Name.ToPascalCase()} {{get; set;}}");
                 }
                 // ToByteArray()
                 var structF1 = structObj.AddChild();
@@ -132,17 +151,17 @@ namespace Algorand.AlgoStudio.ABI.ARC56
                 {
                     if (structItem.Type == "string")
                     {
-                        structF1.AddOpeningLine($"AlgoStudio.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)} = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
-                        structF1.AddOpeningLine($"v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.From({structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)});");
-                        structF1.AddOpeningLine($"stringRef[ret.Count] = v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.Encode();");
+                        structF1.AddOpeningLine($"AlgoStudio.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
+                        structF1.AddOpeningLine($"v{structItem.Name.ToPascalCase()}.From({structItem.Name.ToPascalCase()});");
+                        structF1.AddOpeningLine($"stringRef[ret.Count] = v{structItem.Name.ToPascalCase()}.Encode();");
                         structF1.AddOpeningLine($"ret.AddRange(new byte[2]);");
                     }
                     else
                     {
 
-                        structF1.AddOpeningLine($"AlgoStudio.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)} = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
-                        structF1.AddOpeningLine($"v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.From({structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)});");
-                        structF1.AddOpeningLine($"ret.AddRange(v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.Encode());");
+                        structF1.AddOpeningLine($"AlgoStudio.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
+                        structF1.AddOpeningLine($"v{structItem.Name.ToPascalCase()}.From({structItem.Name.ToPascalCase()});");
+                        structF1.AddOpeningLine($"ret.AddRange(v{structItem.Name.ToPascalCase()}.Encode());");
                     }
 
                 }
@@ -152,24 +171,38 @@ namespace Algorand.AlgoStudio.ABI.ARC56
 
                 // Parse()
                 var structF2 = structObj.AddChild();
-                structF2.AddOpeningLine($"public static {item.Key.ToPascalCase(CultureInfo.InvariantCulture)} Parse(byte[] bytes)");
+                structF2.AddOpeningLine($"public static {item.Key.ToPascalCase()} Parse(byte[] bytes)");
                 structF2.AddOpeningLine("{");
                 structF2.AddClosingLine("}");
 
                 var structF2In = structF2.AddChild();
 
                 structF2.AddOpeningLine($"var queue = new Queue<byte>(bytes);");
-                structF2.AddOpeningLine($"var ret = new {item.Key.ToPascalCase(CultureInfo.InvariantCulture)}();");
+                structF2.AddOpeningLine($"var prefixOffset = 0;");
+                structF2.AddOpeningLine($"var retPrefix = new byte[4] {{ bytes[0], bytes[1], bytes[2], bytes[3] }};\r\n                if (retPrefix.SequenceEqual(Constants.RetPrefix))\r\n                {{\r\n                    prefixOffset=4;\r\n                    for (int i = 0; i < 4 && queue.Count > 0; i++){{queue.Dequeue();}}\r\n                }}");
+                structF2.AddOpeningLine($"var ret = new {item.Key.ToPascalCase()}();");
                 structF2.AddOpeningLine($"uint count = 0;");
 
                 foreach (var structItem in item.Value)
                 {
-                    structF2.AddOpeningLine($"AlgoStudio.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)} = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
-                    structF2.AddOpeningLine($"count = v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.Decode(queue.ToArray());");
-                    structF2.AddOpeningLine($"queue.Take(Convert.ToInt32(count));");
-                    structF2.AddOpeningLine($"var value{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)} = v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}.ToValue();");
-                    var p = TypeHelpers.ABITypeToCSType(structItem.Type, structItem.Type, new List<string>(), false);
-                    structF2.AddOpeningLine($"if (value{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)} is {p.Item2} v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}Value){{ret.{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)} = v{structItem.Name.ToPascalCase(CultureInfo.InvariantCulture)}Value;}}");
+                    if (structItem.Type == "string")
+                    {
+                        structF2.AddOpeningLine($"var index{structItem.Name.ToPascalCase()} = queue.Dequeue() * 256 + queue.Dequeue();");
+                        structF2.AddOpeningLine($"AlgoStudio.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
+                        structF2.AddOpeningLine($"v{structItem.Name.ToPascalCase()}.Decode(bytes.Skip(index{structItem.Name.ToPascalCase()} + prefixOffset).ToArray());");
+
+                        structF2.AddOpeningLine($"var value{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}.ToValue();");
+                        structF2.AddOpeningLine($"if (value{structItem.Name.ToPascalCase()} is string v{structItem.Name.ToPascalCase()}Value) {{ ret.{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}Value; }}");
+                    }
+                    else
+                    {
+                        structF2.AddOpeningLine($"AlgoStudio.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AlgoStudio.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
+                        structF2.AddOpeningLine($"count = v{structItem.Name.ToPascalCase()}.Decode(queue.ToArray());");
+                        structF2.AddOpeningLine($"for (int i = 0; i < Convert.ToInt32(count); i++){{queue.Dequeue();}}");
+                        structF2.AddOpeningLine($"var value{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}.ToValue();");
+                        var p = TypeHelpers.ABITypeToCSType(structItem.Type, structItem.Type, new List<string>(), false);
+                        structF2.AddOpeningLine($"if (value{structItem.Name.ToPascalCase()} is {p.Item2} v{structItem.Name.ToPascalCase()}Value){{ret.{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}Value;}}");
+                    }
                 }
                 structF2.AddOpeningLine("return ret;");
 
@@ -257,11 +290,11 @@ $@"///<summary>
                     parameters += ", ";
                 }
 
-                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName.ToPascalCase(CultureInfo.InvariantCulture)} ({parameters}Account _tx_sender, ulong? _tx_fee,string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
+                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName.ToPascalCase()} ({parameters}Account _tx_sender, ulong? _tx_fee,string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethod.AddOpeningLine("{");
                 abiMethod.AddClosingLine("}");
 
-                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName.ToPascalCase(CultureInfo.InvariantCulture)}_Transactions ({parameters}Account _tx_sender, ulong? _tx_fee, string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
+                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName.ToPascalCase()}_Transactions ({parameters}Account _tx_sender, ulong? _tx_fee, string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AlgoStudio.Core.OnCompleteType _tx_callType = AlgoStudio.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethodForTransactions.AddOpeningLine("{");
                 abiMethodForTransactions.AddClosingLine("}");
 
@@ -295,10 +328,22 @@ $@"///<summary>
 
 
                 abiMethodBody.AddOpeningLine($"byte[] abiHandle = {{{String.Join(",", method.ToARC4MethodSelector())}}};");
-                abiMethodBody.AddOpeningLine($"var result = await base.CallApp({argsList}, _tx_fee: _tx_fee,  _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions , _tx_apps: _tx_apps, _tx_assets:_tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);");
+
+                var simOrCall = "CallApp";
+                if (method.ReadOnly == true)
+                {
+                    simOrCall = "SimApp";
+                }
+
+                abiMethodBody.AddOpeningLine($"var result = await base.{simOrCall}({argsList}, _tx_fee: _tx_fee,  _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions , _tx_apps: _tx_apps, _tx_assets:_tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);");
 
                 if (t.type != "void")
                 {
+                    if (t.type == returnType.Struct)
+                    {
+                        abiMethodBody.AddOpeningLine($"return {returnType.Struct}.Parse(result.Last());");
+                    }
+                    else
                     if (ProxyGenerator.returnTypeConversions.TryGetValue(t.type, out string retline))
                     {
                         abiMethodBody.AddOpeningLine(retline);

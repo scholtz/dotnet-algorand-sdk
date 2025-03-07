@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -70,6 +71,11 @@ namespace AlgoStudio.ABI.ARC4.Types
         }
         public override object ToValue()
         {
+            if(Value.FirstOrDefault() is Byte b)
+            {
+                var bArr = Value.Select(b => (byte) b.ToValue());
+                return Encoding.ASCII.GetString(bArr.ToArray());
+            }
             return Value;
         }
     }

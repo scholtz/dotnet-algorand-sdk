@@ -3,7 +3,6 @@ using Algorand;
 using Algorand.Utils;
 using AlgoStudio.ABI.ARC32;
 using Newtonsoft.Json;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,6 +20,7 @@ using BiatecClammPool;
 using BiatecConfig;
 using BiatecIdentity;
 using BiatecPoolProvider;
+using NUnit.Framework;
 
 namespace test
 {
@@ -34,9 +34,9 @@ namespace test
             using var client = new HttpClient();
             var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecClammPool.arc32.json");
 
-            Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), "Failed to download file");
             var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(content.Trim().StartsWith("{"), "File content is not valid JSON");
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
 
             var ALGOD_API_ADDR = "http://localhost:4001/";
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -65,9 +65,9 @@ namespace test
             using var client = new HttpClient();
             var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecPoolProvider.arc32.json");
 
-            Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), "Failed to download file");
             var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(content.Trim().StartsWith("{"), "File content is not valid JSON");
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
 
             var ALGOD_API_ADDR = "http://localhost:4001/";
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -96,9 +96,9 @@ namespace test
             using var client = new HttpClient();
             var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecConfigProvider.arc32.json");
 
-            Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), "Failed to download file");
             var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(content.Trim().StartsWith("{"), "File content is not valid JSON");
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
 
             var ALGOD_API_ADDR = "http://localhost:4001/";
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -127,9 +127,9 @@ namespace test
             using var client = new HttpClient();
             var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecIdentityProvider.arc32.json");
 
-            Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), "Failed to download file");
             var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(content.Trim().StartsWith("{"), "File content is not valid JSON");
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
 
             var ALGOD_API_ADDR = "http://localhost:4001/";
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";

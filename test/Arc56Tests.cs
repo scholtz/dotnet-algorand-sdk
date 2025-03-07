@@ -1,29 +1,20 @@
-﻿using Algorand.Algod;
-using Algorand;
+﻿using Algorand;
+using Algorand.Algod;
+using Algorand.Algod.Model;
+using Algorand.Algod.Model.Transactions;
+using Algorand.AlgoStudio.ABI.ARC56;
+using Algorand.KMD;
 using Algorand.Utils;
-using AlgoStudio.ABI.ARC32;
-using Newtonsoft.Json;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Algorand.Algod.Model;
-using System.Diagnostics;
-using Algorand.KMD;
-using System.Reflection.Metadata;
-using System.Linq;
-using Algorand.Algod.Model.Transactions;
-using System.Diagnostics.Contracts;
-using BiatecClammPool;
-using BiatecConfig;
-using BiatecIdentity;
-using BiatecPoolProvider;
-using Algorand.AlgoStudio.ABI.ARC56;
-using NUnit.Framework.Internal;
-using System.Collections;
 
 namespace test
 {
@@ -37,9 +28,9 @@ namespace test
             using var client = new HttpClient();
             var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecClammPool.arc56.json");
 
-            Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), "Failed to download file");
             var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(content.Trim().StartsWith("{"), "File content is not valid JSON");
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
 
             var ALGOD_API_ADDR = "http://localhost:4001/";
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -48,7 +39,7 @@ namespace test
 
             var generator = new ClientGeneratorARC56();
             generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
-            var appProxy = generator.ToProxy("BiatecClammPoolArc56");
+            var appProxy = await generator.ToProxy("BiatecClammPoolArc56");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("Arc56BiatecClammPoolProxy.cs", appProxy);
         }
@@ -58,9 +49,9 @@ namespace test
             using var client = new HttpClient();
             var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecPoolProvider.arc56.json");
 
-            Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), "Failed to download file");
             var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(content.Trim().StartsWith("{"), "File content is not valid JSON");
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
 
             var ALGOD_API_ADDR = "http://localhost:4001/";
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -69,7 +60,7 @@ namespace test
 
             var generator = new ClientGeneratorARC56();
             generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
-            var appProxy = generator.ToProxy("BiatecPoolProviderArc56");
+            var appProxy = await generator.ToProxy("BiatecPoolProviderArc56");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("Arc56BiatecPoolProviderProxy.cs", appProxy);
         }
@@ -79,9 +70,9 @@ namespace test
             using var client = new HttpClient();
             var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecConfigProvider.arc56.json");
 
-            Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), "Failed to download file");
             var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(content.Trim().StartsWith("{"), "File content is not valid JSON");
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
 
             var ALGOD_API_ADDR = "http://localhost:4001/";
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -90,7 +81,7 @@ namespace test
 
             var generator = new ClientGeneratorARC56();
             generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
-            var appProxy = generator.ToProxy("BiatecConfigArc56");
+            var appProxy = await generator.ToProxy("BiatecConfigArc56");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("Arc56BiatecConfigProxy.cs", appProxy);
         }
@@ -100,9 +91,9 @@ namespace test
             using var client = new HttpClient();
             var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecIdentityProvider.arc56.json");
 
-            Assert.AreEqual(200, (int)response.StatusCode, "Failed to download file");
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), "Failed to download file");
             var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(content.Trim().StartsWith("{"), "File content is not valid JSON");
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
 
             var ALGOD_API_ADDR = "http://localhost:4001/";
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -111,7 +102,7 @@ namespace test
 
             var generator = new ClientGeneratorARC56();
             generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
-            var appProxy = generator.ToProxy("BiatecIdentityArc56");
+            var appProxy = await generator.ToProxy("BiatecIdentityArc56");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("Arc56BiatecIdentityProxy.cs", appProxy);
         }
@@ -146,8 +137,8 @@ namespace test
                 VerificationStatus = 1,
                 VerificationClass = 2,
                 IsCompany = true,
-                PersonUUID = "00000000-0000-0000-0000-000000000000",
-                LegalEntityUUID = "00000000-0000-0000-0000-000000000000",
+                PersonUuid = "00000000-0000-0000-0000-000000000000",
+                LegalEntityUuid = "00000000-0000-0000-0000-000000000000",
                 BiatecEngagementPoints = 3,
                 BiatecEngagementRank = 4,
                 AvmEngagementPoints = 5,
@@ -168,8 +159,8 @@ namespace test
                 VerificationStatus = 1,
                 VerificationClass = 2,
                 IsCompany = false,
-                PersonUUID = "00000000-0000-0000-0000-000000000000",
-                LegalEntityUUID = "00000000-0000-0000-0000-000000000000",
+                PersonUuid = "00000000-0000-0000-0000-000000000000",
+                LegalEntityUuid = "00000000-0000-0000-0000-000000000000",
                 BiatecEngagementPoints = 3,
                 BiatecEngagementRank = 4,
                 AvmEngagementPoints = 5,
@@ -187,11 +178,11 @@ namespace test
 
             obj = new BiatecIdentityArc56.BiatecIdentityProviderProxy.IdentityInfo()
             {
-                LegalEntityUUID = "00000000-0000-0000-0000-000000000000",
-                PersonUUID = "00000000-0000-0000-0000-000000000000",
+                LegalEntityUuid = "00000000-0000-0000-0000-000000000000",
+                PersonUuid = "00000000-0000-0000-0000-000000000000",
                 VerificationStatus = 1
 
-            }; 
+            };
             data = BitConverter.ToString(obj.ToByteArray()).Replace("-", "").ToLower();
 
             Assert.That(data, Is.EqualTo("00000000000000010000000000000000000057007d000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002430303030303030302d303030302d303030302d303030302d303030303030303030303030002430303030303030302d303030302d303030302d303030302d303030303030303030303030"));
@@ -233,7 +224,7 @@ namespace test
                     _tx_apps: new List<ulong>() { contractConf.appId }
                     );
                 await contractBI.Bootstrap(
-
+                    acct1.Address, acct1.Address, acct1.Address,
                     _tx_sender: acct1,
                     _tx_fee: 1000,
                     appBiatecConfigProvider: contractConf.appId,
@@ -249,13 +240,16 @@ namespace test
 
                 byte[] prefix = new byte[] { (byte)'i' };
                 byte[] box = prefix.Concat(acct1.Address.Bytes).ToArray();
-
+                var ulongV = (ulong)DateTimeOffset.Now.Ticks;
                 await contractBI.SelfRegistration(acct1.Address, new BiatecIdentityArc56.BiatecIdentityProviderProxy.IdentityInfo()
                 {
-                    LegalEntityUUID = "00000000-0000-0000-0000-000000000000",
-                    PersonUUID = "00000000-0000-0000-0000-000000000000",
-                    VerificationStatus = 1
-
+                    LegalEntityUuid = "00000000-0000-0000-0000-000000000000",
+                    PersonUuid = "00000000-0000-0000-0000-000000000000",
+                    VerificationStatus = 1,
+                    IsCompany = false,
+                    AvmEngagementPoints = 0,
+                    IsLocked = false,
+                    KycExpiration = 0
                 }, acct1, 1000, _tx_apps: new List<ulong>() { contractConf.appId, contractBI.appId },
                 _tx_boxes: new List<BoxRef>()
                 {
@@ -267,6 +261,64 @@ namespace test
                     }
                 }
                 );
+
+                var data = await contractBI.GetUser(acct1.Address, (byte)1, acct1, 1000,
+                    _tx_boxes: new List<BoxRef>()
+                    {
+                        new BoxRef()
+                        {
+                            App = 0,
+                            Name = box,
+
+                        }
+                    }
+                    );
+                Assert.That(data.Version, Is.EqualTo(1));
+                Assert.That(data.VerificationStatus, Is.EqualTo(1));
+                Assert.That(data.LegalEntityUuid, Is.EqualTo("00000000-0000-0000-0000-000000000000"));
+                Assert.That(data.PersonUuid, Is.EqualTo("00000000-0000-0000-0000-000000000000"));
+
+                await contractBI.SetInfo(acct1.Address, new BiatecIdentityArc56.BiatecIdentityProviderProxy.IdentityInfo()
+                {
+                    LegalEntityUuid = "00000000-0000-0000-0000-000000000001",
+                    PersonUuid = "00000000-0000-0000-0000-000000000002",
+                    VerificationStatus = 1,
+                    IsCompany = true,
+                    AvmEngagementPoints = 123,
+                    IsLocked = false,
+                    KycExpiration = ulongV
+                }, acct1, 1000, _tx_apps: new List<ulong>() { contractConf.appId, contractBI.appId },
+                _tx_boxes: new List<BoxRef>()
+                {
+                    new BoxRef()
+                    {
+                        App = 0,
+                        Name = box,
+
+                    }
+                }
+                );
+
+                data = await contractBI.GetUser(acct1.Address, (byte)1, acct1, 1000,
+                   _tx_boxes: new List<BoxRef>()
+                   {
+                        new BoxRef()
+                        {
+                            App = 0,
+                            Name = box,
+
+                        }
+                   }
+                   );
+                Assert.That(data.Version, Is.EqualTo(1));
+                Assert.That(data.VerificationStatus, Is.EqualTo(1));
+                Assert.That(data.LegalEntityUuid, Is.EqualTo("00000000-0000-0000-0000-000000000001"));
+                Assert.That(data.PersonUuid, Is.EqualTo("00000000-0000-0000-0000-000000000002"));
+                Assert.That(data.IsCompany, Is.EqualTo(true));
+                Assert.That(data.IsLocked, Is.EqualTo(false));
+                Assert.That(data.AvmEngagementPoints, Is.EqualTo(123));
+                Assert.That(data.KycExpiration, Is.EqualTo(ulongV));
+
             }
             catch (Algorand.ApiException<Algorand.Algod.Model.ErrorResponse> e)
             {

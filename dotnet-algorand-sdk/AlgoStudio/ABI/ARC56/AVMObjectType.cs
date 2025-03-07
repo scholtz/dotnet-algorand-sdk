@@ -7,5 +7,6 @@ namespace Algorand.AlgoStudio.ABI.ARC56
     public interface AVMObjectType
     {
         public abstract byte[] ToByteArray();
+        
     }
 }
