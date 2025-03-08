@@ -207,8 +207,16 @@ https://github.com/scholtz/dotnet-algorand-sdk/blob/443b7d1210ad91725bf933d567bd
 
 ### Docker in local environment
 
+Generate client from url
+
 ```bash
-docker run --rm -v ".:/app/out" scholtz2/dotnet-avm-generated-client:latest dotnet client-generator.dll --url https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecConfigProvider.arc56.json
+docker run --rm -v "$(pwd):/app/out" scholtz2/dotnet-avm-generated-client:latest dotnet client-generator.dll --namespace "MyNamespace" --url https://raw.githubusercontent.com/scholtz/BiatecCLAMM/refs/heads/main/contracts/artifacts/BiatecConfigProvider.arc56.json
+```
+
+Generate client from local filesystem
+
+```bash
+docker run --rm -v "$(pwd)/contracts/artifacts:/app/out" -v "$(pwd)/contracts/artifacts:/app/artifacts" scholtz2/dotnet-avm-generated-client:latest dotnet client-generator.dll --namespace "MyNamespace" --file artifacts/BiatecConfigProvider.arc56.json
 ```
 
 Configuration options:

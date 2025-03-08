@@ -73,7 +73,7 @@ namespace client_generator
                     }
                     else
                     {
-                        content = File.ReadAllBytes(opts.Url);
+                        content = File.ReadAllBytes(opts.File);
                     }
 
                     var generator = new ClientGeneratorARC56();
