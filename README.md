@@ -21,7 +21,7 @@ A demo app is here  https://calm-dune-04ab9e803-preview.westeurope.3.azurestatic
 
 Most operations involve producing, submitting and examining the status of transactions. To help achieve this the SDK offers a class model (Algod/Model/Transactions) of Algorand transactions and their properties. Transactions can then be instantiated, signed, sent and read back using this model. There are additional utility methods, such as on the Account class, which simplify tasks like signing the transaction and correlating transaction identifiers.
 
-The SDK offers client proxies and an HttpClientConfigurator. To interact with the Algorand network, you muse either have the Sandbox running, or have access to an Algod node.
+The SDK offers client proxies and an HttpClientConfigurator. To interact with the Algorand network, you must either have the Sandbox running, or have access to an Algod node.
 
 The KMD client allows for use of the local node as a key store. The Sandbox comes with a default "wallet" containing three accounts. 
 
