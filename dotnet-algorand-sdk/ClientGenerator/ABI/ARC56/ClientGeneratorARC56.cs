@@ -18,6 +18,7 @@ using Algorand.AVM.ClientGenerator.Extensions;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Formatting;
 using Microsoft.CodeAnalysis.Formatting;
+using System.Linq.Expressions;
 
 namespace Algorand.AVM.ClientGenerator.ABI.ARC56
 {
@@ -214,6 +215,22 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         }
         private void defineMethods(Code proxyBody, List<string> structs)
         {
+            if (!this.Contract.Methods.Any(m => m.Name == "CreateApplication"))
+            {
+                // make custom deploy method
+                this.Contract.Methods.Add(new Method()
+                {
+                    Name = "CreateApplication",
+                    Actions = new MethodActions() { Create = new List<string>() { }, },
+                    Args = new List<MethodArgument>() { },
+                    Description = "Constructor Bare Action",
+                    ReadOnly = false,
+                    Events = new List<Event>() { },
+                    Recommendations = new Recommendations() { },
+                    Returns = new MethodReturn() { Type = "void" }
+                });
+            }
+
             foreach (var method in this.Contract.Methods)
             {
                 var returnType = method.Returns;
@@ -264,6 +281,11 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 string parameters = string.Join(",", allParameters);
 
                 string argsList = "new List<object> {" + string.Join(",", new List<string> { "abiHandle" }.Concat(method.Args.Select(p => p.Name))) + "}";
+                if(method.Description == "Constructor Bare Action")
+                {
+                    argsList = "new List<object> {}";
+                }
+
 
                 var t = TypeHelpers.GetCSType(Contract.Name + "return", returnType.Type, returnType.Struct, structs, false);
                 string methodReturnType;
@@ -293,12 +315,16 @@ $@"///<summary>
                 {
                     parameters += ", ";
                 }
-
-                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName.ToPascalCase()} ({parameters}Account _tx_sender, ulong? _tx_fee,string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
+                var defaultOp = "AVM.ClientGenerator.Core.OnCompleteType.NoOp";
+                if (method.Name == "CreateApplication")
+                {
+                    defaultOp = "AVM.ClientGenerator.Core.OnCompleteType.CreateApplication";
+                }
+                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName.ToPascalCase()} ({parameters}Account _tx_sender, ulong? _tx_fee,string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = {defaultOp} )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethod.AddOpeningLine("{");
                 abiMethod.AddClosingLine("}");
 
-                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName.ToPascalCase()}_Transactions ({parameters}Account _tx_sender, ulong? _tx_fee, string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp )".Replace(",,", ",").Replace(", ,", ","));
+                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName.ToPascalCase()}_Transactions ({parameters}Account _tx_sender, ulong? _tx_fee, string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = {defaultOp} )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethodForTransactions.AddOpeningLine("{");
                 abiMethodForTransactions.AddClosingLine("}");
 

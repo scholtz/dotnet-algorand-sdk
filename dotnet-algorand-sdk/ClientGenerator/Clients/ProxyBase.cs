@@ -165,7 +165,7 @@ namespace AVM.ClientGenerator
         private List<byte[]> toByteArrays(List<object> args)
         {
             //   return args.Select(a => TealTypeUtils.ToByteArray(a)).ToList();
-            return args.Select(a => TealTypeUtils.EncodeArgument(a)).ToList();
+            return args.Select(a => TealTypeUtils.EncodeArgument(a)).Where(a=>a != null).ToList();
         }
 
         protected async Task<byte[]> GetGlobalByteSlice(string key)
@@ -340,7 +340,16 @@ namespace AVM.ClientGenerator
                 List<SignedTransaction> txs = new List<SignedTransaction>();
                 if (_tx_transactions != null && _tx_transactions.Count > 0)
                 {
+                    tx.Group = null;
+                    _tx_transactions.ForEach(tx => tx.Group = null);
                     _tx_transactions.Add(tx);
+                    foreach (var txToSign in _tx_transactions)
+                    {
+                        if (string.IsNullOrEmpty(txToSign.GenesisId))
+                        {
+                            txToSign.FillInParams(transParams);
+                        }
+                    }
                     Digest gid = TxGroup.ComputeGroupID(_tx_transactions.ToArray());
                     foreach (var txToSign in _tx_transactions)
                     {
@@ -385,10 +394,17 @@ namespace AVM.ClientGenerator
                         if (int.TryParse(match.Groups[1].Value, out var pc))
                         {
                             var si = App.SourceInfo.Approval.SourceInfo.Where(si => si.Pc.Contains(pc) && !string.IsNullOrEmpty(si.ErrorMessage)).FirstOrDefault();
-                            throw new ProxyException(si.ErrorMessage, ex);
+                            if (si != null)
+                            {
+                                throw new ProxyException(si.ErrorMessage + $" [pc {pc}]", ex);
+                            }
+                            else
+                            {
+                                throw new ProxyException(exApi.Result.Message + $" [pc {pc}]", ex);
+                            }
                         }
                     }
-
+                    throw new ProxyException(exApi.Result.Message, ex);
                 }
                 throw new ProxyException("Call failed.", ex);
             }
@@ -415,6 +431,8 @@ namespace AVM.ClientGenerator
                 List<SignedTransaction> txs = new List<SignedTransaction>();
                 if (_tx_transactions != null && _tx_transactions.Count > 0)
                 {
+                    tx.Group = null;
+                    _tx_transactions.ForEach(tx => tx.Group = null);
                     _tx_transactions.Add(tx);
                     Digest gid = TxGroup.ComputeGroupID(_tx_transactions.ToArray());
                     foreach (var txToSign in _tx_transactions)
@@ -448,7 +466,7 @@ namespace AVM.ClientGenerator
                         }
                     }
                 });
-                if(simResult.TxnGroups.FirstOrDefault().TxnResults.LastOrDefault().TxnResult is Algorand.Algod.Model.Transactions.ApplicationNoopTransaction appTx)
+                if (simResult.TxnGroups.FirstOrDefault().TxnResults.LastOrDefault().TxnResult is Algorand.Algod.Model.Transactions.ApplicationNoopTransaction appTx)
                 {
                     return appTx.Logs;
                 }
@@ -465,10 +483,17 @@ namespace AVM.ClientGenerator
                         if (int.TryParse(match.Groups[1].Value, out var pc))
                         {
                             var si = App.SourceInfo.Approval.SourceInfo.Where(si => si.Pc.Contains(pc) && !string.IsNullOrEmpty(si.ErrorMessage)).FirstOrDefault();
-                            throw new ProxyException(si.ErrorMessage, ex);
+                            if (si != null)
+                            {
+                                throw new ProxyException(si.ErrorMessage + $" [pc {pc}]", ex);
+                            }
+                            else
+                            {
+                                throw new ProxyException(exApi.Result.Message + $" [pc {pc}]", ex);
+                            }
                         }
                     }
-
+                    throw new ProxyException("Call failed: "+exApi.Result.Message, ex);
                 }
                 throw new ProxyException("Call failed.", ex);
             }

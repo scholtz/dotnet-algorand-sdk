@@ -107,6 +107,24 @@ namespace test
             File.WriteAllText("Arc56BiatecIdentityProxy.cs", appProxy);
         }
 
+        [Test]
+        public async Task GenerateClientGasStation()
+        {
+            var content = File.ReadAllText("Arc56/GasStation.arc56.json");
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
+
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("AVMGasStation.GeneratedClients");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            File.WriteAllText("GasStationProxy.cs", appProxy);
+        }
+
         private async Task<Account> GetAccount()
         {
 

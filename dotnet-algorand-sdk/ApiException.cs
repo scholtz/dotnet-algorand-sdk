@@ -37,5 +37,17 @@ namespace Algorand
         {
             Result = result;
         }
+        /// <summary>
+        /// Pretty print the error
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            if (Result is Algod.Model.ErrorResponse err)
+            {
+                return $"{err.Message} : {err.Data}";
+            }
+            return Result.ToString();
+        }
     }
 }

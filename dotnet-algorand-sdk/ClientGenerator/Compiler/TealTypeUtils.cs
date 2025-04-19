@@ -77,6 +77,7 @@ namespace AVM.ClientGenerator.Compiler
             {  "string", (ABIEncodingType.VariableByteArray,0)},
             {  "String", (ABIEncodingType.VariableByteArray,0)},
             {  typeof(String).FullName, (ABIEncodingType.VariableByteArray,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.PaymentTransaction).FullName, (ABIEncodingType.Transaction,0)},
 
         };
 
@@ -374,15 +375,19 @@ namespace AVM.ClientGenerator.Compiler
             {
                 var encodingInfo = TypeEncodings[elementType.FullName];
                 var encoding = encodingInfo.encodingType;
-                byte[] bytes = ToByteArray(elementValue);
 
                 if (encoding == ABIEncodingType.FixedInteger || encoding == ABIEncodingType.FixedByteArray)
                 {
+                    byte[] bytes = ToByteArray(elementValue);
                     isFixed = true;
                     return bytes;
                 }
                 else if (encoding == ABIEncodingType.VariableByteArray)
                 {
+                    var abi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>("");
+                    abi.From(elementValue);
+                    byte[] bytes = abi.Encode();
+                    //byte[] bytes = ToByteArray(elementValue);
                     isFixed = false;
                     return bytes;
                 }
