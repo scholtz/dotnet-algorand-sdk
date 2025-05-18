@@ -1,5 +1,5 @@
 if [ "$ver" == "" ]; then
-ver=4.0.2
+ver=4.0.3
 fi
 
 echo "docker build -t \"scholtz2/dotnet-avm-generated-client:$ver-main\" -f client-generator/Dockerfile ./"
