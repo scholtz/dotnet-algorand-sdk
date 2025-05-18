@@ -190,7 +190,28 @@ namespace Algorand
             var buffer=Utils.Utils.CombineBytes(APP_ID_PREFIX, appID.ToBigEndianBytes());
             return new Address(Digester.Digest(buffer));
         }
-}
+        /// <summary>
+        /// For == equality
+        /// </summary>
+        /// <param name="a1"></param>
+        /// <param name="a2"></param>
+        /// <returns></returns>
+        public static bool operator ==(Address a1, Address a2)
+        {
+            if (a1 is null) return a2 is null;
+            return a1.Equals(a2);
+        }
+        /// <summary>
+        /// For != equality
+        /// </summary>
+        /// <param name="a1"></param>
+        /// <param name="a2"></param>
+        /// <returns></returns>
+        public static bool operator !=(Address a1, Address a2)
+        {
+            return !(a1 == a2);
+        }
+    }
     /// <summary>
     /// MultisigAddress is a convenience class for handling multisignature public identities.
     /// </summary>

@@ -206,7 +206,7 @@ namespace AVM.ClientGenerator.Compiler
 
         private static Dictionary<string, Func<object, byte[]>> runTimeConversions = new Dictionary<string, Func<object, byte[]>>()
         {
-            { typeof(bool).Name, (o)=> BitConverter.GetBytes((bool)o) },
+            { typeof(bool).Name, (o)=> (bool)o ? new byte[]{ 0x80} :new byte[]{ 0x00} },
             {typeof(byte).Name,(o)=> new byte[] {(byte)o }  },
             {typeof(sbyte).Name, (o)=> new byte[] {unchecked((byte)(sbyte)o) }  },
             {typeof(char).Name, (o)=> BitConverter.GetBytes((char)o) },
@@ -384,7 +384,7 @@ namespace AVM.ClientGenerator.Compiler
                 }
                 else if (encoding == ABIEncodingType.VariableByteArray)
                 {
-                    var abi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>("");
+                    var abi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>();
                     abi.From(elementValue);
                     byte[] bytes = abi.Encode();
                     //byte[] bytes = ToByteArray(elementValue);

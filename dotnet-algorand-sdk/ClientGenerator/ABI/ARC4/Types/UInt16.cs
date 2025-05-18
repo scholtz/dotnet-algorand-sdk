@@ -4,30 +4,30 @@ using System.Numerics;
 
 namespace AVM.ClientGenerator.ABI.ARC4.Types
 {
-    public class UInt512 : UInt, IEquatable<UInt512>
+    public class UInt16 : UInt, IEquatable<UInt16>
     {
         /// <summary>
-        /// Create uint512 instance with empty constructor
+        /// Create uint16 instance with empty constructor
         /// </summary>
         /// <param name="value"></param>
-        public UInt512() : base(512)
+        public UInt16() : base(16)
         {
         }
         /// <summary>
-        /// Create uint512 instance with value
+        /// Create uint16 instance with value
         /// </summary>
         /// <param name="value"></param>
-        public UInt512(object value) : base(512)
+        public UInt16(object value) : base(16)
         {
             base.From(value);
         }
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as UInt512);
+            return Equals(obj as UInt16);
         }
 
-        public bool Equals(UInt512 other)
+        public bool Equals(UInt16 other)
         {
             return !(other is null) &&
                    IsDynamic == other.IsDynamic &&
@@ -51,12 +51,12 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
             return Value.ToString();
         }
 
-        public static bool operator ==(UInt512 left, UInt512 right)
+        public static bool operator ==(UInt16 left, UInt16 right)
         {
-            return EqualityComparer<UInt512>.Default.Equals(left, right);
+            return EqualityComparer<UInt16>.Default.Equals(left, right);
         }
 
-        public static bool operator !=(UInt512 left, UInt512 right)
+        public static bool operator !=(UInt16 left, UInt16 right)
         {
             return !(left == right);
         }

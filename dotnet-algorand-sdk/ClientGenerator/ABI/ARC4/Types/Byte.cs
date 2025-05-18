@@ -14,5 +14,9 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
         {
             base.From(data);
         }
+        public override string GetDescription()
+        {
+            return "byte";
+        }
     }
 }

@@ -20,27 +20,36 @@ namespace AVM.ClientGenerator.Clients
 
         internal static Dictionary<string, string> returnTypeConversions = new Dictionary<string, string>()
         {
-            {"bool", "return BitConverter.ToBoolean(ReverseIfLittleEndian(result.First().ToArray()), 0);"},
-            {"byte","return ReverseIfLittleEndian(result.First())[0];" },
-            {"sbyte","return (sbyte)(ReverseIfLittleEndian(result.First())[0]);"},
-            {"char", "return BitConverter.ToChar(ReverseIfLittleEndian(result.First().ToArray()), 0);"},
-            {"int", "return BitConverter.ToInt32(ReverseIfLittleEndian(result.First().ToArray()), 0);"},
-            {"uint", "return BitConverter.ToUInt32(ReverseIfLittleEndian(result.First().ToArray()), 0);"},
-            {"long", "return BitConverter.ToInt64(ReverseIfLittleEndian(result.First().ToArray()), 0);"},
-            {"ulong", "return BitConverter.ToUInt64(ReverseIfLittleEndian(result.First().ToArray()), 0);"},
-            {"short", "return BitConverter.ToInt16(ReverseIfLittleEndian(result.First().ToArray()), 0);"},
-            {"ushort","return BitConverter.ToUInt16(ReverseIfLittleEndian(result.First().ToArray()), 0);"},
-            {"System.Numerics.BigInteger","return new System.Numerics.BigInteger(result.First());" }   ,
-            { "byte[]","return result.First();" },
-            { "string","return Encoding.UTF8.GetString(result.First());" },
-            { "decimal","return GetDecimalFromBytes(result.First());" },
-            { typeof(Decimal).Name,"return GetDecimalFromBytes(result.First());" }
+            { "bool", "return BitConverter.ToBoolean(ReverseIfLittleEndian(lastLogReturnData), 0);"},
+            { "byte","return ReverseIfLittleEndian(lastLogReturnData)[0];" },
+            { "sbyte","return (sbyte)(ReverseIfLittleEndian(lastLogReturnData)[0]);"},
+            { "char", "return BitConverter.ToChar(ReverseIfLittleEndian(lastLogReturnData), 0);"},
+            { "int", "return BitConverter.ToInt32(ReverseIfLittleEndian(lastLogReturnData), 0);"},
+            { "uint", "return BitConverter.ToUInt32(ReverseIfLittleEndian(lastLogReturnData), 0);"},
+            { "long", "return BitConverter.ToInt64(ReverseIfLittleEndian(lastLogReturnData), 0);"},
+            { "ulong", "return BitConverter.ToUInt64(ReverseIfLittleEndian(lastLogReturnData), 0);"},
+            { "short", "return BitConverter.ToInt16(ReverseIfLittleEndian(lastLogReturnData), 0);"},
+            { "ushort","return BitConverter.ToUInt16(ReverseIfLittleEndian(lastLogReturnData), 0);"},
+            { "System.Numerics.BigInteger","return new System.Numerics.BigInteger(lastLogReturnData);" }   ,
+            { "byte[]","return returnValueObj.ToByteArray();" },
+            { "string","return returnValueObj.ToString();" },
+            { "string[]","return returnValueObj.ToStringArray();" },
+            { "decimal","return GetDecimalFromBytes(lastLogReturnData);" },
+            { typeof(Decimal).Name,"return GetDecimalFromBytes(lastLogReturnData);" },
+            { "AVM.ClientGenerator.ABI.ARC4.Types.UInt512", "return returnValueObj;" },
+            { "AVM.ClientGenerator.ABI.ARC4.Types.UInt256", "return returnValueObj;" },
+            { "AVM.ClientGenerator.ABI.ARC4.Types.UInt128", "return returnValueObj;" },
+            { "AVM.ClientGenerator.ABI.ARC4.Types.UInt64", "return returnValueObj;" },
+            { "AVM.ClientGenerator.ABI.ARC4.Types.UInt32", "return returnValueObj;" },
+            { "AVM.ClientGenerator.ABI.ARC4.Types.UInt16", "return returnValueObj;" },
+            { "AVM.ClientGenerator.ABI.ARC4.Types.UInt8", "return returnValueObj;" },
+            { "Algorand.Address", "return new Algorand.Address(returnValueObj.ToByteArray());" }
         };
 
         internal static Dictionary<string, string> storageConversions = new Dictionary<string, string>()
         {
-           
-            {"System.Numerics.BigInteger","return new System.Numerics.BigInteger(result.First());" }   ,
+
+            { "System.Numerics.BigInteger","return new System.Numerics.BigInteger(result.Last());" }   ,
             { "byte[]","return result;" },
             { "string","return Encoding.UTF8.GetString(result);" }
         };
@@ -52,7 +61,7 @@ namespace AVM.ClientGenerator.Clients
 
         public static string Generate(SemanticModel semanticModel, ClassDeclarationSyntax programClass, string namespaceName, out string className)
         {
-            
+
 
 
 
@@ -173,7 +182,7 @@ namespace AVM.ClientGenerator.Clients
 
 
                 defineSignatureMethods(semanticModel, programClass, proxyBody);
-                
+
 
                 return code.ToString();
             }
@@ -182,7 +191,7 @@ namespace AVM.ClientGenerator.Clients
                 className = String.Empty;
                 return null;
             }
-           
+
         }
 
         //private static void defineFields(SemanticModel semanticModel, ClassDeclarationSyntax smartContractClass, Code proxyBody)
@@ -319,16 +328,16 @@ namespace AVM.ClientGenerator.Clients
         //                    if (!refToCurrentAppCall.Equals(parm,SymbolEqualityComparer.Default))
         //                    {
         //                        transactionParameters.Add(parm);
-                              
+
         //                    }
         //                    continue;
         //                }
 
         //                if (ApplicationRefVariable.IsApplicationRef(parmType))
         //                {
-                            
+
         //                    appRefParameters.Add(parm);
-                            
+
         //                    continue;
         //                }
 
@@ -388,7 +397,7 @@ namespace AVM.ClientGenerator.Clients
         //            {
         //                methodReturnType = "Task";
         //            }
-                    
+
         //            var abiMethod = proxyBody.AddChild();
         //            var abiMethodForTransactions = proxyBody.AddChild();
         //            //Add any leading structured trivia
@@ -428,7 +437,7 @@ namespace AVM.ClientGenerator.Clients
         //            var abiMethodBodyForTransactions = abiMethodForTransactions.AddChild();
         //            abiMethodBodyForTransactions.AddOpeningLine($"var abiHandle = Encoding.UTF8.GetBytes(\"{selector}\");");
         //            abiMethodBodyForTransactions.AddOpeningLine($"return await base.MakeTransactionList({txNameList}, fee, AVM.ClientGenerator.Core.OnCompleteType.{callType}, 1000, note, sender,  {argsList}, {appsList}, {assetsList},{accountsList},boxes);");
-                    
+
 
         //        }
 
@@ -456,7 +465,7 @@ namespace AVM.ClientGenerator.Clients
 
                 if (ABImethod != null)
                 {
-                 
+
                     var selectorConst = ABImethod.ConstructorArguments.Where(kv => kv.Type.Name == "String").First();
                     var selector = (string)selectorConst.Value;
 
@@ -511,7 +520,7 @@ namespace AVM.ClientGenerator.Clients
 
 
                     var abiMethod = proxyBody.AddChild();
-                  
+
 
                     //Add any leading structured trivia
                     if (methodSymbol.ms.HasStructuredTrivia)
@@ -532,8 +541,8 @@ namespace AVM.ClientGenerator.Clients
                     var abiMethodBody = abiMethod.AddChild();
                     abiMethodBody.AddOpeningLine($"var abiHandle = Encoding.UTF8.GetBytes(\"{selector}\");");
                     abiMethodBody.AddOpeningLine($"base.UpdateSmartSignature( {argsList} );");
-                    
-               
+
+
 
                 }
 
@@ -566,7 +575,7 @@ namespace AVM.ClientGenerator.Clients
         //    return $"{outputParmType} {p.Name}";
         //}
 
-      
+
         private static string defineAppRefParameter(IParameterSymbol p)
         {
             return $"ulong {p.Name}";

@@ -6,6 +6,10 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
 {
     public class Bool : WireType
     {
+        public override string GetDescription()
+        {
+            return "bool";
+        }
         public bool Value { get; set; }
 
         public override bool IsDynamic => false;

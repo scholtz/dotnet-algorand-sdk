@@ -6,8 +6,12 @@ using System.Text;
 
 namespace AVM.ClientGenerator.ABI.ARC4.Types
 {
-    public class UInt : WireType
+    public class UInt : WireType, IEquatable<UInt>
     {
+        public override string GetDescription()
+        {
+            return $"uint{BitWidth}";
+        }
         public uint BitWidth { get; private set; }
         private BigInteger _value;
         public BigInteger Value { get { return _value; } set { if (value < 0 || value >= BigInteger.Pow(2, (int)BitWidth)) throw new ArgumentException("Invalid value bitwidth."); else _value = value; } }
@@ -41,6 +45,12 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
             //convert Value to big endian byte array, padding with zeros if necessary to match bitwidth:
             byte[] bytes = Value.ToByteArray();
             Array.Reverse(bytes); //BigInteger is always little endian, so we need to reverse it to get big endian.
+            int firstNonZero = Array.FindIndex(bytes, b => b != 0);
+            if (bytes.Length * 8 > BitWidth)
+            {
+                // max uint512 adds one extra zero byt to the start of the byte array.. we need to remove it to support this value
+                bytes = firstNonZero >= 0 ? bytes.Skip(firstNonZero).ToArray() : Array.Empty<byte>();
+            }
             if (bytes.Length * 8 < BitWidth)
             {
                 byte[] padded = new byte[BitWidth / 8];
@@ -65,8 +75,10 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
             }
             int byteLength = (int)BitWidth / 8;
             byte[] bytes = data.Take(byteLength).ToArray();
-            Array.Reverse(bytes);
-            Value = new BigInteger(bytes);
+            //Array.Reverse(bytes);
+            string hex = BitConverter.ToString(bytes).Replace("-", "");
+            Value = BigInteger.Parse("00" + hex, System.Globalization.NumberStyles.HexNumber);
+
             return (uint)byteLength;
         }
 
@@ -80,6 +92,11 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
             if (instance is ulong ulongV)
             {
                 Value = new BigInteger(ulongV);
+                return true;
+            }
+            if (instance is ushort ushortV)
+            {
+                Value = new BigInteger(ushortV);
                 return true;
             }
             if (instance is uint uintV)
@@ -117,6 +134,12 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                 Value = new BigInteger(byteV);
                 return true;
             }
+            if (instance is UInt uintInstance)
+            {
+                Value = uintInstance.Value;
+                BitWidth = uintInstance.BitWidth;
+                return true;
+            }
             throw new NotImplementedException();
         }
 
@@ -130,7 +153,49 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
             {
                 return (ulong) Value;
             }
+
             return Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as UInt);
+        }
+
+        public bool Equals(UInt other)
+        {
+            return !(other is null) &&
+                   IsDynamic == other.IsDynamic &&
+                   BitWidth == other.BitWidth &&
+                   _value.Equals(other._value) &&
+                   Value.Equals(other.Value) &&
+                   IsDynamic == other.IsDynamic;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 557650449;
+            hashCode = hashCode * -1521134295 + IsDynamic.GetHashCode();
+            hashCode = hashCode * -1521134295 + BitWidth.GetHashCode();
+            hashCode = hashCode * -1521134295 + _value.GetHashCode();
+            hashCode = hashCode * -1521134295 + Value.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsDynamic.GetHashCode();
+            return hashCode;
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
+        public static bool operator ==(UInt left, UInt right)
+        {
+            return EqualityComparer<UInt>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(UInt left, UInt right)
+        {
+            return !(left == right);
         }
     }
 }

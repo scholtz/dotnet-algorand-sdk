@@ -26,405 +26,457 @@ namespace BiatecIdentityArc56
 
         }
 
-        public class IdentityInfo : AVMObjectType
+        public class Structs
         {
-            public ulong VerificationStatus { get; set; }
-
-            public ulong VerificationClass { get; set; }
-
-            public bool IsCompany { get; set; }
-
-            public string PersonUuid { get; set; }
-
-            public string LegalEntityUuid { get; set; }
-
-            public ulong BiatecEngagementPoints { get; set; }
-
-            public ulong BiatecEngagementRank { get; set; }
-
-            public ulong AvmEngagementPoints { get; set; }
-
-            public ulong AvmEngagementRank { get; set; }
-
-            public ulong TradingEngagementPoints { get; set; }
-
-            public ulong TradingEngagementRank { get; set; }
-
-            public bool IsLocked { get; set; }
-
-            public ulong KycExpiration { get; set; }
-
-            public ulong InvestorForExpiration { get; set; }
-
-            public bool IsProfessionalInvestor { get; set; }
-
-            public byte[] ToByteArray()
+            public class IdentityInfo : AVMObjectType
             {
-                var ret = new List<byte>();
-                var stringRef = new Dictionary<int, byte[]>();
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationStatus = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vVerificationStatus.From(VerificationStatus);
-                ret.AddRange(vVerificationStatus.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vVerificationClass.From(VerificationClass);
-                ret.AddRange(vVerificationClass.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsCompany = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                vIsCompany.From(IsCompany);
-                ret.AddRange(vIsCompany.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPersonUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
-                vPersonUuid.From(PersonUuid);
-                stringRef[ret.Count] = vPersonUuid.Encode();
-                ret.AddRange(new byte[2]);
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vLegalEntityUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
-                vLegalEntityUuid.From(LegalEntityUuid);
-                stringRef[ret.Count] = vLegalEntityUuid.Encode();
-                ret.AddRange(new byte[2]);
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vBiatecEngagementPoints.From(BiatecEngagementPoints);
-                ret.AddRange(vBiatecEngagementPoints.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vBiatecEngagementRank.From(BiatecEngagementRank);
-                ret.AddRange(vBiatecEngagementRank.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vAvmEngagementPoints.From(AvmEngagementPoints);
-                ret.AddRange(vAvmEngagementPoints.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vAvmEngagementRank.From(AvmEngagementRank);
-                ret.AddRange(vAvmEngagementRank.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vTradingEngagementPoints.From(TradingEngagementPoints);
-                ret.AddRange(vTradingEngagementPoints.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vTradingEngagementRank.From(TradingEngagementRank);
-                ret.AddRange(vTradingEngagementRank.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsLocked = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                vIsLocked.From(IsLocked);
-                ret.AddRange(vIsLocked.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vKycExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vKycExpiration.From(KycExpiration);
-                ret.AddRange(vKycExpiration.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vInvestorForExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vInvestorForExpiration.From(InvestorForExpiration);
-                ret.AddRange(vInvestorForExpiration.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsProfessionalInvestor = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                vIsProfessionalInvestor.From(IsProfessionalInvestor);
-                ret.AddRange(vIsProfessionalInvestor.Encode());
-                foreach (var item in stringRef)
+                public ulong VerificationStatus { get; set; }
+
+                public ulong VerificationClass { get; set; }
+
+                public bool IsCompany { get; set; }
+
+                public string PersonUuid { get; set; }
+
+                public string LegalEntityUuid { get; set; }
+
+                public ulong BiatecEngagementPoints { get; set; }
+
+                public ulong BiatecEngagementRank { get; set; }
+
+                public ulong AvmEngagementPoints { get; set; }
+
+                public ulong AvmEngagementRank { get; set; }
+
+                public ulong TradingEngagementPoints { get; set; }
+
+                public ulong TradingEngagementRank { get; set; }
+
+                public bool IsLocked { get; set; }
+
+                public ulong KycExpiration { get; set; }
+
+                public ulong InvestorForExpiration { get; set; }
+
+                public bool IsProfessionalInvestor { get; set; }
+
+                public byte[] ToByteArray()
                 {
-                    var b1 = ret.Count;
-                    ret[item.Key] = Convert.ToByte(b1 / 256);
-                    ret[item.Key + 1] = Convert.ToByte(b1 % 256);
-                    ret.AddRange(item.Value);
+                    var ret = new List<byte>();
+                    var stringRef = new Dictionary<int, byte[]>();
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationStatus = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vVerificationStatus.From(VerificationStatus);
+                    ret.AddRange(vVerificationStatus.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vVerificationClass.From(VerificationClass);
+                    ret.AddRange(vVerificationClass.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsCompany = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    vIsCompany.From(IsCompany);
+                    ret.AddRange(vIsCompany.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPersonUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
+                    vPersonUuid.From(PersonUuid);
+                    stringRef[ret.Count] = vPersonUuid.Encode();
+                    ret.AddRange(new byte[2]);
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vLegalEntityUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
+                    vLegalEntityUuid.From(LegalEntityUuid);
+                    stringRef[ret.Count] = vLegalEntityUuid.Encode();
+                    ret.AddRange(new byte[2]);
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vBiatecEngagementPoints.From(BiatecEngagementPoints);
+                    ret.AddRange(vBiatecEngagementPoints.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vBiatecEngagementRank.From(BiatecEngagementRank);
+                    ret.AddRange(vBiatecEngagementRank.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vAvmEngagementPoints.From(AvmEngagementPoints);
+                    ret.AddRange(vAvmEngagementPoints.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vAvmEngagementRank.From(AvmEngagementRank);
+                    ret.AddRange(vAvmEngagementRank.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vTradingEngagementPoints.From(TradingEngagementPoints);
+                    ret.AddRange(vTradingEngagementPoints.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vTradingEngagementRank.From(TradingEngagementRank);
+                    ret.AddRange(vTradingEngagementRank.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsLocked = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    vIsLocked.From(IsLocked);
+                    ret.AddRange(vIsLocked.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vKycExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vKycExpiration.From(KycExpiration);
+                    ret.AddRange(vKycExpiration.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vInvestorForExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vInvestorForExpiration.From(InvestorForExpiration);
+                    ret.AddRange(vInvestorForExpiration.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsProfessionalInvestor = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    vIsProfessionalInvestor.From(IsProfessionalInvestor);
+                    ret.AddRange(vIsProfessionalInvestor.Encode());
+                    foreach (var item in stringRef)
+                    {
+                        var b1 = ret.Count;
+                        ret[item.Key] = Convert.ToByte(b1 / 256);
+                        ret[item.Key + 1] = Convert.ToByte(b1 % 256);
+                        ret.AddRange(item.Value);
+                    }
+                    return ret.ToArray();
+
                 }
-                return ret.ToArray();
+
+                public static IdentityInfo Parse(byte[] bytes)
+                {
+                    var queue = new Queue<byte>(bytes);
+                    var prefixOffset = 0;
+                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
+                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
+                    {
+                        prefixOffset = 4;
+                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
+                    }
+                    var ret = new IdentityInfo();
+                    uint count = 0;
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationStatus = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vVerificationStatus.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueVerificationStatus = vVerificationStatus.ToValue();
+                    if (valueVerificationStatus is ulong vVerificationStatusValue) { ret.VerificationStatus = vVerificationStatusValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vVerificationClass.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueVerificationClass = vVerificationClass.ToValue();
+                    if (valueVerificationClass is ulong vVerificationClassValue) { ret.VerificationClass = vVerificationClassValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsCompany = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    count = vIsCompany.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueIsCompany = vIsCompany.ToValue();
+                    if (valueIsCompany is bool vIsCompanyValue) { ret.IsCompany = vIsCompanyValue; }
+                    var indexPersonUuid = queue.Dequeue() * 256 + queue.Dequeue();
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPersonUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
+                    vPersonUuid.Decode(bytes.Skip(indexPersonUuid + prefixOffset).ToArray());
+                    var valuePersonUuid = vPersonUuid.ToValue();
+                    if (valuePersonUuid is string vPersonUuidValue) { ret.PersonUuid = vPersonUuidValue; }
+                    var indexLegalEntityUuid = queue.Dequeue() * 256 + queue.Dequeue();
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vLegalEntityUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
+                    vLegalEntityUuid.Decode(bytes.Skip(indexLegalEntityUuid + prefixOffset).ToArray());
+                    var valueLegalEntityUuid = vLegalEntityUuid.ToValue();
+                    if (valueLegalEntityUuid is string vLegalEntityUuidValue) { ret.LegalEntityUuid = vLegalEntityUuidValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vBiatecEngagementPoints.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueBiatecEngagementPoints = vBiatecEngagementPoints.ToValue();
+                    if (valueBiatecEngagementPoints is ulong vBiatecEngagementPointsValue) { ret.BiatecEngagementPoints = vBiatecEngagementPointsValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vBiatecEngagementRank.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueBiatecEngagementRank = vBiatecEngagementRank.ToValue();
+                    if (valueBiatecEngagementRank is ulong vBiatecEngagementRankValue) { ret.BiatecEngagementRank = vBiatecEngagementRankValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vAvmEngagementPoints.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueAvmEngagementPoints = vAvmEngagementPoints.ToValue();
+                    if (valueAvmEngagementPoints is ulong vAvmEngagementPointsValue) { ret.AvmEngagementPoints = vAvmEngagementPointsValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vAvmEngagementRank.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueAvmEngagementRank = vAvmEngagementRank.ToValue();
+                    if (valueAvmEngagementRank is ulong vAvmEngagementRankValue) { ret.AvmEngagementRank = vAvmEngagementRankValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vTradingEngagementPoints.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueTradingEngagementPoints = vTradingEngagementPoints.ToValue();
+                    if (valueTradingEngagementPoints is ulong vTradingEngagementPointsValue) { ret.TradingEngagementPoints = vTradingEngagementPointsValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vTradingEngagementRank.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueTradingEngagementRank = vTradingEngagementRank.ToValue();
+                    if (valueTradingEngagementRank is ulong vTradingEngagementRankValue) { ret.TradingEngagementRank = vTradingEngagementRankValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsLocked = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    count = vIsLocked.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueIsLocked = vIsLocked.ToValue();
+                    if (valueIsLocked is bool vIsLockedValue) { ret.IsLocked = vIsLockedValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vKycExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vKycExpiration.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueKycExpiration = vKycExpiration.ToValue();
+                    if (valueKycExpiration is ulong vKycExpirationValue) { ret.KycExpiration = vKycExpirationValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vInvestorForExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vInvestorForExpiration.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueInvestorForExpiration = vInvestorForExpiration.ToValue();
+                    if (valueInvestorForExpiration is ulong vInvestorForExpirationValue) { ret.InvestorForExpiration = vInvestorForExpirationValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsProfessionalInvestor = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    count = vIsProfessionalInvestor.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueIsProfessionalInvestor = vIsProfessionalInvestor.ToValue();
+                    if (valueIsProfessionalInvestor is bool vIsProfessionalInvestorValue) { ret.IsProfessionalInvestor = vIsProfessionalInvestorValue; }
+                    return ret;
+
+                }
+
+                public override string ToString()
+                {
+                    return $"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace("-", "")}";
+                }
+                public override bool Equals(object obj)
+                {
+                    return Equals(obj as IdentityInfo);
+                }
+                public bool Equals(IdentityInfo other)
+                {
+                    return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());
+                }
+                public override int GetHashCode()
+                {
+                    return ToByteArray().GetHashCode();
+                }
+                public static bool operator ==(IdentityInfo left, IdentityInfo right)
+                {
+                    return EqualityComparer<IdentityInfo>.Default.Equals(left, right);
+                }
+                public static bool operator !=(IdentityInfo left, IdentityInfo right)
+                {
+                    return !(left == right);
+                }
 
             }
 
-            public static IdentityInfo Parse(byte[] bytes)
+            public class UserInfoV1 : AVMObjectType
             {
-                var queue = new Queue<byte>(bytes);
-                var prefixOffset = 0;
-                var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                if (retPrefix.SequenceEqual(Constants.RetPrefix))
+                public byte Version { get; set; }
+
+                public ulong VerificationStatus { get; set; }
+
+                public ulong VerificationClass { get; set; }
+
+                public bool IsCompany { get; set; }
+
+                public string PersonUuid { get; set; }
+
+                public string LegalEntityUuid { get; set; }
+
+                public ulong BiatecEngagementPoints { get; set; }
+
+                public ulong BiatecEngagementRank { get; set; }
+
+                public ulong AvmEngagementPoints { get; set; }
+
+                public ulong AvmEngagementRank { get; set; }
+
+                public ulong TradingEngagementPoints { get; set; }
+
+                public ulong TradingEngagementRank { get; set; }
+
+                public AVM.ClientGenerator.ABI.ARC4.Types.UInt256 FeeMultiplier { get; set; }
+
+                public AVM.ClientGenerator.ABI.ARC4.Types.UInt256 Base { get; set; }
+
+                public bool IsLocked { get; set; }
+
+                public ulong KycExpiration { get; set; }
+
+                public ulong InvestorForExpiration { get; set; }
+
+                public bool IsProfessionalInvestor { get; set; }
+
+                public byte[] ToByteArray()
                 {
-                    prefixOffset = 4;
-                    for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
+                    var ret = new List<byte>();
+                    var stringRef = new Dictionary<int, byte[]>();
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVersion = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint8");
+                    vVersion.From(Version);
+                    ret.AddRange(vVersion.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationStatus = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vVerificationStatus.From(VerificationStatus);
+                    ret.AddRange(vVerificationStatus.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vVerificationClass.From(VerificationClass);
+                    ret.AddRange(vVerificationClass.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsCompany = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    vIsCompany.From(IsCompany);
+                    ret.AddRange(vIsCompany.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPersonUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
+                    vPersonUuid.From(PersonUuid);
+                    stringRef[ret.Count] = vPersonUuid.Encode();
+                    ret.AddRange(new byte[2]);
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vLegalEntityUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
+                    vLegalEntityUuid.From(LegalEntityUuid);
+                    stringRef[ret.Count] = vLegalEntityUuid.Encode();
+                    ret.AddRange(new byte[2]);
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vBiatecEngagementPoints.From(BiatecEngagementPoints);
+                    ret.AddRange(vBiatecEngagementPoints.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vBiatecEngagementRank.From(BiatecEngagementRank);
+                    ret.AddRange(vBiatecEngagementRank.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vAvmEngagementPoints.From(AvmEngagementPoints);
+                    ret.AddRange(vAvmEngagementPoints.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vAvmEngagementRank.From(AvmEngagementRank);
+                    ret.AddRange(vAvmEngagementRank.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vTradingEngagementPoints.From(TradingEngagementPoints);
+                    ret.AddRange(vTradingEngagementPoints.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vTradingEngagementRank.From(TradingEngagementRank);
+                    ret.AddRange(vTradingEngagementRank.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vFeeMultiplier = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+                    vFeeMultiplier.From(FeeMultiplier);
+                    ret.AddRange(vFeeMultiplier.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vBase = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+                    vBase.From(Base);
+                    ret.AddRange(vBase.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsLocked = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    vIsLocked.From(IsLocked);
+                    ret.AddRange(vIsLocked.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vKycExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vKycExpiration.From(KycExpiration);
+                    ret.AddRange(vKycExpiration.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vInvestorForExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vInvestorForExpiration.From(InvestorForExpiration);
+                    ret.AddRange(vInvestorForExpiration.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsProfessionalInvestor = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    vIsProfessionalInvestor.From(IsProfessionalInvestor);
+                    ret.AddRange(vIsProfessionalInvestor.Encode());
+                    foreach (var item in stringRef)
+                    {
+                        var b1 = ret.Count;
+                        ret[item.Key] = Convert.ToByte(b1 / 256);
+                        ret[item.Key + 1] = Convert.ToByte(b1 % 256);
+                        ret.AddRange(item.Value);
+                    }
+                    return ret.ToArray();
+
                 }
-                var ret = new IdentityInfo();
-                uint count = 0;
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationStatus = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vVerificationStatus.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueVerificationStatus = vVerificationStatus.ToValue();
-                if (valueVerificationStatus is ulong vVerificationStatusValue) { ret.VerificationStatus = vVerificationStatusValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vVerificationClass.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueVerificationClass = vVerificationClass.ToValue();
-                if (valueVerificationClass is ulong vVerificationClassValue) { ret.VerificationClass = vVerificationClassValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsCompany = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                count = vIsCompany.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueIsCompany = vIsCompany.ToValue();
-                if (valueIsCompany is bool vIsCompanyValue) { ret.IsCompany = vIsCompanyValue; }
-                var indexPersonUuid = queue.Dequeue() * 256 + queue.Dequeue();
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPersonUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
-                vPersonUuid.Decode(bytes.Skip(indexPersonUuid + prefixOffset).ToArray());
-                var valuePersonUuid = vPersonUuid.ToValue();
-                if (valuePersonUuid is string vPersonUuidValue) { ret.PersonUuid = vPersonUuidValue; }
-                var indexLegalEntityUuid = queue.Dequeue() * 256 + queue.Dequeue();
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vLegalEntityUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
-                vLegalEntityUuid.Decode(bytes.Skip(indexLegalEntityUuid + prefixOffset).ToArray());
-                var valueLegalEntityUuid = vLegalEntityUuid.ToValue();
-                if (valueLegalEntityUuid is string vLegalEntityUuidValue) { ret.LegalEntityUuid = vLegalEntityUuidValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vBiatecEngagementPoints.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueBiatecEngagementPoints = vBiatecEngagementPoints.ToValue();
-                if (valueBiatecEngagementPoints is ulong vBiatecEngagementPointsValue) { ret.BiatecEngagementPoints = vBiatecEngagementPointsValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vBiatecEngagementRank.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueBiatecEngagementRank = vBiatecEngagementRank.ToValue();
-                if (valueBiatecEngagementRank is ulong vBiatecEngagementRankValue) { ret.BiatecEngagementRank = vBiatecEngagementRankValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vAvmEngagementPoints.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueAvmEngagementPoints = vAvmEngagementPoints.ToValue();
-                if (valueAvmEngagementPoints is ulong vAvmEngagementPointsValue) { ret.AvmEngagementPoints = vAvmEngagementPointsValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vAvmEngagementRank.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueAvmEngagementRank = vAvmEngagementRank.ToValue();
-                if (valueAvmEngagementRank is ulong vAvmEngagementRankValue) { ret.AvmEngagementRank = vAvmEngagementRankValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vTradingEngagementPoints.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueTradingEngagementPoints = vTradingEngagementPoints.ToValue();
-                if (valueTradingEngagementPoints is ulong vTradingEngagementPointsValue) { ret.TradingEngagementPoints = vTradingEngagementPointsValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vTradingEngagementRank.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueTradingEngagementRank = vTradingEngagementRank.ToValue();
-                if (valueTradingEngagementRank is ulong vTradingEngagementRankValue) { ret.TradingEngagementRank = vTradingEngagementRankValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsLocked = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                count = vIsLocked.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueIsLocked = vIsLocked.ToValue();
-                if (valueIsLocked is bool vIsLockedValue) { ret.IsLocked = vIsLockedValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vKycExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vKycExpiration.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueKycExpiration = vKycExpiration.ToValue();
-                if (valueKycExpiration is ulong vKycExpirationValue) { ret.KycExpiration = vKycExpirationValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vInvestorForExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vInvestorForExpiration.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueInvestorForExpiration = vInvestorForExpiration.ToValue();
-                if (valueInvestorForExpiration is ulong vInvestorForExpirationValue) { ret.InvestorForExpiration = vInvestorForExpirationValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsProfessionalInvestor = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                count = vIsProfessionalInvestor.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueIsProfessionalInvestor = vIsProfessionalInvestor.ToValue();
-                if (valueIsProfessionalInvestor is bool vIsProfessionalInvestorValue) { ret.IsProfessionalInvestor = vIsProfessionalInvestorValue; }
-                return ret;
 
-            }
-
-        }
-
-        public class UserInfoV1 : AVMObjectType
-        {
-            public byte Version { get; set; }
-
-            public ulong VerificationStatus { get; set; }
-
-            public ulong VerificationClass { get; set; }
-
-            public bool IsCompany { get; set; }
-
-            public string PersonUuid { get; set; }
-
-            public string LegalEntityUuid { get; set; }
-
-            public ulong BiatecEngagementPoints { get; set; }
-
-            public ulong BiatecEngagementRank { get; set; }
-
-            public ulong AvmEngagementPoints { get; set; }
-
-            public ulong AvmEngagementRank { get; set; }
-
-            public ulong TradingEngagementPoints { get; set; }
-
-            public ulong TradingEngagementRank { get; set; }
-
-            public AVM.ClientGenerator.ABI.ARC4.Types.UInt256 FeeMultiplier { get; set; }
-
-            public AVM.ClientGenerator.ABI.ARC4.Types.UInt256 Base { get; set; }
-
-            public bool IsLocked { get; set; }
-
-            public ulong KycExpiration { get; set; }
-
-            public ulong InvestorForExpiration { get; set; }
-
-            public bool IsProfessionalInvestor { get; set; }
-
-            public byte[] ToByteArray()
-            {
-                var ret = new List<byte>();
-                var stringRef = new Dictionary<int, byte[]>();
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVersion = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint8");
-                vVersion.From(Version);
-                ret.AddRange(vVersion.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationStatus = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vVerificationStatus.From(VerificationStatus);
-                ret.AddRange(vVerificationStatus.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vVerificationClass.From(VerificationClass);
-                ret.AddRange(vVerificationClass.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsCompany = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                vIsCompany.From(IsCompany);
-                ret.AddRange(vIsCompany.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPersonUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
-                vPersonUuid.From(PersonUuid);
-                stringRef[ret.Count] = vPersonUuid.Encode();
-                ret.AddRange(new byte[2]);
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vLegalEntityUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
-                vLegalEntityUuid.From(LegalEntityUuid);
-                stringRef[ret.Count] = vLegalEntityUuid.Encode();
-                ret.AddRange(new byte[2]);
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vBiatecEngagementPoints.From(BiatecEngagementPoints);
-                ret.AddRange(vBiatecEngagementPoints.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vBiatecEngagementRank.From(BiatecEngagementRank);
-                ret.AddRange(vBiatecEngagementRank.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vAvmEngagementPoints.From(AvmEngagementPoints);
-                ret.AddRange(vAvmEngagementPoints.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vAvmEngagementRank.From(AvmEngagementRank);
-                ret.AddRange(vAvmEngagementRank.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vTradingEngagementPoints.From(TradingEngagementPoints);
-                ret.AddRange(vTradingEngagementPoints.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vTradingEngagementRank.From(TradingEngagementRank);
-                ret.AddRange(vTradingEngagementRank.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vFeeMultiplier = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
-                vFeeMultiplier.From(FeeMultiplier);
-                ret.AddRange(vFeeMultiplier.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBase = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
-                vBase.From(Base);
-                ret.AddRange(vBase.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsLocked = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                vIsLocked.From(IsLocked);
-                ret.AddRange(vIsLocked.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vKycExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vKycExpiration.From(KycExpiration);
-                ret.AddRange(vKycExpiration.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vInvestorForExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vInvestorForExpiration.From(InvestorForExpiration);
-                ret.AddRange(vInvestorForExpiration.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsProfessionalInvestor = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                vIsProfessionalInvestor.From(IsProfessionalInvestor);
-                ret.AddRange(vIsProfessionalInvestor.Encode());
-                foreach (var item in stringRef)
+                public static UserInfoV1 Parse(byte[] bytes)
                 {
-                    var b1 = ret.Count;
-                    ret[item.Key] = Convert.ToByte(b1 / 256);
-                    ret[item.Key + 1] = Convert.ToByte(b1 % 256);
-                    ret.AddRange(item.Value);
+                    var queue = new Queue<byte>(bytes);
+                    var prefixOffset = 0;
+                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
+                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
+                    {
+                        prefixOffset = 4;
+                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
+                    }
+                    var ret = new UserInfoV1();
+                    uint count = 0;
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVersion = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint8");
+                    count = vVersion.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueVersion = vVersion.ToValue();
+                    if (valueVersion is byte vVersionValue) { ret.Version = vVersionValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationStatus = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vVerificationStatus.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueVerificationStatus = vVerificationStatus.ToValue();
+                    if (valueVerificationStatus is ulong vVerificationStatusValue) { ret.VerificationStatus = vVerificationStatusValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vVerificationClass.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueVerificationClass = vVerificationClass.ToValue();
+                    if (valueVerificationClass is ulong vVerificationClassValue) { ret.VerificationClass = vVerificationClassValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsCompany = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    count = vIsCompany.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueIsCompany = vIsCompany.ToValue();
+                    if (valueIsCompany is bool vIsCompanyValue) { ret.IsCompany = vIsCompanyValue; }
+                    var indexPersonUuid = queue.Dequeue() * 256 + queue.Dequeue();
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPersonUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
+                    vPersonUuid.Decode(bytes.Skip(indexPersonUuid + prefixOffset).ToArray());
+                    var valuePersonUuid = vPersonUuid.ToValue();
+                    if (valuePersonUuid is string vPersonUuidValue) { ret.PersonUuid = vPersonUuidValue; }
+                    var indexLegalEntityUuid = queue.Dequeue() * 256 + queue.Dequeue();
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vLegalEntityUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
+                    vLegalEntityUuid.Decode(bytes.Skip(indexLegalEntityUuid + prefixOffset).ToArray());
+                    var valueLegalEntityUuid = vLegalEntityUuid.ToValue();
+                    if (valueLegalEntityUuid is string vLegalEntityUuidValue) { ret.LegalEntityUuid = vLegalEntityUuidValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vBiatecEngagementPoints.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueBiatecEngagementPoints = vBiatecEngagementPoints.ToValue();
+                    if (valueBiatecEngagementPoints is ulong vBiatecEngagementPointsValue) { ret.BiatecEngagementPoints = vBiatecEngagementPointsValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vBiatecEngagementRank.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueBiatecEngagementRank = vBiatecEngagementRank.ToValue();
+                    if (valueBiatecEngagementRank is ulong vBiatecEngagementRankValue) { ret.BiatecEngagementRank = vBiatecEngagementRankValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vAvmEngagementPoints.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueAvmEngagementPoints = vAvmEngagementPoints.ToValue();
+                    if (valueAvmEngagementPoints is ulong vAvmEngagementPointsValue) { ret.AvmEngagementPoints = vAvmEngagementPointsValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vAvmEngagementRank.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueAvmEngagementRank = vAvmEngagementRank.ToValue();
+                    if (valueAvmEngagementRank is ulong vAvmEngagementRankValue) { ret.AvmEngagementRank = vAvmEngagementRankValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vTradingEngagementPoints.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueTradingEngagementPoints = vTradingEngagementPoints.ToValue();
+                    if (valueTradingEngagementPoints is ulong vTradingEngagementPointsValue) { ret.TradingEngagementPoints = vTradingEngagementPointsValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vTradingEngagementRank.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueTradingEngagementRank = vTradingEngagementRank.ToValue();
+                    if (valueTradingEngagementRank is ulong vTradingEngagementRankValue) { ret.TradingEngagementRank = vTradingEngagementRankValue; }
+                    var vFeeMultiplier = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+                    count = vFeeMultiplier.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    ret.FeeMultiplier = vFeeMultiplier;
+                    var vBase = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+                    count = vBase.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    ret.Base = vBase;
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsLocked = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    count = vIsLocked.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueIsLocked = vIsLocked.ToValue();
+                    if (valueIsLocked is bool vIsLockedValue) { ret.IsLocked = vIsLockedValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vKycExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vKycExpiration.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueKycExpiration = vKycExpiration.ToValue();
+                    if (valueKycExpiration is ulong vKycExpirationValue) { ret.KycExpiration = vKycExpirationValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vInvestorForExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vInvestorForExpiration.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueInvestorForExpiration = vInvestorForExpiration.ToValue();
+                    if (valueInvestorForExpiration is ulong vInvestorForExpirationValue) { ret.InvestorForExpiration = vInvestorForExpirationValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsProfessionalInvestor = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
+                    count = vIsProfessionalInvestor.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueIsProfessionalInvestor = vIsProfessionalInvestor.ToValue();
+                    if (valueIsProfessionalInvestor is bool vIsProfessionalInvestorValue) { ret.IsProfessionalInvestor = vIsProfessionalInvestorValue; }
+                    return ret;
+
                 }
-                return ret.ToArray();
 
-            }
-
-            public static UserInfoV1 Parse(byte[] bytes)
-            {
-                var queue = new Queue<byte>(bytes);
-                var prefixOffset = 0;
-                var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                if (retPrefix.SequenceEqual(Constants.RetPrefix))
+                public override string ToString()
                 {
-                    prefixOffset = 4;
-                    for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
+                    return $"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace("-", "")}";
                 }
-                var ret = new UserInfoV1();
-                uint count = 0;
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVersion = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint8");
-                count = vVersion.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueVersion = vVersion.ToValue();
-                if (valueVersion is byte vVersionValue) { ret.Version = vVersionValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationStatus = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vVerificationStatus.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueVerificationStatus = vVerificationStatus.ToValue();
-                if (valueVerificationStatus is ulong vVerificationStatusValue) { ret.VerificationStatus = vVerificationStatusValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vVerificationClass.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueVerificationClass = vVerificationClass.ToValue();
-                if (valueVerificationClass is ulong vVerificationClassValue) { ret.VerificationClass = vVerificationClassValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsCompany = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                count = vIsCompany.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueIsCompany = vIsCompany.ToValue();
-                if (valueIsCompany is bool vIsCompanyValue) { ret.IsCompany = vIsCompanyValue; }
-                var indexPersonUuid = queue.Dequeue() * 256 + queue.Dequeue();
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPersonUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
-                vPersonUuid.Decode(bytes.Skip(indexPersonUuid + prefixOffset).ToArray());
-                var valuePersonUuid = vPersonUuid.ToValue();
-                if (valuePersonUuid is string vPersonUuidValue) { ret.PersonUuid = vPersonUuidValue; }
-                var indexLegalEntityUuid = queue.Dequeue() * 256 + queue.Dequeue();
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vLegalEntityUuid = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
-                vLegalEntityUuid.Decode(bytes.Skip(indexLegalEntityUuid + prefixOffset).ToArray());
-                var valueLegalEntityUuid = vLegalEntityUuid.ToValue();
-                if (valueLegalEntityUuid is string vLegalEntityUuidValue) { ret.LegalEntityUuid = vLegalEntityUuidValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vBiatecEngagementPoints.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueBiatecEngagementPoints = vBiatecEngagementPoints.ToValue();
-                if (valueBiatecEngagementPoints is ulong vBiatecEngagementPointsValue) { ret.BiatecEngagementPoints = vBiatecEngagementPointsValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vBiatecEngagementRank.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueBiatecEngagementRank = vBiatecEngagementRank.ToValue();
-                if (valueBiatecEngagementRank is ulong vBiatecEngagementRankValue) { ret.BiatecEngagementRank = vBiatecEngagementRankValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vAvmEngagementPoints.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueAvmEngagementPoints = vAvmEngagementPoints.ToValue();
-                if (valueAvmEngagementPoints is ulong vAvmEngagementPointsValue) { ret.AvmEngagementPoints = vAvmEngagementPointsValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAvmEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vAvmEngagementRank.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueAvmEngagementRank = vAvmEngagementRank.ToValue();
-                if (valueAvmEngagementRank is ulong vAvmEngagementRankValue) { ret.AvmEngagementRank = vAvmEngagementRankValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementPoints = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vTradingEngagementPoints.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueTradingEngagementPoints = vTradingEngagementPoints.ToValue();
-                if (valueTradingEngagementPoints is ulong vTradingEngagementPointsValue) { ret.TradingEngagementPoints = vTradingEngagementPointsValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vTradingEngagementRank = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vTradingEngagementRank.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueTradingEngagementRank = vTradingEngagementRank.ToValue();
-                if (valueTradingEngagementRank is ulong vTradingEngagementRankValue) { ret.TradingEngagementRank = vTradingEngagementRankValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vFeeMultiplier = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
-                count = vFeeMultiplier.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueFeeMultiplier = vFeeMultiplier.ToValue();
-                if (valueFeeMultiplier is AVM.ClientGenerator.ABI.ARC4.Types.UInt256 vFeeMultiplierValue) { ret.FeeMultiplier = vFeeMultiplierValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBase = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
-                count = vBase.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueBase = vBase.ToValue();
-                if (valueBase is AVM.ClientGenerator.ABI.ARC4.Types.UInt256 vBaseValue) { ret.Base = vBaseValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsLocked = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                count = vIsLocked.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueIsLocked = vIsLocked.ToValue();
-                if (valueIsLocked is bool vIsLockedValue) { ret.IsLocked = vIsLockedValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vKycExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vKycExpiration.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueKycExpiration = vKycExpiration.ToValue();
-                if (valueKycExpiration is ulong vKycExpirationValue) { ret.KycExpiration = vKycExpirationValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vInvestorForExpiration = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vInvestorForExpiration.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueInvestorForExpiration = vInvestorForExpiration.ToValue();
-                if (valueInvestorForExpiration is ulong vInvestorForExpirationValue) { ret.InvestorForExpiration = vInvestorForExpirationValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vIsProfessionalInvestor = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
-                count = vIsProfessionalInvestor.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueIsProfessionalInvestor = vIsProfessionalInvestor.ToValue();
-                if (valueIsProfessionalInvestor is bool vIsProfessionalInvestorValue) { ret.IsProfessionalInvestor = vIsProfessionalInvestorValue; }
-                return ret;
+                public override bool Equals(object obj)
+                {
+                    return Equals(obj as UserInfoV1);
+                }
+                public bool Equals(UserInfoV1 other)
+                {
+                    return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());
+                }
+                public override int GetHashCode()
+                {
+                    return ToByteArray().GetHashCode();
+                }
+                public static bool operator ==(UserInfoV1 left, UserInfoV1 right)
+                {
+                    return EqualityComparer<UserInfoV1>.Default.Equals(left, right);
+                }
+                public static bool operator !=(UserInfoV1 left, UserInfoV1 right)
+                {
+                    return !(left == right);
+                }
 
             }
 
@@ -441,6 +493,7 @@ namespace BiatecIdentityArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 184, 68, 123, 54 };
+
             var result = await base.CallApp(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -448,6 +501,7 @@ namespace BiatecIdentityArc56
         public async Task<List<Transaction>> CreateApplication_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 184, 68, 123, 54 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -468,14 +522,24 @@ namespace BiatecIdentityArc56
             _tx_accounts ??= new List<Address>();
             _tx_accounts.AddRange(new List<Address> { governor, verificationSetter, engagementSetter });
             byte[] abiHandle = { 227, 191, 92, 31 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, governor, verificationSetter, engagementSetter }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var governorAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); governorAbi.From(governor);
+            var verificationSetterAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); verificationSetterAbi.From(verificationSetter);
+            var engagementSetterAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); engagementSetterAbi.From(engagementSetter);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, governorAbi, verificationSetterAbi, engagementSetterAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
         public async Task<List<Transaction>> Bootstrap_Transactions(Address governor, Address verificationSetter, Address engagementSetter, ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 227, 191, 92, 31 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, governor, verificationSetter, engagementSetter }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var governorAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); governorAbi.From(governor);
+            var verificationSetterAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); verificationSetterAbi.From(verificationSetter);
+            var engagementSetterAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); engagementSetterAbi.From(engagementSetter);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, governorAbi, verificationSetterAbi, engagementSetterAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -492,14 +556,20 @@ namespace BiatecIdentityArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 95, 200, 133, 160 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, newVersion }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var newVersionAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); newVersionAbi.From(newVersion);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, newVersionAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
         public async Task<List<Transaction>> UpdateApplication_Transactions(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 95, 200, 133, 160 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, newVersion }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var newVersionAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); newVersionAbi.From(newVersion);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, newVersionAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -508,7 +578,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="user"> </param>
         /// <param name="info"> IdentityInfo</param>
-        public async Task SelfRegistration(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task SelfRegistration(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -517,14 +587,18 @@ namespace BiatecIdentityArc56
             _tx_accounts ??= new List<Address>();
             _tx_accounts.AddRange(new List<Address> { user });
             byte[] abiHandle = { 232, 200, 238, 217 };
-            var result = await base.CallApp(new List<object> { abiHandle, user, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var userAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); userAbi.From(user);
+
+            var result = await base.CallApp(new List<object> { abiHandle, userAbi, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> SelfRegistration_Transactions(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> SelfRegistration_Transactions(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 232, 200, 238, 217 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, user, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var userAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); userAbi.From(user);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, userAbi, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -533,7 +607,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="user"> </param>
         /// <param name="info"> IdentityInfo</param>
-        public async Task SetInfo(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task SetInfo(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -542,14 +616,18 @@ namespace BiatecIdentityArc56
             _tx_accounts ??= new List<Address>();
             _tx_accounts.AddRange(new List<Address> { user });
             byte[] abiHandle = { 213, 131, 167, 89 };
-            var result = await base.CallApp(new List<object> { abiHandle, user, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var userAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); userAbi.From(user);
+
+            var result = await base.CallApp(new List<object> { abiHandle, userAbi, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
-        public async Task<List<Transaction>> SetInfo_Transactions(Address user, IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> SetInfo_Transactions(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 213, 131, 167, 89 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, user, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var userAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); userAbi.From(user);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, userAbi, info }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -574,14 +652,30 @@ namespace BiatecIdentityArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 131, 146, 92, 23 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, votePK, selectionPK, stateProofPK, voteFirst, voteLast, voteKeyDilution }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var votePKAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); votePKAbi.From(votePK);
+            var selectionPKAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); selectionPKAbi.From(selectionPK);
+            var stateProofPKAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); stateProofPKAbi.From(stateProofPK);
+            var voteFirstAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteFirstAbi.From(voteFirst);
+            var voteLastAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteLastAbi.From(voteLast);
+            var voteKeyDilutionAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteKeyDilutionAbi.From(voteKeyDilution);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, votePKAbi, selectionPKAbi, stateProofPKAbi, voteFirstAbi, voteLastAbi, voteKeyDilutionAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
         public async Task<List<Transaction>> SendOnlineKeyRegistration_Transactions(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 131, 146, 92, 23 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, votePK, selectionPK, stateProofPK, voteFirst, voteLast, voteKeyDilution }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var votePKAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); votePKAbi.From(votePK);
+            var selectionPKAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); selectionPKAbi.From(selectionPK);
+            var stateProofPKAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); stateProofPKAbi.From(stateProofPK);
+            var voteFirstAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteFirstAbi.From(voteFirst);
+            var voteLastAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteLastAbi.From(voteLast);
+            var voteKeyDilutionAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteKeyDilutionAbi.From(voteKeyDilution);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, votePKAbi, selectionPKAbi, stateProofPKAbi, voteFirstAbi, voteLastAbi, voteKeyDilutionAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -590,7 +684,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="user">Get info for specific user address </param>
         /// <param name="v">Version of the data structure to return </param>
-        public async Task<UserInfoV1> GetUser(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<Structs.UserInfoV1> GetUser(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -599,15 +693,21 @@ namespace BiatecIdentityArc56
             _tx_accounts ??= new List<Address>();
             _tx_accounts.AddRange(new List<Address> { user });
             byte[] abiHandle = { 107, 22, 232, 99 };
-            var result = await base.SimApp(new List<object> { abiHandle, user, v }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return UserInfoV1.Parse(result.Last());
+            var userAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); userAbi.From(user);
+            var vAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Byte(); vAbi.From(v);
+
+            var result = await base.SimApp(new List<object> { abiHandle, userAbi, vAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            return Structs.UserInfoV1.Parse(result.Last());
 
         }
 
         public async Task<List<Transaction>> GetUser_Transactions(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 107, 22, 232, 99 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, user, v }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var userAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); userAbi.From(user);
+            var vAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Byte(); vAbi.From(v);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, userAbi, vAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -628,15 +728,28 @@ namespace BiatecIdentityArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 203, 162, 233, 93 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, asset, amount }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return BitConverter.ToUInt64(ReverseIfLittleEndian(result.First().ToArray()), 0);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var assetAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAbi.From(asset);
+            var amountAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); amountAbi.From(amount);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, assetAbi, amountAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64();
+            returnValueObj.Decode(lastLogReturnData);
+            return BitConverter.ToUInt64(ReverseIfLittleEndian(lastLogReturnData), 0);
 
         }
 
         public async Task<List<Transaction>> WithdrawExcessAssets_Transactions(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 203, 162, 233, 93 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, asset, amount }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var assetAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAbi.From(asset);
+            var amountAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); amountAbi.From(amount);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, assetAbi, amountAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 

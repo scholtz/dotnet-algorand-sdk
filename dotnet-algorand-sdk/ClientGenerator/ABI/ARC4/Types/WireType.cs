@@ -6,6 +6,7 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
 {
     public abstract class WireType
     {
+        public abstract string GetDescription();
         public abstract bool IsDynamic { get; }
         public abstract byte[] Encode();
         public abstract uint Decode(byte[] data);
@@ -38,7 +39,6 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                    IsUFixed(abiType) ??
                    IsAddress(abiType) ??
                    IsString(abiType) ??
-                   IsAccount(abiType) ??
                    IsAsset(abiType) ??
                    IsApplication(abiType) ??
                    IsTuple(abiType); // allow nulls as a) there may be future expansions and b) the 'wire type' might be a Transaction
@@ -87,15 +87,35 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
 
         private static WireType IsUInt(string abiType)
         {
-            if (abiType == "utin128")
+            if (abiType == "uint16")
+            {
+                return new UInt16();
+            }
+            if (abiType == "uint24")
+            {
+                return new UInt24();
+            }
+            if (abiType == "uint32")
+            {
+                return new UInt32();
+            }
+            if (abiType == "uint48")
+            {
+                return new UInt48();
+            }
+            if (abiType == "uint64")
+            {
+                return new UInt64();
+            }
+            if (abiType == "uint128")
             {
                 return new UInt128();
             }
-            if (abiType == "utin256")
+            if (abiType == "uint256")
             {
                 return new UInt256();
             }
-            if (abiType == "utin512")
+            if (abiType == "uint512")
             {
                 return new UInt512();
             }
@@ -155,14 +175,6 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
             return null;
         }
 
-        private static WireType IsAccount(string abiType)
-        {
-            if (abiType.StartsWith("account"))
-            {
-                return new Account();
-            }
-            return null;
-        }
 
         private static WireType IsAsset(string abiType)
         {

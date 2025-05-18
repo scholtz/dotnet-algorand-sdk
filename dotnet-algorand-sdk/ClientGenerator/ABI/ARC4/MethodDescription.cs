@@ -355,9 +355,16 @@ $@"{"\t\t"}///<summary>
             }
             scr.AppendLine(");");
         }
-        public static string FormatStructName(string name)
+        public static string FormatStructName(string name, bool appendStruct = false)
         {
-            return name.ToPascalCase();
+            if (appendStruct)
+            {
+                return $"Structs.{name.ToPascalCase()}";
+            }
+            else
+            {
+                return name.ToPascalCase();
+            }
         }
         public static string FormatMethodName(string name)
         {

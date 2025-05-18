@@ -26,216 +26,245 @@ namespace BiatecClammPoolArc56
 
         }
 
-        public class AmmStatus : AVMObjectType
+        public class Structs
         {
-            public ulong Scale { get; set; }
-
-            public ulong AssetABalance { get; set; }
-
-            public ulong AssetBBalance { get; set; }
-
-            public ulong RealABalance { get; set; }
-
-            public ulong RealBBalance { get; set; }
-
-            public ulong PriceMinSqrt { get; set; }
-
-            public ulong PriceMaxSqrt { get; set; }
-
-            public ulong CurrentLiqudity { get; set; }
-
-            public ulong ReleasedLiqudity { get; set; }
-
-            public ulong LiqudityUsersFromFees { get; set; }
-
-            public ulong LiqudityBiatecFromFees { get; set; }
-
-            public ulong AssetA { get; set; }
-
-            public ulong AssetB { get; set; }
-
-            public ulong PoolToken { get; set; }
-
-            public ulong Price { get; set; }
-
-            public ulong Fee { get; set; }
-
-            public ulong BiatecFee { get; set; }
-
-            public ulong VerificationClass { get; set; }
-
-            public byte[] ToByteArray()
+            public class AmmStatus : AVMObjectType
             {
-                var ret = new List<byte>();
-                var stringRef = new Dictionary<int, byte[]>();
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vScale = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vScale.From(Scale);
-                ret.AddRange(vScale.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetABalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vAssetABalance.From(AssetABalance);
-                ret.AddRange(vAssetABalance.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetBBalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vAssetBBalance.From(AssetBBalance);
-                ret.AddRange(vAssetBBalance.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vRealABalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vRealABalance.From(RealABalance);
-                ret.AddRange(vRealABalance.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vRealBBalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vRealBBalance.From(RealBBalance);
-                ret.AddRange(vRealBBalance.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPriceMinSqrt = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vPriceMinSqrt.From(PriceMinSqrt);
-                ret.AddRange(vPriceMinSqrt.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPriceMaxSqrt = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vPriceMaxSqrt.From(PriceMaxSqrt);
-                ret.AddRange(vPriceMaxSqrt.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vCurrentLiqudity = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vCurrentLiqudity.From(CurrentLiqudity);
-                ret.AddRange(vCurrentLiqudity.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vReleasedLiqudity = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vReleasedLiqudity.From(ReleasedLiqudity);
-                ret.AddRange(vReleasedLiqudity.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vLiqudityUsersFromFees = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vLiqudityUsersFromFees.From(LiqudityUsersFromFees);
-                ret.AddRange(vLiqudityUsersFromFees.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vLiqudityBiatecFromFees = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vLiqudityBiatecFromFees.From(LiqudityBiatecFromFees);
-                ret.AddRange(vLiqudityBiatecFromFees.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vAssetA.From(AssetA);
-                ret.AddRange(vAssetA.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vAssetB.From(AssetB);
-                ret.AddRange(vAssetB.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPoolToken = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vPoolToken.From(PoolToken);
-                ret.AddRange(vPoolToken.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPrice = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vPrice.From(Price);
-                ret.AddRange(vPrice.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vFee = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vFee.From(Fee);
-                ret.AddRange(vFee.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecFee = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vBiatecFee.From(BiatecFee);
-                ret.AddRange(vBiatecFee.Encode());
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                vVerificationClass.From(VerificationClass);
-                ret.AddRange(vVerificationClass.Encode());
-                foreach (var item in stringRef)
-                {
-                    var b1 = ret.Count;
-                    ret[item.Key] = Convert.ToByte(b1 / 256);
-                    ret[item.Key + 1] = Convert.ToByte(b1 % 256);
-                    ret.AddRange(item.Value);
-                }
-                return ret.ToArray();
+                public ulong Scale { get; set; }
 
-            }
+                public ulong AssetABalance { get; set; }
 
-            public static AmmStatus Parse(byte[] bytes)
-            {
-                var queue = new Queue<byte>(bytes);
-                var prefixOffset = 0;
-                var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                if (retPrefix.SequenceEqual(Constants.RetPrefix))
+                public ulong AssetBBalance { get; set; }
+
+                public ulong RealABalance { get; set; }
+
+                public ulong RealBBalance { get; set; }
+
+                public ulong PriceMinSqrt { get; set; }
+
+                public ulong PriceMaxSqrt { get; set; }
+
+                public ulong CurrentLiqudity { get; set; }
+
+                public ulong ReleasedLiqudity { get; set; }
+
+                public ulong LiqudityUsersFromFees { get; set; }
+
+                public ulong LiqudityBiatecFromFees { get; set; }
+
+                public ulong AssetA { get; set; }
+
+                public ulong AssetB { get; set; }
+
+                public ulong PoolToken { get; set; }
+
+                public ulong Price { get; set; }
+
+                public ulong Fee { get; set; }
+
+                public ulong BiatecFee { get; set; }
+
+                public ulong VerificationClass { get; set; }
+
+                public byte[] ToByteArray()
                 {
-                    prefixOffset = 4;
-                    for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
+                    var ret = new List<byte>();
+                    var stringRef = new Dictionary<int, byte[]>();
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vScale = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vScale.From(Scale);
+                    ret.AddRange(vScale.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetABalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vAssetABalance.From(AssetABalance);
+                    ret.AddRange(vAssetABalance.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetBBalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vAssetBBalance.From(AssetBBalance);
+                    ret.AddRange(vAssetBBalance.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vRealABalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vRealABalance.From(RealABalance);
+                    ret.AddRange(vRealABalance.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vRealBBalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vRealBBalance.From(RealBBalance);
+                    ret.AddRange(vRealBBalance.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPriceMinSqrt = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vPriceMinSqrt.From(PriceMinSqrt);
+                    ret.AddRange(vPriceMinSqrt.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPriceMaxSqrt = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vPriceMaxSqrt.From(PriceMaxSqrt);
+                    ret.AddRange(vPriceMaxSqrt.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vCurrentLiqudity = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vCurrentLiqudity.From(CurrentLiqudity);
+                    ret.AddRange(vCurrentLiqudity.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vReleasedLiqudity = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vReleasedLiqudity.From(ReleasedLiqudity);
+                    ret.AddRange(vReleasedLiqudity.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vLiqudityUsersFromFees = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vLiqudityUsersFromFees.From(LiqudityUsersFromFees);
+                    ret.AddRange(vLiqudityUsersFromFees.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vLiqudityBiatecFromFees = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vLiqudityBiatecFromFees.From(LiqudityBiatecFromFees);
+                    ret.AddRange(vLiqudityBiatecFromFees.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vAssetA.From(AssetA);
+                    ret.AddRange(vAssetA.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vAssetB.From(AssetB);
+                    ret.AddRange(vAssetB.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPoolToken = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vPoolToken.From(PoolToken);
+                    ret.AddRange(vPoolToken.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPrice = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vPrice.From(Price);
+                    ret.AddRange(vPrice.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vFee = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vFee.From(Fee);
+                    ret.AddRange(vFee.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecFee = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vBiatecFee.From(BiatecFee);
+                    ret.AddRange(vBiatecFee.Encode());
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    vVerificationClass.From(VerificationClass);
+                    ret.AddRange(vVerificationClass.Encode());
+                    foreach (var item in stringRef)
+                    {
+                        var b1 = ret.Count;
+                        ret[item.Key] = Convert.ToByte(b1 / 256);
+                        ret[item.Key + 1] = Convert.ToByte(b1 % 256);
+                        ret.AddRange(item.Value);
+                    }
+                    return ret.ToArray();
+
                 }
-                var ret = new AmmStatus();
-                uint count = 0;
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vScale = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vScale.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueScale = vScale.ToValue();
-                if (valueScale is ulong vScaleValue) { ret.Scale = vScaleValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetABalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vAssetABalance.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueAssetABalance = vAssetABalance.ToValue();
-                if (valueAssetABalance is ulong vAssetABalanceValue) { ret.AssetABalance = vAssetABalanceValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetBBalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vAssetBBalance.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueAssetBBalance = vAssetBBalance.ToValue();
-                if (valueAssetBBalance is ulong vAssetBBalanceValue) { ret.AssetBBalance = vAssetBBalanceValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vRealABalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vRealABalance.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueRealABalance = vRealABalance.ToValue();
-                if (valueRealABalance is ulong vRealABalanceValue) { ret.RealABalance = vRealABalanceValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vRealBBalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vRealBBalance.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueRealBBalance = vRealBBalance.ToValue();
-                if (valueRealBBalance is ulong vRealBBalanceValue) { ret.RealBBalance = vRealBBalanceValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPriceMinSqrt = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vPriceMinSqrt.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valuePriceMinSqrt = vPriceMinSqrt.ToValue();
-                if (valuePriceMinSqrt is ulong vPriceMinSqrtValue) { ret.PriceMinSqrt = vPriceMinSqrtValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPriceMaxSqrt = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vPriceMaxSqrt.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valuePriceMaxSqrt = vPriceMaxSqrt.ToValue();
-                if (valuePriceMaxSqrt is ulong vPriceMaxSqrtValue) { ret.PriceMaxSqrt = vPriceMaxSqrtValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vCurrentLiqudity = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vCurrentLiqudity.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueCurrentLiqudity = vCurrentLiqudity.ToValue();
-                if (valueCurrentLiqudity is ulong vCurrentLiqudityValue) { ret.CurrentLiqudity = vCurrentLiqudityValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vReleasedLiqudity = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vReleasedLiqudity.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueReleasedLiqudity = vReleasedLiqudity.ToValue();
-                if (valueReleasedLiqudity is ulong vReleasedLiqudityValue) { ret.ReleasedLiqudity = vReleasedLiqudityValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vLiqudityUsersFromFees = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vLiqudityUsersFromFees.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueLiqudityUsersFromFees = vLiqudityUsersFromFees.ToValue();
-                if (valueLiqudityUsersFromFees is ulong vLiqudityUsersFromFeesValue) { ret.LiqudityUsersFromFees = vLiqudityUsersFromFeesValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vLiqudityBiatecFromFees = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vLiqudityBiatecFromFees.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueLiqudityBiatecFromFees = vLiqudityBiatecFromFees.ToValue();
-                if (valueLiqudityBiatecFromFees is ulong vLiqudityBiatecFromFeesValue) { ret.LiqudityBiatecFromFees = vLiqudityBiatecFromFeesValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vAssetA.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueAssetA = vAssetA.ToValue();
-                if (valueAssetA is ulong vAssetAValue) { ret.AssetA = vAssetAValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vAssetB.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueAssetB = vAssetB.ToValue();
-                if (valueAssetB is ulong vAssetBValue) { ret.AssetB = vAssetBValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPoolToken = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vPoolToken.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valuePoolToken = vPoolToken.ToValue();
-                if (valuePoolToken is ulong vPoolTokenValue) { ret.PoolToken = vPoolTokenValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vPrice = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vPrice.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valuePrice = vPrice.ToValue();
-                if (valuePrice is ulong vPriceValue) { ret.Price = vPriceValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vFee = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vFee.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueFee = vFee.ToValue();
-                if (valueFee is ulong vFeeValue) { ret.Fee = vFeeValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecFee = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vBiatecFee.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueBiatecFee = vBiatecFee.ToValue();
-                if (valueBiatecFee is ulong vBiatecFeeValue) { ret.BiatecFee = vBiatecFeeValue; }
-                AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
-                count = vVerificationClass.Decode(queue.ToArray());
-                for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                var valueVerificationClass = vVerificationClass.ToValue();
-                if (valueVerificationClass is ulong vVerificationClassValue) { ret.VerificationClass = vVerificationClassValue; }
-                return ret;
+
+                public static AmmStatus Parse(byte[] bytes)
+                {
+                    var queue = new Queue<byte>(bytes);
+                    var prefixOffset = 0;
+                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
+                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
+                    {
+                        prefixOffset = 4;
+                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
+                    }
+                    var ret = new AmmStatus();
+                    uint count = 0;
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vScale = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vScale.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueScale = vScale.ToValue();
+                    if (valueScale is ulong vScaleValue) { ret.Scale = vScaleValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetABalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vAssetABalance.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueAssetABalance = vAssetABalance.ToValue();
+                    if (valueAssetABalance is ulong vAssetABalanceValue) { ret.AssetABalance = vAssetABalanceValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetBBalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vAssetBBalance.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueAssetBBalance = vAssetBBalance.ToValue();
+                    if (valueAssetBBalance is ulong vAssetBBalanceValue) { ret.AssetBBalance = vAssetBBalanceValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vRealABalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vRealABalance.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueRealABalance = vRealABalance.ToValue();
+                    if (valueRealABalance is ulong vRealABalanceValue) { ret.RealABalance = vRealABalanceValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vRealBBalance = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vRealBBalance.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueRealBBalance = vRealBBalance.ToValue();
+                    if (valueRealBBalance is ulong vRealBBalanceValue) { ret.RealBBalance = vRealBBalanceValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPriceMinSqrt = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vPriceMinSqrt.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valuePriceMinSqrt = vPriceMinSqrt.ToValue();
+                    if (valuePriceMinSqrt is ulong vPriceMinSqrtValue) { ret.PriceMinSqrt = vPriceMinSqrtValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPriceMaxSqrt = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vPriceMaxSqrt.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valuePriceMaxSqrt = vPriceMaxSqrt.ToValue();
+                    if (valuePriceMaxSqrt is ulong vPriceMaxSqrtValue) { ret.PriceMaxSqrt = vPriceMaxSqrtValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vCurrentLiqudity = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vCurrentLiqudity.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueCurrentLiqudity = vCurrentLiqudity.ToValue();
+                    if (valueCurrentLiqudity is ulong vCurrentLiqudityValue) { ret.CurrentLiqudity = vCurrentLiqudityValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vReleasedLiqudity = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vReleasedLiqudity.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueReleasedLiqudity = vReleasedLiqudity.ToValue();
+                    if (valueReleasedLiqudity is ulong vReleasedLiqudityValue) { ret.ReleasedLiqudity = vReleasedLiqudityValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vLiqudityUsersFromFees = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vLiqudityUsersFromFees.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueLiqudityUsersFromFees = vLiqudityUsersFromFees.ToValue();
+                    if (valueLiqudityUsersFromFees is ulong vLiqudityUsersFromFeesValue) { ret.LiqudityUsersFromFees = vLiqudityUsersFromFeesValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vLiqudityBiatecFromFees = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vLiqudityBiatecFromFees.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueLiqudityBiatecFromFees = vLiqudityBiatecFromFees.ToValue();
+                    if (valueLiqudityBiatecFromFees is ulong vLiqudityBiatecFromFeesValue) { ret.LiqudityBiatecFromFees = vLiqudityBiatecFromFeesValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vAssetA.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueAssetA = vAssetA.ToValue();
+                    if (valueAssetA is ulong vAssetAValue) { ret.AssetA = vAssetAValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetB = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vAssetB.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueAssetB = vAssetB.ToValue();
+                    if (valueAssetB is ulong vAssetBValue) { ret.AssetB = vAssetBValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPoolToken = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vPoolToken.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valuePoolToken = vPoolToken.ToValue();
+                    if (valuePoolToken is ulong vPoolTokenValue) { ret.PoolToken = vPoolTokenValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vPrice = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vPrice.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valuePrice = vPrice.ToValue();
+                    if (valuePrice is ulong vPriceValue) { ret.Price = vPriceValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vFee = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vFee.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueFee = vFee.ToValue();
+                    if (valueFee is ulong vFeeValue) { ret.Fee = vFeeValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vBiatecFee = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vBiatecFee.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueBiatecFee = vBiatecFee.ToValue();
+                    if (valueBiatecFee is ulong vBiatecFeeValue) { ret.BiatecFee = vBiatecFeeValue; }
+                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vVerificationClass = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
+                    count = vVerificationClass.Decode(queue.ToArray());
+                    for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
+                    var valueVerificationClass = vVerificationClass.ToValue();
+                    if (valueVerificationClass is ulong vVerificationClassValue) { ret.VerificationClass = vVerificationClassValue; }
+                    return ret;
+
+                }
+
+                public override string ToString()
+                {
+                    return $"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace("-", "")}";
+                }
+                public override bool Equals(object obj)
+                {
+                    return Equals(obj as AmmStatus);
+                }
+                public bool Equals(AmmStatus other)
+                {
+                    return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());
+                }
+                public override int GetHashCode()
+                {
+                    return ToByteArray().GetHashCode();
+                }
+                public static bool operator ==(AmmStatus left, AmmStatus right)
+                {
+                    return EqualityComparer<AmmStatus>.Default.Equals(left, right);
+                }
+                public static bool operator !=(AmmStatus left, AmmStatus right)
+                {
+                    return !(left == right);
+                }
 
             }
 
@@ -252,6 +281,7 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 184, 68, 123, 54 };
+
             var result = await base.CallApp(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -259,6 +289,7 @@ namespace BiatecClammPoolArc56
         public async Task<List<Transaction>> CreateApplication_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 184, 68, 123, 54 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -276,14 +307,20 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 95, 200, 133, 160 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, newVersion }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var newVersionAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); newVersionAbi.From(newVersion);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, newVersionAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
         public async Task<List<Transaction>> UpdateApplication_Transactions(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 95, 200, 133, 160 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, newVersion }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var newVersionAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); newVersionAbi.From(newVersion);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, newVersionAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -298,14 +335,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 209, 113, 127, 229 };
+
             var result = await base.SimApp(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return BitConverter.ToUInt64(ReverseIfLittleEndian(result.First().ToArray()), 0);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64();
+            returnValueObj.Decode(lastLogReturnData);
+            return BitConverter.ToUInt64(ReverseIfLittleEndian(lastLogReturnData), 0);
 
         }
 
         public async Task<List<Transaction>> GetCurrentPrice_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 209, 113, 127, 229 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -321,14 +365,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 227, 164, 58, 74 };
+
             var result = await base.SimApp(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return BitConverter.ToUInt64(ReverseIfLittleEndian(result.First().ToArray()), 0);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64();
+            returnValueObj.Decode(lastLogReturnData);
+            return BitConverter.ToUInt64(ReverseIfLittleEndian(lastLogReturnData), 0);
 
         }
 
         public async Task<List<Transaction>> GetPriceDivider_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 227, 164, 58, 74 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -344,14 +395,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 29, 118, 74, 158 };
+
             var result = await base.SimApp(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return BitConverter.ToUInt64(ReverseIfLittleEndian(result.First().ToArray()), 0);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64();
+            returnValueObj.Decode(lastLogReturnData);
+            return BitConverter.ToUInt64(ReverseIfLittleEndian(lastLogReturnData), 0);
 
         }
 
         public async Task<List<Transaction>> GetLpTokenId_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 29, 118, 74, 158 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -378,15 +436,40 @@ namespace BiatecClammPoolArc56
             _tx_accounts ??= new List<Address>();
             _tx_transactions.AddRange(new List<Transaction> { txSeed });
             byte[] abiHandle = { 179, 19, 1, 46 };
-            var result = await base.CallApp(new List<object> { abiHandle, assetA, assetB, appBiatecConfigProvider, appBiatecPoolProvider, txSeed, fee, priceMin, priceMax, currentPrice, verificationClass }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return BitConverter.ToUInt64(ReverseIfLittleEndian(result.First().ToArray()), 0);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var appBiatecPoolProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecPoolProviderAbi.From(appBiatecPoolProvider);
+            var feeAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); feeAbi.From(fee);
+            var priceMinAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); priceMinAbi.From(priceMin);
+            var priceMaxAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); priceMaxAbi.From(priceMax);
+            var currentPriceAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); currentPriceAbi.From(currentPrice);
+            var verificationClassAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Byte(); verificationClassAbi.From(verificationClass);
+
+            var result = await base.CallApp(new List<object> { abiHandle, assetAAbi, assetBAbi, appBiatecConfigProviderAbi, appBiatecPoolProviderAbi, txSeed, feeAbi, priceMinAbi, priceMaxAbi, currentPriceAbi, verificationClassAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64();
+            returnValueObj.Decode(lastLogReturnData);
+            return BitConverter.ToUInt64(ReverseIfLittleEndian(lastLogReturnData), 0);
 
         }
 
         public async Task<List<Transaction>> Bootstrap_Transactions(PaymentTransaction txSeed, ulong assetA, ulong assetB, ulong appBiatecConfigProvider, ulong appBiatecPoolProvider, ulong fee, ulong priceMin, ulong priceMax, ulong currentPrice, byte verificationClass, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 179, 19, 1, 46 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, assetA, assetB, appBiatecConfigProvider, appBiatecPoolProvider, txSeed, fee, priceMin, priceMax, currentPrice, verificationClass }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var appBiatecPoolProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecPoolProviderAbi.From(appBiatecPoolProvider);
+            var feeAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); feeAbi.From(fee);
+            var priceMinAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); priceMinAbi.From(priceMin);
+            var priceMaxAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); priceMaxAbi.From(priceMax);
+            var currentPriceAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); currentPriceAbi.From(currentPrice);
+            var verificationClassAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Byte(); verificationClassAbi.From(verificationClass);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, assetAAbi, assetBAbi, appBiatecConfigProviderAbi, appBiatecPoolProviderAbi, txSeed, feeAbi, priceMinAbi, priceMaxAbi, currentPriceAbi, verificationClassAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -409,15 +492,32 @@ namespace BiatecClammPoolArc56
             _tx_accounts ??= new List<Address>();
             _tx_transactions.AddRange(new List<Transaction> { txAssetADeposit, txAssetBDeposit });
             byte[] abiHandle = { 4, 64, 250, 143 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, appBiatecIdentityProvider, txAssetADeposit, txAssetBDeposit, assetA, assetB, assetLp }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return BitConverter.ToUInt64(ReverseIfLittleEndian(result.First().ToArray()), 0);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var appBiatecIdentityProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecIdentityProviderAbi.From(appBiatecIdentityProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var assetLpAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetLpAbi.From(assetLp);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, appBiatecIdentityProviderAbi, txAssetADeposit, txAssetBDeposit, assetAAbi, assetBAbi, assetLpAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64();
+            returnValueObj.Decode(lastLogReturnData);
+            return BitConverter.ToUInt64(ReverseIfLittleEndian(lastLogReturnData), 0);
 
         }
 
         public async Task<List<Transaction>> AddLiquidity_Transactions(Transaction txAssetADeposit, Transaction txAssetBDeposit, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong assetA, ulong assetB, ulong assetLp, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 4, 64, 250, 143 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, appBiatecIdentityProvider, txAssetADeposit, txAssetBDeposit, assetA, assetB, assetLp }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var appBiatecIdentityProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecIdentityProviderAbi.From(appBiatecIdentityProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var assetLpAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetLpAbi.From(assetLp);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, appBiatecIdentityProviderAbi, txAssetADeposit, txAssetBDeposit, assetAAbi, assetBAbi, assetLpAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -439,15 +539,32 @@ namespace BiatecClammPoolArc56
             _tx_accounts ??= new List<Address>();
             _tx_transactions.AddRange(new List<Transaction> { txLpXfer });
             byte[] abiHandle = { 84, 154, 144, 164 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, appBiatecIdentityProvider, txLpXfer, assetA, assetB, assetLp }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var appBiatecIdentityProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecIdentityProviderAbi.From(appBiatecIdentityProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var assetLpAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetLpAbi.From(assetLp);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, appBiatecIdentityProviderAbi, txLpXfer, assetAAbi, assetBAbi, assetLpAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> RemoveLiquidity_Transactions(AssetTransferTransaction txLpXfer, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong assetA, ulong assetB, ulong assetLp, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 84, 154, 144, 164 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, appBiatecIdentityProvider, txLpXfer, assetA, assetB, assetLp }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var appBiatecIdentityProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecIdentityProviderAbi.From(appBiatecIdentityProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var assetLpAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetLpAbi.From(assetLp);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, appBiatecIdentityProviderAbi, txLpXfer, assetAAbi, assetBAbi, assetLpAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -470,15 +587,30 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 137, 74, 147, 79 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, assetLp, amount }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var assetLpAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetLpAbi.From(assetLp);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, assetAAbi, assetBAbi, assetLpAbi, amount }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> RemoveLiquidityAdmin_Transactions(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 137, 74, 147, 79 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, assetLp, amount }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var assetLpAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetLpAbi.From(assetLp);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, assetAAbi, assetBAbi, assetLpAbi, amount }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -501,15 +633,34 @@ namespace BiatecClammPoolArc56
             _tx_accounts ??= new List<Address>();
             _tx_transactions.AddRange(new List<Transaction> { txSwap });
             byte[] abiHandle = { 32, 19, 52, 158 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, appBiatecIdentityProvider, appBiatecPoolProvider, txSwap, assetA, assetB, minimumToReceive }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var appBiatecIdentityProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecIdentityProviderAbi.From(appBiatecIdentityProvider);
+            var appBiatecPoolProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecPoolProviderAbi.From(appBiatecPoolProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var minimumToReceiveAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); minimumToReceiveAbi.From(minimumToReceive);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, appBiatecIdentityProviderAbi, appBiatecPoolProviderAbi, txSwap, assetAAbi, assetBAbi, minimumToReceiveAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> Swap_Transactions(Transaction txSwap, ulong appBiatecConfigProvider, ulong appBiatecIdentityProvider, ulong appBiatecPoolProvider, ulong assetA, ulong assetB, ulong minimumToReceive, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 32, 19, 52, 158 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, appBiatecIdentityProvider, appBiatecPoolProvider, txSwap, assetA, assetB, minimumToReceive }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var appBiatecIdentityProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecIdentityProviderAbi.From(appBiatecIdentityProvider);
+            var appBiatecPoolProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecPoolProviderAbi.From(appBiatecPoolProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var minimumToReceiveAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); minimumToReceiveAbi.From(minimumToReceive);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, appBiatecIdentityProviderAbi, appBiatecPoolProviderAbi, txSwap, assetAAbi, assetBAbi, minimumToReceiveAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -536,15 +687,28 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 206, 86, 68, 18 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, amountA, amountB }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, assetAAbi, assetBAbi, amountA, amountB }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> DistributeExcessAssets_Transactions(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 amountA, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 amountB, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 206, 86, 68, 18 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, amountA, amountB }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, assetAAbi, assetBAbi, amountA, amountB }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -571,15 +735,32 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 34, 183, 70, 200 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, amountA, amountB }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return BitConverter.ToUInt64(ReverseIfLittleEndian(result.First().ToArray()), 0);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var amountAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); amountAAbi.From(amountA);
+            var amountBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); amountBAbi.From(amountB);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, assetAAbi, assetBAbi, amountAAbi, amountBAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64();
+            returnValueObj.Decode(lastLogReturnData);
+            return BitConverter.ToUInt64(ReverseIfLittleEndian(lastLogReturnData), 0);
 
         }
 
         public async Task<List<Transaction>> WithdrawExcessAssets_Transactions(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong amountA, ulong amountB, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 34, 183, 70, 200 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, amountA, amountB }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var amountAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); amountAAbi.From(amountA);
+            var amountBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); amountBAbi.From(amountB);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, assetAAbi, assetBAbi, amountAAbi, amountBAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -604,14 +785,30 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 131, 146, 92, 23 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider, votePk, selectionPk, stateProofPk, voteFirst, voteLast, voteKeyDilution }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var votePkAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); votePkAbi.From(votePk);
+            var selectionPkAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); selectionPkAbi.From(selectionPk);
+            var stateProofPkAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); stateProofPkAbi.From(stateProofPk);
+            var voteFirstAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteFirstAbi.From(voteFirst);
+            var voteLastAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteLastAbi.From(voteLast);
+            var voteKeyDilutionAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteKeyDilutionAbi.From(voteKeyDilution);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, votePkAbi, selectionPkAbi, stateProofPkAbi, voteFirstAbi, voteLastAbi, voteKeyDilutionAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
         public async Task<List<Transaction>> SendOnlineKeyRegistration_Transactions(ulong appBiatecConfigProvider, byte[] votePk, byte[] selectionPk, byte[] stateProofPk, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 131, 146, 92, 23 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, votePk, selectionPk, stateProofPk, voteFirst, voteLast, voteKeyDilution }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var votePkAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); votePkAbi.From(votePk);
+            var selectionPkAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); selectionPkAbi.From(selectionPk);
+            var stateProofPkAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); stateProofPkAbi.From(stateProofPk);
+            var voteFirstAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteFirstAbi.From(voteFirst);
+            var voteLastAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteLastAbi.From(voteLast);
+            var voteKeyDilutionAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteKeyDilutionAbi.From(voteKeyDilution);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, votePkAbi, selectionPkAbi, stateProofPkAbi, voteFirstAbi, voteLastAbi, voteKeyDilutionAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -630,14 +827,18 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 9, 85, 194, 90 };
-            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProvider }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+
+            var result = await base.CallApp(new List<object> { abiHandle, appBiatecConfigProviderAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
         public async Task<List<Transaction>> SendOfflineKeyRegistration_Transactions(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 9, 85, 194, 90 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -654,15 +855,24 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 57, 236, 168, 84 };
-            var result = await base.SimApp(new List<object> { abiHandle, assetLp, currentDeposit }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var assetLpAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetLpAbi.From(assetLp);
+
+            var result = await base.SimApp(new List<object> { abiHandle, assetLpAbi, currentDeposit }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> CalculateDistributedLiquidity_Transactions(ulong assetLp, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 currentDeposit, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 57, 236, 168, 84 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, assetLp, currentDeposit }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var assetLpAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetLpAbi.From(assetLp);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, assetLpAbi, currentDeposit }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -680,14 +890,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 255, 105, 88, 22 };
+
             var result = await base.SimApp(new List<object> { abiHandle, x, y, price }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> CalculateLiquidityFlatPrice_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 x, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 y, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 price, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 255, 105, 88, 22 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle, x, y, price }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -711,14 +928,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 220, 163, 212, 214 };
+
             var result = await base.SimApp(new List<object> { abiHandle, x, y, priceMin, priceMax, priceMinSqrt, priceMaxSqrt }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> CalculateLiquidityD_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 x, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 y, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMin, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMax, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMinSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMaxSqrt, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 220, 163, 212, 214 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle, x, y, priceMin, priceMax, priceMinSqrt, priceMaxSqrt }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -739,14 +963,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 105, 214, 35, 177 };
+
             var result = await base.SimApp(new List<object> { abiHandle, x, y, priceMinSqrt, priceMaxSqrt, dSqrt }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> CalculateLiquidityWithD_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 x, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 y, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMinSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMaxSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 dSqrt, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 105, 214, 35, 177 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle, x, y, priceMinSqrt, priceMaxSqrt, dSqrt }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -767,14 +998,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 60, 44, 126, 74 };
+
             var result = await base.SimApp(new List<object> { abiHandle, assetAQuantity, assetBQuantity, priceMinSqrt, priceMaxSqrt, liquidity }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> CalculatePrice_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetAQuantity, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBQuantity, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMinSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMaxSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liquidity, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 60, 44, 126, 74 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle, assetAQuantity, assetBQuantity, priceMinSqrt, priceMaxSqrt, liquidity }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -796,14 +1034,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 75, 245, 113, 182 };
+
             var result = await base.SimApp(new List<object> { abiHandle, inAmount, assetABalance, assetBBalance, priceMinSqrt, priceMaxSqrt, liqudity }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> CalculateAssetBWithdrawOnAssetADeposit_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetABalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMinSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMaxSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 75, 245, 113, 182 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle, inAmount, assetABalance, assetBBalance, priceMinSqrt, priceMaxSqrt, liqudity }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -825,14 +1070,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 82, 247, 146, 63 };
+
             var result = await base.SimApp(new List<object> { abiHandle, inAmount, assetABalance, assetBBalance, priceMinSqrt, priceMaxSqrt, liqudity }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> CalculateAssetAWithdrawOnAssetBDeposit_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetABalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMinSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 priceMaxSqrt, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 82, 247, 146, 63 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle, inAmount, assetABalance, assetBBalance, priceMinSqrt, priceMaxSqrt, liqudity }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -851,14 +1103,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 108, 37, 179, 243 };
+
             var result = await base.SimApp(new List<object> { abiHandle, inAmount, assetABalance, liqudity }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> CalculateAssetAWithdrawOnLpDeposit_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetABalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 108, 37, 179, 243 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle, inAmount, assetABalance, liqudity }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -877,14 +1136,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 5, 252, 35, 140 };
+
             var result = await base.SimApp(new List<object> { abiHandle, inAmount, assetBBalance, liqudity }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> CalculateAssetBWithdrawOnLpDeposit_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 5, 252, 35, 140 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle, inAmount, assetBBalance, liqudity }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -907,14 +1173,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 230, 77, 221, 130 };
+
             var result = await base.SimApp(new List<object> { abiHandle, inAmountA, inAmountB, assetABalance, assetBBalance }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> CalculateAssetBDepositOnAssetADeposit_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmountA, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmountB, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetABalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 230, 77, 221, 130 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle, inAmountA, inAmountB, assetABalance, assetBBalance }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -937,14 +1210,21 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 73, 246, 131, 112 };
+
             var result = await base.SimApp(new List<object> { abiHandle, inAmountA, inAmountB, assetABalance, assetBBalance }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj;
 
         }
 
         public async Task<List<Transaction>> CalculateAssetADepositOnAssetBDeposit_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmountA, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmountB, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetABalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 73, 246, 131, 112 };
+
             return await base.MakeTransactionList(new List<object> { abiHandle, inAmountA, inAmountB, assetABalance, assetBBalance }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
@@ -956,7 +1236,7 @@ namespace BiatecClammPoolArc56
         /// <param name="assetA"> </param>
         /// <param name="assetB"> </param>
         /// <param name="assetLp"> </param>
-        public async Task<AmmStatus> Status(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<Structs.AmmStatus> Status(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -964,15 +1244,25 @@ namespace BiatecClammPoolArc56
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 79, 236, 163, 89 };
-            var result = await base.SimApp(new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, assetLp }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return AmmStatus.Parse(result.Last());
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var assetLpAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetLpAbi.From(assetLp);
+
+            var result = await base.SimApp(new List<object> { abiHandle, appBiatecConfigProviderAbi, assetAAbi, assetBAbi, assetLpAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            return Structs.AmmStatus.Parse(result.Last());
 
         }
 
         public async Task<List<Transaction>> Status_Transactions(ulong appBiatecConfigProvider, ulong assetA, ulong assetB, ulong assetLp, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 79, 236, 163, 89 };
-            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProvider, assetA, assetB, assetLp }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
+            var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
+            var assetBAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetBAbi.From(assetB);
+            var assetLpAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetLpAbi.From(assetLp);
+
+            return await base.MakeTransactionList(new List<object> { abiHandle, appBiatecConfigProviderAbi, assetAAbi, assetBAbi, assetLpAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 

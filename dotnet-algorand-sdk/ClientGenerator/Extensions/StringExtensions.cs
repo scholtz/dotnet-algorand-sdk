@@ -11,6 +11,7 @@ namespace Algorand.AVM.ClientGenerator.Extensions
     {
         public static string ToPascalCase(this string s)
         {
+            if (string.IsNullOrEmpty(s)) return "";
             var result = new StringBuilder();
             var nonWordChars = new Regex(@"[^a-zA-Z0-9]+");
             var tokens = nonWordChars.Split(s);
@@ -24,6 +25,7 @@ namespace Algorand.AVM.ClientGenerator.Extensions
 
         static string PascalCaseSingleWord(this string s)
         {
+            if (string.IsNullOrEmpty(s)) return "";
             var match = Regex.Match(s, @"^(?<word>\d+|^[a-z]+|[A-Z]+|[A-Z][a-z]+|\d[a-z]+)+$");
             var groups = match.Groups["word"];
 

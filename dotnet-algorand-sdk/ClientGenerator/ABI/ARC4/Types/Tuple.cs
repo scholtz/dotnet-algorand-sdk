@@ -9,7 +9,19 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
 {
     public class Tuple : WireType
     {
-        public List<WireType> Value { get; } = new List<WireType>();
+        public override string GetDescription()
+        {
+            if (Value.Select(w => w.GetDescription()).Distinct().Count() == 1)
+            {
+                if (IsDynamic)
+                {
+                    return $"{Value.First().GetDescription()}[]";
+                }
+                return $"{Value.First().GetDescription()}[{Value.Count}]";
+            }
+            return $"({string.Join(",", Value.Select(w => w.GetDescription()))})";
+        }
+        public List<WireType> Value { get; set; } = new List<WireType>();
 
         public override bool IsDynamic => Value.Exists(x => x.IsDynamic);
 
@@ -126,13 +138,26 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                     Value.Add(wiretype);
                 }
             }
+            if (instance is byte[] bytes)
+            {
+                foreach (var item in bytes)
+                {
+                    var wiretype = WireType.FromABIDescription(TypeHelpers.CSTypeToAbiType(item.GetType()));
+                    if (wiretype == null)
+                    {
+                        throw new Exception($"Unable to determine wiretype of {item.GetType()}");
+                    }
+                    wiretype.From(item);
+                    Value.Add(wiretype);
+                }
+            }
             return true;
         }
 
         public override object ToValue()
         {
             var list = new List<object>();
-            foreach(var item in Value)
+            foreach (var item in Value)
             {
                 list.Add(item.ToValue());
             }

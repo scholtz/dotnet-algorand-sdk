@@ -20,6 +20,13 @@ namespace AVM.ClientGenerator.ABI
             if (arrayComponent.Trim().StartsWith("[")) arrayComponent = "[]";
             return csType + arrayComponent;
         }
+        private static string checkAbiArrayType(string arrayComponent, string csType)
+        {
+            var arC = arrayComponent.Trim();
+            if (arC.Equals("[]")) return $"AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<{csType}>()";
+            if (arC.StartsWith("[")) return $"AVM.ClientGenerator.ABI.ARC4.Types.FixedArray<{csType}>({arC.TrimStart('[').TrimEnd(']')})";
+            return $"{csType}()";
+        }
 
         private static string removeArrayComponent(string methodABIType)
         {
@@ -139,7 +146,7 @@ namespace AVM.ClientGenerator.ABI
 
 
 
-        internal static (string, string) ABITypeToCSType(string parentStructName, string methodABITypeString, List<string> structs, bool isReturn)
+        internal static (string bitwidthDecorator, string dotnetArgInputType, string dotnetABIType, bool useNew) ABITypeToCSType(string parentStructName, string methodABITypeString, List<string> structs, bool isReturn)
         {
             try
             {
@@ -165,125 +172,119 @@ namespace AVM.ClientGenerator.ABI
                         bitwidthDecorator = $"[AbiBitWidth({bitwidth})] ";
                     }
 
-                    if (bitwidth == 8) return ("", checkArrayType(arrayComponent, "byte"));
-                    if (bitwidth == 16) return ("", checkArrayType(arrayComponent, "ushort"));
-                    if (bitwidth == 24) return (bitwidthDecorator, checkArrayType(arrayComponent, "uint"));
-                    if (bitwidth == 32) return ("", checkArrayType(arrayComponent, "uint"));
-                    if (bitwidth == 48) return (bitwidthDecorator, checkArrayType(arrayComponent, "uint"));
-                    if (bitwidth == 64) return ("", checkArrayType(arrayComponent, "ulong"));
-                    if (bitwidth == 128) return ("", checkArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt128"));
-                    if (bitwidth == 256) return ("", checkArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt256"));
-                    if (bitwidth == 512) return ("", checkArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt512"));
-                    if (bitwidth > 64 && bitwidth <= 512) return (bitwidthDecorator, checkArrayType(arrayComponent, $"System.Numerics.BigInteger"));
+                    if (bitwidth == 8) return ("", checkArrayType(arrayComponent, "byte"), checkAbiArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.Byte"), false);
+                    if (bitwidth == 16) return ("", checkArrayType(arrayComponent, "ushort"), checkAbiArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt16"), false);
+                    if (bitwidth == 24) return (bitwidthDecorator, checkArrayType(arrayComponent, "uint"), checkAbiArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt24"), false);
+                    if (bitwidth == 32) return ("", checkArrayType(arrayComponent, "uint"), checkAbiArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt32"), false);
+                    if (bitwidth == 48) return (bitwidthDecorator, checkArrayType(arrayComponent, "uint"), checkAbiArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt48"), false);
+                    if (bitwidth == 64) return ("", checkArrayType(arrayComponent, "ulong"), checkAbiArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt64"), false);
+                    if (bitwidth == 128) return ("", checkArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt128"), checkAbiArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt128"), false);
+                    if (bitwidth == 256) return ("", checkArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt256"), checkAbiArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt256"), false);
+                    if (bitwidth == 512) return ("", checkArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt512"), checkAbiArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt512"), false);
+                    if (bitwidth > 64 && bitwidth <= 512) return (bitwidthDecorator, checkArrayType(arrayComponent, $"System.Numerics.BigInteger"), checkAbiArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UInt"), false);
 
                     throw new Exception($"Unsupported bitwidth{bitwidth}.");
                 }
 
                 if (methodABIType.StartsWith("int"))
                 {
-                    int bitwidth = Int32.Parse(methodABIType.Remove(0, 3));
+                    //int bitwidth = Int32.Parse(methodABIType.Remove(0, 3));
 
-                    if (bitwidth < 8 || bitwidth > 512)
-                        throw new Exception($"Unsupported bitwidth {bitwidth} ");
-                    string bitwidthDecorator;
-                    if (isReturn)
-                    {
-                        bitwidthDecorator = $"[return:AbiBitWidth({bitwidth})] ";
-                    }
-                    else
-                    {
-                        bitwidthDecorator = $"[AbiBitWidth({bitwidth})] ";
-                    }
+                    //if (bitwidth < 8 || bitwidth > 512)
+                    //    throw new Exception($"Unsupported bitwidth {bitwidth} ");
+                    //string bitwidthDecorator;
+                    //if (isReturn)
+                    //{
+                    //    bitwidthDecorator = $"[return:AbiBitWidth({bitwidth})] ";
+                    //}
+                    //else
+                    //{
+                    //    bitwidthDecorator = $"[AbiBitWidth({bitwidth})] ";
+                    //}
 
-                    if (bitwidth == 8) return ("", checkArrayType(arrayComponent, "sbyte"));
-                    if (bitwidth == 16) return ("", checkArrayType(arrayComponent, "short"));
-                    if (bitwidth == 24) return (bitwidthDecorator, checkArrayType(arrayComponent, "int"));
-                    if (bitwidth == 32) return ("", checkArrayType(arrayComponent, "int"));
-                    if (bitwidth == 48) return (bitwidthDecorator, checkArrayType(arrayComponent, "int"));
-                    if (bitwidth == 64) return ("", checkArrayType(arrayComponent, "ulong"));
-                    if (bitwidth > 64 && bitwidth <= 512) return (bitwidthDecorator, checkArrayType(arrayComponent, $"System.Numerics.BigInteger"));
+                    //if (bitwidth == 8) return ("", checkArrayType(arrayComponent, "sbyte"), false);
+                    //if (bitwidth == 16) return ("", checkArrayType(arrayComponent, "short"), false);
+                    //if (bitwidth == 24) return (bitwidthDecorator, checkArrayType(arrayComponent, "int"), false);
+                    //if (bitwidth == 32) return ("", checkArrayType(arrayComponent, "int"), false);
+                    //if (bitwidth == 48) return (bitwidthDecorator, checkArrayType(arrayComponent, "int"), false);
+                    //if (bitwidth == 64) return ("", checkArrayType(arrayComponent, "ulong"), false);
+                    //if (bitwidth > 64 && bitwidth <= 512) return (bitwidthDecorator, checkArrayType(arrayComponent, $"System.Numerics.BigInteger"), false);
 
-                    throw new Exception($"Unsupported bitwidth{bitwidth}.");
+                    // throw new Exception($"Unsupported bitwidth{bitwidth}.");
+                    throw new Exception($"Integers are currently not supported. Please use unsigned integers.");
                 }
 
                 if (methodABIType == "datetime")
                 {
-                    return ("", checkArrayType(arrayComponent, "int"));
+                    return ("", checkArrayType(arrayComponent, "ulong"), checkAbiArrayType(arrayComponent, $"AVM.ClientGenerator.ABI.ARC4.Types.UInt64"), false);
                 }
 
-                if (methodABIType == "byte")
+                if (methodABIType == "byte" || methodABIType == "sbyte")
                 {
-                    return ("", checkArrayType(arrayComponent, "byte"));
+                    return ("", checkArrayType(arrayComponent, methodABIType), checkAbiArrayType(arrayComponent, $"AVM.ClientGenerator.ABI.ARC4.Types.Byte"), false);
+
                 }
-                if (methodABIType == "sbyte")
+                if (methodABIType == "bigint" || methodABIType == "ubigint")
                 {
-                    return ("", checkArrayType(arrayComponent, "sbyte"));
+                    return ("", checkArrayType(arrayComponent, "System.Numerics.BigInteger"), checkAbiArrayType(arrayComponent, $"AVM.ClientGenerator.ABI.ARC4.Types.UInt"), false);
                 }
 
-                if (methodABIType == "bigint")
-                {
-                    return ("", checkArrayType(arrayComponent, "System.Numerics.BigInteger"));
-                }
-
-                if (methodABIType == "ubigint")
-                {
-                    return ("", checkArrayType(arrayComponent, "System.Numerics.BigInteger"));
-                }
                 if (methodABIType == "bool")
                 {
-                    return ("", checkArrayType(arrayComponent, "bool"));
+                    return ("", checkArrayType(arrayComponent, methodABIType), checkAbiArrayType(arrayComponent, $"AVM.ClientGenerator.ABI.ARC4.Types.Bool"), false);
+
                 }
 
                 if (methodABIType.StartsWith("ufixed"))
                 {
-                    return ("", checkArrayType(arrayComponent, $"unsupported_{methodABIType}"));
+                    return ("", checkArrayType(arrayComponent, methodABIType), checkAbiArrayType(arrayComponent, $"AVM.ClientGenerator.ABI.ARC4.Types.UFixed"), false);
+
                 }
                 if (methodABIType.StartsWith("decimal"))
                 {
-                    return ("", checkArrayType(arrayComponent, $"System.Decimal"));
+                    return ("", checkArrayType(arrayComponent, "System.Decimal"), checkAbiArrayType(arrayComponent, $"AVM.ClientGenerator.ABI.ARC4.Types.UFixed"), false);
                 }
 
-                if (methodABIType == "address")
+                if (methodABIType == "address" || methodABIType == "account")
                 {
-                    return ("", checkArrayType(arrayComponent, "byte[]"));
+                    return ("", checkArrayType(arrayComponent, "Algorand.Address"), checkAbiArrayType(arrayComponent, $"AVM.ClientGenerator.ABI.ARC4.Types.Address"), false);
+
                 }
 
-                if (methodABIType == "account")
-                {
-                    return ("", checkArrayType(arrayComponent, "byte"));
-                }
                 if (methodABIType == "asset")
                 {
-                    return ("", checkArrayType(arrayComponent, "byte"));
+                    return ("", checkArrayType(arrayComponent, "ulong"), checkAbiArrayType(arrayComponent, $"AVM.ClientGenerator.ABI.ARC4.Types.Asset"), false);
+
                 }
                 if (methodABIType == "application")
                 {
-                    return ("", checkArrayType(arrayComponent, "byte"));
-                }
+                    return ("", checkArrayType(arrayComponent, "ulong"), checkAbiArrayType(arrayComponent, $"AVM.ClientGenerator.ABI.ARC4.Types.Application"), false);
 
+                }
                 if (methodABIType == "string")
                 {
-                    return ("", checkArrayType(arrayComponent, "string"));
+                    return ("", checkArrayType(arrayComponent, "string"), checkAbiArrayType(arrayComponent, $"AVM.ClientGenerator.ABI.ARC4.Types.String"), false);
                 }
-
                 if (methodABIType == "void")
                 {
-                    return ("", "void");
+                    return ("", "void", "", false);
                 }
 
                 if (methodABIType.StartsWith("("))
                 {
                     TypeToStructs(ARC4.MethodDescription.FormatStructName(parentStructName), methodABIType, structs);
-                    return ("", checkArrayType(arrayComponent, parentStructName));
+                    return ("", checkArrayType(arrayComponent, parentStructName), "", false);
                 }
 
                 if (methodABIType.StartsWith("ref:"))
                 {
-                    return ("", "object");
+                    return ("", "object", "", false);
                 }
 
+                // when we get here, it means we do the inner recursion to other struct
 
-                throw new Exception($"Unknown type  {methodABIType}");
+                return ("", "Structs." + ARC4.MethodDescription.FormatStructName(parentStructName), "", true);
+                //throw new Exception($"Unknown type  {methodABIType}");
 
             }
             catch (Exception ex)
@@ -299,9 +300,10 @@ namespace AVM.ClientGenerator.ABI
         {
             { "void", ABI.ABIType["void"] },
             { "bool", ABI.ABIType["bool"] },
-            { typeof(Boolean).Name, ABI.ABIType["bool"] },
+            { typeof(bool).Name, ABI.ABIType["bool"] },
             { "byte", ABI.ABIType["byte"] },
-            { typeof(Byte).Name, ABI.ABIType["byte"]},
+            { "System.Byte", ABI.ABIType["byte"]},
+            { "Byte", ABI.ABIType["byte"]},
             { "sbyte", ABI.ABIType["byte"] },
             { typeof(SByte).Name, ABI.ABIType["byte"]  },
             { "char", ABI.ABIType["byte"]},
@@ -321,12 +323,14 @@ namespace AVM.ClientGenerator.ABI
             { "System.Numerics.BigInteger", ABI.ABIType["bigint"] },
             { "decimal", ABI.ABIType["decimal"] },
             { typeof(Decimal).Name, ABI.ABIType["decimal"]},
+            { "byte[]", ABI.ABIType["string"]},
+            { typeof(byte[]).Name, ABI.ABIType["string"]},
             { "string", ABI.ABIType["string"]},
             { "String", ABI.ABIType["string"]},
         };
 
 
-        internal static (string bitwidthAttrib, string type) GetCSType(string parentStructName, string abiType, string sourceType, List<string> structs, bool isReturn)
+        internal static (string bitwidthAttrib, string type, string abiType, bool useNew) GetCSType(string parentStructName, string abiType, string sourceType, List<string> structs, bool isReturn)
         {
             if (String.IsNullOrWhiteSpace(sourceType))
             {
@@ -334,7 +338,7 @@ namespace AVM.ClientGenerator.ABI
             }
             else
             {
-                return ("", sourceType);
+                return ("", $"Structs.{ARC4.MethodDescription.FormatStructName(sourceType)}", "", false);
             }
         }
 
@@ -437,7 +441,7 @@ namespace AVM.ClientGenerator.ABI
                     outputParmType = "AssetFreezeTransaction";
                     break;
                 case "appl":
-                    outputParmType = "AppCallTransaction";
+                    outputParmType = "ApplicationCallTransaction";
                     break;
                 case "AVM.ClientGenerator.Core.TransactionReference":
                     outputParmType = "Transaction";

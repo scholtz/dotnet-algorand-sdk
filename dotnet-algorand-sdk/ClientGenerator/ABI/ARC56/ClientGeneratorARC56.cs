@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Formatting;
 using Microsoft.CodeAnalysis.Formatting;
 using System.Linq.Expressions;
+using AVM.ClientGenerator.ABI.ARC4.Types;
 
 namespace Algorand.AVM.ClientGenerator.ABI.ARC56
 {
@@ -128,9 +129,14 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         }
         private void defineStructs(Code proxyBody)
         {
+            var structsObj = proxyBody.AddChild();
+            structsObj.AddOpeningLine($"public class Structs");
+            structsObj.AddOpeningLine("{");
+            structsObj.AddClosingLine("}");
+
             foreach (var item in Contract.Structs)
             {
-                var structObj = proxyBody.AddChild();
+                var structObj = structsObj.AddChild();
                 structObj.AddOpeningLine($"public class {item.Key.ToPascalCase()} : AVMObjectType");
                 structObj.AddOpeningLine("{");
                 structObj.AddClosingLine("}");
@@ -139,7 +145,8 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 {
                     var structItemObj = structObj.AddChild();
                     var p = TypeHelpers.ABITypeToCSType(structItem.Type, structItem.Type, new List<string>(), false);
-                    structItemObj.AddOpeningLine($"public {p.Item2} {structItem.Name.ToPascalCase()} {{get; set;}}");
+                    var appendInitiator = p.useNew ? $" = new {p.Item2}();" : "";
+                    structItemObj.AddOpeningLine($"public {p.Item2} {structItem.Name.ToPascalCase()} {{get; set;}}{appendInitiator}");
                 }
                 // ToByteArray()
                 var structF1 = structObj.AddChild();
@@ -154,21 +161,31 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
 
                 foreach (var structItem in item.Value)
                 {
-                    if (structItem.Type == "string")
+                    var abiDescriptor = WireType.FromABIDescription(structItem.Type);
+                    if (abiDescriptor == null)
                     {
-                        structF1.AddOpeningLine($"AVM.ClientGenerator.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
-                        structF1.AddOpeningLine($"v{structItem.Name.ToPascalCase()}.From({structItem.Name.ToPascalCase()});");
-                        structF1.AddOpeningLine($"stringRef[ret.Count] = v{structItem.Name.ToPascalCase()}.Encode();");
+                        // struct usage
+                        structF1.AddOpeningLine($"stringRef[ret.Count] = {structItem.Name.ToPascalCase()}.ToByteArray();");
                         structF1.AddOpeningLine($"ret.AddRange(new byte[2]);");
                     }
                     else
                     {
+                        if (structItem.Type == "string")
+                        {
+                            structF1.AddOpeningLine($"AVM.ClientGenerator.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
+                            structF1.AddOpeningLine($"v{structItem.Name.ToPascalCase()}.From({structItem.Name.ToPascalCase()});");
+                            structF1.AddOpeningLine($"stringRef[ret.Count] = v{structItem.Name.ToPascalCase()}.Encode();");
+                            structF1.AddOpeningLine($"ret.AddRange(new byte[2]);");
+                        }
+                        else
+                        {
 
-                        structF1.AddOpeningLine($"AVM.ClientGenerator.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
-                        structF1.AddOpeningLine($"v{structItem.Name.ToPascalCase()}.From({structItem.Name.ToPascalCase()});");
-                        structF1.AddOpeningLine($"ret.AddRange(v{structItem.Name.ToPascalCase()}.Encode());");
+                            structF1.AddOpeningLine($"AVM.ClientGenerator.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
+                            structF1.AddOpeningLine($"v{structItem.Name.ToPascalCase()}.From({structItem.Name.ToPascalCase()});");
+                            structF1.AddOpeningLine($"ret.AddRange(v{structItem.Name.ToPascalCase()}.Encode());");
+                        }
+
                     }
-
                 }
                 structF1.AddOpeningLine("foreach (var item in stringRef)\r\n                {\r\n                    var b1 = ret.Count;\r\n                    ret[item.Key] = Convert.ToByte(b1 / 256);\r\n                    ret[item.Key + 1] = Convert.ToByte(b1 % 256);\r\n                    ret.AddRange(item.Value);\r\n                }");
                 structF1.AddOpeningLine("return ret.ToArray();");
@@ -190,32 +207,79 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
 
                 foreach (var structItem in item.Value)
                 {
-                    if (structItem.Type == "string")
+                    var abiDescriptor = WireType.FromABIDescription(structItem.Type);
+                    if (abiDescriptor == null)
                     {
                         structF2.AddOpeningLine($"var index{structItem.Name.ToPascalCase()} = queue.Dequeue() * 256 + queue.Dequeue();");
-                        structF2.AddOpeningLine($"AVM.ClientGenerator.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
-                        structF2.AddOpeningLine($"v{structItem.Name.ToPascalCase()}.Decode(bytes.Skip(index{structItem.Name.ToPascalCase()} + prefixOffset).ToArray());");
+                        // struct usage
+                        var name = MethodDescription.FormatStructName(structItem.Type, true);
+                        //structF2.AddOpeningLine($"{name} v{structItem.Name.ToPascalCase()} = new {name}();");
+                        //structF2.AddOpeningLine($"v{structItem.Name.ToPascalCase()}.Decode(bytes.Skip(index{structItem.Name.ToPascalCase()} + prefixOffset).ToArray());");
 
-                        structF2.AddOpeningLine($"var value{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}.ToValue();");
-                        structF2.AddOpeningLine($"if (value{structItem.Name.ToPascalCase()} is string v{structItem.Name.ToPascalCase()}Value) {{ ret.{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}Value; }}");
+                        structF2.AddOpeningLine($"ret.{structItem.Name.ToPascalCase()} = {name}.Parse(bytes.Skip(index{structItem.Name.ToPascalCase()} + prefixOffset).ToArray());");
+
                     }
                     else
                     {
-                        structF2.AddOpeningLine($"AVM.ClientGenerator.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
-                        structF2.AddOpeningLine($"count = v{structItem.Name.ToPascalCase()}.Decode(queue.ToArray());");
-                        structF2.AddOpeningLine($"for (int i = 0; i < Convert.ToInt32(count); i++){{queue.Dequeue();}}");
-                        structF2.AddOpeningLine($"var value{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}.ToValue();");
                         var p = TypeHelpers.ABITypeToCSType(structItem.Type, structItem.Type, new List<string>(), false);
-                        structF2.AddOpeningLine($"if (value{structItem.Name.ToPascalCase()} is {p.Item2} v{structItem.Name.ToPascalCase()}Value){{ret.{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}Value;}}");
+                        if (abiDescriptor.GetType().ToString() == p.dotnetArgInputType)
+                        {
+                            structF2.AddOpeningLine($"var v{structItem.Name.ToPascalCase()} = new {p.dotnetArgInputType}();");
+                            structF2.AddOpeningLine($"count = v{structItem.Name.ToPascalCase()}.Decode(queue.ToArray());");
+                            structF2.AddOpeningLine($"for (int i = 0; i < Convert.ToInt32(count); i++){{queue.Dequeue();}}");
+                            structF2.AddOpeningLine($"ret.{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()};");
+
+                        }
+                        else  if (structItem.Type == "string")
+                        {
+                            structF2.AddOpeningLine($"var index{structItem.Name.ToPascalCase()} = queue.Dequeue() * 256 + queue.Dequeue();");
+                            structF2.AddOpeningLine($"AVM.ClientGenerator.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
+                            structF2.AddOpeningLine($"v{structItem.Name.ToPascalCase()}.Decode(bytes.Skip(index{structItem.Name.ToPascalCase()} + prefixOffset).ToArray());");
+                            structF2.AddOpeningLine($"var value{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}.ToValue();");
+                            structF2.AddOpeningLine($"if (value{structItem.Name.ToPascalCase()} is string v{structItem.Name.ToPascalCase()}Value) {{ ret.{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}Value; }}");
+                        }
+                        else
+                        {
+                            structF2.AddOpeningLine($"AVM.ClientGenerator.ABI.ARC4.Types.WireType v{structItem.Name.ToPascalCase()} = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription(\"{structItem.Type}\");");
+                            structF2.AddOpeningLine($"count = v{structItem.Name.ToPascalCase()}.Decode(queue.ToArray());");
+                            structF2.AddOpeningLine($"for (int i = 0; i < Convert.ToInt32(count); i++){{queue.Dequeue();}}");
+                            structF2.AddOpeningLine($"var value{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}.ToValue();");
+                            structF2.AddOpeningLine($"if (value{structItem.Name.ToPascalCase()} is {p.dotnetArgInputType} v{structItem.Name.ToPascalCase()}Value){{ret.{structItem.Name.ToPascalCase()} = v{structItem.Name.ToPascalCase()}Value;}}");
+                        }
                     }
                 }
                 structF2.AddOpeningLine("return ret;");
 
+                var structF3 = structObj.AddChild();
+                structF3.AddOpeningLine("public override string ToString()");
+                structF3.AddOpeningLine("{");
+                structF3.AddOpeningLine("return $\"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace(\"-\", \"\")}\";");
+                structF3.AddOpeningLine("}");
+                structF3.AddOpeningLine("public override bool Equals(object obj)");
+                structF3.AddOpeningLine("{");
+                structF3.AddOpeningLine($"return Equals(obj as {item.Key.ToPascalCase()});");
+                structF3.AddOpeningLine("}");
+                structF3.AddOpeningLine($"public bool Equals({item.Key.ToPascalCase()} other)");
+                structF3.AddOpeningLine("{");
+                structF3.AddOpeningLine("return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());");
+                structF3.AddOpeningLine("}");
+                structF3.AddOpeningLine("public override int GetHashCode()");
+                structF3.AddOpeningLine("{");
+                structF3.AddOpeningLine("return ToByteArray().GetHashCode();");
+                structF3.AddOpeningLine("}");
+                structF3.AddOpeningLine($"public static bool operator ==({item.Key.ToPascalCase()} left, {item.Key.ToPascalCase()} right)");
+                structF3.AddOpeningLine("{");
+                structF3.AddOpeningLine($"return EqualityComparer<{item.Key.ToPascalCase()}>.Default.Equals(left, right);");
+                structF3.AddOpeningLine("}");
+                structF3.AddOpeningLine($"public static bool operator !=({item.Key.ToPascalCase()} left, {item.Key.ToPascalCase()} right)");
+                structF3.AddOpeningLine("{");
+                structF3.AddOpeningLine("return !(left == right);");
+                structF3.AddOpeningLine("}");
             }
         }
         private void defineMethods(Code proxyBody, List<string> structs)
         {
-            if (!this.Contract.Methods.Any(m => m.Name == "CreateApplication"))
+            if (!this.Contract.Methods.Any(m => m.Name.ToLower() == "createapplication"))
             {
                 // make custom deploy method
                 this.Contract.Methods.Add(new Method()
@@ -279,9 +343,19 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 var allParameters = transactionParameterDefinitions.Concat(appRefParameterDefinitions).Concat(accountRefParameterDefinitions).Concat(assetRefParameterDefinitions).Concat(argParameterDefinitions);
 
                 string parameters = string.Join(",", allParameters);
-
-                string argsList = "new List<object> {" + string.Join(",", new List<string> { "abiHandle" }.Concat(method.Args.Select(p => p.Name))) + "}";
-                if(method.Description == "Constructor Bare Action")
+                var prependArgs = "";
+                var convertedToAbi = new HashSet<string>();
+                foreach (var arg in method.Args)
+                {
+                    var type = TypeHelpers.GetCSType(arg.Name, arg.Type, arg.Struct, structs, false);
+                    if (type.abiType.StartsWith("AVM.") && !type.abiType.StartsWith(type.type))
+                    {
+                        prependArgs += $"var {arg.Name}Abi = new {type.abiType};{arg.Name}Abi.From({arg.Name});\n";
+                        convertedToAbi.Add(arg.Name);
+                    }
+                }
+                string argsList = "new List<object> {" + string.Join(",", new List<string> { "abiHandle" }.Concat(method.Args.Select(p => convertedToAbi.Contains(p.Name) ? p.Name + "Abi" : p.Name))) + "}";
+                if (method.Description == "Constructor Bare Action")
                 {
                     argsList = "new List<object> {}";
                 }
@@ -357,8 +431,8 @@ $@"///<summary>
                 }
 
 
-                abiMethodBody.AddOpeningLine($"byte[] abiHandle = {{{String.Join(",", method.ToARC4MethodSelector())}}};");
-
+                abiMethodBody.AddOpeningLine($"byte[] abiHandle = {{{string.Join(",", method.ToARC4MethodSelector())}}};");
+                abiMethodBody.AddOpeningLine(prependArgs);
                 var simOrCall = "CallApp";
                 if (method.ReadOnly == true)
                 {
@@ -369,13 +443,18 @@ $@"///<summary>
 
                 if (t.type != "void")
                 {
-                    if (t.type == returnType.Struct)
+                    if (t.type == $"Structs.{MethodDescription.FormatStructName(returnType.Struct)}")
                     {
-                        abiMethodBody.AddOpeningLine($"return {returnType.Struct}.Parse(result.Last());");
+                        abiMethodBody.AddOpeningLine($"return {t.type}.Parse(result.Last());");
                     }
                     else
                     if (ProxyGenerator.returnTypeConversions.TryGetValue(t.type, out string retline))
                     {
+                        abiMethodBody.AddOpeningLine("var lastLogBytes = result.Last();");
+                        abiMethodBody.AddOpeningLine("if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception(\"Invalid ABI handle\");");
+                        abiMethodBody.AddOpeningLine("var lastLogReturnData = lastLogBytes.Skip(4).ToArray();");
+                        abiMethodBody.AddOpeningLine($"var returnValueObj = new {t.abiType};");
+                        abiMethodBody.AddOpeningLine($"returnValueObj.Decode(lastLogReturnData);");
                         abiMethodBody.AddOpeningLine(retline);
                     }
                     else
@@ -385,7 +464,8 @@ $@"///<summary>
                 }
 
                 var abiMethodBodyForTransactions = abiMethodForTransactions.AddChild();
-                abiMethodBodyForTransactions.AddOpeningLine($"byte[] abiHandle = {{{String.Join(",", method.ToARC4MethodSelector())}}};");
+                abiMethodBodyForTransactions.AddOpeningLine($"byte[] abiHandle = {{{string.Join(",", method.ToARC4MethodSelector())}}};");
+                abiMethodBodyForTransactions.AddOpeningLine(prependArgs);
                 abiMethodBodyForTransactions.AddOpeningLine($"return await base.MakeTransactionList({argsList}, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions , _tx_apps: _tx_apps, _tx_assets:_tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);");
             }
         }
