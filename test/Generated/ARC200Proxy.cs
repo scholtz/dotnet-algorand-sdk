@@ -35,9 +35,9 @@ namespace ARC200
             {
                 public AVM.ClientGenerator.ABI.ARC4.Types.UInt256 ApprovalAmount { get; set; }
 
-                public byte[] Owner { get; set; }
+                public Algorand.Address Owner { get; set; }
 
-                public byte[] Spender { get; set; }
+                public Algorand.Address Spender { get; set; }
 
                 public byte[] ToByteArray()
                 {
@@ -75,23 +75,47 @@ namespace ARC200
                     }
                     var ret = new ApprovalStruct();
                     uint count = 0;
-                    AVM.ClientGenerator.ABI.ARC4.Types.WireType vApprovalAmount = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint256");
+                    var vApprovalAmount = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
                     count = vApprovalAmount.Decode(queue.ToArray());
                     for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
-                    var valueApprovalAmount = vApprovalAmount.ToValue();
-                    if (valueApprovalAmount is AVM.ClientGenerator.ABI.ARC4.Types.UInt256 vApprovalAmountValue) { ret.ApprovalAmount = vApprovalAmountValue; }
+                    ret.ApprovalAmount = vApprovalAmount;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vOwner = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("address");
                     count = vOwner.Decode(queue.ToArray());
                     for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                     var valueOwner = vOwner.ToValue();
-                    if (valueOwner is byte[] vOwnerValue) { ret.Owner = vOwnerValue; }
+                    if (valueOwner is Algorand.Address vOwnerValue) { ret.Owner = vOwnerValue; }
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vSpender = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("address");
                     count = vSpender.Decode(queue.ToArray());
                     for (int i = 0; i < Convert.ToInt32(count); i++) { queue.Dequeue(); }
                     var valueSpender = vSpender.ToValue();
-                    if (valueSpender is byte[] vSpenderValue) { ret.Spender = vSpenderValue; }
+                    if (valueSpender is Algorand.Address vSpenderValue) { ret.Spender = vSpenderValue; }
                     return ret;
 
+                }
+
+                public override string ToString()
+                {
+                    return $"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace("-", "")}";
+                }
+                public override bool Equals(object obj)
+                {
+                    return Equals(obj as ApprovalStruct);
+                }
+                public bool Equals(ApprovalStruct other)
+                {
+                    return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());
+                }
+                public override int GetHashCode()
+                {
+                    return ToByteArray().GetHashCode();
+                }
+                public static bool operator ==(ApprovalStruct left, ApprovalStruct right)
+                {
+                    return EqualityComparer<ApprovalStruct>.Default.Equals(left, right);
+                }
+                public static bool operator !=(ApprovalStruct left, ApprovalStruct right)
+                {
+                    return !(left == right);
                 }
 
             }
@@ -158,7 +182,6 @@ namespace ARC200
             returnValueObj.Decode(lastLogReturnData);
             return returnValueObj.ToByteArray();
 
-
         }
 
         public async Task<List<Transaction>> Arc200Name_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
@@ -188,7 +211,6 @@ namespace ARC200
             var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.FixedArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(8);
             returnValueObj.Decode(lastLogReturnData);
             return returnValueObj.ToByteArray();
-
 
         }
 

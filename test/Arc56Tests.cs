@@ -217,10 +217,12 @@ namespace test
                 KycExpiration = 9,
                 InvestorForExpiration = 10,
                 IsProfessionalInvestor = true,
+                FeeMultiplier = 2_000_000_000,
+                FeeMultiplierBase = 1_000_000_000,
 
             };
             var data = BitConverter.ToString(obj.ToByteArray()).Replace("-", "").ToLower();
-            Assert.That(data, Is.EqualTo("00000000000000010000000000000002800057007d000000000000000300000000000000040000000000000005000000000000000600000000000000070000000000000008800000000000000009000000000000000a80002430303030303030302d303030302d303030302d303030302d303030303030303030303030002430303030303030302d303030302d303030302d303030302d303030303030303030303030"));
+            Assert.That(data, Is.EqualTo("0000000000000002800000000077359400000000003b9aca000000000000000009000000000000000a0000000000000001800067008d00000000000000030000000000000004000000000000000500000000000000060000000000000007000000000000000880002430303030303030302d303030302d303030302d303030302d303030303030303030303030002430303030303030302d303030302d303030302d303030302d303030303030303030303030"));
 
             obj = new BiatecIdentityArc56.BiatecIdentityProviderProxy.Structs.IdentityInfo()
             {
@@ -239,10 +241,12 @@ namespace test
                 KycExpiration = 9,
                 InvestorForExpiration = 10,
                 IsProfessionalInvestor = false,
+                FeeMultiplier = 2_000_000_000,
+                FeeMultiplierBase = 1_000_000_000,
 
             };
             data = BitConverter.ToString(obj.ToByteArray()).Replace("-", "").ToLower();
-            Assert.That(data, Is.EqualTo("00000000000000010000000000000002000057007d000000000000000300000000000000040000000000000005000000000000000600000000000000070000000000000008000000000000000009000000000000000a00002430303030303030302d303030302d303030302d303030302d303030303030303030303030002430303030303030302d303030302d303030302d303030302d303030303030303030303030"));
+            Assert.That(data, Is.EqualTo("0000000000000002000000000077359400000000003b9aca000000000000000009000000000000000a0000000000000001000067008d00000000000000030000000000000004000000000000000500000000000000060000000000000007000000000000000800002430303030303030302d303030302d303030302d303030302d303030303030303030303030002430303030303030302d303030302d303030302d303030302d303030303030303030303030"));
 
             obj = new BiatecIdentityArc56.BiatecIdentityProviderProxy.Structs.IdentityInfo()
             {
@@ -252,8 +256,7 @@ namespace test
 
             };
             data = BitConverter.ToString(obj.ToByteArray()).Replace("-", "").ToLower();
-
-            Assert.That(data, Is.EqualTo("00000000000000010000000000000000000057007d000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002430303030303030302d303030302d303030302d303030302d303030303030303030303030002430303030303030302d303030302d303030302d303030302d303030303030303030303030"));
+            Assert.That(data, Is.EqualTo("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000067008d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002430303030303030302d303030302d303030302d303030302d303030303030303030303030002430303030303030302d303030302d303030302d303030302d303030303030303030303030"));
         }
 
         [Test]
@@ -299,6 +302,9 @@ namespace test
                     _tx_note: "",
                     _tx_apps: new List<ulong>() { contractConf.appId }
                     );
+                
+                Console.WriteLine($"contractConf: {contractConf.appId}");
+                Console.WriteLine($"contractBI: {contractBI.appId}");
 
                 var transParams = await algodApiInstance.TransactionParamsAsync();
                 var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct1.Address, contractBI.AppAddress, 1_000_000, "", transParams);
@@ -317,7 +323,9 @@ namespace test
                     IsCompany = false,
                     AvmEngagementPoints = 0,
                     IsLocked = false,
-                    KycExpiration = 0
+                    KycExpiration = 0,
+                    FeeMultiplierBase = 1_000_000_000,
+                    FeeMultiplier = 2_000_000_000
                 }, acct1, 1000, _tx_apps: new List<ulong>() { contractConf.appId, contractBI.appId },
                 _tx_boxes: new List<BoxRef>()
                 {
@@ -354,7 +362,9 @@ namespace test
                     IsCompany = true,
                     AvmEngagementPoints = 123,
                     IsLocked = false,
-                    KycExpiration = ulongV
+                    KycExpiration = ulongV,
+                    FeeMultiplierBase = 1_000_000_000,
+                    FeeMultiplier = 1_000_000_000
                 }, acct1, 1000, _tx_apps: new List<ulong>() { contractConf.appId, contractBI.appId },
                 _tx_boxes: new List<BoxRef>()
                 {
