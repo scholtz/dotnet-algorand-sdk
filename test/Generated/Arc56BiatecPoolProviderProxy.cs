@@ -22,7 +22,7 @@ namespace BiatecPoolProviderArc56
 
         public BiatecPoolProviderProxy(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId)
         {
-            App = Newtonsoft.Json.JsonConvert.DeserializeObject<AVM.ClientGenerator.ABI.ARC56.AppDescriptionArc56>(Encoding.UTF8.GetString(Convert.FromBase64String(_ARC56DATA)));
+            App = Newtonsoft.Json.JsonConvert.DeserializeObject<AVM.ClientGenerator.ABI.ARC56.AppDescriptionArc56>(Encoding.UTF8.GetString(Convert.FromBase64String(_ARC56DATA))) ?? throw new Exception("Error reading ARC56 data");
 
         }
 
@@ -625,11 +625,11 @@ namespace BiatecPoolProviderArc56
                 {
                     return $"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace("-", "")}";
                 }
-                public override bool Equals(object obj)
+                public override bool Equals(object? obj)
                 {
                     return Equals(obj as AppPoolInfo);
                 }
-                public bool Equals(AppPoolInfo other)
+                public bool Equals(AppPoolInfo? other)
                 {
                     return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());
                 }
@@ -745,11 +745,11 @@ namespace BiatecPoolProviderArc56
                 {
                     return $"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace("-", "")}";
                 }
-                public override bool Equals(object obj)
+                public override bool Equals(object? obj)
                 {
                     return Equals(obj as PoolConfig);
                 }
-                public bool Equals(PoolConfig other)
+                public bool Equals(PoolConfig? other)
                 {
                     return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());
                 }
@@ -885,11 +885,11 @@ namespace BiatecPoolProviderArc56
                 {
                     return $"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace("-", "")}";
                 }
-                public override bool Equals(object obj)
+                public override bool Equals(object? obj)
                 {
                     return Equals(obj as FullConfig);
                 }
-                public bool Equals(FullConfig other)
+                public bool Equals(FullConfig? other)
                 {
                     return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());
                 }
@@ -965,11 +965,11 @@ namespace BiatecPoolProviderArc56
                 {
                     return $"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace("-", "")}";
                 }
-                public override bool Equals(object obj)
+                public override bool Equals(object? obj)
                 {
                     return Equals(obj as AssetsCombined);
                 }
-                public bool Equals(AssetsCombined other)
+                public bool Equals(AssetsCombined? other)
                 {
                     return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());
                 }
@@ -994,7 +994,7 @@ namespace BiatecPoolProviderArc56
         ///Biatec deploys single pool provider smart contract
         ///</summary>
         /// <param name="appBiatecConfigProvider">Biatec amm provider </param>
-        public async Task Bootstrap(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task Bootstrap(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1008,7 +1008,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> Bootstrap_Transactions(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> Bootstrap_Transactions(ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 160, 202, 223, 138 };
             var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
@@ -1021,7 +1021,7 @@ namespace BiatecPoolProviderArc56
         ///Returns current status
         ///</summary>
         /// <param name="appPoolId">Pool id to retrieve the stats </param>
-        public async Task<Structs.AppPoolInfo> GetCurrentStatus(ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<Structs.AppPoolInfo> GetCurrentStatus(ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1036,7 +1036,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> GetCurrentStatus_Transactions(ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> GetCurrentStatus_Transactions(ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 53, 87, 70, 187 };
             var appPoolIdAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appPoolIdAbi.From(appPoolId);
@@ -1048,7 +1048,7 @@ namespace BiatecPoolProviderArc56
         ///<summary>
         ///Initial setup
         ///</summary>
-        public async Task CreateApplication(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task CreateApplication(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1061,7 +1061,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> CreateApplication_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> CreateApplication_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 184, 68, 123, 54 };
 
@@ -1074,7 +1074,7 @@ namespace BiatecPoolProviderArc56
         ///</summary>
         /// <param name="appBiatecConfigProvider"> </param>
         /// <param name="newVersion"> </param>
-        public async Task UpdateApplication(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task UpdateApplication(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1089,7 +1089,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> UpdateApplication_Transactions(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> UpdateApplication_Transactions(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 95, 200, 133, 160 };
             var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
@@ -1106,7 +1106,7 @@ namespace BiatecPoolProviderArc56
         /// <param name="approvalProgramSize"> </param>
         /// <param name="offset"> </param>
         /// <param name="data"> </param>
-        public async Task LoadClammContractData(ulong appBiatecConfigProvider, ulong approvalProgramSize, ulong offset, byte[] data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task LoadClammContractData(ulong appBiatecConfigProvider, ulong approvalProgramSize, ulong offset, byte[] data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1123,7 +1123,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> LoadClammContractData_Transactions(ulong appBiatecConfigProvider, ulong approvalProgramSize, ulong offset, byte[] data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> LoadClammContractData_Transactions(ulong appBiatecConfigProvider, ulong approvalProgramSize, ulong offset, byte[] data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 196, 185, 129, 215 };
             var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
@@ -1139,7 +1139,7 @@ namespace BiatecPoolProviderArc56
         ///No op tx to increase the app call and box size limits
         ///</summary>
         /// <param name="i"> </param>
-        public async Task Noop(ulong i, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task Noop(ulong i, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1153,7 +1153,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> Noop_Transactions(ulong i, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> Noop_Transactions(ulong i, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 27, 140, 169, 25 };
             var iAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); iAbi.From(i);
@@ -1175,7 +1175,7 @@ namespace BiatecPoolProviderArc56
         /// <param name="priceMax">Max price range. At this point all assets are in asset B. </param>
         /// <param name="currentPrice">Deployer can specify the current price for easier deployemnt. </param>
         /// <param name="verificationClass">Minimum verification level from the biatec identity. Level 0 means no kyc. </param>
-        public async Task<ulong> DeployPool(PaymentTransaction txSeed, ulong assetA, ulong assetB, ulong appBiatecConfigProvider, ulong appBiatecPoolProvider, ulong fee, ulong priceMin, ulong priceMax, ulong currentPrice, ulong verificationClass, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<ulong> DeployPool(PaymentTransaction txSeed, ulong assetA, ulong assetB, ulong appBiatecConfigProvider, ulong appBiatecPoolProvider, ulong fee, ulong priceMin, ulong priceMax, ulong currentPrice, ulong verificationClass, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1204,7 +1204,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> DeployPool_Transactions(PaymentTransaction txSeed, ulong assetA, ulong assetB, ulong appBiatecConfigProvider, ulong appBiatecPoolProvider, ulong fee, ulong priceMin, ulong priceMax, ulong currentPrice, ulong verificationClass, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> DeployPool_Transactions(PaymentTransaction txSeed, ulong assetA, ulong assetB, ulong appBiatecConfigProvider, ulong appBiatecPoolProvider, ulong fee, ulong priceMin, ulong priceMax, ulong currentPrice, ulong verificationClass, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 77, 159, 255, 167 };
             var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
@@ -1224,7 +1224,7 @@ namespace BiatecPoolProviderArc56
         ///<summary>
         ///This method is called by constructor of the luquidity pool
         ///</summary>
-        public async Task RegisterPool(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task RegisterPool(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1237,7 +1237,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> RegisterPool_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> RegisterPool_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 64, 84, 14, 230 };
 
@@ -1258,7 +1258,7 @@ namespace BiatecPoolProviderArc56
         /// <param name="feeAmountA">Fees paid in asset A if any </param>
         /// <param name="feeAmountB">Fees paid in asset B if any </param>
         /// <param name="s">Scale multiplier </param>
-        public async Task RegisterTrade(ulong appPoolId, ulong assetA, ulong assetB, ulong priceFrom, ulong priceTo, ulong amountA, ulong amountB, ulong feeAmountA, ulong feeAmountB, ulong s, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task RegisterTrade(ulong appPoolId, ulong assetA, ulong assetB, ulong priceFrom, ulong priceTo, ulong amountA, ulong amountB, ulong feeAmountA, ulong feeAmountB, ulong s, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1281,7 +1281,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> RegisterTrade_Transactions(ulong appPoolId, ulong assetA, ulong assetB, ulong priceFrom, ulong priceTo, ulong amountA, ulong amountB, ulong feeAmountA, ulong feeAmountB, ulong s, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> RegisterTrade_Transactions(ulong appPoolId, ulong assetA, ulong assetB, ulong priceFrom, ulong priceTo, ulong amountA, ulong amountB, ulong feeAmountA, ulong feeAmountB, ulong s, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 225, 62, 79, 90 };
             var appPoolIdAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appPoolIdAbi.From(appPoolId);
@@ -1312,7 +1312,7 @@ namespace BiatecPoolProviderArc56
         /// <param name="voteFirst"> </param>
         /// <param name="voteLast"> </param>
         /// <param name="voteKeyDilution"> </param>
-        public async Task SendOnlineKeyRegistration(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task SendOnlineKeyRegistration(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1332,7 +1332,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> SendOnlineKeyRegistration_Transactions(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> SendOnlineKeyRegistration_Transactions(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 131, 146, 92, 23 };
             var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
@@ -1356,7 +1356,7 @@ namespace BiatecPoolProviderArc56
         /// <param name="appBiatecConfigProvider">Biatec config app. Only addressExecutiveFee is allowed to execute this method. </param>
         /// <param name="asset">Asset to withdraw. If native token, then zero </param>
         /// <param name="amount">Amount of the asset to be withdrawn </param>
-        public async Task<ulong> WithdrawExcessAssets(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<ulong> WithdrawExcessAssets(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1378,7 +1378,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> WithdrawExcessAssets_Transactions(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> WithdrawExcessAssets_Transactions(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 203, 162, 233, 93 };
             var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
@@ -1395,7 +1395,7 @@ namespace BiatecPoolProviderArc56
         /// <param name="assetA">Asset A must be less than Asset B </param>
         /// <param name="assetB">Asset B </param>
         /// <param name="appPoolId">Liquidity pool app id. If zero, then aggregated price info is returned. </param>
-        public async Task<Structs.AppPoolInfo> GetPrice(ulong assetA, ulong assetB, ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<Structs.AppPoolInfo> GetPrice(ulong assetA, ulong assetB, ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1412,7 +1412,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> GetPrice_Transactions(ulong assetA, ulong assetB, ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> GetPrice_Transactions(ulong assetA, ulong assetB, ulong appPoolId, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 242, 41, 92, 12 };
             var assetAAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); assetAAbi.From(assetA);
@@ -1429,7 +1429,7 @@ namespace BiatecPoolProviderArc56
         /// <param name="inAmount">LP Asset amount in Base decimal representation.. </param>
         /// <param name="assetBBalance">Asset B balance. Variable ab, in base scale </param>
         /// <param name="liqudity">Current liqudity. Variable L, in base scale </param>
-        public async Task<AVM.ClientGenerator.ABI.ARC4.Types.UInt256> CalculateAssetBWithdrawOnLpDeposit(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<AVM.ClientGenerator.ABI.ARC4.Types.UInt256> CalculateAssetBWithdrawOnLpDeposit(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -1448,7 +1448,7 @@ namespace BiatecPoolProviderArc56
 
         }
 
-        public async Task<List<Transaction>> CalculateAssetBWithdrawOnLpDeposit_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> CalculateAssetBWithdrawOnLpDeposit_Transactions(AVM.ClientGenerator.ABI.ARC4.Types.UInt256 inAmount, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 assetBBalance, AVM.ClientGenerator.ABI.ARC4.Types.UInt256 liqudity, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 5, 252, 35, 140 };
 

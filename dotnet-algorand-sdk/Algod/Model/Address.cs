@@ -166,7 +166,7 @@ namespace Algorand
         {
             return this.EncodeAsString();
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {            
             if (obj is Address && Enumerable.SequenceEqual(this.Bytes, (obj as Address).Bytes))
                 return true;
@@ -283,7 +283,7 @@ namespace Algorand
         {
             return this.ToAddress().ToString();
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if(obj is MultisigAddress mAddress)
             {

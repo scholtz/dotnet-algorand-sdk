@@ -22,7 +22,7 @@ namespace BiatecIdentityArc56
 
         public BiatecIdentityProviderProxy(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId)
         {
-            App = Newtonsoft.Json.JsonConvert.DeserializeObject<AVM.ClientGenerator.ABI.ARC56.AppDescriptionArc56>(Encoding.UTF8.GetString(Convert.FromBase64String(_ARC56DATA)));
+            App = Newtonsoft.Json.JsonConvert.DeserializeObject<AVM.ClientGenerator.ABI.ARC56.AppDescriptionArc56>(Encoding.UTF8.GetString(Convert.FromBase64String(_ARC56DATA))) ?? throw new Exception("Error reading ARC56 data");
 
         }
 
@@ -237,11 +237,11 @@ namespace BiatecIdentityArc56
                 {
                     return $"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace("-", "")}";
                 }
-                public override bool Equals(object obj)
+                public override bool Equals(object? obj)
                 {
                     return Equals(obj as IdentityInfo);
                 }
-                public bool Equals(IdentityInfo other)
+                public bool Equals(IdentityInfo? other)
                 {
                     return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());
                 }
@@ -479,11 +479,11 @@ namespace BiatecIdentityArc56
                 {
                     return $"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace("-", "")}";
                 }
-                public override bool Equals(object obj)
+                public override bool Equals(object? obj)
                 {
                     return Equals(obj as UserInfoV1);
                 }
-                public bool Equals(UserInfoV1 other)
+                public bool Equals(UserInfoV1? other)
                 {
                     return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());
                 }
@@ -589,11 +589,11 @@ namespace BiatecIdentityArc56
                 {
                     return $"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace("-", "")}";
                 }
-                public override bool Equals(object obj)
+                public override bool Equals(object? obj)
                 {
                     return Equals(obj as UserInfoShortV1);
                 }
-                public bool Equals(UserInfoShortV1 other)
+                public bool Equals(UserInfoShortV1? other)
                 {
                     return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());
                 }
@@ -617,7 +617,7 @@ namespace BiatecIdentityArc56
         ///<summary>
         ///Initial setup
         ///</summary>
-        public async Task CreateApplication(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task CreateApplication(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -630,7 +630,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> CreateApplication_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> CreateApplication_Transactions(Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 184, 68, 123, 54 };
 
@@ -645,7 +645,7 @@ namespace BiatecIdentityArc56
         /// <param name="governor"> </param>
         /// <param name="verificationSetter"> </param>
         /// <param name="engagementSetter"> </param>
-        public async Task Bootstrap(Address governor, Address verificationSetter, Address engagementSetter, ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task Bootstrap(Address governor, Address verificationSetter, Address engagementSetter, ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -663,7 +663,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> Bootstrap_Transactions(Address governor, Address verificationSetter, Address engagementSetter, ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> Bootstrap_Transactions(Address governor, Address verificationSetter, Address engagementSetter, ulong appBiatecConfigProvider, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 227, 191, 92, 31 };
             var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
@@ -680,7 +680,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="appBiatecConfigProvider"> </param>
         /// <param name="newVersion"> </param>
-        public async Task UpdateApplication(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task UpdateApplication(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -695,7 +695,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> UpdateApplication_Transactions(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> UpdateApplication_Transactions(ulong appBiatecConfigProvider, byte[] newVersion, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 95, 200, 133, 160 };
             var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
@@ -710,7 +710,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="user"> </param>
         /// <param name="info"> IdentityInfo</param>
-        public async Task SelfRegistration(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task SelfRegistration(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -725,7 +725,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> SelfRegistration_Transactions(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> SelfRegistration_Transactions(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 174, 100, 193, 103 };
             var userAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); userAbi.From(user);
@@ -739,7 +739,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="user"> </param>
         /// <param name="info"> IdentityInfo</param>
-        public async Task SetInfo(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task SetInfo(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -754,7 +754,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> SetInfo_Transactions(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> SetInfo_Transactions(Address user, Structs.IdentityInfo info, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 164, 140, 251, 188 };
             var userAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); userAbi.From(user);
@@ -776,7 +776,7 @@ namespace BiatecIdentityArc56
         /// <param name="voteFirst"> </param>
         /// <param name="voteLast"> </param>
         /// <param name="voteKeyDilution"> </param>
-        public async Task SendOnlineKeyRegistration(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task SendOnlineKeyRegistration(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -796,7 +796,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> SendOnlineKeyRegistration_Transactions(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> SendOnlineKeyRegistration_Transactions(ulong appBiatecConfigProvider, byte[] votePK, byte[] selectionPK, byte[] stateProofPK, ulong voteFirst, ulong voteLast, ulong voteKeyDilution, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 131, 146, 92, 23 };
             var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);
@@ -816,7 +816,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="user">Get info for specific user address </param>
         /// <param name="v">Version of the data structure to return </param>
-        public async Task<Structs.UserInfoV1> GetUser(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<Structs.UserInfoV1> GetUser(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -833,7 +833,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> GetUser_Transactions(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> GetUser_Transactions(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 232, 173, 24, 146 };
             var userAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); userAbi.From(user);
@@ -848,7 +848,7 @@ namespace BiatecIdentityArc56
         ///</summary>
         /// <param name="user">Get info for specific user address </param>
         /// <param name="v">Version of the data structure to return </param>
-        public async Task<Structs.UserInfoShortV1> GetUserShort(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<Structs.UserInfoShortV1> GetUserShort(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -865,7 +865,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> GetUserShort_Transactions(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> GetUserShort_Transactions(Address user, byte v, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 18, 127, 251, 123 };
             var userAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); userAbi.From(user);
@@ -884,7 +884,7 @@ namespace BiatecIdentityArc56
         /// <param name="appBiatecConfigProvider">Biatec config app. Only addressExecutiveFee is allowed to execute this method. </param>
         /// <param name="asset">Asset to withdraw. If native token, then zero </param>
         /// <param name="amount">Amount of the asset to be withdrawn </param>
-        public async Task<ulong> WithdrawExcessAssets(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<ulong> WithdrawExcessAssets(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
@@ -906,7 +906,7 @@ namespace BiatecIdentityArc56
 
         }
 
-        public async Task<List<Transaction>> WithdrawExcessAssets_Transactions(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> WithdrawExcessAssets_Transactions(ulong appBiatecConfigProvider, ulong asset, ulong amount, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             byte[] abiHandle = { 203, 162, 233, 93 };
             var appBiatecConfigProviderAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appBiatecConfigProviderAbi.From(appBiatecConfigProvider);

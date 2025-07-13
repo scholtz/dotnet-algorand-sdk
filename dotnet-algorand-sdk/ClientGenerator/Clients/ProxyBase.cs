@@ -234,7 +234,7 @@ namespace AVM.ClientGenerator
         }
 
 
-        protected async Task<List<Transaction>> MakeTransactionList(List<object> args, Account _tx_sender, ulong? _tx_fee, string _tx_note, ulong _tx_roundValidity, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        protected async Task<List<Transaction>> MakeTransactionList(List<object> args, Account _tx_sender, ulong? _tx_fee, string _tx_note, ulong _tx_roundValidity, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             TransactionParametersResponse transParams;
             try
@@ -319,7 +319,7 @@ namespace AVM.ClientGenerator
         }
 
 
-        protected async Task<ICollection<byte[]>> CallApp(List<object> args, Account _tx_sender, ulong? _tx_fee, string _tx_note, ulong _tx_roundValidity, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        protected async Task<ICollection<byte[]>> CallApp(List<object> args, Account _tx_sender, ulong? _tx_fee, string _tx_note, ulong _tx_roundValidity, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             TransactionParametersResponse transParams;
             try
@@ -410,7 +410,7 @@ namespace AVM.ClientGenerator
             }
         }
 
-        protected async Task<ICollection<byte[]>> SimApp(List<object> args, Account _tx_sender, ulong? _tx_fee, string _tx_note, ulong _tx_roundValidity, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        protected async Task<ICollection<byte[]>> SimApp(List<object> args, Account _tx_sender, ulong? _tx_fee, string _tx_note, ulong _tx_roundValidity, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             TransactionParametersResponse transParams;
             try

@@ -253,7 +253,7 @@ namespace AVM.ClientGenerator.ABI.ARC4
 
 
 
-            arc4MethodCallerClass.AppendLine($"\tpublic async Task<List<Transaction>> Invoke({invokerArgsString}ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef> _tx_boxes = null)");
+            arc4MethodCallerClass.AppendLine($"\tpublic async Task<List<Transaction>> Invoke({invokerArgsString}ulong? _tx_fee, OnCompleteType _tx_onComplete, ulong _tx_roundValidity, string _tx_note, Account _tx_sender, List<ulong> _tx_foreignApps, List<ulong> _tx_foreignAssets, List<Address> _tx_accounts, List<BoxRef>? _tx_boxes = null)");
             arc4MethodCallerClass.AppendLine("\t{");
             arc4MethodCallerClass.AppendLine($"\t\t");
             arc4MethodCallerClass.AppendLine($"\t\tbyte[] abiHandle = {{{string.Join(",", Selector)}}};");

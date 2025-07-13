@@ -119,7 +119,7 @@ namespace Algorand.Algod.Model.Transactions
         }
 
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is SignedTransaction actual)
             {

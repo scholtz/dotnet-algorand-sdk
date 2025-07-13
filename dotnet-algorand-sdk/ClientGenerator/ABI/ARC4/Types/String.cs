@@ -11,12 +11,12 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
         {
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as String);
         }
 
-        public bool Equals(String other)
+        public bool Equals(String? other)
         {
             return !(other is null) &&
                    IsDynamic == other.IsDynamic &&

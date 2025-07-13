@@ -43,7 +43,7 @@ namespace Algorand
         /// </summary>
         /// <param name="base64String">base64 encoded string</param>
         public Digest(string base64String) : this(Convert.FromBase64String(base64String)) { }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is Digest && Enumerable.SequenceEqual(this.Bytes, ((Digest)obj).Bytes)) {
                 return true;

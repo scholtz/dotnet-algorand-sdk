@@ -41,7 +41,7 @@ namespace Algorand
             this.Bytes = new byte[KEY_LEN_BYTES];
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is ParticipationPublicKey && Enumerable.SequenceEqual(this.Bytes, ((ParticipationPublicKey)obj).Bytes);
         }

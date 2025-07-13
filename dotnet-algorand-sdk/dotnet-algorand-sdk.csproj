@@ -7,7 +7,7 @@
 		<AssemblyName>Algorand</AssemblyName>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Version>4.0.3.$([System.DateTime]::Now.ToString(yyyyMMddHH))</Version>
+		<Version>4.1.2.$([System.DateTime]::Now.ToString(yyyyMMddHH))</Version>
 		<Authors>Ludovit Scholtz, Frank Szendzielarz</Authors>
 		<Company></Company>
 		<Product>Algorand .NET SDK 2</Product>
@@ -56,7 +56,7 @@
 
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unity|AnyCPU'">
-		<PostBuildEvent>nuget pack Algorand4_Unity.nuspec -Properties version=4.0.3.$([System.DateTime]::UtcNow.ToString("yyyyMMddHH")) </PostBuildEvent>
+		<PostBuildEvent>nuget pack Algorand4_Unity.nuspec -Properties version=4.1.2.$([System.DateTime]::UtcNow.ToString("yyyyMMddHH")) </PostBuildEvent>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unity|AnyCPU'">

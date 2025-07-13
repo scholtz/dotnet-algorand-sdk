@@ -157,12 +157,12 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
             return Value;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as UInt);
         }
 
-        public bool Equals(UInt other)
+        public bool Equals(UInt? other)
         {
             return !(other is null) &&
                    IsDynamic == other.IsDynamic &&

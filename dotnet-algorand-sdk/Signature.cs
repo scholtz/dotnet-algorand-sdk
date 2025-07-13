@@ -52,7 +52,7 @@ namespace Algorand
 
         
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is Signature && Enumerable.SequenceEqual(this.Bytes, (obj as Signature).Bytes))
                 return true;
@@ -323,7 +323,7 @@ namespace Algorand
             }
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is LogicsigSignature actual)
                 if((this.Logic is null && actual.Logic is null) || (!(this.Logic is null || actual.Logic is null) && Enumerable.SequenceEqual(this.Logic, actual.Logic)))                
@@ -457,7 +457,7 @@ namespace Algorand
             }
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is MultisigSignature actual)
             {
@@ -515,7 +515,7 @@ namespace Algorand
                 this.sig = sig;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if ((obj is MultisigSubsig actual))
             {

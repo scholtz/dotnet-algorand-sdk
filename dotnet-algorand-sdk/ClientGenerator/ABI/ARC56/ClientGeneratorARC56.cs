@@ -106,12 +106,10 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             ctor.AddClosingLine("}");
 
             var ctorInner = ctor.AddChild();
-            ctorInner.AddOpeningLine("App = Newtonsoft.Json.JsonConvert.DeserializeObject<AVM.ClientGenerator.ABI.ARC56.AppDescriptionArc56>(Encoding.UTF8.GetString(Convert.FromBase64String(_ARC56DATA)));");
+            ctorInner.AddOpeningLine("App = Newtonsoft.Json.JsonConvert.DeserializeObject<AVM.ClientGenerator.ABI.ARC56.AppDescriptionArc56>(Encoding.UTF8.GetString(Convert.FromBase64String(_ARC56DATA))) ?? throw new Exception(\"Error reading ARC56 data\");");
 
             defineStructs(proxyBody);
             defineMethods(proxyBody, structs);
-
-
 
             return await FormatCode(code.ToString());
         }
@@ -255,11 +253,11 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 structF3.AddOpeningLine("{");
                 structF3.AddOpeningLine("return $\"{this.GetType().ToString()} {BitConverter.ToString(ToByteArray()).Replace(\"-\", \"\")}\";");
                 structF3.AddOpeningLine("}");
-                structF3.AddOpeningLine("public override bool Equals(object obj)");
+                structF3.AddOpeningLine("public override bool Equals(object? obj)");
                 structF3.AddOpeningLine("{");
                 structF3.AddOpeningLine($"return Equals(obj as {item.Key.ToPascalCase()});");
                 structF3.AddOpeningLine("}");
-                structF3.AddOpeningLine($"public bool Equals({item.Key.ToPascalCase()} other)");
+                structF3.AddOpeningLine($"public bool Equals({item.Key.ToPascalCase()}? other)");
                 structF3.AddOpeningLine("{");
                 structF3.AddOpeningLine("return other is not null && ToByteArray().SequenceEqual(other.ToByteArray());");
                 structF3.AddOpeningLine("}");
@@ -394,11 +392,11 @@ $@"///<summary>
                 {
                     defaultOp = "AVM.ClientGenerator.Core.OnCompleteType.CreateApplication";
                 }
-                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName.ToPascalCase()} ({parameters}Account _tx_sender, ulong? _tx_fee,string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = {defaultOp} )".Replace(",,", ",").Replace(", ,", ","));
+                abiMethod.AddOpeningLine($"public async {methodReturnType} {methodName.ToPascalCase()} ({parameters}Account _tx_sender, ulong? _tx_fee,string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = {defaultOp} )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethod.AddOpeningLine("{");
                 abiMethod.AddClosingLine("}");
 
-                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName.ToPascalCase()}_Transactions ({parameters}Account _tx_sender, ulong? _tx_fee, string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef> _tx_boxes = null, List<Transaction> _tx_transactions = null, List<ulong> _tx_assets = null, List<ulong> _tx_apps = null, List<Address> _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = {defaultOp} )".Replace(",,", ",").Replace(", ,", ","));
+                abiMethodForTransactions.AddOpeningLine($"public async Task<List<Transaction>> {methodName.ToPascalCase()}_Transactions ({parameters}Account _tx_sender, ulong? _tx_fee, string _tx_note = \"\", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = {defaultOp} )".Replace(",,", ",").Replace(", ,", ","));
                 abiMethodForTransactions.AddOpeningLine("{");
                 abiMethodForTransactions.AddClosingLine("}");
 

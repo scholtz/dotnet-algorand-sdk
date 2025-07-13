@@ -22,12 +22,12 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
             base.From(value);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as UInt64);
         }
 
-        public bool Equals(UInt64 other)
+        public bool Equals(UInt64? other)
         {
             return !(other is null) &&
                    IsDynamic == other.IsDynamic &&
