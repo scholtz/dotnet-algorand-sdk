@@ -18,7 +18,7 @@ namespace BiatecPoolProviderArc56
 
     public class BiatecPoolProviderProxy : ProxyBase
     {
-        public override AppDescriptionArc56 App { get; set; } = null;
+        public override AppDescriptionArc56 App { get; set; }
 
         public BiatecPoolProviderProxy(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId)
         {

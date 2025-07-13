@@ -32,7 +32,7 @@ namespace AVM.ClientGenerator
 
     public class ProxyBase
     {
-        public virtual AVM.ClientGenerator.ABI.ARC56.AppDescriptionArc56 App { get; set; } = null;
+        public virtual AVM.ClientGenerator.ABI.ARC56.AppDescriptionArc56 App { get; set; }
 
         DefaultApi client;
         public ulong appId { get; protected set; }

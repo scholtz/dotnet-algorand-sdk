@@ -21,7 +21,7 @@ namespace ARC200
     //
     public class Arc200Proxy : ProxyBase
     {
-        public override AppDescriptionArc56 App { get; set; } = null;
+        public override AppDescriptionArc56 App { get; set; }
 
         public Arc200Proxy(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId)
         {

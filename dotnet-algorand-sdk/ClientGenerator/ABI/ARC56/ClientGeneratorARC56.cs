@@ -99,7 +99,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             proxyBody.AddClosingLine("}");
 
             var ctor = proxyBody.AddChild();
-            ctor.AddOpeningLine("public override AppDescriptionArc56 App { get; set; } = null;");
+            ctor.AddOpeningLine("public override AppDescriptionArc56 App { get; set; }");
             ctor.AddOpeningLine("");
             ctor.AddOpeningLine($"public {className}(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId) ");
             ctor.AddOpeningLine("{");

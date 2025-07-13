@@ -18,7 +18,7 @@ namespace BiatecIdentityArc56
 
     public class BiatecIdentityProviderProxy : ProxyBase
     {
-        public override AppDescriptionArc56 App { get; set; } = null;
+        public override AppDescriptionArc56 App { get; set; }
 
         public BiatecIdentityProviderProxy(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId)
         {

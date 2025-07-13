@@ -18,7 +18,7 @@ namespace BiatecClammPoolArc56
 
     public class BiatecClammPoolProxy : ProxyBase
     {
-        public override AppDescriptionArc56 App { get; set; } = null;
+        public override AppDescriptionArc56 App { get; set; }
 
         public BiatecClammPoolProxy(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId)
         {

@@ -18,7 +18,7 @@ namespace AVMGasStation.GeneratedClients
 
     public class GasStationProxy : ProxyBase
     {
-        public override AppDescriptionArc56 App { get; set; } = null;
+        public override AppDescriptionArc56 App { get; set; }
 
         public GasStationProxy(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId)
         {

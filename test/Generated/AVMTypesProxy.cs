@@ -18,7 +18,7 @@ namespace AVMTypes
 
     public class AvmTypesProxy : ProxyBase
     {
-        public override AppDescriptionArc56 App { get; set; } = null;
+        public override AppDescriptionArc56 App { get; set; }
 
         public AvmTypesProxy(DefaultApi defaultApi, ulong appId) : base(defaultApi, appId)
         {
