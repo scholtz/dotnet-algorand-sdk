@@ -586,7 +586,23 @@ namespace AVM.ClientGenerator
 #endif
                     break;
                 case Core.OnCompleteType.UpdateApplication:
-                    tx = new ApplicationUpdateTransaction() { ApplicationId = appId };
+                    tx = new ApplicationUpdateTransaction() { 
+                        ApplicationId = appId,
+
+                        ApprovalProgram = new TEALProgram(App?.ByteCode?.Approval ?? SourceApprovalAVM),
+                        ClearStateProgram = new TEALProgram(App?.ByteCode?.Clear ?? SourceClearAVM),
+                        GlobalStateSchema = new StateSchema()
+                        {
+                            NumByteSlice = App?.State?.Schema?.Global?.Bytes ?? GlobalNumByteSlices,
+                            NumUint = App?.State?.Schema?.Global?.Ints ?? GlobalNumUints
+                        },
+                        LocalStateSchema = new StateSchema()
+                        {
+                            NumByteSlice = App?.State?.Schema?.Local?.Bytes ?? LocalNumByteSlices,
+                            NumUint = App?.State?.Schema?.Local?.Ints ?? LocalNumUints
+                        },
+                        ExtraProgramPages = ExtraProgramPages
+                    };
                     break;
                 case Core.OnCompleteType.DeleteApplication:
                     tx = new ApplicationDeleteTransaction() { ApplicationId = appId };
