@@ -78,6 +78,8 @@ namespace AVM.ClientGenerator.Compiler
             {  "String", (ABIEncodingType.VariableByteArray,0)},
             {  typeof(String).FullName, (ABIEncodingType.VariableByteArray,0)},
             {  typeof(Algorand.Algod.Model.Transactions.PaymentTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.AssetTransferTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.ApplicationCallTransaction).FullName, (ABIEncodingType.Transaction,0)},
 
         };
 
