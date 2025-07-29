@@ -1,4 +1,5 @@
 ﻿using Algorand;
+using Algorand.Algod.Model.Transactions;
 using Algorand.AVM.ClientGenerator.ABI.ARC56;
 using AVM.ClientGenerator.ABI.ARC4;
 using AVM.ClientGenerator.Compiler.Variables;
@@ -80,6 +81,27 @@ namespace AVM.ClientGenerator.Compiler
             {  typeof(Algorand.Algod.Model.Transactions.PaymentTransaction).FullName, (ABIEncodingType.Transaction,0)},
             {  typeof(Algorand.Algod.Model.Transactions.AssetTransferTransaction).FullName, (ABIEncodingType.Transaction,0)},
             {  typeof(Algorand.Algod.Model.Transactions.ApplicationCallTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.ApplicationNoopTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.ApplicationClearStateTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.ApplicationCloseOutTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.ApplicationCreateTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.ApplicationDeleteTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.ApplicationOptInTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.ApplicationUpdateTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.AssetAcceptTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.AssetChangeTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.AssetClawbackTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.AssetConfigurationTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.AssetCreateTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.AssetDestroyTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.AssetFreezeTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.AssetMovementsTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.AssetUpdateTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.KeyRegisterOfflineTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.KeyRegisterOnlineTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.KeyRegistrationTransaction).FullName, (ABIEncodingType.Transaction,0)},
+            {  typeof(Algorand.Algod.Model.Transactions.StateProofTransaction).FullName, (ABIEncodingType.Transaction,0)},
+
 
         };
 

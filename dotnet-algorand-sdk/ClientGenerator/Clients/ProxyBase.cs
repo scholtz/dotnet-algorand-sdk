@@ -1,7 +1,9 @@
 ﻿using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
+using Algorand.Algod.Model.Exceptions;
 using Algorand.Algod.Model.Transactions;
+using Algorand.KMD;
 using AVM.ClientGenerator.Compiler;
 using System;
 using System.Collections.Generic;
@@ -165,7 +167,7 @@ namespace AVM.ClientGenerator
         private List<byte[]> toByteArrays(List<object> args)
         {
             //   return args.Select(a => TealTypeUtils.ToByteArray(a)).ToList();
-            return args.Select(a => TealTypeUtils.EncodeArgument(a)).Where(a=>a != null).ToList();
+            return args.Select(a => TealTypeUtils.EncodeArgument(a)).Where(a => a != null).ToList();
         }
 
         protected async Task<byte[]> GetGlobalByteSlice(string key)
@@ -386,7 +388,7 @@ namespace AVM.ClientGenerator
             }
             catch (Exception ex)
             {
-                if (ex is ApiException<ErrorResponse> exApi)
+                if (ex is Algorand.ApiException<ErrorResponse> exApi)
                 {
                     Match match = Regex.Match(exApi.Result.Message, @"pc\s*=\s*(\d+)");
                     if (match.Success)
@@ -450,6 +452,7 @@ namespace AVM.ClientGenerator
                 {
                     AllowEmptySignatures = true,
                     AllowMoreLogging = true,
+                    
                     AllowUnnamedResources = true,
                     ExecTraceConfig = new SimulateTraceConfig()
                     {
@@ -466,8 +469,22 @@ namespace AVM.ClientGenerator
                         }
                     }
                 });
-                if (simResult.TxnGroups.FirstOrDefault().TxnResults.LastOrDefault().TxnResult is Algorand.Algod.Model.Transactions.ApplicationNoopTransaction appTx)
+                var txGroup = simResult.TxnGroups.FirstOrDefault();
+                if (txGroup.TxnResults.LastOrDefault().TxnResult is Algorand.Algod.Model.Transactions.ApplicationNoopTransaction appTx)
                 {
+                    var error = txGroup.FailureMessage;
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        throw new Exception(error);
+                    }
+                    if (txGroup.UnnamedResourcesAccessed != null)
+                    {
+                        if (txGroup.UnnamedResourcesAccessed.Assets.Count > 0 || txGroup.UnnamedResourcesAccessed.Apps.Count > 0 || txGroup.UnnamedResourcesAccessed.Boxes.Count > 0 || txGroup.UnnamedResourcesAccessed.Accounts.Count > 0 || txGroup.UnnamedResourcesAccessed.AssetHoldings.Count > 0)
+                        {
+                            throw new UnnamedResourceException(txGroup.UnnamedResourcesAccessed);
+                        }
+                    }
+
                     return appTx.Logs;
                 }
                 var ret = new List<byte[]>();
@@ -475,7 +492,7 @@ namespace AVM.ClientGenerator
             }
             catch (Exception ex)
             {
-                if (ex is ApiException<ErrorResponse> exApi)
+                if (ex is Algorand.ApiException<ErrorResponse> exApi)
                 {
                     Match match = Regex.Match(exApi.Result.Message, @"pc\s*=\s*(\d+)");
                     if (match.Success)
@@ -493,7 +510,11 @@ namespace AVM.ClientGenerator
                             }
                         }
                     }
-                    throw new ProxyException("Call failed: "+exApi.Result.Message, ex);
+                    throw new ProxyException("Call failed: " + exApi.Result.Message, ex);
+                }
+                if(ex is UnnamedResourceException)
+                {
+                    throw;
                 }
                 throw new ProxyException("Call failed.", ex);
             }
@@ -586,7 +607,8 @@ namespace AVM.ClientGenerator
 #endif
                     break;
                 case Core.OnCompleteType.UpdateApplication:
-                    tx = new ApplicationUpdateTransaction() { 
+                    tx = new ApplicationUpdateTransaction()
+                    {
                         ApplicationId = appId,
 
                         ApprovalProgram = new TEALProgram(App?.ByteCode?.Approval ?? SourceApprovalAVM),
@@ -601,7 +623,7 @@ namespace AVM.ClientGenerator
                             NumByteSlice = App?.State?.Schema?.Local?.Bytes ?? LocalNumByteSlices,
                             NumUint = App?.State?.Schema?.Local?.Ints ?? LocalNumUints
                         },
-                        ExtraProgramPages = ExtraProgramPages
+                        //ExtraProgramPages = ExtraProgramPages
                     };
                     break;
                 case Core.OnCompleteType.DeleteApplication:
