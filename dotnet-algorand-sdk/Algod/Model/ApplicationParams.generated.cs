@@ -100,6 +100,18 @@ public partial class ApplicationParams{
 #endif
 
 
+
+    [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.Default,  NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"\[v\] the number of updates to the application programs")]
+    [field:InspectorName(@"Version")]
+    public ulong Version {get;set;}
+#else
+    public ulong? Version {get;set;}
+#endif
+
+
     
 }
 

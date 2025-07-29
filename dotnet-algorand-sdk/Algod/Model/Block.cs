@@ -165,7 +165,7 @@ namespace Algorand.Algod.Model
     [field:InspectorName(@"TxnCounter")]  
     public int TxnCounter { get; set; }
 #else
-        public int? TxnCounter { get; set; }
+        public ulong? TxnCounter { get; set; }
 #endif
 
 

@@ -38,10 +38,10 @@ namespace Algorand.Algod
         /// <summary>Returns the entire genesis file in json.
         /// </summary>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> GetGenesisAsync();
+        System.Threading.Tasks.Task<Genesis> GetGenesisAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<string> GetGenesisAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Genesis> GetGenesisAsync(System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Returns the entire swagger spec in json.
         /// </summary>
@@ -829,7 +829,7 @@ namespace Algorand.Algod
         /// <summary>Returns the entire genesis file in json.
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<string> GetGenesisAsync()
+        public System.Threading.Tasks.Task<Genesis> GetGenesisAsync()
         {
             return GetGenesisAsync(System.Threading.CancellationToken.None);
         }
@@ -838,7 +838,7 @@ namespace Algorand.Algod
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<string> GetGenesisAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Genesis> GetGenesisAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("genesis");
@@ -875,7 +875,7 @@ namespace Algorand.Algod
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Genesis>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -2487,7 +2487,7 @@ namespace Algorand.Algod
                 {
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                    
+
                     PrepareRequest(client_, request_, urlBuilder_);
 
                     var url_ = urlBuilder_.ToString();
