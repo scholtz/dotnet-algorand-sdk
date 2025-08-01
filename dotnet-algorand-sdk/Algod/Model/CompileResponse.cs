@@ -6,10 +6,12 @@ namespace Algorand.Algod.Model
 #if UNITY
     using UnityEngine;
 #endif
-
-    public partial class CompileResponse{
+    [MessagePack.MessagePackObject]
+    public partial class CompileResponse
+    {
 
         [Newtonsoft.Json.JsonProperty("sourcemap", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("sourcemap")]
 #if UNITY
     [field:SerializeField]
     [Tooltip(@"JSON of the source map")]

@@ -1,6 +1,7 @@
 ﻿
 using Algorand.Utils;
 using JsonSubTypes;
+using MessagePack;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Algorand.Algod.Model.Transactions
 
 
     [JsonConverter(typeof(ReturnedTransactionConverter))]
+    [Union(0, typeof(Transaction))]
     public interface IReturnableTransaction { }
 
     [JsonConverter(typeof(JsonSubtypes), "type")]
@@ -27,6 +29,15 @@ namespace Algorand.Algod.Model.Transactions
     [JsonSubtypes.KnownSubType(typeof(AssetMovementsTransaction), "axfer")]
     [JsonSubtypes.KnownSubType(typeof(AssetConfigurationTransaction), "acfg")]
     [JsonSubtypes.KnownSubType(typeof(StateProofTransaction), "stpf")]
+
+    [MessagePack.MessagePackObject]
+    [Union(0, typeof(ApplicationCallTransaction))]
+    [Union(1, typeof(KeyRegistrationTransaction))]
+    [Union(2, typeof(PaymentTransaction))]
+    [Union(3, typeof(AssetFreezeTransaction))]
+    [Union(4, typeof(AssetMovementsTransaction))]
+    [Union(5, typeof(AssetConfigurationTransaction))]
+    [Union(6, typeof(StateProofTransaction))]
 
     public abstract partial class Transaction : IReturnableTransaction
     {
@@ -44,7 +55,7 @@ namespace Algorand.Algod.Model.Transactions
         public bool ShouldSerializeGenesisId() { return GenesisId?.Length > 0; }
         public bool ShouldSerializeFirstValid() { return FirstValid!= 0; }
         public bool ShouldSerializeLastValid() { return LastValid != 0; }
-
+        [IgnoreMember]
         private byte[] _lease { get; set; }
 #if UNITY
     [field:SerializeField]
@@ -54,6 +65,7 @@ namespace Algorand.Algod.Model.Transactions
        
 #endif
         [Newtonsoft.Json.JsonProperty("lx", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("lx")]
         public byte[] Lease
         {
             get
@@ -66,10 +78,7 @@ namespace Algorand.Algod.Model.Transactions
                     _lease = value;
             }
         }
-
-
-
-
+        [IgnoreMember]
         private byte[] _note { get; set; }
 #if UNITY
     [field:SerializeField]
@@ -79,6 +88,7 @@ namespace Algorand.Algod.Model.Transactions
   
 #endif
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("note")]
         public byte[] Note
         {
             get
@@ -125,25 +135,31 @@ namespace Algorand.Algod.Model.Transactions
         public ulong CloseRewards { get; internal set; }
 #else
         [JsonIgnore]
+        [IgnoreMember]
         public ulong? ConfirmedRound { get; internal set; }
 
          [JsonIgnore]
+        [IgnoreMember]
         public bool Committed => (ConfirmedRound ?? 0) > 0;
 
           [JsonIgnore]
+        [IgnoreMember]
         public ulong? ReceiverRewards { get; internal set; }
 
         
         [JsonIgnore]
+        [IgnoreMember]
         public ulong? SenderRewards { get; internal set; }
 
         
         [JsonIgnore]
+        [IgnoreMember]
         public ulong? CloseRewards { get; internal set; }
 #endif
 
 
         [JsonIgnore]
+        [IgnoreMember]
         public string PoolError { get; internal set; }
 
       

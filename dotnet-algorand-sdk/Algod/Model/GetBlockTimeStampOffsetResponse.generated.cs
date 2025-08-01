@@ -6,7 +6,7 @@ namespace Algorand.Algod.Model
     using UnityEngine;
 #endif
 
-using System = global::System;
+    using System = global::System;
 #if UNITY
 using UnityEngine;
 #endif
@@ -14,22 +14,25 @@ using UnityEngine;
 #if UNITY
 [System.Serializable]
 #endif
-public partial class GetBlockTimeStampOffsetResponse{
+    [MessagePack.MessagePackObject]
+    public partial class GetBlockTimeStampOffsetResponse
+    {
 
-    [Newtonsoft.Json.JsonProperty("offset", Required = Newtonsoft.Json.Required.Always)]
-    [System.ComponentModel.DataAnnotations.Required]
+        [Newtonsoft.Json.JsonProperty("offset", Required = Newtonsoft.Json.Required.Always)]
+        [MessagePack.Key("offset")]
+        [System.ComponentModel.DataAnnotations.Required]
 #if UNITY
     [field:SerializeField]
     [Tooltip(@"Timestamp offset in seconds.")]
     [field:InspectorName(@"Offset")]
     public ulong Offset {get;set;}
 #else
-    public ulong Offset {get;set;}
+        public ulong Offset { get; set; }
 #endif
 
 
-    
-}
+
+    }
 
 
 }

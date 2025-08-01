@@ -2,6 +2,7 @@
 
 
 using Algorand.Utils;
+using MessagePack;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ using UnityEngine;
 #endif
 namespace Algorand.Algod.Model.Transactions
 {
-
+    [MessagePack.MessagePackObject]
     public partial class ApplicationCreateTransaction : ApplicationNoopTransaction
     {
 
@@ -42,6 +43,7 @@ namespace Algorand.Algod.Model.Transactions
         public ulong ApplicationIndex { get; internal set; }
 #else
         [JsonIgnore]
+        [IgnoreMember]
         public ulong? ApplicationIndex { get; internal set; }
 #endif
 

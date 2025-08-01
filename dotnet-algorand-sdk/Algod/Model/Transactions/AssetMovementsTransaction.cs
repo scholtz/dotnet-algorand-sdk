@@ -13,10 +13,7 @@ namespace Algorand.Algod.Model.Transactions
     public abstract partial class AssetMovementsTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
+        [MessagePack.Key("type")]
         public string type => "axfer";
-
-
-        
-                  
     }
 }

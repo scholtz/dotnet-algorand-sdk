@@ -2,13 +2,14 @@
 namespace Algorand.Algod.Model
 {
 
-using System = global::System;
+    using System = global::System;
+
+    [MessagePack.MessagePackObject]
+    public partial class LedgerStateDelta
+    {
 
 
-public partial class LedgerStateDelta{
- 
-    
-}
+    }
 
 
 }

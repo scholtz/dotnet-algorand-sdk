@@ -4,8 +4,8 @@ namespace Algorand.Algod.Model
 
 using System = global::System;
 
-
-public partial class AccountTotals{
+    [MessagePack.MessagePackObject]
+    public partial class AccountTotals{
 
     
 

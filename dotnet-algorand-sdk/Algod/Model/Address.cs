@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Algorand.Algod.Model.Converters;
+using Algorand.Utils;
+using MessagePack;
+using Newtonsoft.Json;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Crypto.Signers;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Org.BouncyCastle.Crypto.Signers;
-using Org.BouncyCastle.Crypto.Parameters;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using Algorand.Utils;
 
 namespace Algorand
 {
@@ -13,6 +15,8 @@ namespace Algorand
     /// Address represents a serializable 32-byte length Algorand address.
     /// </summary>
     [JsonConverter(typeof(BytesConverter))]
+    [MessagePackObject]
+    [MessagePackFormatter(typeof(AddressFormatterMsgPack))]
     public class Address
     {
         /// <summary>
@@ -23,6 +27,7 @@ namespace Algorand
         /// <summary>
         /// the underlying bytes
         /// </summary>
+        [IgnoreMember]
         public byte[] Bytes { get; private set; }
         // the length of checksum to append
         private const int CHECKSUM_LEN_BYTES = 4;

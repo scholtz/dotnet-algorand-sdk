@@ -1,5 +1,6 @@
 ﻿
 using JsonSubTypes;
+using MessagePack;
 using Newtonsoft.Json;
 using System.ComponentModel;
 #if UNITY
@@ -12,6 +13,7 @@ namespace Algorand.Algod.Model.Transactions
     [JsonConverter(typeof(JsonSubtypes))]
     [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetClawbackTransaction), "asnd")]
     [JsonSubtypes.FallBackSubType(typeof(AssetTransferTransaction))]
+    [MessagePackObject]
     public partial class AssetTransferTransaction : AssetMovementsTransaction
     {
 #if UNITY
@@ -22,11 +24,8 @@ namespace Algorand.Algod.Model.Transactions
         public ulong AssetClosingAmount { get; internal set; }
 #else
         [JsonIgnore]
+        [IgnoreMember]
         public ulong? AssetClosingAmount { get; internal set; }
 #endif
-     
-
-
-
     }
 }

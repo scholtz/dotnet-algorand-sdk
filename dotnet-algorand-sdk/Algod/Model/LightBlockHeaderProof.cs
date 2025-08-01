@@ -2,15 +2,16 @@
 namespace Algorand.Algod.Model
 {
 
-using System = global::System;
+    using System = global::System;
+
+    [MessagePack.MessagePackObject]
+    public partial class LightBlockHeaderProof
+    {
 
 
-public partial class LightBlockHeaderProof{
 
-   
 
-    
-}
+    }
 
 
 }

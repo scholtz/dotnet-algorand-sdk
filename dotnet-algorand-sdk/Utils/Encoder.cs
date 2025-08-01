@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using Algorand.Algod.Model;
+using Algorand.Algod.Model.Transactions;
+using AVM.ClientGenerator.ABI.ARC4.Types;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Org.BouncyCastle.Crypto.Parameters;
-using System.IO;
 using Newtonsoft.Msgpack;
-using Algorand.Algod.Model;
-using Algorand.Algod.Model.Transactions;
+using Org.BouncyCastle.Crypto.Parameters;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace Algorand.Utils
 {
@@ -16,7 +17,8 @@ namespace Algorand.Utils
     /// Convenience class for serializing and deserializing arbitrary objects to json or msgpack.
     /// </summary>
     public static class Encoder
-    {        
+    {
+        public static bool EncodeToMsgPack = false;
         /// <summary>
         /// Convenience method for serializing arbitrary objects.
         /// </summary>
@@ -24,18 +26,26 @@ namespace Algorand.Utils
         /// <returns>serialized object</returns>
         public static byte[] EncodeToMsgPackOrdered(object o)
         {
-            MemoryStream memoryStream = new MemoryStream();
-            JsonSerializer serializer = new JsonSerializer()
+            try
             {
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-                ContractResolver= new OrderedContractResolver(),
-                Formatting = Formatting.None
-            };
+                EncodeToMsgPack = true;
+                MemoryStream memoryStream = new MemoryStream();
+                JsonSerializer serializer = new JsonSerializer()
+                {
+                    DefaultValueHandling = DefaultValueHandling.Ignore,
+                    ContractResolver = new OrderedContractResolver(),
+                    Formatting = Formatting.None
+                };
 
-            MessagePackWriter writer = new MessagePackWriter(memoryStream);            
-            serializer.Serialize(writer, o);
-            var bytes = memoryStream.ToArray();
-            return bytes;
+                MessagePackWriter writer = new MessagePackWriter(memoryStream);
+                serializer.Serialize(writer, o);
+                var bytes = memoryStream.ToArray();
+                return bytes;
+            }
+            finally
+            {
+                EncodeToMsgPack = false;
+            }
         }
 
         /// <summary>
@@ -88,19 +98,27 @@ namespace Algorand.Utils
         /// <returns>deserialized object</returns>
         public static T DecodeFromMsgPack<T>(byte[] input)
         {
-            MemoryStream st = new MemoryStream(input);
-            //memoryStream.Write(input, 0, input.Length);
-            //memoryStream.Seek(0, SeekOrigin.Begin);
-            JsonSerializer serializer = new JsonSerializer()
+            try
             {
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-                Formatting = Formatting.None
-            };
-            MessagePackReader reader = new MessagePackReader(st);
-            return serializer.Deserialize<T>(reader);
-            //return DecodeFromJson<T>(MessagePackSerializer.ConvertToJson(input));
+                var options = MessagePack.MessagePackSerializerOptions.Standard.WithResolver(MessagePack.Resolvers.ContractlessStandardResolver.Instance);
+                return MessagePack.MessagePackSerializer.Deserialize<T>(input, options);
+            }
+            catch
+            {
+                MemoryStream st = new MemoryStream(input);
+                //memoryStream.Write(input, 0, input.Length);
+                //memoryStream.Seek(0, SeekOrigin.Begin);
+                JsonSerializer serializer = new JsonSerializer()
+                {
+                    DefaultValueHandling = DefaultValueHandling.Ignore,
+                    Formatting = Formatting.None
+                };
+                MessagePackReader reader = new MessagePackReader(st);
+                return serializer.Deserialize<T>(reader);
+                //return DecodeFromJson<T>(MessagePackSerializer.ConvertToJson(input));
+            }
         }
-        
+
         /// <summary>
         /// Encode an object as json.
         /// </summary>
@@ -156,7 +174,7 @@ namespace Algorand.Utils
             var bytes = BitConverter.GetBytes(val);
             if (BitConverter.IsLittleEndian) //depends on hardware
                 Array.Reverse(bytes);
-            
+
             return bytes;
         }
     }

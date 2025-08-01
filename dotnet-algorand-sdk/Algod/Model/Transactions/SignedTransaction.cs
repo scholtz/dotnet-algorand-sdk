@@ -4,39 +4,49 @@
 using Algorand.Utils;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 
 
 namespace Algorand.Algod.Model.Transactions
 {
-  
+    [MessagePack.MessagePackObject]
+    public partial class SignedTransactionDetail
+    {
+        [Newtonsoft.Json.JsonProperty("itx", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("itx")]
+        public ICollection<SignedTransaction> InnerTxns { get; set; }
+
+    }
+    
     public partial class SignedTransaction
     {
+        [Newtonsoft.Json.JsonProperty("dt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("dt")]
+        public SignedTransactionDetail Detail { get; set; }
+
         //TODO hgi & hgh flags
-     
+
         public void SetAuthAddr(byte[] sigAddr)
         {
             AuthAddr = new Address(sigAddr);
         }
 
-
-    
-
-    
         public SignedTransaction() { }
 
         [JsonConstructor]
-        public SignedTransaction(Transaction txn, byte[] sig, MultisigSignature msig, LogicsigSignature lsig,Address sgnr)
+        public SignedTransaction(Transaction txn, byte[] sig, MultisigSignature msig, LogicsigSignature lsig, Address sgnr)
         {
             if (txn != null) Tx = txn;
             if (sig != null) Sig = new Signature(sig);
             if (msig != null) MSig = msig;
             if (lsig != null) LSig = lsig;
             if (sgnr != null) AuthAddr = sgnr;
-      
+
         }
 
-        public SignedTransaction(Transaction txn,Signature sig)
+        public SignedTransaction(Transaction txn, Signature sig)
         {
             if (txn != null) Tx = txn;
             if (sig != null) Sig = sig;
@@ -112,9 +122,9 @@ namespace Algorand.Algod.Model.Transactions
         /// <param name="from">the multisig public identity we are signing for</param>
         /// <param name="signedTx">the partially signed msig tx to which to append signature</param>
         /// <returns>merged multisig transaction</returns>
-        public SignedTransaction AppendMultisigTransaction(MultisigAddress from,Account signingAccount)
+        public SignedTransaction AppendMultisigTransaction(MultisigAddress from, Account signingAccount)
         {
-            SignedTransaction sTx = Tx.Sign(from,signingAccount);
+            SignedTransaction sTx = Tx.Sign(from, signingAccount);
             return MergeMultisigTransactions(sTx);
         }
 
@@ -136,6 +146,6 @@ namespace Algorand.Algod.Model.Transactions
             return base.GetHashCode();
         }
 
-     
+
     }
 }

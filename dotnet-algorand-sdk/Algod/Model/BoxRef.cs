@@ -12,6 +12,7 @@ using UnityEngine;
 #if UNITY
 [System.Serializable]
 #endif
+    [MessagePack.MessagePackObject]
     public partial class BoxRef
     {
 
@@ -29,6 +30,7 @@ using UnityEngine;
 
         [Newtonsoft.Json.JsonProperty("i", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
+        [MessagePack.Key("i")]
 #if UNITY
     [field:SerializeField]
     [Tooltip(@"\[i\] app id")]
@@ -42,6 +44,7 @@ using UnityEngine;
 
         [Newtonsoft.Json.JsonProperty("n", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
+        [MessagePack.Key("n")]
 #if UNITY
     [field:SerializeField]
     [Tooltip(@"\[n\] box name, base64 encoded.")]

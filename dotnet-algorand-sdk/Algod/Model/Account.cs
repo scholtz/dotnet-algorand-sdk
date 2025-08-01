@@ -6,6 +6,7 @@ namespace Algorand.Algod.Model
     using Algorand.Crypto;
     using Algorand.Utils;
     using Algorand.Utils.Crypto;
+    using MessagePack;
     using Newtonsoft.Json;
     using Org.BouncyCastle.Crypto;
     using Org.BouncyCastle.Crypto.Generators;
@@ -26,6 +27,7 @@ namespace Algorand.Algod.Model
     /// <br/>data/basics/userBalance.go : AccountData
     /// <br/></summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
+    [MessagePack.MessagePackObject]
     public partial class Account
     {
 
@@ -33,6 +35,7 @@ namespace Algorand.Algod.Model
         private static readonly byte[] BYTES_SIGN_PREFIX = Encoding.UTF8.GetBytes("MX");
         private static readonly byte[] PROGDATA_SIGN_PREFIX = Encoding.UTF8.GetBytes("ProgData");
         [JsonIgnore]
+        [IgnoreMember]
         public KeyPair KeyPair { get; private set; }
 
 
@@ -46,6 +49,7 @@ namespace Algorand.Algod.Model
         /// <br/>* msig
         /// <br/>* lsig</summary>
         [Newtonsoft.Json.JsonProperty("sig-type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("sig-type")]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
 #if UNITY
         [field: SerializeField]

@@ -7,6 +7,15 @@ namespace Algorand.Algod.Model.Transactions
 {
     public static class TransactionsExtensions
     {
+        public static Transaction FillInParamsFromBlockHeader(this Transaction tx, Block block)
+        {
+            if (block.GenesisHash != null)
+            {
+                tx.GenesisHash = new Digest(block.GenesisHash);
+            }
+            tx.GenesisId = block.GenesisId;
+            return tx;
+        }
         public static Transaction FillInParams(this Transaction tx, TransactionParametersResponse transParams)
         {
             tx.Fee = Math.Max(transParams.Fee, 1000);

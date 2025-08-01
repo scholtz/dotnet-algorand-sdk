@@ -6,7 +6,7 @@ namespace Algorand.Algod.Model
     using UnityEngine;
 #endif
 
-using System = global::System;
+    using System = global::System;
 #if UNITY
 using UnityEngine;
 #endif
@@ -14,20 +14,23 @@ using UnityEngine;
 #if UNITY
 [System.Serializable]
 #endif
-public partial class TransactionGroupLedgerStateDeltasForRoundResponse{
+    [MessagePack.MessagePackObject]
+    public partial class TransactionGroupLedgerStateDeltasForRoundResponse
+    {
 
-    [Newtonsoft.Json.JsonProperty("Deltas", Required = Newtonsoft.Json.Required.Always)]
-    [System.ComponentModel.DataAnnotations.Required]
+        [Newtonsoft.Json.JsonProperty("Deltas", Required = Newtonsoft.Json.Required.Always)]
+        [MessagePack.Key("Deltas")]
+        [System.ComponentModel.DataAnnotations.Required]
 #if UNITY
     [field:SerializeField]
     [Tooltip(@"")]
     [field:InspectorName(@"Deltas")]
     public System.Collections.Generic.List<LedgerStateDeltaForTransactionGroup> Deltas {get;set;} = new System.Collections.Generic.List<LedgerStateDeltaForTransactionGroup>();
 #else
-    public System.Collections.Generic.ICollection<LedgerStateDeltaForTransactionGroup> Deltas {get;set;} = new System.Collections.ObjectModel.Collection<LedgerStateDeltaForTransactionGroup>();
+        public System.Collections.Generic.ICollection<LedgerStateDeltaForTransactionGroup> Deltas { get; set; } = new System.Collections.ObjectModel.Collection<LedgerStateDeltaForTransactionGroup>();
 #endif
-    
-}
+
+    }
 
 
 }

@@ -5,7 +5,8 @@ namespace Algorand.Algod.Model
 using System = global::System;
 
 
-public partial class AccountBalanceRecord{
+    [MessagePack.MessagePackObject]
+    public partial class AccountBalanceRecord{
 
     
     

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Algorand.Utils;
+using MessagePack;
 using Newtonsoft.Json;
 
 namespace Algorand
@@ -9,9 +10,11 @@ namespace Algorand
     /// A serializable class representing a participation key.
     /// </summary>
     [JsonConverter(typeof(BytesConverter))]
+    [MessagePack.MessagePackObject]
     public class ParticipationPublicKey
     {
         private const int KEY_LEN_BYTES = 32;
+        [IgnoreMember]
         public byte[] Bytes { get; private set; }
         /// <summary>
         /// Create a new participation key
@@ -52,9 +55,11 @@ namespace Algorand
     }
 
     [JsonConverter(typeof(BytesConverter))]
+    [MessagePack.MessagePackObject]
     public class VRFPublicKey
     {
         private const int KEY_LEN_BYTES = 32;
+        [IgnoreMember]
         public byte[] Bytes { get; private set; }
 
         [JsonConstructor]

@@ -4681,16 +4681,18 @@ namespace Algorand.Algod
                 {
                     if (response.Content.Headers.ContentType.MediaType == "application/msgpack")
                     {
-                        using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                        using (var reader = new MessagePackReader(responseStream))
-                        {
-                            var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
-                            var typedBody = serializer.Deserialize<T>(reader);
-                            return new ObjectResponseResult<T>(typedBody, string.Empty);
-                        }
+                        //var bytes = await response.Content.ReadAsByteArrayAsync();
+                        //using Stream responseStream = new System.IO.MemoryStream(bytes);
+                        using var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                        using var reader = new MessagePackReader(responseStream);
+                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
+                        var typedBody = serializer.Deserialize<T>(reader);
+                        return new ObjectResponseResult<T>(typedBody, string.Empty);
                     }
                     else
                     {
+                        //var bytes = await response.Content.ReadAsByteArrayAsync();
+
                         using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                         using (var streamReader = new System.IO.StreamReader(responseStream))
                         using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))

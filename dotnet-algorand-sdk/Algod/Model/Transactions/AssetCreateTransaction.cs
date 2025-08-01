@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MessagePack;
+using Newtonsoft.Json;
 using System.ComponentModel;
 #if UNITY
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 
 namespace Algorand.Algod.Model.Transactions
 {
+    [MessagePackObject]
     public partial class AssetCreateTransaction : AssetConfigurationTransaction
     {
 #if UNITY
@@ -16,9 +18,8 @@ namespace Algorand.Algod.Model.Transactions
         public ulong AssetIndex { get; internal set; }
 #else
         [JsonIgnore]
+        [IgnoreMember]
         public ulong? AssetIndex { get; internal set; }
 #endif
-
-     
     }
 }
