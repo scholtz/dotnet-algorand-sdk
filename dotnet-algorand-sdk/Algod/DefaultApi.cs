@@ -4691,7 +4691,7 @@ namespace Algorand.Algod
                     }
                     else
                     {
-                        //var bytes = await response.Content.ReadAsByteArrayAsync();
+                        var bytes = await response.Content.ReadAsByteArrayAsync();
 
                         using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                         using (var streamReader = new System.IO.StreamReader(responseStream))
