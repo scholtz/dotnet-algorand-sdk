@@ -18,12 +18,12 @@ namespace Algorand.Algod.Model.Transactions
 
         public bool ShouldSerializeGlobalStateSchema()
         {
-            return GlobalStateSchema.NumByteSlice != 0 || GlobalStateSchema.NumUint != 0;
+            return GlobalStateSchema != null && (GlobalStateSchema.NumByteSlice != 0 || GlobalStateSchema.NumUint != 0);
         }
 
         public bool ShouldSerializeLocalStateSchema()
         {
-            return LocalStateSchema.NumByteSlice != 0 || LocalStateSchema.NumUint != 0;
+            return LocalStateSchema != null && (LocalStateSchema.NumByteSlice != 0 || LocalStateSchema.NumUint != 0);
         }
 
         public bool ShouldSerializeExtraProgramPages()

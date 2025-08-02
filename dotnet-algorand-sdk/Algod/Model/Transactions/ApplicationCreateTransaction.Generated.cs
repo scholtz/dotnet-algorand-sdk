@@ -42,7 +42,6 @@ using UnityEngine;
 
 
         [Newtonsoft.Json.JsonProperty("apgs", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
         [MessagePack.Key("apgs")]
 #if UNITY
     [field:SerializeField]
@@ -50,13 +49,12 @@ using UnityEngine;
     [field:InspectorName(@"GlobalStateSchema")]
     public StateSchema GlobalStateSchema {get;set;}
 #else
-        public StateSchema GlobalStateSchema { get; set; }
+        public StateSchema? GlobalStateSchema { get; set; }
 #endif
 
 
 
         [Newtonsoft.Json.JsonProperty("apls", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
         [MessagePack.Key("apls")]
 #if UNITY
     [field:SerializeField]
@@ -64,7 +62,7 @@ using UnityEngine;
     [field:InspectorName(@"LocalStateSchema")]
     public StateSchema LocalStateSchema {get;set;}
 #else
-        public StateSchema LocalStateSchema { get; set; }
+        public StateSchema? LocalStateSchema { get; set; }
 #endif
 
 
