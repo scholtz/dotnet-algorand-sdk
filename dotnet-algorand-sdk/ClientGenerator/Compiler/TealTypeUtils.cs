@@ -101,10 +101,8 @@ namespace AVM.ClientGenerator.Compiler
             {  typeof(Algorand.Algod.Model.Transactions.KeyRegisterOnlineTransaction).FullName, (ABIEncodingType.Transaction,0)},
             {  typeof(Algorand.Algod.Model.Transactions.KeyRegistrationTransaction).FullName, (ABIEncodingType.Transaction,0)},
             {  typeof(Algorand.Algod.Model.Transactions.StateProofTransaction).FullName, (ABIEncodingType.Transaction,0)},
-
-
+            {  typeof(Algorand.Algod.Model.Transactions.HeartBeatTransaction).FullName, (ABIEncodingType.Transaction,0)},
         };
-
 
         internal enum UnaryModifier
         {

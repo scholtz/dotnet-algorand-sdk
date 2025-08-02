@@ -6,7 +6,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Algorand.Algod.Model.Converters
+namespace Algorand.Algod.Model.Converters.MsgPack
 {
     public class AddressFormatterMsgPack : IMessagePackFormatter<Address>
     {

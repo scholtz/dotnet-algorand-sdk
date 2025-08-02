@@ -7,7 +7,7 @@ using System.Text;
 namespace Algorand.Algod.Model.Transactions
 {
     [MessagePackObject]
-    public  class StateProofTransaction : Transaction
+    public class StateProofTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type")]
         [MessagePack.Key("type")]

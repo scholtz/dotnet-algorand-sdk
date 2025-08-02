@@ -29,6 +29,7 @@ namespace Algorand.Algod.Model.Transactions
     [JsonSubtypes.KnownSubType(typeof(AssetMovementsTransaction), "axfer")]
     [JsonSubtypes.KnownSubType(typeof(AssetConfigurationTransaction), "acfg")]
     [JsonSubtypes.KnownSubType(typeof(StateProofTransaction), "stpf")]
+    [JsonSubtypes.KnownSubType(typeof(HeartBeatTransaction), "hb")]
 
     [MessagePack.MessagePackObject]
     [Union(0, typeof(ApplicationCallTransaction))]
@@ -38,6 +39,7 @@ namespace Algorand.Algod.Model.Transactions
     [Union(4, typeof(AssetMovementsTransaction))]
     [Union(5, typeof(AssetConfigurationTransaction))]
     [Union(6, typeof(StateProofTransaction))]
+    [Union(7, typeof(HeartBeatTransaction))]
 
     public abstract partial class Transaction : IReturnableTransaction
     {

@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Algorand.Algod.Model.Converters
+namespace Algorand.Algod.Model.Converters.Json
 {
-    public class UlongDictionaryConverter<T> : JsonConverter<IDictionary<ulong, T>>
+    public class UlongDictionaryConverterJson<T> : JsonConverter<IDictionary<ulong, T>>
     {
-        public override void WriteJson(JsonWriter writer, IDictionary<ulong, T>? value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, IDictionary<ulong, T> value, JsonSerializer serializer)
         {
             // Write as object format for better compatibility
             writer.WriteStartObject();
@@ -31,7 +31,7 @@ namespace Algorand.Algod.Model.Converters
             writer.WriteEndObject();
         }
 
-        public override IDictionary<ulong, T>? ReadJson(JsonReader reader, Type objectType, IDictionary<ulong, T>? existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override IDictionary<ulong, T> ReadJson(JsonReader reader, Type objectType, IDictionary<ulong, T> existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             var result = new Dictionary<ulong, T>();
 

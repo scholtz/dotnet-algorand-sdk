@@ -1,4 +1,5 @@
-﻿using Algorand.Algod.Model.Converters;
+﻿using Algorand.Algod.Model.Converters.Json;
+using Algorand.Algod.Model.Converters.MsgPack;
 using Algorand.Utils;
 using MessagePack;
 using Newtonsoft.Json;

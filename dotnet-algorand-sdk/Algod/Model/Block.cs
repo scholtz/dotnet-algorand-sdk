@@ -1,6 +1,6 @@
 ﻿namespace Algorand.Algod.Model
 {
-    using Algorand.Algod.Model.Converters;
+    using Algorand.Algod.Model.Converters.Json;
     using Algorand.Algod.Model.Transactions;
     using System.ComponentModel.DataAnnotations;
 #if UNITY
@@ -327,7 +327,7 @@
     [Tooltip(@"StateproofTracking.")]
     [field:InspectorName(@"StateproofTracking")]  
 #endif
-        [Newtonsoft.Json.JsonConverter(typeof(UlongDictionaryConverter<StateProofTrackingData>))]
+        [Newtonsoft.Json.JsonConverter(typeof(UlongDictionaryConverterJson<StateProofTrackingData>))]
         public System.Collections.Generic.IDictionary<ulong, StateProofTrackingData>? StateproofTracking { get; set; }
 
         /// <summary>\[partupdabs\] AbsentParticipationAccounts.</summary>

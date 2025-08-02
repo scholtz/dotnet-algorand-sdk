@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Algorand.Algod.Model.Converters.Json;
+using Algorand.Utils;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

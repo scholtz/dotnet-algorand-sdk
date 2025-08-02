@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Algorand.Algod.Model.Converters
+namespace Algorand.Algod.Model.Converters.Json
 {
     public class VRFPublicKeyConverterJson : JsonConverter<VRFPublicKey>
     {
