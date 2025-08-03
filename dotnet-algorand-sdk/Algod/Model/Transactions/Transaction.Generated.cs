@@ -21,7 +21,7 @@ using UnityEngine;
     [field:InspectorName(@"Fee")]
     public ulong Fee {get;set;}
 #else
-        public ulong? Fee { get; set; }
+        public ulong Fee { get; set; } = 0;
 #endif
 
 
@@ -34,7 +34,7 @@ using UnityEngine;
     [field:InspectorName(@"FirstValid")]
     public ulong FirstValid {get;set;}
 #else
-        public ulong? FirstValid { get; set; }
+        public ulong FirstValid { get; set; } = 0;
 #endif
 
 
@@ -86,7 +86,7 @@ using UnityEngine;
     [field:InspectorName(@"LastValid")]
     public ulong LastValid {get;set;}
 #else
-        public ulong? LastValid { get; set; }
+        public ulong LastValid { get; set; } = 0;
 #endif
 
 

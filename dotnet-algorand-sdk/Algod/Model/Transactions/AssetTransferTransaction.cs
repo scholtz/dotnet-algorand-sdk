@@ -1,4 +1,5 @@
 ﻿
+using Algorand.Algod.Model.Converters.MsgPack;
 using JsonSubTypes;
 using MessagePack;
 using Newtonsoft.Json;
@@ -14,6 +15,8 @@ namespace Algorand.Algod.Model.Transactions
     [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetClawbackTransaction), "asnd")]
     [JsonSubtypes.FallBackSubType(typeof(AssetTransferTransaction))]
     [MessagePackObject]
+    [MessagePackFormatter(typeof(NoDefaultsFormatter<AssetTransferTransaction>))]
+
     public partial class AssetTransferTransaction : AssetMovementsTransaction
     {
 #if UNITY

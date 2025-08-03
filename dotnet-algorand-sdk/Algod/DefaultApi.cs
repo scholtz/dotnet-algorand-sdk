@@ -4681,7 +4681,7 @@ namespace Algorand.Algod
                 {
                     if (response.Content.Headers.ContentType.MediaType == "application/msgpack")
                     {
-                        //var bytes = await response.Content.ReadAsByteArrayAsync();
+                        // var bytes = await response.Content.ReadAsByteArrayAsync();
                         //using Stream responseStream = new System.IO.MemoryStream(bytes);
                         using var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                         using var reader = new MessagePackReader(responseStream);

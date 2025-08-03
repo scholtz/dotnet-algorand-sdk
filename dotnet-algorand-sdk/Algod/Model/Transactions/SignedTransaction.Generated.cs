@@ -1,7 +1,7 @@
 
 namespace Algorand.Algod.Model.Transactions
 {
-
+    using Algorand.Algod.Model.Converters.MsgPack;
     using System = global::System;
 #if UNITY
 using UnityEngine;
@@ -11,6 +11,7 @@ using UnityEngine;
 [System.Serializable]
 #endif
     [MessagePack.MessagePackObject]
+    [MessagePack.MessagePackFormatter(typeof(NoDefaultsFormatter<SignedTransaction>))]
     public partial class SignedTransaction
     {
 

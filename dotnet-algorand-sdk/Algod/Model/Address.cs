@@ -38,6 +38,8 @@ namespace Algorand
         // prefix for hashing application ID
         private static readonly byte[] APP_ID_PREFIX = Encoding.UTF8.GetBytes("appID");
 
+        public static readonly Address ZERO_ADDRESS = new Address(new byte[LEN_BYTES]);
+
         /// <summary>
         /// Create a new address from a byte array.
         /// </summary>
