@@ -75,25 +75,26 @@ namespace Algorand
     public class LogicsigSignature
     {
         [JsonIgnore]
+        [IgnoreMember]
         private static byte[] LOGIC_PREFIX = Encoding.UTF8.GetBytes("Program");//.getBytes(StandardCharsets.UTF_8);
 
         [JsonProperty(PropertyName = "l")]
         [MessagePack.Key("l")]
-        public byte[] Logic;
+        public byte[] Logic { get; set; }
 
         [JsonProperty(PropertyName = "arg")]
         [MessagePack.Key("arg")]
-        public List<byte[]> Args;
+        public List<byte[]> Args { get; set; }
 
         public bool ShouldSerializeArgs() => Args?.Count > 0;
 
         [JsonProperty(PropertyName = "sig")]
         [MessagePack.Key("sig")]
-        public Signature Sig;
+        public Signature Sig { get; set; }
 
         [JsonProperty(PropertyName = "msig")]
         [MessagePack.Key("msig")]
-        public MultisigSignature Msig;
+        public MultisigSignature Msig { get; set; }
 
         /// <summary>
         /// LogicsigSignature
@@ -377,15 +378,15 @@ namespace Algorand
     {
         [JsonProperty(PropertyName = "v")]
         [MessagePack.Key("v")]
-        public int Version;
+        public int Version { get; set; }
 
         [JsonProperty(PropertyName = "thr")]
         [MessagePack.Key("thr")]
-        public int Threshold;
+        public int Threshold { get; set; }
 
         [JsonProperty(PropertyName = "subsig")]
         [MessagePack.Key("subsig")]
-        public List<MultisigSubsig> Subsigs;
+        public List<MultisigSubsig> Subsigs { get; set; }
 
         public bool ShouldSerializeSubsigs() => Subsigs?.Count > 0;
 
@@ -495,15 +496,15 @@ namespace Algorand
         [JsonProperty(PropertyName = "pk")]
         [JsonConverter(typeof(BytesConverter))]
         [MessagePack.Key("pk")]
-        public Ed25519PublicKeyParameters key;
+        public Ed25519PublicKeyParameters key { get; set; }
 
         [JsonProperty(PropertyName = "s")]
         [MessagePack.Key("s")]
-        public Signature sig;
+        public Signature sig { get; set; }
 
 
         public bool ShouldSerializesig() => sig.Bytes.Any(b => b != 0);
-
+        
         /// <summary>
         /// workaround wrapped json values
         /// </summary>

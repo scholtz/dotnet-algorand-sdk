@@ -9,14 +9,6 @@ Important release note: For this version KMD has been reworked completely, and i
 
 **The version numbers for NuGet packages are now 4.0 and onwards and corresponds to the version of the algod build.**
 
-## WebAssembly Support
-
-An experimental WASM build of the SDK is now available! https://www.nuget.org/packages/AlgorandBlazor_Experimental/9.0.5
-
-The Web Assembly source is on the WasmExperiment branch. That includes a demo app called BlazorTest.
-
-A demo app is here  https://calm-dune-04ab9e803-preview.westeurope.3.azurestaticapps.net/
-
 ## General Usage
 
 Most operations involve producing, submitting and examining the status of transactions. To help achieve this the SDK offers a class model (Algod/Model/Transactions) of Algorand transactions and their properties. Transactions can then be instantiated, signed, sent and read back using this model. There are additional utility methods, such as on the Account class, which simplify tasks like signing the transaction and correlating transaction identifiers.
@@ -46,24 +38,10 @@ so that WebGL builds can use a different http client by delegation.
 
 
 ## Getting a node and account(s) 
-To get working with the Algorand network you will need access to a node. There are a number of ways to do this. The quickest ways of getting set up are to rent access to a node from a service like PureStake, or to install the Algorand Sandbox.
 
-To install the Algorand Sandbox please see instructions here: <https://github.com/algorand/sandbox>
+Start with setting up the AlgoKit - https://developer.algorand.org/docs/get-started/algokit/
 
-Once you have a node you will get two key pieces of information:
-
-- The API URL
-- The API KEY
-
-If you installed sandbox you will also be given some dev pre-made test accounts. You will need to run [this command](https://developer.algorand.org/docs/clis/goal/account/export/) to extract the account mnemonic.
-
-An account mnemonic is a textual representation, a string of English language words, of the private key of the account.
-
-So in all you should now have:
-
-- The API URL and KEY
-- Account addresses
-- Account private key expressed as a mnemonic
+You can setup node on localhost (DockerNet) using command `algokit localnet start`
 
 ### Connecting to the network
 
@@ -78,12 +56,11 @@ namespace sdk_examples
     {
         public static async Task Main(string[] args)
         {
-            string ALGOD_API_ADDR = "<YOUR API URL, eg:http://localhost:4001/>";
-            string ALGOD_API_TOKEN = "<YOUR API KEY>";
+            using var dockerNetHttpClient = HttpClientConfigurator.ConfigureHttpClient(AlgodConfiguration.DockerNet);
+            DefaultApi algodApiInstanceDockerNet = new DefaultApi(dockerNetHttpClient );
 
-            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            using var httpClient = HttpClientConfigurator.ConfigureHttpClient(AlgodConfiguration.MainNet);
             DefaultApi algodApiInstance = new DefaultApi(httpClient);
-
 ```
 
 *Technical note: when specifying the Host in HttpClientConfigurator, a trailing slash is automatically added to that host so that relative URIs can be combined with it correctly.
@@ -99,6 +76,9 @@ Let's call the network and get some information:
 ```cs
             try
             {
+            
+                using var httpClient = HttpClientConfigurator.ConfigureHttpClient(AlgodConfiguration.MainNet);
+                DefaultApi algodApiInstance = new DefaultApi(httpClient);
                 var supply = await algodApiInstance.GetSupplyAsync();
                 Console.WriteLine("Total Algorand Supply: " + supply.TotalMoney);
                 Console.WriteLine("Online Algorand Supply: " + supply.OnlineMoney);

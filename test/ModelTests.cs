@@ -1,12 +1,16 @@
+using Algorand;
+using Algorand.Algod;
 using Algorand.Algod.Model.Transactions;
 using MessagePack;
 using MessagePack.Resolvers;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace test
 {
@@ -242,7 +246,7 @@ namespace test
             Assert.That(typedBody.Block.Round, Is.EqualTo(54054531));
             Assert.That(typedBody.Block.Transactions.Count, Is.EqualTo(1));
 
-            
+
 
             var json = Algorand.Utils.Encoder.EncodeToJson(typedBody);
 
@@ -370,6 +374,50 @@ namespace test
                 Assert.That(json, Is.EqualTo(json3));
 
             }
+        }
+
+
+        [Test]
+        public async Task TestMultipleBlocks()
+        {
+            using var httpClient = HttpClientConfigurator.ConfigureHttpClient(AlgodConfiguration.MainNet);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+
+            var status = await algodApiInstance.GetStatusAsync();
+
+            int testRounds = 100;
+#if DEBUG
+            ulong round = 50_000_440;
+#else
+var round = status.LastRound;
+#endif
+            long durationJson = 0;
+            long durationMsgPack = 0;
+            while (testRounds-- > 0)
+            {
+                await algodApiInstance.WaitForBlockAsync(round);
+                var watchJson = new Stopwatch();
+                watchJson.Start();
+                var blockJson = await algodApiInstance.GetBlockAsync(round, Algorand.Algod.Model.Format.Json, false);
+                watchJson.Stop();
+                durationJson += watchJson.ElapsedMilliseconds;
+
+                var watchMsgPack = new Stopwatch();
+                watchMsgPack.Start();
+                var blockMsgPack = await algodApiInstance.GetBlockAsync(round, Algorand.Algod.Model.Format.Msgpack, false);
+                watchMsgPack.Stop();
+                durationMsgPack += watchMsgPack.ElapsedMilliseconds;
+                blockMsgPack.Cert = null;
+
+                var jsonFromJson = Algorand.Utils.Encoder.EncodeToJson(blockJson);
+                var jsonFromMsgPack = Algorand.Utils.Encoder.EncodeToJson(blockMsgPack);
+                Assert.That(jsonFromJson, Is.EqualTo(jsonFromMsgPack),$"Block round failed {round}");
+
+                round++;
+            }
+
+            Console.WriteLine($"Json: {durationJson} ms, MsgPack: {durationMsgPack} ms");
+
         }
 
     }

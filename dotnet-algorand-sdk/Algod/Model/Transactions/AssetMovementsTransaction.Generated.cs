@@ -14,6 +14,7 @@ using UnityEngine;
     [Union(0, typeof(AssetAcceptTransaction))]
     [Union(1, typeof(AssetClawbackTransaction))]
     [Union(2, typeof(AssetTransferTransaction))]
+    [Union(3, typeof(AssetCloseTransaction))]
     public partial class AssetMovementsTransaction : Transaction
     {
         [Newtonsoft.Json.JsonProperty("xaid", Required = Newtonsoft.Json.Required.Always)]

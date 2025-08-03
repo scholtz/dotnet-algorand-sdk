@@ -2,8 +2,10 @@
 using MessagePack;
 using MessagePack.Formatters;
 using MessagePack.Resolvers;
+using Org.BouncyCastle.Crypto;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -151,29 +153,213 @@ namespace Algorand.Algod.Model.Converters.MsgPack
                 var name = keyAttribute?.StringKey ?? property.Name;
                 if (dict.TryGetValue(name, out var value))
                 {
+                    switch (property.PropertyType.Name)
+                    {
+                        case "List`1":
+                            switch (property.Name)
+                            {
+                                case "Subsigs":
+                                    var array = value as Object[];
+                                    var ret = new List<MultisigSubsig>() { };
+                                    foreach (var item in array)
+                                    {
+                                        var itemObj = item as Dictionary<object, object?>;
+                                        if (itemObj == null)
+                                        {
+                                            throw new Exception("InnerTxns cannot be deserialized");
+                                        }
+                                        if (itemObj.ContainsKey("s"))
+                                        {
+                                            var txToAdd = new MultisigSubsig(itemObj["pk"] as byte[], itemObj["s"] as byte[]);
+                                            ret.Add(txToAdd);
+                                        }
+                                        else
+                                        {
+                                            var txToAdd = new MultisigSubsig(itemObj["pk"] as byte[]);
+                                            ret.Add(txToAdd);
+                                        }
+
+                                    }
+                                    property.SetValue(instance, ret);
+                                    continue; // do not continue to next switch
+                            }
+                            break;
+                        case "ICollection`1":
+                            switch (property.Name)
+                            {
+                                case "InnerTxns":
+                                    var array = value as Object[];
+                                    var ret = new List<SignedTransaction>() { };
+                                    foreach (var item in array)
+                                    {
+                                        var itemObj = item as Dictionary<object, object?>;
+                                        if (itemObj == null)
+                                        {
+                                            throw new Exception("InnerTxns cannot be deserialized");
+                                        }
+                                        var txToAdd = itemObj.Deserialize<SignedTransaction>();
+                                        ret.Add(txToAdd);
+
+                                    }
+                                    property.SetValue(instance, ret.ToArray());
+                                    continue; // do not continue to next switch
+                                case "ApplicationArgs":
+                                    var arrayApplicationArgs = value as Object[];
+                                    var retApplicationArgs = new List<byte[]>() { };
+                                    foreach (var item in arrayApplicationArgs)
+                                    {
+                                        var itemObj = item as byte[];
+                                        if (itemObj == null)
+                                        {
+                                            throw new Exception("ApplicationArgs cannot be deserialized");
+                                        }
+                                        retApplicationArgs.Add(itemObj);
+
+                                    }
+                                    property.SetValue(instance, retApplicationArgs.ToArray());
+                                    continue; // do not continue to next switch
+                                case "Accounts":
+                                    var arrayAccounts = value as Object[];
+                                    var retAccounts = new List<Address>() { };
+                                    foreach (var item in arrayAccounts)
+                                    {
+                                        var itemObj = item as byte[];
+                                        if (itemObj == null)
+                                        {
+                                            throw new Exception("ApplicationArgs cannot be deserialized");
+                                        }
+                                        retAccounts.Add(new Address(itemObj));
+
+                                    }
+                                    property.SetValue(instance, retAccounts.ToArray());
+                                    continue; // do not continue to next switch
+                                case "Boxes":
+                                    var arrayBoxes = value as Object[];
+                                    var retBoxes = new List<BoxRef>() { };
+                                    foreach (var item in arrayBoxes)
+                                    {
+                                        var itemObj = item as Dictionary<object, object?>;
+                                        if (itemObj == null)
+                                        {
+                                            throw new Exception("ApplicationArgs cannot be deserialized");
+                                        }
+                                        retBoxes.Add(itemObj.Deserialize<BoxRef>());
+                                    }
+                                    property.SetValue(instance, retBoxes.ToArray());
+                                    continue; // do not continue to next switch
+                                case "ForeignAssets":
+                                case "ForeignApps":
+                                    var arrayInts = value as Object[];
+                                    var retInts = new List<ulong>() { };
+                                    foreach (var item in arrayInts)
+                                    {
+                                        retInts.Add(Convert.ToUInt64(item));
+                                    }
+                                    property.SetValue(instance, retInts.ToArray());
+                                    continue; // do not continue to next switch
+                                default:
+                                    throw new Exception($"Not implemented list {property.Name}");
+                            }
+
+                    }
+
                     switch (property.PropertyType.FullName)
                     {
                         case "Algorand.Algod.Model.Transactions.Transaction":
                             var txDict = value as Dictionary<object, object?>;
+                            if (txDict == null)
+                            {
+                                throw new InvalidOperationException($"Expected a dictionary for property {property.Name}, but got {value?.GetType().FullName}");
+                            }
+
                             switch (txDict["type"])
                             {
                                 case "acfg":
-                                    property.SetValue(instance, txDict.Deserialize<AssetConfigurationTransaction>());
+                                    if (txDict.ContainsKey("caid"))
+                                    {
+                                        property.SetValue(instance, txDict.Deserialize<AssetUpdateTransaction>());
+                                    }
+                                    else
+                                    {
+                                        property.SetValue(instance, txDict.Deserialize<AssetCreateTransaction>());
+                                    }
                                     break;
                                 case "afrz":
                                     property.SetValue(instance, txDict.Deserialize<AssetFreezeTransaction>());
                                     break;
                                 case "appl":
-                                    property.SetValue(instance, txDict.Deserialize<ApplicationCallTransaction>());
+                                    if (txDict.ContainsKey("apan"))
+                                    {
+                                        switch (txDict["apan"]?.ToString())
+                                        {
+                                            case "0":
+                                            case "noop":
+                                                property.SetValue(instance, txDict.Deserialize<ApplicationNoopTransaction>());
+                                                break;
+                                            case "1":
+                                            case "optin":
+                                                property.SetValue(instance, txDict.Deserialize<ApplicationOptInTransaction>());
+                                                break;
+                                            case "2":
+                                            case "aclose":
+                                                property.SetValue(instance, txDict.Deserialize<ApplicationCloseOutTransaction>());
+                                                break;
+                                            case "3":
+                                            case "clear":
+                                                property.SetValue(instance, txDict.Deserialize<ApplicationClearStateTransaction>());
+                                                break;
+                                            case "4":
+                                            case "update":
+                                                property.SetValue(instance, txDict.Deserialize<ApplicationUpdateTransaction>());
+                                                break;
+                                            case "5":
+                                            case "delete":
+                                                property.SetValue(instance, txDict.Deserialize<ApplicationDeleteTransaction>());
+                                                break;
+                                            default:
+                                                property.SetValue(instance, txDict.Deserialize<ApplicationNoopTransaction>());
+                                                break;
+                                        }
+                                    }
+                                    else if (txDict.ContainsKey("apap") && txDict.ContainsKey("apid"))
+                                    {
+                                        property.SetValue(instance, txDict.Deserialize<ApplicationUpdateTransaction>());
+                                    }
+                                    else if (txDict.ContainsKey("apap"))
+                                    {
+                                        property.SetValue(instance, txDict.Deserialize<ApplicationCreateTransaction>());
+                                    }
+                                    else
+                                    {
+                                        property.SetValue(instance, txDict.Deserialize<ApplicationNoopTransaction>());
+                                    }
                                     break;
                                 case "axfer":
-                                    property.SetValue(instance, txDict.Deserialize<AssetTransferTransaction>());
+                                    if (txDict.ContainsKey("asnd"))
+                                    {
+                                        property.SetValue(instance, txDict.Deserialize<AssetClawbackTransaction>());
+                                    }
+                                    else if (txDict.ContainsKey("aclose"))
+                                    {
+                                        property.SetValue(instance, txDict.Deserialize<AssetCloseTransaction>());
+                                    }
+                                    else
+                                    {
+                                        property.SetValue(instance, txDict.Deserialize<AssetTransferTransaction>());
+                                    }
                                     break;
                                 case "hb":
                                     property.SetValue(instance, txDict.Deserialize<HeartBeatTransaction>());
                                     break;
                                 case "keyreg":
-                                    property.SetValue(instance, txDict.Deserialize<KeyRegistrationTransaction>());
+                                    if (txDict.ContainsKey("selkey"))
+                                    {
+                                        property.SetValue(instance, txDict.Deserialize<KeyRegisterOnlineTransaction>());
+                                    }
+                                    else
+                                    {
+                                        property.SetValue(instance, txDict.Deserialize<KeyRegisterOfflineTransaction>());
+                                    }
                                     break;
                                 case "pay":
                                     property.SetValue(instance, txDict.Deserialize<PaymentTransaction>());
@@ -201,8 +387,96 @@ namespace Algorand.Algod.Model.Converters.MsgPack
                         case "Algorand.VRFPublicKey":
                             property.SetValue(instance, new Algorand.VRFPublicKey(value as byte[]));
                             break;
+                        case "Algorand.Algod.Model.AssetParams":
+                            var txDictAssetParams = value as Dictionary<object, object?>;
+                            if (txDictAssetParams == null)
+                            {
+                                throw new InvalidOperationException($"Expected a dictionary for property {property.Name}, but got {value?.GetType().FullName}");
+                            }
+                            property.SetValue(instance, txDictAssetParams.Deserialize<Algorand.Algod.Model.AssetParams>());
+                            break;
+                        case "Algorand.Algod.Model.Transactions.SignedTransactionDetail":
+                            var txDictSignedTransactionDetail = value as Dictionary<object, object?>;
+                            if (txDictSignedTransactionDetail == null)
+                            {
+                                throw new InvalidOperationException($"Expected a dictionary for property {property.Name}, but got {value?.GetType().FullName}");
+                            }
+                            property.SetValue(instance, txDictSignedTransactionDetail.Deserialize<Algorand.Algod.Model.Transactions.SignedTransactionDetail>());
+                            break;
+                        case "Algorand.Algod.Model.Transactions.StateSchema":
+                            var txDictStateSchema = value as Dictionary<object, object?>;
+                            if (txDictStateSchema == null)
+                            {
+                                throw new InvalidOperationException($"Expected a dictionary for property {property.Name}, but got {value?.GetType().FullName}");
+                            }
+                            property.SetValue(instance, txDictStateSchema.Deserialize<Algorand.Algod.Model.Transactions.StateSchema>());
+                            break;
+                        case "Algorand.LogicsigSignature":
+                            var txDictLogicsigSignature = value as Dictionary<object, object?>;
+                            if (txDictLogicsigSignature == null)
+                            {
+                                throw new InvalidOperationException($"Expected a dictionary for property {property.Name}, but got {value?.GetType().FullName}");
+                            }
+                            property.SetValue(instance, txDictLogicsigSignature.Deserialize<Algorand.LogicsigSignature>());
+                            break;
+                        case "Algorand.MultisigSignature":
+                            var txDictMultisigSignature = value as Dictionary<object, object?>;
+                            if (txDictMultisigSignature == null)
+                            {
+                                throw new InvalidOperationException($"Expected a dictionary for property {property.Name}, but got {value?.GetType().FullName}");
+                            }
+                            property.SetValue(instance, txDictMultisigSignature.Deserialize<Algorand.MultisigSignature>());
+                            break;
+                        case "Algorand.MultisigSubsig":
+                            var txDictMultisigSubsig = value as Dictionary<object, object?>;
+                            if (txDictMultisigSubsig == null)
+                            {
+                                throw new InvalidOperationException($"Expected a dictionary for property {property.Name}, but got {value?.GetType().FullName}");
+                            }
+                            property.SetValue(instance, txDictMultisigSubsig.Deserialize<Algorand.MultisigSubsig>());
+                            break;
+                        case "Algorand.Algod.Model.HeartBeat":
+                            var txDictHeartBeat = value as Dictionary<object, object?>;
+                            if (txDictHeartBeat == null)
+                            {
+                                throw new InvalidOperationException($"Expected a dictionary for property {property.Name}, but got {value?.GetType().FullName}");
+                            }
+                            property.SetValue(instance, txDictHeartBeat.Deserialize<Algorand.Algod.Model.HeartBeat>());
+                            break;
+                        case "Algorand.Algod.Model.BlockCertVoteSig":
+                            var txDictBlockCertVoteSig = value as Dictionary<object, object?>;
+                            if (txDictBlockCertVoteSig == null)
+                            {
+                                throw new InvalidOperationException($"Expected a dictionary for property {property.Name}, but got {value?.GetType().FullName}");
+                            }
+                            property.SetValue(instance, txDictBlockCertVoteSig.Deserialize<Algorand.Algod.Model.BlockCertVoteSig>());
+                            break;
+                        case "System.UInt64":
+                            property.SetValue(instance, Convert.ToUInt64(value));
+                            break;
+                        case "System.UInt32":
+                            property.SetValue(instance, Convert.ToUInt32(value));
+                            break;
+                        case "System.UInt16":
+                            property.SetValue(instance, Convert.ToUInt16(value));
+                            break;
                         default:
-                            property.SetValue(instance, value);
+                            switch (property.PropertyType.GenericTypeArguments.FirstOrDefault()?.FullName)
+                            {
+                                case "System.UInt64":
+                                    property.SetValue(instance, Convert.ToUInt64(value));
+                                    break;
+                                case "System.UInt32":
+                                    property.SetValue(instance, Convert.ToUInt32(value));
+                                    break;
+                                case "System.UInt16":
+                                    property.SetValue(instance, Convert.ToUInt16(value));
+                                    break;
+                                default:
+                                    property.SetValue(instance, value);
+                                    break;
+                            }
+
                             break;
                     }
                 }
