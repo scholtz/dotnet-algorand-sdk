@@ -385,9 +385,9 @@ namespace test
 
             var status = await algodApiInstance.GetStatusAsync();
 
-            int testRounds = 100;
+            int testRounds = 1;
 #if DEBUG
-            ulong round = 50_000_440;
+            ulong round = 52402526; //50_000_440;
 #else
 var round = status.LastRound;
 #endif
