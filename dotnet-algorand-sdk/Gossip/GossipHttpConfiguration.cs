@@ -1,8 +1,8 @@
-﻿namespace Algorand.Algod
+﻿namespace Algorand.Gossip
 {
-    public class GossipConfiguration
+    public class GossipHttpConfiguration
     {
-        public static GossipConfiguration MainNetArchival = new GossipConfiguration()
+        public static GossipHttpConfiguration MainNetArchival = new GossipHttpConfiguration()
         {
             Hosts = new string[]{
                 "http://a-td.algorand-mainnet.network:4160",

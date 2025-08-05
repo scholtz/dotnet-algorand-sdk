@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Algorand.Algod
+namespace Algorand.Gossip
 {
-    public class GossipClient
+    public class GossipHttpClient
     {
-        private readonly GossipConfiguration _gossipConfiguration;
+        private readonly GossipHttpConfiguration _gossipConfiguration;
         private readonly ConcurrentDictionary<string, System.Net.Http.HttpClient> _httpClients;
 
         private System.Net.Http.HttpClient GetRandomHttpClient()
@@ -22,7 +22,7 @@ namespace Algorand.Algod
             var randomKey = keys[random.Next(keys.Count)];
             return _httpClients[randomKey];
         }
-        public GossipClient(GossipConfiguration config)
+        public GossipHttpClient(GossipHttpConfiguration config)
         {
             _httpClients = new ConcurrentDictionary<string, System.Net.Http.HttpClient>();
             foreach (var host in config.Hosts)
@@ -43,7 +43,7 @@ namespace Algorand.Algod
             if (response.StatusCode > 0)
             {
                 var bytes= await response.Content.ReadAsByteArrayAsync();
-                return Algorand.Utils.Encoder.DecodeFromMsgPack<CertifiedBlock>(bytes);
+                return Utils.Encoder.DecodeFromMsgPack<CertifiedBlock>(bytes);
             }
             else
             {

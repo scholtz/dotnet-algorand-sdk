@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "algorand_tests", "specflow\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "client-generator", "client-generator\client-generator.csproj", "{87755BC8-0910-4D52-A682-4C6975C72232}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gossip-client-tests", "gossip-client-tests\gossip-client-tests.csproj", "{59B03931-2D1C-4F0B-B166-7F397BC600CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AccountExample|Any CPU = AccountExample|Any CPU
@@ -276,6 +278,46 @@ Global
 		{87755BC8-0910-4D52-A682-4C6975C72232}.Unity_debug|Any CPU.Build.0 = Release|Any CPU
 		{87755BC8-0910-4D52-A682-4C6975C72232}.Unity|Any CPU.ActiveCfg = Debug|Any CPU
 		{87755BC8-0910-4D52-A682-4C6975C72232}.Unity|Any CPU.Build.0 = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.AccountExample|Any CPU.ActiveCfg = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.AccountExample|Any CPU.Build.0 = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.AssetExample|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.AssetExample|Any CPU.Build.0 = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.AtomicTransferExample|Any CPU.ActiveCfg = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.AtomicTransferExample|Any CPU.Build.0 = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.BasicExample|Any CPU.ActiveCfg = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.BasicExample|Any CPU.Build.0 = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.CompileTeal|Any CPU.ActiveCfg = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.CompileTeal|Any CPU.Build.0 = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.DryrunDebuggingExample|Any CPU.ActiveCfg = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.DryrunDebuggingExample|Any CPU.Build.0 = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.IndexerExample|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.IndexerExample|Any CPU.Build.0 = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Integration_Test_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Integration_Test_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.KMDExample|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.KMDExample|Any CPU.Build.0 = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.LogicSignatureContractAccountExample|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.LogicSignatureContractAccountExample|Any CPU.Build.0 = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.LogicSignatureExample|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.LogicSignatureExample|Any CPU.Build.0 = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.MultisigExample|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.MultisigExample|Any CPU.Build.0 = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.RekeyExample|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.RekeyExample|Any CPU.Build.0 = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.SimpleBoxExample|Any CPU.ActiveCfg = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.SimpleBoxExample|Any CPU.Build.0 = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.StatefulContractExample|Any CPU.ActiveCfg = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.StatefulContractExample|Any CPU.Build.0 = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Test_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Test_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Unity_debug|Any CPU.ActiveCfg = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Unity_debug|Any CPU.Build.0 = Release|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Unity|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B03931-2D1C-4F0B-B166-7F397BC600CF}.Unity|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
