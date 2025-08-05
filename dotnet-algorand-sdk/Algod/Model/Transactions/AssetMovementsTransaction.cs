@@ -7,8 +7,8 @@ namespace Algorand.Algod.Model.Transactions
 {
 
     [JsonConverter(typeof(JsonSubtypes))]
-    [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetCloseTransaction), "aclose")]
-    [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetTransferTransaction), "aamt")]
+    [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetCloseTransaction), "aclose", StopLookupOnMatch = true)]
+    [JsonSubtypes.KnownSubTypeWithProperty(typeof(AssetTransferTransaction), "aamt", StopLookupOnMatch = true)]
     [JsonSubtypes.FallBackSubType(typeof(AssetAcceptTransaction))]
 
     public abstract partial class AssetMovementsTransaction : Transaction

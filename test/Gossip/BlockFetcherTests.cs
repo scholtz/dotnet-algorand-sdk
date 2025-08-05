@@ -17,7 +17,7 @@ namespace test.Gossip
         [Test]
         public async Task FetchBlocks0To100()
         {
-            var gossipClient = new Algorand.Algod.GossipHttpClient(GossipHttpConfiguration.MainNetArchival);
+            var gossipClient = new Algorand.Gossip.GossipHttpClient(GossipHttpConfiguration.MainNetArchival);
 
             for (ulong i = 0; i < 100; i++)
             {
@@ -36,7 +36,7 @@ namespace test.Gossip
             ulong round = 52402526; //50_000_440;
 
 
-            var gossipClient = new Algorand.Algod.GossipHttpClient(GossipHttpConfiguration.MainNetArchival);
+            var gossipClient = new Algorand.Gossip.GossipHttpClient(GossipHttpConfiguration.MainNetArchival);
 
             var block = await gossipClient.FetchBlockAsync(round);
             Assert.That(block, Is.Not.Null, $"Block {round} should not be null.");
