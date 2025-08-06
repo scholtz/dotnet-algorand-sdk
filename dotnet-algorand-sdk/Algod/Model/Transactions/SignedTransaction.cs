@@ -2,6 +2,7 @@
 
 
 using Algorand.Utils;
+using AVM.ClientGenerator.ABI.ARC4.Types;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -12,14 +13,33 @@ using System.Collections.Generic;
 namespace Algorand.Algod.Model.Transactions
 {
     [MessagePack.MessagePackObject]
+    public partial class ValueDelta
+    {
+        [Newtonsoft.Json.JsonProperty("at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("at")]
+        public ulong DeltaAction { get; set; }
+        [Newtonsoft.Json.JsonProperty("bs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("bs")]
+        public object? Bytes { get; set; }
+        [Newtonsoft.Json.JsonProperty("ui", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("ui")]
+        public ulong? Uint64 { get; set; }
+    }
+
+    [MessagePack.MessagePackObject]
     public partial class SignedTransactionDetail
     {
+        [Newtonsoft.Json.JsonProperty("gd", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("gd")]
+        public IDictionary<object, ValueDelta>? GlobalDelta { get; set; }
+
+
         [Newtonsoft.Json.JsonProperty("itx", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("itx")]
-        public ICollection<SignedTransaction> InnerTxns { get; set; }
+        public ICollection<SignedTransaction>? InnerTxns { get; set; }
 
     }
-    
+
     public partial class SignedTransaction
     {
         [Newtonsoft.Json.JsonProperty("dt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]

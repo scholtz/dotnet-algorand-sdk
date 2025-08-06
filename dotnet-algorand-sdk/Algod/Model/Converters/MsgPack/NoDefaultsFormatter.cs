@@ -2,6 +2,7 @@
 using MessagePack;
 using MessagePack.Formatters;
 using MessagePack.Resolvers;
+using Microsoft.CodeAnalysis.Host;
 using Org.BouncyCastle.Crypto;
 using System;
 using System.Collections.Generic;
@@ -460,9 +461,49 @@ namespace Algorand.Algod.Model.Converters.MsgPack
                         case "System.UInt16":
                             property.SetValue(instance, Convert.ToUInt16(value));
                             break;
+                        case "System.Object":
+                            property.SetValue(instance, value);
+                            break;
+                        case "System.Byte[]":
+                            var bytes = value as byte[];
+                            property.SetValue(instance, bytes);
+                            break;
                         default:
+                            
                             switch (property.PropertyType.GenericTypeArguments.FirstOrDefault()?.FullName)
                             {
+                                case "System.Object":
+                                    if (property.PropertyType.GenericTypeArguments.Length == 2)
+                                    {
+                                        var name2 = property.PropertyType.GenericTypeArguments.Skip(1).First().Name;
+                                        if(name2 == "ValueDelta")
+                                        {
+                                            // dictionary of state change.. first item is string, second value delta
+
+                                            var dictGS = new Dictionary<object, ValueDelta>();
+                                            if (value is Dictionary<object, object?> valueDict)
+                                            {
+                                                foreach (var item in valueDict)
+                                                {
+                                                    var itemValueDict = item.Value as Dictionary<object,object?>;
+                                                    if(itemValueDict != null)
+                                                    {
+                                                        dictGS[item.Key] = itemValueDict.Deserialize<ValueDelta>();
+                                                    }
+                                                }
+                                            }
+                                            property.SetValue(instance, dictGS);
+                                        }
+                                        else
+                                        {
+                                            property.SetValue(instance, value);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        property.SetValue(instance, value);
+                                    }
+                                        break;
                                 case "System.UInt64":
                                     property.SetValue(instance, Convert.ToUInt64(value));
                                     break;
