@@ -31,7 +31,11 @@ namespace Algorand.Algod.Model.Transactions
     {
         [Newtonsoft.Json.JsonProperty("gd", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("gd")]
-        public IDictionary<object, ValueDelta>? GlobalDelta { get; set; }
+        public Dictionary<object, ValueDelta>? GlobalDelta { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ld", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("ld")]
+        public Dictionary<ulong, Dictionary<object, ValueDelta>>? LocalDelta { get; set; }
 
 
         [Newtonsoft.Json.JsonProperty("itx", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]

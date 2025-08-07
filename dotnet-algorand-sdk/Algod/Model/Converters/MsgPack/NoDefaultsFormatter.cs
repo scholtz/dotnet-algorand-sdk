@@ -469,14 +469,14 @@ namespace Algorand.Algod.Model.Converters.MsgPack
                             property.SetValue(instance, bytes);
                             break;
                         default:
-                            
+
                             switch (property.PropertyType.GenericTypeArguments.FirstOrDefault()?.FullName)
                             {
                                 case "System.Object":
                                     if (property.PropertyType.GenericTypeArguments.Length == 2)
                                     {
                                         var name2 = property.PropertyType.GenericTypeArguments.Skip(1).First().Name;
-                                        if(name2 == "ValueDelta")
+                                        if (name2 == "ValueDelta")
                                         {
                                             // dictionary of state change.. first item is string, second value delta
 
@@ -485,8 +485,8 @@ namespace Algorand.Algod.Model.Converters.MsgPack
                                             {
                                                 foreach (var item in valueDict)
                                                 {
-                                                    var itemValueDict = item.Value as Dictionary<object,object?>;
-                                                    if(itemValueDict != null)
+                                                    var itemValueDict = item.Value as Dictionary<object, object?>;
+                                                    if (itemValueDict != null)
                                                     {
                                                         dictGS[item.Key] = itemValueDict.Deserialize<ValueDelta>();
                                                     }
@@ -503,9 +503,48 @@ namespace Algorand.Algod.Model.Converters.MsgPack
                                     {
                                         property.SetValue(instance, value);
                                     }
-                                        break;
+                                    break;
                                 case "System.UInt64":
-                                    property.SetValue(instance, Convert.ToUInt64(value));
+                                    if (property.PropertyType.GenericTypeArguments.Length == 2)
+                                    {
+                                        if (property.Name == "LocalDelta")
+                                        {
+                                            // dictionary<ulong,dictionary<object,valuedelta>>
+                                            var localDeltaOut = new Dictionary<ulong, Dictionary<object, ValueDelta>>();
+
+                                            if (value is Dictionary<object, object?> valueDict)
+                                            {
+                                                foreach (var item in valueDict)
+                                                {
+                                                    if (item.Value is Dictionary<object, object?> itemValueDict)
+                                                    {
+                                                        var dictGS = new Dictionary<object, ValueDelta>();
+
+                                                        foreach (var item2 in itemValueDict)
+                                                        {
+                                                            if (item2.Value is Dictionary<object, object?> itemValueDictDict)
+                                                            {
+                                                                dictGS[item2.Key] = itemValueDictDict.Deserialize<ValueDelta>();
+                                                            }
+                                                        }
+                                                        localDeltaOut[Convert.ToUInt64(item.Key)] = dictGS;
+                                                    }
+                                                }
+                                            }
+
+                                            property.SetValue(instance, localDeltaOut);
+
+                                        }
+                                        else
+                                        {
+                                            property.SetValue(instance, Convert.ToUInt64(value));
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        property.SetValue(instance, Convert.ToUInt64(value));
+                                    }
                                     break;
                                 case "System.UInt32":
                                     property.SetValue(instance, Convert.ToUInt32(value));
