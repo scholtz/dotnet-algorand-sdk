@@ -1,7 +1,9 @@
 ﻿using Algorand.Algod.Model;
+using Algorand.Algod.Model.Converters.MsgPack;
 using Algorand.Algod.Model.Transactions;
 using AVM.ClientGenerator.ABI.ARC4.Types;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Msgpack;
 using Org.BouncyCastle.Crypto.Parameters;
@@ -10,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace Algorand.Utils
 {
@@ -176,6 +179,38 @@ namespace Algorand.Utils
                 Array.Reverse(bytes);
 
             return bytes;
+        }
+        /// <summary>
+        /// Big endian conversion for ulong value from 8 bytes.
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static ulong FromBigEndianBytes(this byte[] bytes)
+        {
+            if (bytes.Length != 8)
+                throw new ArgumentException("Byte array must be exactly 8 bytes long.");
+            if (BitConverter.IsLittleEndian) //depends on hardware
+                Array.Reverse(bytes);
+            return BitConverter.ToUInt64(bytes, 0);
+        }
+
+        public static byte[] DeltaValueStringToBytes(string data)
+        {
+            return Encoding.ASCII.GetBytes(data);
+        }
+        public static string DeltaValueBytesToString(byte[] data)
+        {
+            return Encoding.ASCII.GetString(data);
+        }
+        public static ulong UInt256ToUlong(byte[] bytes)
+        {
+            ulong result = 0;
+            foreach (byte b in bytes)
+            {
+                result = (result << 8) | b;
+            }
+            return result;
         }
     }
 

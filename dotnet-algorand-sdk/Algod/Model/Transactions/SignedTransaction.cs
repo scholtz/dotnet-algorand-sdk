@@ -37,11 +37,9 @@ namespace Algorand.Algod.Model.Transactions
         [MessagePack.Key("ld")]
         public Dictionary<ulong, Dictionary<object, ValueDelta>>? LocalDelta { get; set; }
 
-
         [Newtonsoft.Json.JsonProperty("itx", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("itx")]
         public ICollection<SignedTransaction>? InnerTxns { get; set; }
-
     }
 
     public partial class SignedTransaction
