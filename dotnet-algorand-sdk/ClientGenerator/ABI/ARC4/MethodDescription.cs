@@ -170,11 +170,20 @@ namespace AVM.ClientGenerator.ABI.ARC4
         }
         public string ARC4MethodSignature => $"{Name}({string.Join(",", Args.Select(a => a.Type))}){Returns.Type}";
 
-
-
         public byte[] ToARC4MethodSelector()
         {
-            var data = Encoding.ASCII.GetBytes(ARC4MethodSignature);
+            return ToARC4MethodSelector(ARC4MethodSignature);
+        }
+        /// <summary>
+        /// Converts the specified ARC4 method signature into a 4-byte selector value.
+        /// </summary>
+        /// <remarks>The method computes the selector value by hashing the input string using a
+        /// SHA-512/256 digest and returning the first 4 bytes of the resulting hash.</remarks>
+        /// <param name="arc4MethodSignature">The ARC4 method signature to be converted. This must be a non-null, non-empty string.</param>
+        /// <returns>A 4-byte array representing the selector value derived from the ARC4 method signature.</returns>
+        public static byte[] ToARC4MethodSelector(string arc4MethodSignature)
+        {
+            var data = Encoding.ASCII.GetBytes(arc4MethodSignature);
             Sha512tDigest digest = new Sha512tDigest(256);
             digest.BlockUpdate(data, 0, data.Length);
             byte[] output = new byte[32];
