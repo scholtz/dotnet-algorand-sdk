@@ -27,6 +27,27 @@ namespace test
     {
 
         [Test]
+        public async Task GenerateARC1400Client()
+        {
+            using var client = new HttpClient();
+            var response = await client.GetAsync("https://raw.githubusercontent.com/scholtz/arc-1400/refs/heads/main/projects/arc-1400/smart_contracts/artifacts/security_token/Arc1644.arc56.json");
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), "Failed to download file");
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
+
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("ARC1400");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            File.WriteAllText("ARC1400Proxy.cs", appProxy);
+        }
+
+        [Test]
         public async Task GenerateAVMTypesClient()
         {
             using var client = new HttpClient();

@@ -50,13 +50,35 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
         private static object CreateGeneric(Type genericType, Type specificType,string elementSpec)
         {
             Type constructedType = genericType.MakeGenericType(specificType);
-            return Activator.CreateInstance(constructedType, new object[] {  elementSpec });
+            // Try a (string) ctor first (backwards compatibility) otherwise fall back to parameterless
+            var ctorWithString = constructedType.GetConstructor(new Type[] { typeof(string) });
+            if (ctorWithString != null)
+            {
+                return ctorWithString.Invoke(new object[] { elementSpec });
+            }
+            // Parameterless ctor
+            return Activator.CreateInstance(constructedType);
         }
 
         private static object CreateGeneric(Type genericType, Type specificType, int length, string elementSpec)
         {
             Type constructedType = genericType.MakeGenericType(specificType);
-            return Activator.CreateInstance(constructedType, new object[] { (uint)length , elementSpec});
+            // Try (uint,string) or (int,string)
+            var ctorLenString = constructedType.GetConstructor(new Type[] { typeof(uint), typeof(string) })
+                               ?? constructedType.GetConstructor(new Type[] { typeof(int), typeof(string) });
+            if (ctorLenString != null)
+            {
+                return ctorLenString.Invoke(new object[] { (uint)length, elementSpec });
+            }
+            // Try (uint) or (int)
+            var ctorLen = constructedType.GetConstructor(new Type[] { typeof(uint) })
+                         ?? constructedType.GetConstructor(new Type[] { typeof(int) });
+            if (ctorLen != null)
+            {
+                return ctorLen.Invoke(new object[] { (uint)length });
+            }
+            // Fallback to parameterless
+            return Activator.CreateInstance(constructedType);
         }
 
         private static WireType IsArrayType(string abiType)
@@ -71,7 +93,7 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                     WireType baseWireType = FromABIDescription(baseType);
                     string size = abiType.Substring(arraySizePosition + 1, abiType.Length - arraySizePosition - 2);
                     var ret=CreateGeneric(typeof(FixedArray<>), baseWireType.GetType(), int.Parse(size),baseType) as WireType;
-                    
+                    return ret; // return the constructed fixed array wire type
 
                 }
                 else
