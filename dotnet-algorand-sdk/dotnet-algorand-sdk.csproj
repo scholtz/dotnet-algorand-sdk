@@ -7,7 +7,7 @@
 		<AssemblyName>Algorand</AssemblyName>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Version>4.1.2.$([System.DateTime]::Now.ToString(yyyyMMddHH))</Version>
+		<Version>4.3.0.$([System.DateTime]::Now.ToString(yyyyMMddHH))</Version>
 		<Authors>Ludovit Scholtz, Frank Szendzielarz</Authors>
 		<Company></Company>
 		<Product>Algorand .NET SDK 2</Product>
@@ -65,11 +65,16 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DefineConstants>$(DefineConstants)TRACE;</DefineConstants>
+		<DefineConstants>$(DefineConstants)TRACE;DEBUG</DefineConstants>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DefineConstants>$(DefineConstants)TRACE;</DefineConstants>
+		<Optimize>true</Optimize>
+		<DebugType>pdbonly</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test_Debug|AnyCPU'">

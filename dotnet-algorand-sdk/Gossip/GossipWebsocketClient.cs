@@ -49,7 +49,7 @@ namespace Algorand.Gossip
             client = new WebsocketClient(uri, () =>
             {
                 var clientWs = new System.Net.WebSockets.ClientWebSocket();
-                clientWs.Options.SetRequestHeader("User-Agent", "dotnet-algo-sdk/4.1.2");
+                clientWs.Options.SetRequestHeader("User-Agent", "dotnet-algo-sdk/4.3.0");
                 clientWs.Options.SetRequestHeader("X-Algorand-TelId", "mainnet-v1.0");
                 clientWs.Options.SetRequestHeader("X-Algorand-NodeRandom", "mainnet-v1.0");
                 clientWs.Options.SetRequestHeader("X-Algorand-Location", "Earth");

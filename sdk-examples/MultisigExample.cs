@@ -17,6 +17,11 @@ namespace sdk_examples
         {
             try
             {
+                // If you want to use this mnemonic, fund this account I3QJVFAQW6IY5SNXXSRQRGZPHZIH2MJHP6ZGGD27VI6CCHDCERRDHEPTOU using algokit first.
+                // Find your account first `algokit goal account list`
+                // If your account is `S2Z6G7MMDIIHXTYA4T63RLAZKVTTT4P2Q6VYDSE746YKGGMAVG5KWGQGJI`, then run:
+                //   `algokit goal clerk send -t I3QJVFAQW6IY5SNXXSRQRGZPHZIH2MJHP6ZGGD27VI6CCHDCERRDHEPTOU -a 100000000 -f S2Z6G7MMDIIHXTYA4T63RLAZKVTTT4P2Q6VYDSE746YKGGMAVG5KWGQGJI`
+
                 var ALGOD_API_ADDR = "http://localhost:4001/";
                 var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 

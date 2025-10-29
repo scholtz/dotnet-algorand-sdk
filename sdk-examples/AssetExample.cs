@@ -13,6 +13,11 @@ namespace sdk_examples
     {
         public static async Task Main(params string[] args)
         {
+            // If you want to use this mnemonic, fund this account 6IYAJY3KRIK5GZ326RDAY7ZATAOBY36BGUTYDDXAW44JPIGAY5GQZWY6NE using algokit first.
+            // Find your account first `algokit goal account list`
+            // If your account is `S2Z6G7MMDIIHXTYA4T63RLAZKVTTT4P2Q6VYDSE746YKGGMAVG5KWGQGJI`, then run:
+            //   `algokit goal clerk send -t 6IYAJY3KRIK5GZ326RDAY7ZATAOBY36BGUTYDDXAW44JPIGAY5GQZWY6NE -a 100000000 -f S2Z6G7MMDIIHXTYA4T63RLAZKVTTT4P2Q6VYDSE746YKGGMAVG5KWGQGJI`
+
             var ALGOD_API_ADDR = "http://localhost:4001/";
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
