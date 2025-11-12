@@ -2417,10 +2417,10 @@
               "format": "uint64"
             }
           },
-          "required": [ "algo", "onl" ]
+          "required": ["algo", "onl"]
         }
       },
-      "required": [ "addr", "comment", "state" ]
+      "required": ["addr", "comment", "state"]
     },
     "Genesis": {
       "title": "Genesis File in JSON",
@@ -2458,7 +2458,7 @@
           "format": "int64"
         }
       },
-      "required": [ "alloc", "fees", "id", "network", "proto", "rwd", "timestamp" ]
+      "required": ["alloc", "fees", "id", "network", "proto", "rwd", "timestamp"]
     },
     "LedgerStateDelta": {
       "description": "Ledger StateDelta object",
@@ -2468,7 +2468,7 @@
     "LedgerStateDeltaForTransactionGroup": {
       "description": "Contains a ledger delta for a single transaction group",
       "type": "object",
-      "required": [ "Delta", "Ids" ],
+      "required": ["Delta", "Ids"],
       "properties": {
         "Delta": {
           "$ref": "#/definitions/LedgerStateDelta"
@@ -2619,7 +2619,7 @@
         "sig-type": {
           "description": "Indicates what type of signature is used by this account, must be one of:\n* sig\n* msig\n* lsig",
           "type": "string",
-          "enum": [ "sig", "msig", "lsig" ]
+          "enum": ["sig", "msig", "lsig"]
         },
         "auth-addr": {
           "description": "\\[spend\\] the address against which signing should be checked. If empty, the address of the current account is used. This field can be updated in any transaction by setting the RekeyTo field.",
@@ -2641,7 +2641,7 @@
     "AccountAssetHolding": {
       "description": "AccountAssetHolding describes the account's asset holding and asset parameters (if either exist) for a specific asset ID.",
       "type": "object",
-      "required": [ "asset-holding" ],
+      "required": ["asset-holding"],
       "properties": {
         "asset-holding": {
           "description": "\\[asset\\] Details about the asset held by this account.\n\nThe raw account uses `AssetHolding` for this type.",
@@ -2699,7 +2699,7 @@
     "Asset": {
       "description": "Specifies both the unique identifier and the parameters for an asset",
       "type": "object",
-      "required": [ "index", "params" ],
+      "required": ["index", "params"],
       "properties": {
         "index": {
           "description": "unique asset identifier",
@@ -2714,7 +2714,7 @@
     "AssetHolding": {
       "description": "Describes an asset held by an account.\n\nDefinition:\ndata/basics/userBalance.go : AssetHolding",
       "type": "object",
-      "required": [ "asset-id", "amount", "is-frozen" ],
+      "required": ["asset-id", "amount", "is-frozen"],
       "properties": {
         "amount": {
           "description": "\\[a\\] number of units held.",
@@ -2737,7 +2737,7 @@
     "AssetParams": {
       "description": "AssetParams specifies the parameters for an asset.\n\n\\[apar\\] when part of an AssetConfig transaction.\n\nDefinition:\ndata/transactions/asset.go : AssetParams",
       "type": "object",
-      "required": [ "creator", "total", "decimals" ],
+      "required": ["creator", "total", "decimals"],
       "properties": {
         "clawback": {
           "description": "\\[c\\] Address of account used to clawback holdings of this asset.  If empty, clawback is not permitted.",
@@ -2813,7 +2813,7 @@
     "AssetHoldingReference": {
       "description": "References an asset held by an account.",
       "type": "object",
-      "required": [ "account", "asset" ],
+      "required": ["account", "asset"],
       "properties": {
         "account": {
           "description": "Address of the account holding the asset.",
@@ -2831,7 +2831,7 @@
     "ApplicationLocalReference": {
       "description": "References an account's local state for an application.",
       "type": "object",
-      "required": [ "account", "app" ],
+      "required": ["account", "app"],
       "properties": {
         "account": {
           "description": "Address of the account with the local state.",
@@ -2849,7 +2849,7 @@
     "ApplicationStateSchema": {
       "description": "Specifies maximums on the number of each type that may be stored.",
       "type": "object",
-      "required": [ "num-uint", "num-byte-slice" ],
+      "required": ["num-uint", "num-byte-slice"],
       "properties": {
         "num-uint": {
           "description": "\\[nui\\] num of uints.",
@@ -2866,7 +2866,7 @@
     "ApplicationLocalState": {
       "description": "Stores local state associated with an application.",
       "type": "object",
-      "required": [ "id", "schema" ],
+      "required": ["id", "schema"],
       "properties": {
         "id": {
           "description": "The application which this local state is for.",
@@ -2886,7 +2886,7 @@
     "ParticipationKey": {
       "description": "Represents a participation key used by the node.",
       "type": "object",
-      "required": [ "id", "key", "address" ],
+      "required": ["id", "key", "address"],
       "properties": {
         "id": {
           "description": "The key's ParticipationID.",
@@ -2940,7 +2940,7 @@
     "TealKeyValue": {
       "description": "Represents a key-value pair in an application store.",
       "type": "object",
-      "required": [ "key", "value" ],
+      "required": ["key", "value"],
       "properties": {
         "key": {
           "type": "string"
@@ -2953,7 +2953,7 @@
     "TealValue": {
       "description": "Represents a TEAL value.",
       "type": "object",
-      "required": [ "type", "uint", "bytes" ],
+      "required": ["type", "uint", "bytes"],
       "properties": {
         "type": {
           "description": "\\[tt\\] value type. Value `1` refers to **bytes**, value `2` refers to **uint**",
@@ -2975,7 +2975,7 @@
     "AvmValue": {
       "description": "Represents an AVM value.",
       "type": "object",
-      "required": [ "type" ],
+      "required": ["type"],
       "properties": {
         "type": {
           "description": "value type. Value `1` refers to **bytes**, value `2` refers to **uint64**",
@@ -2998,7 +2998,7 @@
     "AvmKeyValue": {
       "description": "Represents an AVM key-value pair in an application store.",
       "type": "object",
-      "required": [ "key", "value" ],
+      "required": ["key", "value"],
       "properties": {
         "key": {
           "type": "string",
@@ -3019,7 +3019,7 @@
     "AccountStateDelta": {
       "description": "Application state delta.",
       "type": "object",
-      "required": [ "address", "delta" ],
+      "required": ["address", "delta"],
       "properties": {
         "address": {
           "type": "string"
@@ -3032,7 +3032,7 @@
     "EvalDeltaKeyValue": {
       "description": "Key-value pairs for StateDelta.",
       "type": "object",
-      "required": [ "key", "value" ],
+      "required": ["key", "value"],
       "properties": {
         "key": {
           "type": "string"
@@ -3045,7 +3045,7 @@
     "EvalDelta": {
       "description": "Represents a TEAL value delta.",
       "type": "object",
-      "required": [ "action" ],
+      "required": ["action"],
       "properties": {
         "action": {
           "description": "\\[at\\] delta action.",
@@ -3067,7 +3067,7 @@
     "Application": {
       "description": "Application index and its parameters",
       "type": "object",
-      "required": [ "id", "params" ],
+      "required": ["id", "params"],
       "properties": {
         "id": {
           "description": "\\[appidx\\] application index.",
@@ -3083,7 +3083,7 @@
     "ApplicationParams": {
       "description": "Stores the global information associated with an application.",
       "type": "object",
-      "required": [ "creator", "approval-program", "clear-state-program" ],
+      "required": ["creator", "approval-program", "clear-state-program"],
       "properties": {
         "creator": {
           "description": "The address that created this application. This is the address where the parameters and global state for this application can be found.",
@@ -3129,7 +3129,7 @@
     "DryrunState": {
       "description": "Stores the TEAL eval step data",
       "type": "object",
-      "required": [ "line", "pc", "stack" ],
+      "required": ["line", "pc", "stack"],
       "properties": {
         "line": {
           "description": "Line number",
@@ -3160,7 +3160,7 @@
     "DryrunTxnResult": {
       "description": "DryrunTxnResult contains any LogicSig or ApplicationCall program debug information and state updates from a dryrun.",
       "type": "object",
-      "required": [ "disassembly" ],
+      "required": ["disassembly"],
       "properties": {
         "disassembly": {
           "description": "Disassembled program line by line.",
@@ -3229,7 +3229,7 @@
     "ErrorResponse": {
       "description": "An error response with optional data field.",
       "type": "object",
-      "required": [ "message" ],
+      "required": ["message"],
       "properties": {
         "data": {
           "type": "object"
@@ -3300,7 +3300,7 @@
     "DryrunSource": {
       "description": "DryrunSource is TEAL source text that gets uploaded, compiled, and inserted into transactions or application state.",
       "type": "object",
-      "required": [ "field-name", "source", "txn-index", "app-index" ],
+      "required": ["field-name", "source", "txn-index", "app-index"],
       "properties": {
         "field-name": {
           "description": "FieldName is what kind of sources this is. If lsig then it goes into the transactions[this.TxnIndex].LogicSig. If approv or clearp it goes into the Approval Program or Clear State Program of application[this.AppIndex].",
@@ -3322,7 +3322,7 @@
     "SimulateRequest": {
       "description": "Request type for simulation endpoint.",
       "type": "object",
-      "required": [ "txn-groups" ],
+      "required": ["txn-groups"],
       "properties": {
         "txn-groups": {
           "description": "The transaction groups to simulate.",
@@ -3364,7 +3364,7 @@
     "SimulateRequestTransactionGroup": {
       "description": "A transaction group to simulate.",
       "type": "object",
-      "required": [ "txns" ],
+      "required": ["txns"],
       "properties": {
         "txns": {
           "description": "An atomic transaction group.",
@@ -3403,7 +3403,7 @@
     "Box": {
       "description": "Box name and its content.",
       "type": "object",
-      "required": [ "round", "name", "value" ],
+      "required": ["round","name","value"],
       "properties": {
         "round": {
           "description": "The round for which this information is relevant",
@@ -3439,7 +3439,7 @@
     "BoxReference": {
       "description": "References a box of an application.",
       "type": "object",
-      "required": [ "app", "name" ],
+      "required": ["app", "name"],
       "properties": {
         "app": {
           "description": "Application ID which this box belongs to",
@@ -3457,7 +3457,7 @@
       "description": "algod version information.",
       "type": "object",
       "title": "Version contains the current algod version.",
-      "required": [ "versions", "genesis_id", "genesis_hash_b64", "build" ],
+      "required": ["versions", "genesis_id", "genesis_hash_b64", "build"],
       "properties": {
         "build": {
           "$ref": "#/definitions/BuildVersion"
@@ -3481,7 +3481,7 @@
       "description": "algod mutex and blocking profiling state.",
       "type": "object",
       "title": "algod mutex and blocking profiling state.",
-      "tags": [ "private" ],
+      "tags": ["private"],
       "properties": {
         "block-rate": {
           "description": "The rate of blocking events. The profiler aims to sample an average of one blocking event per rate nanoseconds spent blocked. To turn off profiling entirely, pass rate 0.",
@@ -3498,7 +3498,7 @@
       }
     },
     "BuildVersion": {
-      "tags": [ "common" ],
+      "tags": ["common"],
       "type": "object",
       "title": "BuildVersion contains the current algod build version information.",
       "required": [
@@ -3533,7 +3533,7 @@
     "PendingTransactionResponse": {
       "description": "Details about a pending transaction. If the transaction was recently confirmed, includes confirmation details like the round and reward details.",
       "type": "object",
-      "required": [ "txn", "pool-error" ],
+      "required": ["txn", "pool-error"],
       "properties": {
         "asset-index": {
           "description": "The asset index if the transaction was found and it created an asset.",
@@ -3614,7 +3614,7 @@
     "SimulateTransactionGroupResult": {
       "description": "Simulation result for an atomic transaction group",
       "type": "object",
-      "required": [ "txn-results" ],
+      "required": ["txn-results"],
       "properties": {
         "txn-results": {
           "description": "Simulation result for individual transactions",
@@ -3650,7 +3650,7 @@
     "SimulateTransactionResult": {
       "description": "Simulation result for an individual transaction",
       "type": "object",
-      "required": [ "txn-result" ],
+      "required": ["txn-result"],
       "properties": {
         "txn-result": {
           "$ref": "#/definitions/PendingTransactionResponse"
@@ -3679,7 +3679,7 @@
     "StateProof": {
       "description": "Represents a state proof and its corresponding message",
       "type": "object",
-      "required": [ "Message", "StateProof" ],
+      "required": ["Message", "StateProof"],
       "properties": {
         "Message": {
           "$ref": "#/definitions/StateProofMessage"
@@ -3694,7 +3694,7 @@
     "LightBlockHeaderProof": {
       "description": "Proof of membership and position of a light block header.",
       "type": "object",
-      "required": [ "index", "treedepth", "proof" ],
+      "required": ["index", "treedepth", "proof"],
       "properties": {
         "index": {
           "description": "The index of the light block header in the vector commitment tree",
@@ -3786,7 +3786,7 @@
     "ScratchChange": {
       "description": "A write operation into a scratch slot.",
       "type": "object",
-      "required": [ "slot", "new-value" ],
+      "required": ["slot", "new-value"],
       "properties": {
         "slot": {
           "description": "The scratch slot written.",
@@ -3799,7 +3799,7 @@
     },
     "ApplicationStateOperation": {
       "description": "An operation against an application's global/local/box state.",
-      "required": [ "operation", "app-state-type", "key" ],
+      "required": ["operation", "app-state-type", "key"],
       "properties": {
         "operation": {
           "description": "Operation type. Value `w` is **write**, `d` is **delete**.",
@@ -3826,7 +3826,7 @@
     },
     "ApplicationKVStorage": {
       "description": "An application's global/local/box state.",
-      "required": [ "kvs" ],
+      "required": ["kvs"],
       "properties": {
         "kvs": {
           "description": "Key-Value pairs representing application states.",
@@ -3844,7 +3844,7 @@
     },
     "ApplicationInitialStates": {
       "description": "An application's initial global/local/box states that were accessed during simulation.",
-      "required": [ "id" ],
+      "required": ["id"],
       "properties": {
         "id": {
           "description": "Application index.",
@@ -3870,7 +3870,7 @@
     "SimulationOpcodeTraceUnit": {
       "description": "The set of trace information and effect from evaluating a single opcode.",
       "type": "object",
-      "required": [ "pc" ],
+      "required": ["pc"],
       "properties": {
         "pc": {
           "description": "The program counter of the current opcode being evaluated.",
@@ -4040,7 +4040,7 @@
     "AppCallLogs": {
       "description": "The logged messages from an app call along with the app ID and outer transaction ID. Logs appear in the same order that they were emitted.",
       "type": "object",
-      "required": [ "logs", "application-index", "txId" ],
+      "required": ["logs", "application-index", "txId"],
       "properties": {
         "logs": {
           "description": "An array of logs",
@@ -4064,7 +4064,7 @@
     "TransactionProof": {
       "description": "Proof of transaction in a block.",
       "type": "object",
-      "required": [ "proof", "stibhash", "idx", "treedepth", "hashtype" ],
+      "required": ["proof", "stibhash", "idx", "treedepth", "hashtype"],
       "properties": {
         "proof": {
           "description": "Proof of transaction membership.",
@@ -4088,7 +4088,7 @@
         },
         "hashtype": {
           "type": "string",
-          "enum": [ "sha512_256", "sha256" ],
+          "enum": ["sha512_256", "sha256"],
           "description": "The type of hash function used to create the proof, must be one of: \n* sha512_256 \n* sha256"
         }
       }
