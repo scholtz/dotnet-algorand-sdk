@@ -228,8 +228,8 @@ namespace Algorand.Algod.Model.Transactions
             byte[] prefixEncodedTx = BytesToSign();
             Signature txSig = signingAccount.SignRawBytes(prefixEncodedTx);
             var stx = new SignedTransaction(this, txSig);
-            if (!Sender.Equals(signingAccount.Address))
-                stx.AuthAddr = signingAccount.Address;
+            if (!Sender.Equals(signingAccount.OriginalAddress ?? signingAccount.Address))
+                stx.AuthAddr = signingAccount.OriginalAddress ?? signingAccount.Address;
             
             return stx;
         }

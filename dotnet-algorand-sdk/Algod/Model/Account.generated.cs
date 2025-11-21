@@ -16,6 +16,15 @@ using UnityEngine;
 #endif
     public partial class Account
     {
+        /// <summary>
+        /// The account public address. When rekeyed, this is the original account address, and signing is done using the private key in the address.
+        /// </summary>
+        protected Address _address;
+        /// <summary>
+        /// The account public address. When rekeyed, this is the original account address, and signing is done using the private key in the address.
+        /// </summary>
+        protected Address? _rekeyedTo;
+
 
         [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.Always)]
         [MessagePack.Key("address")]
@@ -26,10 +35,40 @@ using UnityEngine;
     [field:InspectorName(@"Address")]
     public Address Address {get;set;}
 #else
-        public Address Address { get; set; }
+        public Address Address
+        {
+            get { return _rekeyedTo ?? _address; }
+            set { _address = value; }
+        }
 #endif
+        [Newtonsoft.Json.JsonIgnore]
+        [MessagePack.IgnoreMember]
+        public Address? RekeyedTo
+        {
+            get { return _rekeyedTo; }
+            set { _rekeyedTo = value; }
+        }
+        [Newtonsoft.Json.JsonIgnore]
+        [MessagePack.IgnoreMember]
+        public Address? OriginalAddress
+        {
+            get { return _address; }
+        }
 
-
+        [Newtonsoft.Json.JsonProperty("auth-addr", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("auth-addr")]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"\[spend\] the address against which signing should be checked. If empty, the address of the current account is used. This field can be updated in any transaction by setting the RekeyTo field.")]
+    [field:InspectorName(@"AuthAddr")]
+    public Address AuthAddr {get;set;}
+#else
+        public Address AuthAddr
+        {
+            get { return _rekeyedTo; }
+            set { _rekeyedTo = value; }
+        }
+#endif
 
         [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.Always)]
         [MessagePack.Key("amount")]
@@ -113,16 +152,6 @@ Note the raw object uses `map[int] -> AssetHolding` for this type.")]
         public System.Collections.Generic.ICollection<AssetHolding> Assets { get; set; } = new System.Collections.ObjectModel.Collection<AssetHolding>();
 #endif
 
-        [Newtonsoft.Json.JsonProperty("auth-addr", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [MessagePack.Key("auth-addr")]
-#if UNITY
-    [field:SerializeField]
-    [Tooltip(@"\[spend\] the address against which signing should be checked. If empty, the address of the current account is used. This field can be updated in any transaction by setting the RekeyTo field.")]
-    [field:InspectorName(@"AuthAddr")]
-    public Address AuthAddr {get;set;}
-#else
-        public Address AuthAddr { get; set; }
-#endif
 
 
 
