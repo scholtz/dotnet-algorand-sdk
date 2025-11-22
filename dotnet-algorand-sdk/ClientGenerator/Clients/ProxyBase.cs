@@ -35,6 +35,12 @@ namespace AVM.ClientGenerator
     public class ProxyBase
     {
         public virtual AVM.ClientGenerator.ABI.ARC56.AppDescriptionArc56 App { get; set; }
+        /// <summary>
+        /// Developers can set the override for the tx params response, so that when creating new transactions the parameters are not fetched.
+        /// 
+        /// When user will request multiple transactions from the client or the user wants to rewrite the tx params, he can supply the tx params here.
+        /// </summary>
+        public TransactionParametersResponse? TransParamsOverride { get; set; }
 
         DefaultApi client;
         public ulong appId { get; protected set; }
@@ -241,7 +247,14 @@ namespace AVM.ClientGenerator
             TransactionParametersResponse transParams;
             try
             {
-                transParams = await client.TransactionParamsAsync();
+                if (TransParamsOverride != null)
+                {
+                    transParams = TransParamsOverride;
+                }
+                else
+                {
+                    transParams = await client.TransactionParamsAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -283,7 +296,14 @@ namespace AVM.ClientGenerator
             TransactionParametersResponse transParams;
             try
             {
-                transParams = await client.TransactionParamsAsync();
+                if (TransParamsOverride != null)
+                {
+                    transParams = TransParamsOverride;
+                }
+                else
+                {
+                    transParams = await client.TransactionParamsAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -326,7 +346,14 @@ namespace AVM.ClientGenerator
             TransactionParametersResponse transParams;
             try
             {
-                transParams = await client.TransactionParamsAsync();
+                if (TransParamsOverride != null)
+                {
+                    transParams = TransParamsOverride;
+                }
+                else
+                {
+                    transParams = await client.TransactionParamsAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -417,7 +444,14 @@ namespace AVM.ClientGenerator
             TransactionParametersResponse transParams;
             try
             {
-                transParams = await client.TransactionParamsAsync();
+                if (TransParamsOverride != null)
+                {
+                    transParams = TransParamsOverride;
+                }
+                else
+                {
+                    transParams = await client.TransactionParamsAsync();
+                }
             }
             catch (Exception ex)
             {

@@ -462,6 +462,31 @@ $@"///<summary>
                 }
 
                 var abiMethodBodyForTransactions = abiMethodForTransactions.AddChild();
+                abiMethodBodyForTransactions.AddOpeningLine($"_tx_boxes ??= new List<BoxRef>();");
+                abiMethodBodyForTransactions.AddOpeningLine($"_tx_transactions ??= new List<Transaction>();");
+                abiMethodBodyForTransactions.AddOpeningLine($"_tx_assets ??= new List<ulong>();");
+                abiMethodBodyForTransactions.AddOpeningLine($"_tx_apps ??= new List<ulong>();");
+                abiMethodBodyForTransactions.AddOpeningLine($"_tx_accounts ??= new List<Address>();");
+
+                if (transactionParameters.Count > 0)
+                {
+                    abiMethodBodyForTransactions.AddOpeningLine("_tx_transactions.AddRange(new List<Transaction> {" + string.Join(",", transactionParameters.Select(p => p.Name)) + "});");
+                }
+
+                if (appRefParameters.Count > 0)
+                {
+                    abiMethodBodyForTransactions.AddOpeningLine("_tx_apps.AddRange(new List<ulong> {" + string.Join(",", appRefParameters.Select(p => p.Name)) + "});");
+                }
+
+                if (assetRefParameters.Count > 0)
+                {
+                    abiMethodBodyForTransactions.AddOpeningLine("_tx_assets.AddRange(new List<ulong> {" + string.Join(",", assetRefParameters.Select(p => p.Name)) + "});");
+                }
+
+                if (acctRefParameters.Count > 0)
+                {
+                    abiMethodBodyForTransactions.AddOpeningLine("_tx_accounts.AddRange(new List<Address> {" + string.Join(",", acctRefParameters.Select(p => p.Name)) + "});");
+                }
                 abiMethodBodyForTransactions.AddOpeningLine($"byte[] abiHandle = {{{string.Join(",", method.ToARC4MethodSelector())}}};");
                 abiMethodBodyForTransactions.AddOpeningLine(prependArgs);
                 abiMethodBodyForTransactions.AddOpeningLine($"return await base.MakeTransactionList({argsList}, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions , _tx_apps: _tx_apps, _tx_assets:_tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);");
