@@ -139,5 +139,16 @@ namespace Algorand.Utils
             Buffer.BlockCopy(b2, 0, ret, b1.Length, b2.Length);
             return ret;
         }
+
+
+        /// <summary>
+        /// Converts gossip delta state value string to byte array
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static byte[] DeltaValueStringToBytes(string data)
+        {
+            return Encoding.ASCII.GetBytes(data);
+        }
     }
 }
