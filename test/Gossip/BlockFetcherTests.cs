@@ -17,11 +17,11 @@ namespace test.Gossip
     public class BlockFetcherTests
     {
         [Test]
-        public async Task FetchBlocks0To100()
+        public async Task FetchBlocks1To100()
         {
             var gossipClient = new Algorand.Gossip.GossipHttpClient(GossipHttpConfiguration.MainNetArchival);
 
-            for (ulong i = 0; i < 100; i++)
+            for (ulong i = 1; i < 100; i++)
             {
                 var block = await gossipClient.FetchBlockAsync(i);
                 Assert.That(block, Is.Not.Null, $"Block {i} should not be null.");
@@ -128,6 +128,7 @@ namespace test.Gossip
 
             Console.WriteLine($"Json: {durationJson} ms, MsgPack: {durationMsgPack} ms, MsgPackGossip: {durationMsgPackGossip} ms");
 
+            Assert.That(blockMsgPackGossip.Block.Round, Is.EqualTo(round));
             Assert.That(blockMsgPackGossip.Block.Transactions.Count, Is.EqualTo(15));
             var txs = blockMsgPackGossip.Block.Transactions.ToArray();
             Assert.That(txs[5].Detail.InnerTxns.Count, Is.EqualTo(5));
