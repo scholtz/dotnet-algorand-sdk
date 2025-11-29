@@ -1,8 +1,10 @@
 ﻿
 
 
+using Algorand.Algod.Model.Converters.MsgPack;
 using Algorand.Utils;
 using AVM.ClientGenerator.ABI.ARC4.Types;
+using MessagePack;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -13,6 +15,7 @@ using System.Collections.Generic;
 namespace Algorand.Algod.Model.Transactions
 {
     [MessagePack.MessagePackObject]
+    [MessagePackFormatter(typeof(ValueDeltaFormatterMsgPack))]
     public partial class ValueDelta
     {
         [Newtonsoft.Json.JsonProperty("at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -20,7 +23,8 @@ namespace Algorand.Algod.Model.Transactions
         public ulong DeltaAction { get; set; }
         [Newtonsoft.Json.JsonProperty("bs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("bs")]
-        public object? Bytes { get; set; }
+        [MessagePackFormatter(typeof(StringToByteFormatterMsgPack))]
+        public string? Bytes { get; set; }
         [Newtonsoft.Json.JsonProperty("ui", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("ui")]
         public ulong? Uint64 { get; set; }

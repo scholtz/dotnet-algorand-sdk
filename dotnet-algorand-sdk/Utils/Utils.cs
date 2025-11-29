@@ -149,8 +149,9 @@ namespace Algorand.Utils
         /// <returns></returns>
         public static byte[] DeltaValueStringToBytes(string data)
         {
-            //return data.Select(c => (byte)c).ToArray();  // returns 3f77166d10 instead of 8a677166d10 
-            //return Encoding.ASCII.GetBytes(data); // returns 3f77166d10 instead of 8a677166d10 
+            //return data.Select(c => (byte)c).ToArray();  // returns 83f77166d10 instead of 8a677166d10 
+            //return Encoding.ASCII.GetBytes(data); // returns 83f77166d10 instead of 8a677166d10 
+            //return Encoding.Latin1.GetBytes(data); // returns 83f77166d10 instead of 8a677166d10 
 
             return Encoding.ASCII.GetBytes(data);
         }

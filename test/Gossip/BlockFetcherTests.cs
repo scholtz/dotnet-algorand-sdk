@@ -159,7 +159,8 @@ namespace test.Gossip
             var input = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0!\u0012h\u007f>+\u0001";
             var output = "000000000000000000000000000000000000000000000000002112687f3e2b01";
 
-            var converted = Algorand.Utils.Utils.DeltaValueStringToBytes(input);
+            //var converted = Algorand.Utils.Utils.DeltaValueStringToBytes(input);
+            var converted = Encoding.Latin1.GetBytes(input);
             Assert.That(converted.Length, Is.EqualTo(32));
             Assert.That(Convert.ToHexString(converted).ToLower(), Is.EqualTo(output));
         }
@@ -170,7 +171,8 @@ namespace test.Gossip
             var input = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\b�w\u0016m\u0010";
             var output = "000000000000000000000000000000000000000000000000000008a677166d10";
 
-            var converted = Algorand.Utils.Utils.DeltaValueStringToBytes(input);
+            //var converted = Algorand.Utils.Utils.DeltaValueStringToBytes(input);
+            var converted = Encoding.Latin1.GetBytes(input);
             Assert.That(converted.Length, Is.EqualTo(32));
             Assert.That(Convert.ToHexString(converted).ToLower(), Is.EqualTo(output));
         }

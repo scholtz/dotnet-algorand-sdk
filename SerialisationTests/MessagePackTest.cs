@@ -55,5 +55,21 @@ namespace SerialisationTests
 
             Assert.AreEqual(txnJson, txnJson2);
         }
+
+        [TestMethod]
+        public void MsgPackBinaryString1()
+        {
+            var output = Algorand.Utils.Encoder.DecodeFromMsgPack<string>(HexToBytes("d920000000000000000000000000000000000000000000000000002112687f3e2b01"));
+            Assert.AreEqual("000000000000000000000000000000000000000000000000002112687f3e2b01", Convert.ToHexStringLower(Encoding.ASCII.GetBytes(output)));
+        }
+        [TestMethod]
+        public void MsgPackBinaryString2()
+        {
+            var input = HexToBytes("d920000000000000000000000000000000000000000000000000000008a677166d10");
+            var options = MessagePack.MessagePackSerializerOptions.Standard.WithResolver(MessagePack.Resolvers.ContractlessStandardResolver.Instance);
+            var output =  MessagePack.MessagePackSerializer.Deserialize<string>(input, options);
+            Assert.AreEqual("000000000000000000000000000000000000000000000000000008a677166d10", Convert.ToHexStringLower(Encoding.ASCII.GetBytes(output)));
+        }
+
     }
 }
