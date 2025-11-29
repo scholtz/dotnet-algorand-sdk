@@ -4,6 +4,7 @@ using Algorand.Algod.Model.Transactions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -148,6 +149,9 @@ namespace Algorand.Utils
         /// <returns></returns>
         public static byte[] DeltaValueStringToBytes(string data)
         {
+            //return data.Select(c => (byte)c).ToArray();  // returns 3f77166d10 instead of 8a677166d10 
+            //return Encoding.ASCII.GetBytes(data); // returns 3f77166d10 instead of 8a677166d10 
+
             return Encoding.ASCII.GetBytes(data);
         }
     }

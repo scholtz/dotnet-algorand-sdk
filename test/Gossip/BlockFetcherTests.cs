@@ -140,15 +140,15 @@ namespace test.Gossip
             Assert.That(inners[1].Detail.GlobalDelta.Count, Is.EqualTo(6));
             var gd = inners[1].Detail.GlobalDelta.ToArray();
             Assert.That(gd[1].Key, Is.EqualTo("Lb"));
-            Assert.That(Convert.ToHexString(Algorand.Utils.Utils.DeltaValueStringToBytes(gd[1].Value.Bytes as string)).ToLower(), Is.EqualTo("0000000000000000000000000000000000000000000008a677166d1005c26eb3"));
+            Assert.That(Convert.ToHexString(Algorand.Utils.Utils.DeltaValueStringToBytes(gd[1].Value.Bytes as string)).ToLower(), Is.EqualTo("000000000000000000000000000000000000000000000000000008a677166d10"));
             Assert.That(gd[0].Key, Is.EqualTo("L"));
-            Assert.That(Convert.ToHexString(Algorand.Utils.Utils.DeltaValueStringToBytes(gd[0].Value.Bytes as string)).ToLower(), Is.EqualTo("0000000000000000000000000000000000000000002112687f3e2b019d67994b"));
+            Assert.That(Convert.ToHexString(Algorand.Utils.Utils.DeltaValueStringToBytes(gd[0].Value.Bytes as string)).ToLower(), Is.EqualTo("000000000000000000000000000000000000000000000000002112687f3e2b01"));
             Assert.That(gd[2].Key, Is.EqualTo("Lu"));
-            Assert.That(Convert.ToHexString(Algorand.Utils.Utils.DeltaValueStringToBytes(gd[2].Value.Bytes as string)).ToLower(), Is.EqualTo("000000000000000000000000000000000000000000002299d095789d27df38fd"));
+            Assert.That(Convert.ToHexString(Algorand.Utils.Utils.DeltaValueStringToBytes(gd[2].Value.Bytes as string)).ToLower(), Is.EqualTo("00000000000000000000000000000000000000000000000000002299d095789d"));
             Assert.That(gd[3].Key, Is.EqualTo("ab"));
-            Assert.That(Convert.ToHexString(Algorand.Utils.Utils.DeltaValueStringToBytes(gd[3].Value.Bytes as string)).ToLower(), Is.EqualTo("000000000000000000000000000000000000000000023d3bc6f1a3d836ef589f"));
+            Assert.That(Convert.ToHexString(Algorand.Utils.Utils.DeltaValueStringToBytes(gd[3].Value.Bytes as string)).ToLower(), Is.EqualTo("00000000000000000000000000000000000000000000000000023d3bc6f1a3d8"));
             Assert.That(gd[4].Key, Is.EqualTo("bb"));
-            Assert.That(Convert.ToHexString(Algorand.Utils.Utils.DeltaValueStringToBytes(gd[4].Value.Bytes as string)).ToLower(), Is.EqualTo("00000000000000000000000000000000000000000000816cac502e78ae8e2150"));
+            Assert.That(Convert.ToHexString(Algorand.Utils.Utils.DeltaValueStringToBytes(gd[4].Value.Bytes as string)).ToLower(), Is.EqualTo("0000000000000000000000000000000000000000000000000000816cac502e78"));
             Assert.That(gd[5].Key, Is.EqualTo("price"));
             Assert.That(gd[5].Value.Uint64, Is.EqualTo(151673299ul));
         }
@@ -157,9 +157,9 @@ namespace test.Gossip
         {
             // input and output is correct
             var input = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0!\u0012h\u007f>+\u0001";
-            var output = "0000000000000000000000000000000000000000002112687f3e2b019d67994b";
+            var output = "000000000000000000000000000000000000000000000000002112687f3e2b01";
 
-            var converted = Encoding.ASCII.GetBytes(input);
+            var converted = Algorand.Utils.Utils.DeltaValueStringToBytes(input);
             Assert.That(converted.Length, Is.EqualTo(32));
             Assert.That(Convert.ToHexString(converted).ToLower(), Is.EqualTo(output));
         }
@@ -168,9 +168,9 @@ namespace test.Gossip
         {
             // input and output is correct
             var input = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\b�w\u0016m\u0010";
-            var output = "0000000000000000000000000000000000000000000008a677166d1005c26eb3";
+            var output = "000000000000000000000000000000000000000000000000000008a677166d10";
 
-            var converted = Encoding.ASCII.GetBytes(input);
+            var converted = Algorand.Utils.Utils.DeltaValueStringToBytes(input);
             Assert.That(converted.Length, Is.EqualTo(32));
             Assert.That(Convert.ToHexString(converted).ToLower(), Is.EqualTo(output));
         }
