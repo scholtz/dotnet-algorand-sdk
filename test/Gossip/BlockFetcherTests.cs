@@ -155,10 +155,10 @@ namespace test.Gossip
         [Test]
         public void ConversionTest2112687f3e2b019d67994b()
         {
+            // input and output is correct
             var input = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0!\u0012h\u007f>+\u0001";
             var output = "0000000000000000000000000000000000000000002112687f3e2b019d67994b";
 
-            // Use single-byte encoding that preserves control characters and byte values 0-255
             var converted = Encoding.ASCII.GetBytes(input);
             Assert.That(converted.Length, Is.EqualTo(32));
             Assert.That(Convert.ToHexString(converted).ToLower(), Is.EqualTo(output));
@@ -166,11 +166,10 @@ namespace test.Gossip
         [Test]
         public void ConversionTest8a677166d1005c26eb3()
         {
+            // input and output is correct
             var input = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\b�w\u0016m\u0010";
-
             var output = "0000000000000000000000000000000000000000000008a677166d1005c26eb3";
 
-            // Use single-byte encoding that preserves control characters and byte values 0-255
             var converted = Encoding.ASCII.GetBytes(input);
             Assert.That(converted.Length, Is.EqualTo(32));
             Assert.That(Convert.ToHexString(converted).ToLower(), Is.EqualTo(output));
