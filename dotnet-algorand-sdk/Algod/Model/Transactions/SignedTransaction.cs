@@ -23,7 +23,7 @@ namespace Algorand.Algod.Model.Transactions
         public ulong DeltaAction { get; set; }
         [Newtonsoft.Json.JsonProperty("bs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("bs")]
-        [MessagePackFormatter(typeof(StringToByteFormatterMsgPack))]
+        //[MessagePackFormatter(typeof(StringToByteFormatterMsgPack))]
         public string? Bytes { get; set; }
         [Newtonsoft.Json.JsonProperty("ui", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("ui")]

@@ -103,7 +103,12 @@ namespace Algorand.Utils
         {
             try
             {
-                var options = MessagePack.MessagePackSerializerOptions.Standard.WithResolver(MessagePack.Resolvers.ContractlessStandardResolver.Instance);
+                var options = MessagePack.MessagePackSerializerOptions.Standard.WithResolver(
+                    MessagePack.Resolvers.CompositeResolver.Create(
+                        new MessagePack.Formatters.IMessagePackFormatter[] { Algorand.Algod.Model.Converters.MsgPack.NullableStringFormatterMsgPack.Instance },
+                        new MessagePack.IFormatterResolver[] { MessagePack.Resolvers.ContractlessStandardResolver.Instance }
+                    )
+                );
                 return MessagePack.MessagePackSerializer.Deserialize<T>(input, options);
             }
             catch
