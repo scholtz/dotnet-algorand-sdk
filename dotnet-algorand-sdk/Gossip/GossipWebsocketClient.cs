@@ -19,8 +19,31 @@ namespace Algorand.Gossip
         private WebsocketClient? client;
         private bool disposedValue;
 
+        public delegate Task AgreementVoteReceivedEventHandler(object sender, byte[] bytes);
+        public delegate Task MsgOfInterestReceivedEventHandler(object sender, byte[] bytes);
+        public delegate Task MsgDigestSkipReceivedEventHandler(object sender, byte[] bytes);
+        public delegate Task NetPrioResponseReceivedEventHandler(object sender, byte[] bytes);
+        public delegate Task PingReceivedEventHandler(object sender, byte[] bytes);
+        public delegate Task PingReplyReceivedEventHandler(object sender, byte[] bytes);
+        public delegate Task ProposalPayloadReceivedEventHandler(object sender, byte[] bytes);
+        public delegate Task StateProofSigReceivedEventHandler(object sender, byte[] bytes);
+        public delegate Task TopicMsgRespReceivedEventHandler(object sender, byte[] bytes);
         public delegate Task TransactionReceivedEventHandler(object sender, IEnumerable<SignedTransaction> tx);
+        public delegate Task UniEnsBlockReqReceivedEventHandler(object sender, byte[] bytes);
+        public delegate Task VoteBundleReceivedEventHandler(object sender, byte[] bytes);
+        public event AgreementVoteReceivedEventHandler AgreementVoteReceivedEvent;
+        public event MsgOfInterestReceivedEventHandler MsgOfInterestReceivedEvent;
+        public event MsgDigestSkipReceivedEventHandler MsgDigestSkipReceivedEvent;
+        public event NetPrioResponseReceivedEventHandler NetPrioResponseReceivedEvent;
+        public event PingReceivedEventHandler PingReceivedEvent;
+        public event PingReplyReceivedEventHandler PingReplyReceivedEvent;
+        public event ProposalPayloadReceivedEventHandler ProposalPayloadReceivedEvent;
+        public event StateProofSigReceivedEventHandler StateProofSigReceivedEvent;
+        public event TopicMsgRespReceivedEventHandler TopicMsgRespReceivedEvent;
         public event TransactionReceivedEventHandler TransactionReceivedEvent;
+        public event UniEnsBlockReqReceivedEventHandler UniEnsBlockReqReceivedEvent;
+        public event VoteBundleReceivedEventHandler VoteBundleReceivedEvent;
+
 
 
         /// <summary>
@@ -80,6 +103,34 @@ namespace Algorand.Gossip
                 string msgTag = Encoding.ASCII.GetString(new byte[] { msg.Binary[0], msg.Binary[1] });
                 switch (msgTag)
                 {
+                    case Tag.AgreementVote:
+                        AgreementVoteReceivedEvent?.Invoke(this, msg.Binary[2..]);
+                        break;
+                    case Tag.MsgOfInterestTag:
+                        MsgOfInterestReceivedEvent?.Invoke(this, msg.Binary[2..]);
+                        break;
+                    case Tag.MsgDigestSkipTag:
+                        MsgDigestSkipReceivedEvent?.Invoke(this, msg.Binary[2..]);
+                        break;
+                    case Tag.NetPrioResponseTag:
+                        NetPrioResponseReceivedEvent?.Invoke(this, msg.Binary[2..]);
+                        break;
+                    case Tag.PingTag:
+                        PingReceivedEvent?.Invoke(this, msg.Binary[2..]);
+                        break;
+                    case Tag.PingReplyTag:
+                        PingReplyReceivedEvent?.Invoke(this, msg.Binary[2..]);
+                        break;
+                    case Tag.ProposalPayloadTag:
+                        ProposalPayloadReceivedEvent?.Invoke(this, msg.Binary[2..]);
+                        break;
+                    case Tag.StateProofSigTag:
+                        StateProofSigReceivedEvent?.Invoke(this, msg.Binary[2..]);
+                        break;
+                    case Tag.TopicMsgRespTag:
+                        TopicMsgRespReceivedEvent?.Invoke(this, msg.Binary[2..]);
+                        break;
+
                     case Tag.TxnTag:
                         var txBytes = SplitBytes(msg.Binary.AsSpan(2), new byte[] { 0x82, 0xa3, 0x73, 0x69, 0x67, 0xc4 });
                         var txs = txBytes.Select(t => Algorand.Utils.Encoder.DecodeFromMsgPack<Algorand.Algod.Model.Transactions.SignedTransaction>(t));
@@ -103,6 +154,12 @@ namespace Algorand.Gossip
                         //var tx = txBytes.Select(t => Algorand.Utils.Encoder.DecodeFromMsgPack<Algorand.Algod.Model.Transactions.SignedTransaction>(t)).ToArray();
                         //_logger.LogInformation($"Tx received: {Algorand.Utils.Encoder.EncodeToJson(tx.Tx)}");
                         TransactionReceivedEvent?.Invoke(this, txs);
+                        break;
+                    case Tag.UniEnsBlockReqTag:
+                        UniEnsBlockReqReceivedEvent?.Invoke(this, msg.Binary[2..]);
+                        break;
+                    case Tag.VoteBundleTag:
+                        VoteBundleReceivedEvent?.Invoke(this, msg.Binary[2..]);
                         break;
                     default:
                         //Console.WriteLine(BitConverter.ToString(msg.Binary).Replace("-", "").ToLower());
@@ -163,7 +220,7 @@ namespace Algorand.Gossip
             // will return segments [82a301, 82a302]
             List<byte[]> segments = new List<byte[]>();
             int start = 0;
-            
+
             while (start < input.Length)
             {
                 int index = input.Slice(start).IndexOf(delimiter);
@@ -176,14 +233,14 @@ namespace Algorand.Gossip
                     }
                     break;
                 }
-                
+
                 // Adjust index to the original span
                 index += start;
-                
+
                 // Find the next delimiter to determine the end of this segment
                 int nextDelimiterStart = index + delimiter.Length;
                 int nextIndex = -1;
-                
+
                 if (nextDelimiterStart < input.Length)
                 {
                     nextIndex = input.Slice(nextDelimiterStart).IndexOf(delimiter);
@@ -192,7 +249,7 @@ namespace Algorand.Gossip
                         nextIndex += nextDelimiterStart;
                     }
                 }
-                
+
                 // Create segment from current delimiter to next delimiter (or end)
                 if (nextIndex != -1)
                 {
@@ -207,7 +264,7 @@ namespace Algorand.Gossip
                     break;
                 }
             }
-            
+
             return segments;
         }
 

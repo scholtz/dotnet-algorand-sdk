@@ -196,8 +196,6 @@ namespace Algorand.Algod.Model.Transactions
             retList.AddRange(encodedTx);
             return retList.ToArray();
         }
-
-
         /// <summary>
         /// Return transaction ID as Digest
         /// </summary>
