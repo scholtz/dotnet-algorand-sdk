@@ -92,7 +92,8 @@ namespace sdk_examples
 
         private static async Task Client_AgreementVoteReceivedEvent(object sender, byte[] bytes)
         {
-            Console.WriteLine($"AgreementVoteReceived: {bytes.Length}");
+            var decoded = Algorand.Utils.Encoder.DecodeFromMsgPack<Algorand.Algod.Model.Agreement.Vote>(bytes);
+            Console.WriteLine($"AgreementVoteReceived: {decoded.R.Round} {decoded.R.Sender.EncodeAsString()} {bytes.Length}");
         }
         private static async Task Client_MsgDigestSkipReceivedEvent(object sender, byte[] bytes)
         {
