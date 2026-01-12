@@ -27,6 +27,48 @@ namespace test
     {
 
         [Test]
+        public async Task GenerateXgovRegistryClient()
+        {
+            using var client = new HttpClient();
+            var response = await client.GetAsync("https://raw.githubusercontent.com/algorandfoundation/xgov-beta-sc/refs/heads/main/smart_contracts/artifacts/xgov_registry/XGovRegistry.arc56.json");
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), "Failed to download file");
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
+
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("XGovRegistry");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            File.WriteAllText("XGovRegistryProxy.cs", appProxy);
+        }
+        [Test]
+        public async Task GenerateXgovProposalClient()
+        {
+            using var client = new HttpClient();
+            var response = await client.GetAsync("https://raw.githubusercontent.com/algorandfoundation/xgov-beta-sc/refs/heads/main/smart_contracts/artifacts/proposal/Proposal.arc56.json");
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), "Failed to download file");
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
+
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("XGovProposal");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            File.WriteAllText("XGovProposalProxy.cs", appProxy);
+        }
+
+
+        [Test]
         public async Task GenerateARC1400Client()
         {
             using var client = new HttpClient();
