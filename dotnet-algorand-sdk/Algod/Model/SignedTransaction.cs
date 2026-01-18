@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Algorand.Algod.Model.Transactions
 {
@@ -15,6 +14,14 @@ namespace Algorand.Algod.Model.Transactions
         {
             byte[] txBytes = Convert.FromBase64String(b64);
             return Utils.Encoder.DecodeFromMsgPack<SignedTransaction>(txBytes);
+        }
+
+        /// <summary>
+        /// Return byte array representation of the signed transaction
+        /// </summary>
+        /// <returns></returns>
+        public byte[] ToByteArray() {
+            return Utils.Encoder.EncodeToMsgPackOrdered(this);
         }
     }
 }
