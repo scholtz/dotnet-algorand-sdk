@@ -134,13 +134,21 @@ namespace Algorand.Utils
         /// <returns>json string</returns>
         public static string EncodeToJson(object o)
         {
-            var settings = new JsonSerializerSettings()
+            var serializer = JsonSerializer.Create(new JsonSerializerSettings()
             {
-                DefaultValueHandling = DefaultValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
+
+            // JsonTextWriter's indented output uses the underlying TextWriter's NewLine, which
+            // defaults to Environment.NewLine (\r\n on Windows, \n on Linux/macOS). Fix it to \r\n
+            // explicitly so EncodeToJson produces identical bytes on every platform.
+            using var stringWriter = new StringWriter { NewLine = "\r\n" };
+            using var jsonWriter = new JsonTextWriter(stringWriter)
+            {
                 Formatting = Formatting.Indented
             };
-            var ostr = JsonConvert.SerializeObject(o, settings);
-            return ostr;
+            serializer.Serialize(jsonWriter, o);
+            return stringWriter.ToString();
         }
         /// <summary>
         /// Decode a json string to an object.

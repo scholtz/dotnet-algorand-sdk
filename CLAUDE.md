@@ -18,7 +18,9 @@ dotnet test SerialisationTests/serialisation-tests.csproj                   # ms
 dotnet test gossip-client-tests/gossip-client-tests.csproj                  # gossip network client tests (needs live network access)
 ```
 
-`test/Arc4Tests.cs` and `test/Arc56Tests.cs` deploy contracts against `http://localhost:4001` (algod) and `http://localhost:4002` (kmd) — they need an [AlgoKit](https://developer.algorand.org/docs/get-started/algokit/) LocalNet running (`algokit localnet start`) before `dotnet test test/test.csproj` will pass. `test/Gossip/BlockFetcherTests.cs` and `gossip-client-tests` instead hit Algorand MainNet directly and need outbound network access, not LocalNet.
+`test/Arc4Tests.cs` and `test/Arc56Tests.cs` deploy contracts against `http://localhost:4001` (algod) and `http://localhost:4002` (kmd) — they need an [AlgoKit](https://developer.algorand.org/docs/get-started/algokit/) LocalNet running (`algokit localnet start`) before `dotnet test test/test.csproj` will pass. `test/Gossip/BlockFetcherTests.cs` and `gossip-client-tests` instead hit Algorand MainNet directly and need outbound network access, not LocalNet — and `BlockFetcherTests` specifically dials the hardcoded relay hostnames in `GossipHttpConfiguration.MainNetArchival`, which rotate over time (some no longer resolve via public DNS even with working internet), so treat its failures as relay-list staleness rather than a real regression unless you've confirmed the relay is actually up.
+
+`Encoder.EncodeToJson` explicitly forces `\r\n` line endings (see `Utils/Encoder.cs`) rather than relying on `Environment.NewLine`, so indented-JSON output — and the hardcoded fixture strings compared against it in `ModelTests.cs` — is identical on Windows and Linux. Don't remove that override; without it, those fixture tests fail on Linux CI while passing locally on Windows.
 
 `specflow/algorand_tests.csproj` contains SpecFlow integration tests that exercise a real Algod/Indexer/Kmd (e.g. AlgoKit `localnet`) — not run as part of a normal unit-test pass; see `specflow/test_harness.ps1`.
 
