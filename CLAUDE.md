@@ -18,6 +18,8 @@ dotnet test SerialisationTests/serialisation-tests.csproj                   # ms
 dotnet test gossip-client-tests/gossip-client-tests.csproj                  # gossip network client tests (needs live network access)
 ```
 
+`test/Arc4Tests.cs` and `test/Arc56Tests.cs` deploy contracts against `http://localhost:4001` (algod) and `http://localhost:4002` (kmd) — they need an [AlgoKit](https://developer.algorand.org/docs/get-started/algokit/) LocalNet running (`algokit localnet start`) before `dotnet test test/test.csproj` will pass. `test/Gossip/BlockFetcherTests.cs` and `gossip-client-tests` instead hit Algorand MainNet directly and need outbound network access, not LocalNet.
+
 `specflow/algorand_tests.csproj` contains SpecFlow integration tests that exercise a real Algod/Indexer/Kmd (e.g. AlgoKit `localnet`) — not run as part of a normal unit-test pass; see `specflow/test_harness.ps1`.
 
 The solution has configurations `Debug;Release;Test_Debug;Integration_Test_Debug;Unity;Unity_debug` — `Unity`/`Unity_debug` build the ILRepacked single-assembly package for Unity via `dotnet-algorand-sdk/ILRepack.Config.props`/`ILRepack.Targets`.
