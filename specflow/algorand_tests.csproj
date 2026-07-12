@@ -20,7 +20,7 @@
     <PackageReference Include="SpecFlow.MsTest" Version="3.9.74" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.2" />
     <PackageReference Include="MSTest.TestFramework" Version="3.8.2" />
-    <PackageReference Include="FluentAssertions" Version="8.1.1" />
+    <PackageReference Include="FluentAssertions" Version="8.10.0" />
   </ItemGroup>
 
   <ItemGroup>

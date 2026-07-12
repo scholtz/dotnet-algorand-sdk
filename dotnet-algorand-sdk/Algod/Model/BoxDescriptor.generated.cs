@@ -31,6 +31,19 @@ using UnityEngine;
 
 
 
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("value")]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Base64 encoded box value. Present only when the `values` query parameter is set to true.")]
+    [field:InspectorName(@"Value")]
+    public byte[] Value {get;set;}
+#else
+        public byte[] Value { get; set; }
+#endif
+
+
+
     }
 
 

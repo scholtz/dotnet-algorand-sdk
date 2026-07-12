@@ -111,6 +111,22 @@ namespace Algorand.Algod
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<AccountAssetsInformationResponse> AccountAssetsInformationAsync(System.Threading.CancellationToken cancellationToken, string address, ulong? limit = null, string? next = null);
 
+        /// <summary>Lookup an account's application holdings (local state and params if the account is the creator).
+        /// </summary>
+        /// <param name="limit">Maximum number of results to return.</param>
+        /// <param name="next">The next page of results. Use the next token provided by the previous results.</param>
+        /// <param name="include">Include additional items in the response. Use `params` to include full application parameters (global state, schema, etc.). Multiple values can be comma-separated. Defaults to returning only application IDs and local state.</param>
+        /// <param name="address">An account public key</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AccountApplicationsInformationResponse> AccountApplicationsInformationAsync(string address, ulong? limit = null, string? next = null, string? include = null);
+
+        /// <param name="limit">Maximum number of results to return.</param>
+        /// <param name="next">The next page of results. Use the next token provided by the previous results.</param>
+        /// <param name="include">Include additional items in the response. Use `params` to include full application parameters (global state, schema, etc.). Multiple values can be comma-separated. Defaults to returning only application IDs and local state.</param>
+        /// <param name="address">An account public key</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<AccountApplicationsInformationResponse> AccountApplicationsInformationAsync(System.Threading.CancellationToken cancellationToken, string address, ulong? limit = null, string? next = null, string? include = null);
+
         /// <summary>Given a specific account public key and application ID, this call returns the
         /// account's application local state and global state (AppLocalState and AppParams,
         /// if either exists). Global state will only be returned if the provided address is
@@ -1364,6 +1380,114 @@ namespace Algorand.Algod
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AccountAssetsInformationResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        //Algorand Generator cannot distinguish between response codes
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+
+        }
+
+
+
+
+        /// <summary>Lookup an account's application holdings (local state and params if the account is the creator).
+        /// </summary>
+        /// <param name="limit">Maximum number of results to return.</param>
+        /// <param name="next">The next page of results. Use the next token provided by the previous results.</param>
+        /// <param name="include">Include additional items in the response. Use `params` to include full application parameters (global state, schema, etc.). Multiple values can be comma-separated. Defaults to returning only application IDs and local state.</param>
+        /// <param name="address">An account public key</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<AccountApplicationsInformationResponse> AccountApplicationsInformationAsync(string address, ulong? limit = null, string? next = null, string? include = null)
+        {
+            return AccountApplicationsInformationAsync(System.Threading.CancellationToken.None, address, limit, next, include);
+        }
+
+        /// <summary>>Lookup an account's application holdings (local state and params if the account is the creator).
+        /// </summary>
+        /// <param name="limit">Maximum number of results to return.</param>
+        /// <param name="next">The next page of results. Use the next token provided by the previous results.</param>
+        /// <param name="include">Include additional items in the response. Use `params` to include full application parameters (global state, schema, etc.). Multiple values can be comma-separated. Defaults to returning only application IDs and local state.</param>
+        /// <param name="address">An account public key</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<AccountApplicationsInformationResponse> AccountApplicationsInformationAsync(System.Threading.CancellationToken cancellationToken, string address, ulong? limit = null, string? next = null, string? include = null)
+        {
+            if (address == null) throw new System.ArgumentNullException("address");
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/accounts/{address}/applications?");
+            urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
+            if (limit != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("limit") + "=").Append(System.Uri.EscapeDataString(ConvertToString(limit, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (next != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("next") + "=").Append(System.Uri.EscapeDataString(ConvertToString(next, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (include != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("include") + "=").Append(System.Uri.EscapeDataString(ConvertToString(include, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AccountApplicationsInformationResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);

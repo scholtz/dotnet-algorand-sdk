@@ -122,6 +122,19 @@ using UnityEngine;
 
 
 
+        [Newtonsoft.Json.JsonProperty("size-sponsor", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("size-sponsor")]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"\[ss\] the account responsible for extra pages and global state MBR")]
+    [field:InspectorName(@"SizeSponsor")]
+    public Address SizeSponsor {get;set;}
+#else
+        public Address SizeSponsor { get; set; }
+#endif
+
+
+
     }
 
 
