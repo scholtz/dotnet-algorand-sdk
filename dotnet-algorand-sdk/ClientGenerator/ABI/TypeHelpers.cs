@@ -237,7 +237,16 @@ namespace AVM.ClientGenerator.ABI
 
                 if (methodABIType.StartsWith("ufixed"))
                 {
-                    return ("", checkArrayType(arrayComponent, methodABIType), checkAbiArrayType(arrayComponent, $"AVM.ClientGenerator.ABI.ARC4.Types.UFixed"), false);
+                    // ufixed ABI types are described as ufixed<N>x<M> where N is the bitwidth and M is the precision.
+                    string[] ufixedParts = methodABIType.Substring("ufixed".Length).Split('x');
+                    if (ufixedParts.Length != 2 || !uint.TryParse(ufixedParts[0], out uint ufixedBitwidth) || !uint.TryParse(ufixedParts[1], out uint ufixedPrecision))
+                        throw new Exception($"Invalid ufixed ABI type {methodABIType}");
+
+                    string ufixedAbiType = string.IsNullOrEmpty(arrayComponent.Trim())
+                        ? $"AVM.ClientGenerator.ABI.ARC4.Types.UFixed({ufixedBitwidth}, {ufixedPrecision})"
+                        : checkAbiArrayType(arrayComponent, "AVM.ClientGenerator.ABI.ARC4.Types.UFixed");
+
+                    return ("", checkArrayType(arrayComponent, "System.Numerics.BigInteger"), ufixedAbiType, false);
 
                 }
                 if (methodABIType.StartsWith("decimal"))
@@ -336,10 +345,31 @@ namespace AVM.ClientGenerator.ABI
             {
                 return ABITypeToCSType(parentStructName, abiType, structs, isReturn);
             }
-            else
+
+            string structTypeName = $"Structs.{ARC4.MethodDescription.FormatStructName(sourceType)}";
+
+            string arrayComponent = "";
+            if (!string.IsNullOrEmpty(abiType))
             {
-                return ("", $"Structs.{ARC4.MethodDescription.FormatStructName(sourceType)}", "", false);
+                string trimmed = abiType.Trim();
+                if (trimmed.EndsWith("]"))
+                {
+                    int idx = trimmed.LastIndexOf('[');
+                    if (idx >= 0) arrayComponent = trimmed.Substring(idx);
+                }
             }
+
+            if (string.IsNullOrEmpty(arrayComponent))
+            {
+                return ("", structTypeName, "", false);
+            }
+
+            // Named ARC56 structs aren't WireType instances, so arrays of them are wrapped in StructArray<T>
+            // (see AVM.ClientGenerator.ABI.ARC4.Types.StructArray) to plug into the existing encode/decode pipeline.
+            bool isFixedLength = arrayComponent.Length > 2;
+            string fixedLength = isFixedLength ? arrayComponent.TrimStart('[').TrimEnd(']') : "0";
+            string wrapperExpr = $"AVM.ClientGenerator.ABI.ARC4.Types.StructArray<{structTypeName}>(x => {structTypeName}.Parse(x)) {{ IsFixedLength = {(isFixedLength ? "true" : "false")}, FixedLength = {fixedLength} }}";
+            return ("", $"{structTypeName}[]", wrapperExpr, false);
         }
 
         internal static string CSTypeToAbiType(TypeSyntax type, SemanticModel semanticModel)

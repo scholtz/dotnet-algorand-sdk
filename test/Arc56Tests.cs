@@ -5,6 +5,8 @@ using Algorand.Algod.Model.Transactions;
 using Algorand.AVM.ClientGenerator.ABI.ARC56;
 using Algorand.KMD;
 using Algorand.Utils;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
@@ -15,6 +17,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.WebSockets;
 using System.Numerics;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -108,7 +111,56 @@ namespace test
             var appProxy = await generator.ToProxy("AVMTypes");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("AVMTypesProxy.cs", appProxy);
+
+            // Compile the freshly generated source code to prove it is valid, standalone C#
+            var assembly = CompileGeneratedClient(appProxy, "AVMTypesGenerated_" + Guid.NewGuid().ToString("N"));
+            var proxyType = assembly.GetType("AVMTypes.AvmTypesProxy");
+            Assert.That(proxyType, Is.Not.Null, "Could not locate generated AvmTypesProxy type in the compiled assembly");
+
+            // Exercise the freshly compiled client against a running node to prove it actually works
+            Account acct1 = await GetAccount();
+            dynamic generatedContract = Activator.CreateInstance(proxyType, algodApiInstance, (ulong)0);
+            await generatedContract.CreateApplication(acct1, (ulong)1000, "", _tx_callType: AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
+
+            Assert.That((ulong)generatedContract.appId, Is.GreaterThan(0UL));
+            Assert.That((Address)generatedContract.AppAddress, Is.Not.Null);
+
+            byte byteResult = await generatedContract.Arc4Byte((byte)255, acct1, (ulong)1000);
+            Assert.That(byteResult, Is.EqualTo(255));
+
+            bool boolResult = await generatedContract.Boolean(true, acct1, (ulong)1000);
+            Assert.That(boolResult, Is.True);
         }
+
+        /// <summary>
+        /// Compiles ARC56-generated proxy source code into an in-memory assembly, referencing every
+        /// assembly already loaded in the current process (which includes the SDK, AVM.ClientGenerator
+        /// runtime types and BCL assemblies used by the generated code).
+        /// </summary>
+        private static Assembly CompileGeneratedClient(string sourceCode, string assemblyName)
+        {
+            var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode, new CSharpParseOptions(LanguageVersion.Latest));
+
+            var references = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
+                .Select(a => (MetadataReference)MetadataReference.CreateFromFile(a.Location))
+                .ToList();
+
+            var compilation = CSharpCompilation.Create(
+                assemblyName,
+                new[] { syntaxTree },
+                references,
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+            using var ms = new MemoryStream();
+            var emitResult = compilation.Emit(ms);
+            var errors = emitResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).ToList();
+            Assert.That(emitResult.Success, Is.True, "Generated client failed to compile:" + Environment.NewLine + string.Join(Environment.NewLine, errors));
+
+            ms.Seek(0, SeekOrigin.Begin);
+            return Assembly.Load(ms.ToArray());
+        }
+
         [Test]
         public async Task GenerateARC200Client()
         {
@@ -632,6 +684,189 @@ namespace test
             balance = await contractConf.Arc200BalanceOf(acct2.Address, acct1, 1000, _tx_boxes: boxes);
             Assert.That(balance, Is.EqualTo(new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(BigInteger.Parse("1000000000"))));
 
+        }
+
+        private async Task<(AVMTypes.AvmTypesProxy contract, Account acct)> CreateAvmTypesContract()
+        {
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+            Account acct1 = await GetAccount();
+
+            var contract = new AVMTypes.AvmTypesProxy(algodApiInstance, 0);
+            await contract.CreateApplication(acct1, 1000, "", _tx_callType: AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
+            return (contract, acct1);
+        }
+
+        // ufixed<N>x<M> is ABI-encoded identically to uint<N>, so the client represents it as the raw scaled
+        // BigInteger value (e.g. ufixed8x16 value "1.5" would be encoded as BigInteger 1 << 16 | ...); here we
+        // just round-trip raw scaled integers to prove the bitwidth-aware encode/decode path works end to end.
+        [Test]
+        public async Task AVMTypes_Arc4UFixed8x16()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+
+            Assert.That(await contract.Arc4UFixed8X16(BigInteger.Zero, acct1, 1000), Is.EqualTo(BigInteger.Zero));
+            Assert.That(await contract.Arc4UFixed8X16(new BigInteger(255), acct1, 1000), Is.EqualTo(new BigInteger(255)));
+        }
+
+        [Test]
+        public async Task AVMTypes_Arc4UFixed512x160()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+
+            Assert.That(await contract.Arc4UFixed512X160(BigInteger.Zero, acct1, 1000), Is.EqualTo(BigInteger.Zero));
+            var big = BigInteger.Parse("13407807929942597099574024998205846127479365820592393377723561443721764030073546976801874298166903427690031858186486050853753882811946569946433649006084095");
+            Assert.That(await contract.Arc4UFixed512X160(big, acct1, 1000), Is.EqualTo(big));
+        }
+
+        [Test]
+        public async Task AVMTypes_Arc4UintN82Tuple()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+
+            var data = new AVMTypes.AvmTypesProxy.Structs.Arc4UintN82TupleArgData() { Field0 = 1, Field1 = 255 };
+            var result = await contract.Arc4UintN82Tuple(data, acct1, 1000);
+            Assert.That(result.Field0, Is.EqualTo(1));
+            Assert.That(result.Field1, Is.EqualTo(255));
+        }
+
+        [Test]
+        public async Task AVMTypes_Arc4UintN83Tuple()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+
+            var data = new AVMTypes.AvmTypesProxy.Structs.Arc4UintN83TupleArgData() { Field0 = 1, Field1 = 2, Field2 = 255 };
+            var result = await contract.Arc4UintN83Tuple(data, acct1, 1000);
+            Assert.That(result.Field0, Is.EqualTo(1));
+            Assert.That(result.Field1, Is.EqualTo(2));
+            Assert.That(result.Field2, Is.EqualTo(255));
+        }
+
+        [Test]
+        public async Task AVMTypes_Arc4ComplexTuple()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+
+            var data = new AVMTypes.AvmTypesProxy.Structs.Arc4ComplexTupleArgData()
+            {
+                Field0 = acct1.Address,
+                Field1 = new AVMTypes.AvmTypesProxy.Structs.Arc4ComplexTupleArgDataField1()
+                {
+                    Field0 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(1),
+                    Field1 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(2),
+                },
+                Field2 = new AVMTypes.AvmTypesProxy.Structs.Arc4ComplexTupleArgDataField1()
+                {
+                    Field0 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(3),
+                    Field1 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(4),
+                },
+                Field3 = new AVMTypes.AvmTypesProxy.Structs.Arc4ComplexTupleArgDataField1()
+                {
+                    Field0 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(5),
+                    Field1 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(6),
+                },
+            };
+            var result = await contract.Arc4ComplexTuple(data, acct1, 1000);
+            Assert.That(result.Field0, Is.EqualTo(acct1.Address));
+            Assert.That(result.Field1.Field0, Is.EqualTo(new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(1)));
+            Assert.That(result.Field1.Field1, Is.EqualTo(new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(2)));
+            Assert.That(result.Field2.Field0, Is.EqualTo(new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(3)));
+            Assert.That(result.Field3.Field1, Is.EqualTo(new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(6)));
+        }
+
+        [Test]
+        public async Task AVMTypes_Arc4Tuple()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+
+            var data = new AVMTypes.AvmTypesProxy.Structs.Arc4TupleArgData() { Field0 = 12345, Field1 = "hello arc4 tuple" };
+            var result = await contract.Arc4Tuple(data, acct1, 1000);
+            Assert.That(result.Field0, Is.EqualTo(12345));
+            Assert.That(result.Field1, Is.EqualTo("hello arc4 tuple"));
+        }
+
+        [Test]
+        public async Task AVMTypes_NativeTuple()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+
+            var data = new AVMTypes.AvmTypesProxy.Structs.NativeTupleArgData() { Field0 = 6789, Field1 = "native tuple", Field2 = true };
+            var result = await contract.NativeTuple(data, acct1, 1000);
+            Assert.That(result.Field0, Is.EqualTo(6789));
+            Assert.That(result.Field1, Is.EqualTo("native tuple"));
+            Assert.That(result.Field2, Is.True);
+        }
+
+        [Test]
+        public async Task AVMTypes_Arc4DynamicArrayOfStruct()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+
+            var data = new AVMTypes.AvmTypesProxy.Structs.StructAddressUint256[]
+            {
+                new AVMTypes.AvmTypesProxy.Structs.StructAddressUint256() { Address = acct1.Address, Uint256 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(1) },
+                new AVMTypes.AvmTypesProxy.Structs.StructAddressUint256() { Address = acct1.Address, Uint256 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(2) },
+                new AVMTypes.AvmTypesProxy.Structs.StructAddressUint256() { Address = acct1.Address, Uint256 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(3) },
+            };
+            var result = await contract.Arc4DynamicArrayOfStruct(data, acct1, 1000);
+            Assert.That(result.Length, Is.EqualTo(3));
+            Assert.That(result[0].Uint256, Is.EqualTo(new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(1)));
+            Assert.That(result[2].Uint256, Is.EqualTo(new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(3)));
+        }
+
+        [Test]
+        public async Task AVMTypes_Arc4StaticArrayOf2Structs()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+
+            var data = new AVMTypes.AvmTypesProxy.Structs.StructAddressUint256[]
+            {
+                new AVMTypes.AvmTypesProxy.Structs.StructAddressUint256() { Address = acct1.Address, Uint256 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(10) },
+                new AVMTypes.AvmTypesProxy.Structs.StructAddressUint256() { Address = acct1.Address, Uint256 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(20) },
+            };
+            var result = await contract.Arc4StaticArrayOf2Structs(data, acct1, 1000);
+            Assert.That(result.Length, Is.EqualTo(2));
+            Assert.That(result[0].Uint256, Is.EqualTo(new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(10)));
+            Assert.That(result[1].Uint256, Is.EqualTo(new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(20)));
+        }
+
+        [Test]
+        public async Task AVMTypes_Events_PrimitiveAndStruct()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+
+            await contract.String("event test", acct1, 1000);
+            var stringLog = contract.LastCallLogs.FirstOrDefault(l => AVMTypes.AvmTypesProxy.Events.StringEvent.Matches(l));
+            Assert.That(stringLog, Is.Not.Null, "Expected a StringEvent log entry");
+            var stringEvent = AVMTypes.AvmTypesProxy.Events.StringEvent.Decode(stringLog);
+            Assert.That(stringEvent.Field0, Is.EqualTo("event test"));
+
+            var structData = new AVMTypes.AvmTypesProxy.Structs.StructAddressUint256() { Address = acct1.Address, Uint256 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(42) };
+            await contract.Struct(structData, acct1, 1000);
+            var structLog = contract.LastCallLogs.FirstOrDefault(l => AVMTypes.AvmTypesProxy.Events.StructEvent.Matches(l));
+            Assert.That(structLog, Is.Not.Null, "Expected a StructEvent log entry");
+            var structEvent = AVMTypes.AvmTypesProxy.Events.StructEvent.Decode(structLog);
+            Assert.That(structEvent.Field0.Address, Is.EqualTo(acct1.Address));
+            Assert.That(structEvent.Field0.Uint256, Is.EqualTo(new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(42)));
+        }
+
+        [Test]
+        public async Task AVMTypes_InnerStruct()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+
+            var innerStruct = new InnerStruct()
+            {
+                Num = 1,
+                Struct = new StructAddressUint256()
+                {
+                    Address = acct1.Address,
+                    Uint256 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(1)
+                }
+            };
+            Assert.That(await contract.InnerStruct(innerStruct, acct1, 1000), Is.EqualTo(innerStruct));
         }
     }
 }

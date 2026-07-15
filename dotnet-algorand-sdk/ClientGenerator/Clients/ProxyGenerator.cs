@@ -30,7 +30,7 @@ namespace AVM.ClientGenerator.Clients
             { "ulong", "return BitConverter.ToUInt64(ReverseIfLittleEndian(lastLogReturnData), 0);"},
             { "short", "return BitConverter.ToInt16(ReverseIfLittleEndian(lastLogReturnData), 0);"},
             { "ushort","return BitConverter.ToUInt16(ReverseIfLittleEndian(lastLogReturnData), 0);"},
-            { "System.Numerics.BigInteger","return new System.Numerics.BigInteger(lastLogReturnData);" }   ,
+            { "System.Numerics.BigInteger","return returnValueObj.Value;" }   ,
             { "byte[]","return returnValueObj.ToByteArray();" },
             { "string","return returnValueObj.ToString();" },
             { "string[]","return returnValueObj.ToStringArray();" },

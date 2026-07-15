@@ -44,6 +44,12 @@ namespace AVM.ClientGenerator
 
         DefaultApi client;
         public ulong appId { get; protected set; }
+        /// <summary>
+        /// The raw logs (including any ARC-28 event logs) produced by the most recent CallApp/SimApp invocation.
+        /// Generated ARC56 clients emit an Events.&lt;Name&gt;Event.Decode(log)/Matches(log) helper per contract
+        /// event; callers can filter these logs against those helpers to recover the emitted events.
+        /// </summary>
+        public ICollection<byte[]> LastCallLogs { get; protected set; } = new List<byte[]>();
         public Address AppAddress
         {
             get
@@ -403,12 +409,14 @@ namespace AVM.ClientGenerator
 #else
                     this.appId = resp.ApplicationIndex ?? throw new Exception("Application index is null after successful call to create aplication");
 #endif
+                    LastCallLogs = resp.Logs ?? new List<byte[]>();
                     return resp.Logs;
                 }
                 else
                 {
                     var resp = await AlgoUtils.Utils.WaitTransactionToComplete(client, tx.TxID()) as ApplicationCallTransaction;
 
+                    LastCallLogs = resp.Logs ?? new List<byte[]>();
                     return resp.Logs;
                 }
 
@@ -519,9 +527,11 @@ namespace AVM.ClientGenerator
                         }
                     }
 
+                    LastCallLogs = appTx.Logs ?? new List<byte[]>();
                     return appTx.Logs;
                 }
                 var ret = new List<byte[]>();
+                LastCallLogs = ret;
                 return ret;
             }
             catch (Exception ex)

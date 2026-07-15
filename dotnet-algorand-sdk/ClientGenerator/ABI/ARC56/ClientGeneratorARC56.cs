@@ -51,6 +51,8 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         {
             if (Contract == null) throw new Exception("Load the contract first");
 
+            ResolveAnonymousTuples();
+
             List<string> structs = new List<string>();
 
 
@@ -109,10 +111,200 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             ctorInner.AddOpeningLine("App = Newtonsoft.Json.JsonConvert.DeserializeObject<AVM.ClientGenerator.ABI.ARC56.AppDescriptionArc56>(Encoding.UTF8.GetString(Convert.FromBase64String(_ARC56DATA))) ?? throw new Exception(\"Error reading ARC56 data\");");
 
             defineStructs(proxyBody);
+            defineEvents(proxyBody);
             defineMethods(proxyBody, structs);
 
             return await FormatCode(code.ToString());
         }
+
+        /// <summary>
+        /// ARC56 methods/events may reference raw ABI tuple types (e.g. "(uint64,string)" or "(address,uint256)[]")
+        /// directly, without a corresponding entry in Contract.Structs. The rest of the generator only knows how
+        /// to encode/decode named structs, so this walks every method arg/return (and struct field, recursively)
+        /// and synthesizes a Contract.Structs entry for any such anonymous tuple, reusing an existing struct when
+        /// its shape already matches one (e.g. an array of "(address,uint256)" reuses "structAddressUint256").
+        /// </summary>
+        private void ResolveAnonymousTuples()
+        {
+            var shapeCache = new Dictionary<string, string>();
+            foreach (var structName in Contract.Structs.Keys.ToList())
+            {
+                var sig = BuildTupleSignature(structName, new HashSet<string>());
+                if (sig != null && !shapeCache.ContainsKey(sig))
+                {
+                    shapeCache[sig] = structName;
+                }
+            }
+
+            foreach (var method in Contract.Methods)
+            {
+                foreach (var arg in method.Args)
+                {
+                    if (string.IsNullOrEmpty(arg.Struct) && !string.IsNullOrEmpty(arg.Type))
+                    {
+                        var resolved = ResolveTupleType(arg.Type, $"{method.Name}_arg_{arg.Name}", shapeCache);
+                        if (resolved != null) arg.Struct = resolved;
+                    }
+                }
+                if (method.Returns != null && string.IsNullOrEmpty(method.Returns.Struct) && !string.IsNullOrEmpty(method.Returns.Type))
+                {
+                    var resolved = ResolveTupleType(method.Returns.Type, $"{method.Name}Return", shapeCache);
+                    if (resolved != null) method.Returns.Struct = resolved;
+                }
+            }
+
+            if (Contract.Events != null)
+            {
+                foreach (var evt in Contract.Events)
+                {
+                    if (evt.Args == null) continue;
+                    foreach (var arg in evt.Args)
+                    {
+                        if (string.IsNullOrEmpty(arg.Struct) && !string.IsNullOrEmpty(arg.Type))
+                        {
+                            var resolved = ResolveTupleType(arg.Type, $"{evt.Name}_event_{arg.Name}", shapeCache);
+                            if (resolved != null) arg.Struct = resolved;
+                        }
+                    }
+                }
+            }
+        }
+
+        private static string SplitTrailingArrayComponent(string abiType, out string arrayComponent)
+        {
+            arrayComponent = "";
+            string bare = abiType.Trim();
+            if (bare.EndsWith("]"))
+            {
+                int idx = bare.LastIndexOf('[');
+                if (idx > 0 && bare[idx - 1] == ')')
+                {
+                    arrayComponent = bare.Substring(idx);
+                    bare = bare.Substring(0, idx);
+                }
+            }
+            return bare;
+        }
+
+        /// <summary>
+        /// If abiType is a raw tuple (optionally array-suffixed), resolves/creates the named struct for its
+        /// element shape and returns the struct name. Returns null if abiType isn't a tuple at all.
+        /// </summary>
+        private string ResolveTupleType(string abiType, string nameHint, Dictionary<string, string> shapeCache)
+        {
+            string bare = SplitTrailingArrayComponent(abiType, out _);
+            if (!bare.StartsWith("(") || !bare.EndsWith(")")) return null;
+
+            return ResolveOrCreateStruct(bare, nameHint, shapeCache);
+        }
+
+        private string ResolveOrCreateStruct(string tupleAbiType, string nameHint, Dictionary<string, string> shapeCache)
+        {
+            string canonical = tupleAbiType.Trim().ToLowerInvariant();
+            if (shapeCache.TryGetValue(canonical, out var existing)) return existing;
+
+            string structName = MethodDescription.FormatStructName(nameHint);
+            string baseName = structName;
+            int suffix = 1;
+            while (Contract.Structs.ContainsKey(structName))
+            {
+                structName = baseName + suffix;
+                suffix++;
+            }
+            // Reserve the name immediately so nested tuples of the same shape (e.g. a self-referential
+            // structure) can't recurse forever, and so later lookups see it even before fields are filled in.
+            var fields = new List<StructField>();
+            Contract.Structs[structName] = fields;
+            shapeCache[canonical] = structName;
+
+            string inner = tupleAbiType.Substring(1, tupleAbiType.Length - 2);
+            var subTypes = new TypeHelpers.TupleSubTypes(inner);
+            int i = 0;
+            foreach (var subType in subTypes)
+            {
+                string trimmed = subType.Trim();
+                string subBare = SplitTrailingArrayComponent(trimmed, out string subArrayComponent);
+
+                string fieldType;
+                if (subBare.StartsWith("(") && subBare.EndsWith(")"))
+                {
+                    string nestedStructName = ResolveOrCreateStruct(subBare, $"{nameHint}_field{i}", shapeCache);
+                    fieldType = nestedStructName + subArrayComponent;
+                }
+                else
+                {
+                    fieldType = trimmed;
+                }
+                fields.Add(new StructField { Name = $"field{i}", Type = fieldType });
+                i++;
+            }
+
+            return structName;
+        }
+
+        /// <summary>
+        /// Reconstructs the canonical ABI tuple signature of a named struct (recursively expanding any nested
+        /// struct-typed fields), so anonymous tuples encountered later can be matched against it by shape.
+        /// </summary>
+        private string BuildTupleSignature(string structName, HashSet<string> visiting)
+        {
+            if (!Contract.Structs.TryGetValue(structName, out var fields)) return null;
+            if (!visiting.Add(structName)) return null;
+
+            var parts = new List<string>();
+            foreach (var field in fields)
+            {
+                string bare = SplitTrailingArrayComponent(field.Type ?? "", out string arrayComponent);
+                if (Contract.Structs.ContainsKey(bare))
+                {
+                    string nested = BuildTupleSignature(bare, visiting);
+                    parts.Add((nested ?? bare) + arrayComponent);
+                }
+                else
+                {
+                    parts.Add((field.Type ?? "").Trim());
+                }
+            }
+
+            visiting.Remove(structName);
+            return "(" + string.Join(",", parts) + ")";
+        }
+
+        /// <summary>
+        /// True if the given ABI field type must be offset/tail-addressed when nested inside another tuple,
+        /// struct, or ARC-28 event argument list, per ARC4 rules: strings and variable-length arrays are always
+        /// dynamic; a fixed-length array is dynamic iff its element type is; a struct (named or synthesized from
+        /// a plain ABI tuple) is dynamic only if one of its own fields is, checked recursively; everything else
+        /// (uintN, byte, bool, address, asset, application, ufixed) is static.
+        /// </summary>
+        private bool IsFieldTypeDynamic(string abiType)
+        {
+            string trimmed = (abiType ?? "").Trim();
+            if (trimmed.Equals("string", StringComparison.OrdinalIgnoreCase)) return true;
+
+            if (trimmed.EndsWith("]"))
+            {
+                int idx = trimmed.LastIndexOf('[');
+                if (idx >= 0)
+                {
+                    string arrayComponent = trimmed.Substring(idx);
+                    string bare = trimmed.Substring(0, idx);
+                    if (arrayComponent == "[]") return true;
+                    return IsFieldTypeDynamic(bare);
+                }
+            }
+
+            if (Contract.Structs.ContainsKey(trimmed))
+            {
+                // Empirically (see ARC-28 event log encoding), Algorand Python/Puya treats a struct as dynamic
+                // only if it actually contains a dynamic component, the same rule as plain tuples - not "any
+                // named struct is always dynamic" as one might expect from the type system alone.
+                return Contract.Structs[trimmed].Any(f => IsFieldTypeDynamic(f.Type));
+            }
+
+            return false;
+        }
+
         static async Task<string> FormatCode(string sourceCode)
         {
             var workspace = new AdhocWorkspace();
@@ -163,8 +355,17 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                     if (abiDescriptor == null)
                     {
                         // struct usage
-                        structF1.AddOpeningLine($"stringRef[ret.Count] = {structItem.Name.ToPascalCase()}.ToByteArray();");
-                        structF1.AddOpeningLine($"ret.AddRange(new byte[2]);");
+                        if (IsFieldTypeDynamic(structItem.Type))
+                        {
+                            structF1.AddOpeningLine($"stringRef[ret.Count] = {structItem.Name.ToPascalCase()}.ToByteArray();");
+                            structF1.AddOpeningLine($"ret.AddRange(new byte[2]);");
+                        }
+                        else
+                        {
+                            // A static (all-fields-static) synthesized struct is inlined directly, matching how
+                            // ARC4 encodes a static nested tuple - no offset/tail indirection.
+                            structF1.AddOpeningLine($"ret.AddRange({structItem.Name.ToPascalCase()}.ToByteArray());");
+                        }
                     }
                     else
                     {
@@ -208,14 +409,21 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                     var abiDescriptor = WireType.FromABIDescription(structItem.Type);
                     if (abiDescriptor == null)
                     {
-                        structF2.AddOpeningLine($"var index{structItem.Name.ToPascalCase()} = queue.Dequeue() * 256 + queue.Dequeue();");
                         // struct usage
                         var name = MethodDescription.FormatStructName(structItem.Type, true);
-                        //structF2.AddOpeningLine($"{name} v{structItem.Name.ToPascalCase()} = new {name}();");
-                        //structF2.AddOpeningLine($"v{structItem.Name.ToPascalCase()}.Decode(bytes.Skip(index{structItem.Name.ToPascalCase()} + prefixOffset).ToArray());");
-
-                        structF2.AddOpeningLine($"ret.{structItem.Name.ToPascalCase()} = {name}.Parse(bytes.Skip(index{structItem.Name.ToPascalCase()} + prefixOffset).ToArray());");
-
+                        if (IsFieldTypeDynamic(structItem.Type))
+                        {
+                            structF2.AddOpeningLine($"var index{structItem.Name.ToPascalCase()} = queue.Dequeue() * 256 + queue.Dequeue();");
+                            structF2.AddOpeningLine($"ret.{structItem.Name.ToPascalCase()} = {name}.Parse(bytes.Skip(index{structItem.Name.ToPascalCase()} + prefixOffset).ToArray());");
+                        }
+                        else
+                        {
+                            // A static synthesized struct is inlined directly: parse it off the front of what's
+                            // left in the queue, then measure how many bytes it actually consumed (via a
+                            // re-encode round-trip) to advance the queue past it.
+                            structF2.AddOpeningLine($"ret.{structItem.Name.ToPascalCase()} = {name}.Parse(queue.ToArray());");
+                            structF2.AddOpeningLine($"{{ var consumed{structItem.Name.ToPascalCase()} = ret.{structItem.Name.ToPascalCase()}.ToByteArray().Length; for (int i = 0; i < consumed{structItem.Name.ToPascalCase()} && queue.Count > 0; i++){{queue.Dequeue();}} }}");
+                        }
                     }
                     else
                     {
@@ -275,6 +483,127 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 structF3.AddOpeningLine("}");
             }
         }
+
+        /// <summary>
+        /// Generates a nested Events class with one decode-only class per ARC-28 event, mirroring the way
+        /// defineStructs generates the Structs class. Each generated event class exposes a 4-byte ARC-28
+        /// selector (the same sha512/256-based selector algorithm as ARC4 method selectors, computed over
+        /// "EventName(argtype1,argtype2,...)" with no return type), a Matches(log) helper, and a static
+        /// Decode(log) that parses the ARC4-tuple-encoded argument list following the selector.
+        /// </summary>
+        private void defineEvents(Code proxyBody)
+        {
+            if (Contract.Events == null || Contract.Events.Count == 0) return;
+
+            var eventsObj = proxyBody.AddChild();
+            eventsObj.AddOpeningLine("public class Events");
+            eventsObj.AddOpeningLine("{");
+            eventsObj.AddClosingLine("}");
+
+            foreach (var evt in Contract.Events)
+            {
+                string className = MethodDescription.FormatStructName(evt.Name + "Event");
+                string signature = $"{evt.Name}({string.Join(",", evt.Args?.Select(a => a.Type) ?? Enumerable.Empty<string>())})";
+                byte[] selector = MethodDescription.ToARC4MethodSelector(signature);
+
+                var eventObj = eventsObj.AddChild();
+                eventObj.AddOpeningLine($"public class {className}");
+                eventObj.AddOpeningLine("{");
+                eventObj.AddClosingLine("}");
+
+                var eventTop = eventObj.AddChild();
+                eventTop.AddOpeningLine($"public static readonly byte[] Selector = new byte[4] {{ {string.Join(",", selector)} }};");
+                eventTop.AddOpeningLine($"public const string Signature = \"{signature.Replace("\"", "\\\"")}\";");
+                eventTop.AddOpeningLine("public static bool Matches(byte[] log) { return log != null && log.Length >= 4 && log[0] == Selector[0] && log[1] == Selector[1] && log[2] == Selector[2] && log[3] == Selector[3]; }");
+
+                var args = evt.Args ?? new List<EventArgument>();
+                var propNames = new List<string>();
+                for (int i = 0; i < args.Count; i++)
+                {
+                    var arg = args[i];
+                    string propName = string.IsNullOrEmpty(arg.Name) || char.IsDigit(arg.Name[0]) ? $"Field{i}" : arg.Name.ToPascalCase();
+                    propNames.Add(propName);
+                    var p = TypeHelpers.GetCSType(MethodDescription.FormatStructName($"{evt.Name}_evtarg_{i}"), arg.Type, arg.Struct, new List<string>(), false);
+                    eventTop.AddOpeningLine($"public {p.type} {propName} {{ get; set; }}");
+                }
+
+                var decodeMethod = eventObj.AddChild();
+                decodeMethod.AddOpeningLine($"public static {className} Decode(byte[] log)");
+                decodeMethod.AddOpeningLine("{");
+                decodeMethod.AddClosingLine("}");
+                var decodeBody = decodeMethod.AddChild();
+                decodeBody.AddOpeningLine("if (!Matches(log)) throw new Exception(\"Log does not match event selector\");");
+                decodeBody.AddOpeningLine($"var ret = new {className}();");
+                decodeBody.AddOpeningLine("var eventData = log.Skip(4).ToArray();");
+
+                if (args.Count > 0)
+                {
+                    // Events are ARC4-tuple-encoded (selector + head/tail-encoded arg list), the same shape as a
+                    // struct's fields, so each arg is decoded using the same convention as defineStructs's field
+                    // decode: static args are consumed directly off the queue, dynamic ones (string, nested
+                    // struct) are read as a 2-byte offset into eventData.
+                    decodeBody.AddOpeningLine("var queue = new Queue<byte>(eventData);");
+                    decodeBody.AddOpeningLine("uint count = 0;");
+                    for (int i = 0; i < args.Count; i++)
+                    {
+                        var arg = args[i];
+                        string propName = propNames[i];
+                        if (!string.IsNullOrEmpty(arg.Struct))
+                        {
+                            string structType = $"Structs.{MethodDescription.FormatStructName(arg.Struct)}";
+                            string trimmedArgType = arg.Type.Trim();
+                            string arrayComponent = "";
+                            if (trimmedArgType.EndsWith("]"))
+                            {
+                                int arrIdx = trimmedArgType.LastIndexOf('[');
+                                if (arrIdx >= 0) arrayComponent = trimmedArgType.Substring(arrIdx);
+                            }
+
+                            if (string.IsNullOrEmpty(arrayComponent) && !IsFieldTypeDynamic(arg.Struct))
+                            {
+                                // A static synthesized struct arg is inlined directly, matching ARC4's static
+                                // nested-tuple rule (see IsFieldTypeDynamic).
+                                decodeBody.AddOpeningLine($"ret.{propName} = {structType}.Parse(queue.ToArray());");
+                                decodeBody.AddOpeningLine($"{{ var consumed{propName} = ret.{propName}.ToByteArray().Length; for (int i = 0; i < consumed{propName} && queue.Count > 0; i++){{queue.Dequeue();}} }}");
+                            }
+                            else if (string.IsNullOrEmpty(arrayComponent))
+                            {
+                                decodeBody.AddOpeningLine($"var index{propName} = queue.Dequeue() * 256 + queue.Dequeue();");
+                                decodeBody.AddOpeningLine($"ret.{propName} = {structType}.Parse(eventData.Skip(index{propName}).ToArray());");
+                            }
+                            else
+                            {
+                                bool isFixedLength = arrayComponent.Length > 2;
+                                string fixedLength = isFixedLength ? arrayComponent.TrimStart('[').TrimEnd(']') : "0";
+                                decodeBody.AddOpeningLine($"var index{propName} = queue.Dequeue() * 256 + queue.Dequeue();");
+                                decodeBody.AddOpeningLine($"var arr{propName} = new AVM.ClientGenerator.ABI.ARC4.Types.StructArray<{structType}>(x => {structType}.Parse(x)) {{ IsFixedLength = {(isFixedLength ? "true" : "false")}, FixedLength = {fixedLength} }};");
+                                decodeBody.AddOpeningLine($"arr{propName}.Decode(eventData.Skip(index{propName}).ToArray());");
+                                decodeBody.AddOpeningLine($"ret.{propName} = arr{propName}.Value.ToArray();");
+                            }
+                        }
+                        else if (arg.Type.Trim().ToLowerInvariant() == "string")
+                        {
+                            decodeBody.AddOpeningLine($"var index{propName} = queue.Dequeue() * 256 + queue.Dequeue();");
+                            decodeBody.AddOpeningLine($"AVM.ClientGenerator.ABI.ARC4.Types.WireType v{propName} = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription(\"{arg.Type}\");");
+                            decodeBody.AddOpeningLine($"v{propName}.Decode(eventData.Skip(index{propName}).ToArray());");
+                            decodeBody.AddOpeningLine($"var value{propName} = v{propName}.ToValue();");
+                            decodeBody.AddOpeningLine($"if (value{propName} is string v{propName}Value) {{ ret.{propName} = v{propName}Value; }}");
+                        }
+                        else
+                        {
+                            var p = TypeHelpers.ABITypeToCSType(arg.Type, arg.Type, new List<string>(), false);
+                            decodeBody.AddOpeningLine($"AVM.ClientGenerator.ABI.ARC4.Types.WireType v{propName} = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription(\"{arg.Type}\");");
+                            decodeBody.AddOpeningLine($"count = v{propName}.Decode(queue.ToArray());");
+                            decodeBody.AddOpeningLine($"for (int i = 0; i < Convert.ToInt32(count); i++){{queue.Dequeue();}}");
+                            decodeBody.AddOpeningLine($"var value{propName} = v{propName}.ToValue();");
+                            decodeBody.AddOpeningLine($"if (value{propName} is {p.dotnetArgInputType} v{propName}Value){{ret.{propName} = v{propName}Value;}}");
+                        }
+                    }
+                }
+                decodeBody.AddOpeningLine("return ret;");
+            }
+        }
+
         private void defineMethods(Code proxyBody, List<string> structs)
         {
             if (!this.Contract.Methods.Any(m => m.Name.ToLower() == "createapplication"))
@@ -359,7 +688,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 }
 
 
-                var t = TypeHelpers.GetCSType(Contract.Name + "return", returnType.Type, returnType.Struct, structs, false);
+                var t = TypeHelpers.GetCSType(MethodDescription.FormatStructName(methodName + "Return"), returnType.Type, returnType.Struct, structs, false);
                 string methodReturnType;
                 if (t.type != "void")
                 {
@@ -441,9 +770,19 @@ $@"///<summary>
 
                 if (t.type != "void")
                 {
-                    if (t.type == $"Structs.{MethodDescription.FormatStructName(returnType.Struct)}")
+                    string scalarStructType = !string.IsNullOrEmpty(returnType.Struct) ? $"Structs.{MethodDescription.FormatStructName(returnType.Struct)}" : null;
+                    if (scalarStructType != null && t.type == scalarStructType)
                     {
                         abiMethodBody.AddOpeningLine($"return {t.type}.Parse(result.Last());");
+                    }
+                    else if (scalarStructType != null && t.type == scalarStructType + "[]")
+                    {
+                        abiMethodBody.AddOpeningLine("var lastLogBytes = result.Last();");
+                        abiMethodBody.AddOpeningLine("if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception(\"Invalid ABI handle\");");
+                        abiMethodBody.AddOpeningLine("var lastLogReturnData = lastLogBytes.Skip(4).ToArray();");
+                        abiMethodBody.AddOpeningLine($"var returnValueObj = new {t.abiType};");
+                        abiMethodBody.AddOpeningLine("returnValueObj.Decode(lastLogReturnData);");
+                        abiMethodBody.AddOpeningLine("return returnValueObj.Value.ToArray();");
                     }
                     else
                     if (ProxyGenerator.returnTypeConversions.TryGetValue(t.type, out string retline))
