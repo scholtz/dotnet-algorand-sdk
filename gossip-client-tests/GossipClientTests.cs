@@ -20,7 +20,7 @@ namespace gossip_client_tests
                 new Algorand.Gossip.GossipWebsocketClientConfiguration
                 {
                     //Host = "ws://a-m7.algorand-mainnet.network:4160/v1/mainnet-v1.0/gossip"
-                    Host = "ws://r-t5.algorand-mainnet.network:4160/v1/mainnet-v1.0/gossip"
+                    Host = "ws://r-a0.algorand-mainnet.network:4160/v1/mainnet-v1.0/gossip"
                 });
             var transactions = new List<SignedTransaction>();
             client.TransactionReceivedEvent += (sender, tx) =>
