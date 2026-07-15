@@ -15,6 +15,69 @@ namespace test
     public class ArcWireTypeTests
     {
         [Test]
+        public void String_IsDynamic_IsAlwaysTrue()
+        {
+            // ARC4 "string" is always dynamic regardless of content, unlike VariableArray<T>.IsDynamic's default
+            // (element-dynamism-based) computation, which for Byte elements (always static) would incorrectly
+            // report false. Getting this wrong breaks any Tuple/array that nests a String, since Tuple.Encode()
+            // decides between inlining (static) and offset/tail-addressing (dynamic) based on this flag.
+            var s = new String();
+            s.From("hi");
+            Assert.That(s.IsDynamic, Is.True);
+
+            var empty = new String();
+            empty.From("");
+            Assert.That(empty.IsDynamic, Is.True);
+        }
+
+        [Test]
+        public void VariableArray_StringArray_RoundTrips()
+        {
+            var abi = new VariableArray<String>();
+            abi.From(new[] { "Hello", "world" });
+
+            var encoded = abi.Encode();
+
+            var decoded = new VariableArray<String>();
+            decoded.Decode(encoded);
+
+            var values = decoded.Value.Select(v => v.ToString()).ToArray();
+            Assert.That(values, Is.EqualTo(new[] { "Hello", "world" }));
+        }
+
+        [Test]
+        public void Tuple_MixedStaticAndDynamicElements_RoundTrips()
+        {
+            // Regression test for Tuple.Decode(): it used to ignore IsDynamic entirely and decode every element
+            // sequentially/inline, which happened to work for all-static tuples (the only case exercised until
+            // string[] support was added) but corrupts anything with a genuinely dynamic element - the head
+            // holds a 2-byte offset for those, not their inline bytes.
+            var uintEl = new UInt64();
+            uintEl.From(777UL);
+            var strEl = new String();
+            strEl.From("dynamic tail");
+            var boolEl = new Bool();
+            boolEl.From(true);
+
+            var tuple = new Tuple();
+            tuple.Value.AddRange(new WireType[] { uintEl, strEl, boolEl });
+
+            var encoded = tuple.Encode();
+
+            var decodeUint = new UInt64();
+            var decodeStr = new String();
+            var decodeBool = new Bool();
+            var decodeTuple = new Tuple();
+            decodeTuple.Value.AddRange(new WireType[] { decodeUint, decodeStr, decodeBool });
+            var consumed = decodeTuple.Decode(encoded);
+
+            Assert.That((ulong)decodeUint.ToValue(), Is.EqualTo(777UL));
+            Assert.That(decodeStr.ToString(), Is.EqualTo("dynamic tail"));
+            Assert.That((bool)decodeBool.ToValue(), Is.True);
+            Assert.That(consumed, Is.EqualTo((uint)encoded.Length));
+        }
+
+        [Test]
         public void VariableArray_UInt64_FromRawArray_RoundTrips()
         {
             var abi = new VariableArray<UInt64>();

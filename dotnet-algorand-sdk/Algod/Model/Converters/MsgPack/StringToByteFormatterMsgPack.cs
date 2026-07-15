@@ -1,4 +1,4 @@
-﻿using MessagePack;
+using MessagePack;
 using MessagePack.Formatters;
 using Newtonsoft.Json.Linq;
 using System;

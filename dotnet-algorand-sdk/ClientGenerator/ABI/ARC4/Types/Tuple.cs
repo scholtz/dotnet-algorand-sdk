@@ -27,13 +27,19 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
 
         public override uint Decode(byte[] data)
         {
-            uint offset = 0;
+            // `data` is consumed head-first via a sliding window (mirrors the original static-only
+            // implementation); `original` stays fixed at the tuple's own byte range, since dynamic elements are
+            // read from an *absolute* offset into it rather than from the current window position.
+            byte[] original = data;
+            uint headOffset = 0;
             int boolCount = 0;
+            var dynamicItems = new List<(WireType item, ushort offset)>();
+
             foreach (var item in Value)
             {
                 if (item is Bool)
                 {
-                    if (boolCount == 0) offset++;
+                    if (boolCount == 0) headOffset++;
                     byte mask = (byte)(0x80 >> boolCount);
                     boolCount++;
                     (item as Bool).Value = (data[0] & mask) != 0;
@@ -44,26 +50,50 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
 
                     }
                 }
+                else if (item.IsDynamic)
+                {
+                    // Dynamic elements aren't inlined: the head only carries a 2-byte big-endian offset into the
+                    // tuple's own byte range, pointing at where the element's self-contained encoding actually
+                    // starts (its "tail"). Defer decoding it until the head pass finishes.
+                    ushort itemOffset = (ushort)((data[0] << 8) | data[1]);
+                    dynamicItems.Add((item, itemOffset));
+                    data = data.Skip(2).ToArray();
+                    headOffset += 2;
+                }
                 else
                 {
                     uint len = item.Decode(data);
                     data = data.Skip((int)len).ToArray();
-                    offset += len;
+                    headOffset += len;
                 }
 
 
             }
-            return offset;
+
+            uint totalLength = headOffset;
+            foreach (var (item, itemOffset) in dynamicItems)
+            {
+                uint len = item.Decode(original.Skip(itemOffset).ToArray());
+                uint end = itemOffset + len;
+                if (end > totalLength) totalLength = end;
+            }
+
+            return totalLength;
         }
 
         public override byte[] Encode()
         {
             List<byte[]> heads = new List<byte[]>();
             List<byte[]> tails = new List<byte[]>();
+            // Consecutive Bool elements share a single packed head byte (only the first of a run adds a new
+            // heads[] entry), so a plain per-item counter can't index heads[] correctly - track the actual
+            // heads[] slot each item owns instead.
+            List<int> headIndexForItem = new List<int>();
 
 
             int boolCount = 0;
             byte[] boolHead = new byte[1] { 0 };
+            int currentBoolHeadIndex = -1;
             foreach (var item in Value)
             {
                 byte[] encoded = item.Encode();
@@ -73,6 +103,7 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                     {
                         boolHead = encoded;
                         heads.Add(boolHead);
+                        currentBoolHeadIndex = heads.Count - 1;
                         boolCount = 0;
                     }
                     else
@@ -82,6 +113,7 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                     }
                     boolCount++;
                     tails.Add(new byte[] { });
+                    headIndexForItem.Add(currentBoolHeadIndex);
 
                 }
                 else
@@ -99,26 +131,22 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                         heads.Add(encoded);
                         tails.Add(new byte[] { });
                     }
+                    headIndexForItem.Add(heads.Count - 1);
                 }
             }
 
             ushort offset = (ushort)heads.Sum(x => x.Length);
-            int tail = 0;
-            int head = 0;
             //second pass to calculate the offsets
-            foreach (var item in Value)
+            for (int i = 0; i < Value.Count; i++)
             {
+                var item = Value[i];
                 if (item.IsDynamic)
                 {
                     var bytes = BitConverter.GetBytes(offset);
                     if (BitConverter.IsLittleEndian) Array.Reverse(bytes);
-                    Buffer.BlockCopy(bytes, 0, heads[head], 0, 2);
-                    head++;
+                    Buffer.BlockCopy(bytes, 0, heads[headIndexForItem[i]], 0, 2);
                 }
-                offset += (ushort)tails[tail].Length;
-                tail++;
-
-
+                offset += (ushort)tails[i].Length;
             }
 
             //concatenate the heads and tails

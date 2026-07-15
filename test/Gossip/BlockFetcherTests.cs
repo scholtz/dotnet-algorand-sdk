@@ -69,6 +69,13 @@ namespace test.Gossip
             durationMsgPackGossip += watchMsgPackGossip.ElapsedMilliseconds;
             blockMsgPackGossip.Cert = null;
 
+            // ValueDelta.Bytes ("bs") is lossy in algod's own JSON API for non-UTF8 binary values (algod itself
+            // substitutes U+FFFD before the response leaves the server), so it can never match byte-for-byte
+            // against the (lossless) msgpack-decoded value - see BlockComparisonHelpers for details.
+            BlockComparisonHelpers.ClearLossyStateDeltaBytes(blockJson);
+            BlockComparisonHelpers.ClearLossyStateDeltaBytes(blockMsgPack);
+            BlockComparisonHelpers.ClearLossyStateDeltaBytes(blockMsgPackGossip);
+
             var jsonFromJson = Algorand.Utils.Encoder.EncodeToJson(blockJson);
             var jsonFromMsgPack = Algorand.Utils.Encoder.EncodeToJson(blockMsgPack);
             var jsonFromMsgPackGossip = Algorand.Utils.Encoder.EncodeToJson(blockMsgPackGossip);

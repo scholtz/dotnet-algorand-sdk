@@ -603,7 +603,17 @@ namespace test
             bytes = new byte[1018];
             RandomNumberGenerator.Fill(bytes);
             Assert.That(await contractConf.Arc4DynamicBytes(bytes, acct1, 1000), Is.EqualTo(bytes));
-            Assert.That(await contractConf.Bytes(bytes, acct1, 1000), Is.EqualTo(bytes));
+
+            // Unlike arc4DynamicBytes, the "bytes" ARC56 method also emits a matching ARC-28 "bytes" event (see
+            // its `events` entry in AvmTypes.arc56.json), and AVM caps the *total* bytes logged by a single app
+            // call at 1024 (log() opcode budget). A single-arg event's ARC4 tuple-wrapping adds a 2-byte offset
+            // header on top of the dynamic byte[]'s own 2-byte length prefix, so the "bytes" event log alone is
+            // 4 (selector) + 2 (tuple offset) + 2 (length) + N bytes - for N=1018 that's already 1026 bytes,
+            // over budget before the ARC4 return-value log is even appended. Use a smaller payload here so both
+            // logs fit within the 1024-byte total.
+            var smallBytes = new byte[500];
+            RandomNumberGenerator.Fill(smallBytes);
+            Assert.That(await contractConf.Bytes(smallBytes, acct1, 1000), Is.EqualTo(smallBytes));
 
             bytes = new byte[1020];
             RandomNumberGenerator.Fill(bytes);

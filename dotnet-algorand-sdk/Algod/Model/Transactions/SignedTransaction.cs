@@ -22,8 +22,8 @@ namespace Algorand.Algod.Model.Transactions
         [MessagePack.Key("at")]
         public ulong DeltaAction { get; set; }
         [Newtonsoft.Json.JsonProperty("bs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Algorand.Algod.Model.Converters.Json.ValueDeltaBytesConverterJson))]
         [MessagePack.Key("bs")]
-        //[MessagePackFormatter(typeof(StringToByteFormatterMsgPack))]
         public string? Bytes { get; set; }
         [Newtonsoft.Json.JsonProperty("ui", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("ui")]

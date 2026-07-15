@@ -409,6 +409,12 @@ var round = status.LastRound;
                 durationMsgPack += watchMsgPack.ElapsedMilliseconds;
                 blockMsgPack.Cert = null;
 
+                // ValueDelta.Bytes ("bs") is lossy in algod's own JSON API for non-UTF8 binary values (algod
+                // itself substitutes U+FFFD before the response leaves the server), so it can never match
+                // byte-for-byte against the (lossless) msgpack-decoded value - see BlockComparisonHelpers.
+                BlockComparisonHelpers.ClearLossyStateDeltaBytes(blockJson);
+                BlockComparisonHelpers.ClearLossyStateDeltaBytes(blockMsgPack);
+
                 var jsonFromJson = Algorand.Utils.Encoder.EncodeToJson(blockJson);
                 var jsonFromMsgPack = Algorand.Utils.Encoder.EncodeToJson(blockMsgPack);
                 Assert.That(jsonFromJson, Is.EqualTo(jsonFromMsgPack),$"Block round failed {round}");
