@@ -9,14 +9,19 @@ namespace Algorand.Algod.Model.Converters.Json
     {
         public override ParticipationPublicKey ReadJson(JsonReader reader, Type objectType, ParticipationPublicKey existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            var base64 = (string)reader.Value;
-            var bytes = Convert.FromBase64String(base64);
+            byte[] bytes = reader.Value is byte[] rawBytes ? rawBytes : Convert.FromBase64String((string)reader.Value);
             return new ParticipationPublicKey(bytes);
         }
 
         public override void WriteJson(JsonWriter writer, ParticipationPublicKey value, JsonSerializer serializer)
         {
-            writer.WriteValue(Convert.ToBase64String(value.Bytes));
+            // Pass the raw bytes through rather than pre-encoding to base64: the JSON writer auto-base64-encodes
+            // byte[] for text output, but when this same converter runs under the msgpack writer bridge used for
+            // canonical transaction encoding (Utils.Encoder.EncodeToMsgPackOrdered), pre-encoding to a base64
+            // *string* would emit a msgpack string instead of raw binary - corrupting the bytes that get signed
+            // and causing "signature didn't pass verification" for any transaction carrying this field (e.g.
+            // online key registration's votekey).
+            writer.WriteValue(value.Bytes);
         }
     }
 }

@@ -4791,6 +4791,14 @@ namespace Algorand.Algod
                 try
                 {
                     var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
+                    // A handful of algod endpoints (e.g. /health, /ready, /metrics) are typed as returning a
+                    // plain string but actually respond 200 with an empty (or literal "null") body on success -
+                    // that's a valid "no content" success, not a deserialization failure, so callers shouldn't
+                    // see it as Object == null (which every generated method treats as an error).
+                    if (typedBody == null && typeof(T) == typeof(string))
+                    {
+                        typedBody = (T)(object)string.Empty;
+                    }
                     return new ObjectResponseResult<T>(typedBody, responseText);
                 }
                 catch (Newtonsoft.Json.JsonException exception)
@@ -4825,6 +4833,12 @@ namespace Algorand.Algod
                         {
                             var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
                             var typedBody = serializer.Deserialize<T>(jsonTextReader);
+                            // See the ReadResponseAsString branch above: a null body for a string-typed endpoint
+                            // (e.g. /health, /ready, /metrics) is a valid empty-body success, not an error.
+                            if (typedBody == null && typeof(T) == typeof(string))
+                            {
+                                typedBody = (T)(object)string.Empty;
+                            }
                             return new ObjectResponseResult<T>(typedBody, string.Empty);
                         }
                     }
