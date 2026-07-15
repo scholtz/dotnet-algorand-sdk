@@ -80,6 +80,19 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                 Value.AddRange(stringA.Select(s => { var t = new T(); t.From(s); return t; }));
                 return true;
             }
+            // Generic fallback: any other enumerable of raw CLR values (e.g. ulong[], bool[], uint[]) - convert
+            // each element through a fresh T's own From(), which already knows how to accept that element's type.
+            if (instance is System.Collections.IEnumerable enumerable)
+            {
+                Value.Clear();
+                foreach (var item in enumerable)
+                {
+                    var t = new T();
+                    t.From(item);
+                    Value.Add(t);
+                }
+                return true;
+            }
             throw new NotImplementedException();
         }
         public override object ToValue()

@@ -2353,14 +2353,13 @@ namespace AVMTypes
         ///
         ///</summary>
         /// <param name="data"> </param>
-        public async Task<Algorand.Address> Account(Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<Algorand.Address> Account(Algorand.Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
             _tx_assets ??= new List<ulong>();
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
-            _tx_accounts.AddRange(new List<Address> { data });
             byte[] abiHandle = { 82, 186, 237, 146 };
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); dataAbi.From(data);
 
@@ -2374,14 +2373,13 @@ namespace AVMTypes
 
         }
 
-        public async Task<List<Transaction>> Account_Transactions(Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> Account_Transactions(Algorand.Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
             _tx_assets ??= new List<ulong>();
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
-            _tx_accounts.AddRange(new List<Address> { data });
             byte[] abiHandle = { 82, 186, 237, 146 };
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); dataAbi.From(data);
 
@@ -2469,17 +2467,20 @@ namespace AVMTypes
         ///
         ///</summary>
         /// <param name="data"> </param>
-        public async Task<Algorand.Address> AccountIndexed(Algorand.Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<Algorand.Address> AccountIndexed(Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
             _tx_assets ??= new List<ulong>();
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
+            int _acctRefBase = _tx_accounts.Count;
+            _tx_accounts.AddRange(new List<Address> { data });
+            byte dataRefIndex = (byte)(_acctRefBase + 0 + 1);
             byte[] abiHandle = { 212, 157, 28, 93 };
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); dataAbi.From(data);
 
-            var result = await base.CallApp(new List<object> { abiHandle, dataAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var result = await base.CallApp(new List<object> { abiHandle, dataRefIndex }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
             var lastLogBytes = result.Last();
             if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
             var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
@@ -2489,17 +2490,20 @@ namespace AVMTypes
 
         }
 
-        public async Task<List<Transaction>> AccountIndexed_Transactions(Algorand.Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> AccountIndexed_Transactions(Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
             _tx_assets ??= new List<ulong>();
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
+            int _acctRefBase = _tx_accounts.Count;
+            _tx_accounts.AddRange(new List<Address> { data });
+            byte dataRefIndex = (byte)(_acctRefBase + 0 + 1);
             byte[] abiHandle = { 212, 157, 28, 93 };
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); dataAbi.From(data);
 
-            return await base.MakeTransactionList(new List<object> { abiHandle, dataAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            return await base.MakeTransactionList(new List<object> { abiHandle, dataRefIndex }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -2514,11 +2518,13 @@ namespace AVMTypes
             _tx_assets ??= new List<ulong>();
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
+            int _assetRefBase = _tx_assets.Count;
             _tx_assets.AddRange(new List<ulong> { data });
+            byte dataRefIndex = (byte)(_assetRefBase + 0);
             byte[] abiHandle = { 208, 12, 86, 175 };
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Asset(); dataAbi.From(data);
 
-            var result = await base.CallApp(new List<object> { abiHandle, dataAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var result = await base.CallApp(new List<object> { abiHandle, dataRefIndex }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
             var lastLogBytes = result.Last();
             if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
             var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
@@ -2535,11 +2541,13 @@ namespace AVMTypes
             _tx_assets ??= new List<ulong>();
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
+            int _assetRefBase = _tx_assets.Count;
             _tx_assets.AddRange(new List<ulong> { data });
+            byte dataRefIndex = (byte)(_assetRefBase + 0);
             byte[] abiHandle = { 208, 12, 86, 175 };
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Asset(); dataAbi.From(data);
 
-            return await base.MakeTransactionList(new List<object> { abiHandle, dataAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            return await base.MakeTransactionList(new List<object> { abiHandle, dataRefIndex }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -2554,11 +2562,13 @@ namespace AVMTypes
             _tx_assets ??= new List<ulong>();
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
+            int _appRefBase = _tx_apps.Count;
             _tx_apps.AddRange(new List<ulong> { data });
+            byte dataRefIndex = (byte)(_appRefBase + 0);
             byte[] abiHandle = { 3, 149, 208, 158 };
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Application(); dataAbi.From(data);
 
-            var result = await base.CallApp(new List<object> { abiHandle, dataAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            var result = await base.CallApp(new List<object> { abiHandle, dataRefIndex }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
             var lastLogBytes = result.Last();
             if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
             var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
@@ -2575,11 +2585,13 @@ namespace AVMTypes
             _tx_assets ??= new List<ulong>();
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
+            int _appRefBase = _tx_apps.Count;
             _tx_apps.AddRange(new List<ulong> { data });
+            byte dataRefIndex = (byte)(_appRefBase + 0);
             byte[] abiHandle = { 3, 149, 208, 158 };
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Application(); dataAbi.From(data);
 
-            return await base.MakeTransactionList(new List<object> { abiHandle, dataAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
+            return await base.MakeTransactionList(new List<object> { abiHandle, dataRefIndex }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
 
         }
 
@@ -2739,14 +2751,13 @@ namespace AVMTypes
         ///
         ///</summary>
         /// <param name="data"> </param>
-        public async Task<Algorand.Address> Arc4Address(Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<Algorand.Address> Arc4Address(Algorand.Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
             _tx_assets ??= new List<ulong>();
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
-            _tx_accounts.AddRange(new List<Address> { data });
             byte[] abiHandle = { 100, 224, 8, 240 };
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); dataAbi.From(data);
 
@@ -2760,14 +2771,13 @@ namespace AVMTypes
 
         }
 
-        public async Task<List<Transaction>> Arc4Address_Transactions(Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
+        public async Task<List<Transaction>> Arc4Address_Transactions(Algorand.Address data, Account _tx_sender, ulong? _tx_fee, string _tx_note = "", ulong _tx_roundValidity = 1000, List<BoxRef>? _tx_boxes = null, List<Transaction>? _tx_transactions = null, List<ulong>? _tx_assets = null, List<ulong>? _tx_apps = null, List<Address>? _tx_accounts = null, AVM.ClientGenerator.Core.OnCompleteType _tx_callType = AVM.ClientGenerator.Core.OnCompleteType.NoOp)
         {
             _tx_boxes ??= new List<BoxRef>();
             _tx_transactions ??= new List<Transaction>();
             _tx_assets ??= new List<ulong>();
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
-            _tx_accounts.AddRange(new List<Address> { data });
             byte[] abiHandle = { 100, 224, 8, 240 };
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.Address(); dataAbi.From(data);
 
@@ -3447,7 +3457,12 @@ namespace AVMTypes
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.UInt64>(); dataAbi.From(data);
 
             var result = await base.CallApp(new List<object> { abiHandle, dataAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.UInt64>();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj.Value.Select(v => (ulong)v.ToValue()).ToArray();
 
         }
 
@@ -3480,7 +3495,12 @@ namespace AVMTypes
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Bool>(); dataAbi.From(data);
 
             var result = await base.CallApp(new List<object> { abiHandle, dataAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Bool>();
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj.Value.Select(v => (bool)v.ToValue()).ToArray();
 
         }
 
@@ -3613,7 +3633,12 @@ namespace AVMTypes
             var dataAbi = new AVM.ClientGenerator.ABI.ARC4.Types.FixedArray<AVM.ClientGenerator.ABI.ARC4.Types.UInt64>(3); dataAbi.From(data);
 
             var result = await base.CallApp(new List<object> { abiHandle, dataAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            throw new Exception("Conversion not implemented"); // <unknown return conversion>
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.FixedArray<AVM.ClientGenerator.ABI.ARC4.Types.UInt64>(3);
+            returnValueObj.Decode(lastLogReturnData);
+            return returnValueObj.Value.Select(v => (ulong)v.ToValue()).ToArray();
 
         }
 

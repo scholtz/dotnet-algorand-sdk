@@ -34,6 +34,8 @@ namespace AVM.ClientGenerator.Clients
             { "byte[]","return returnValueObj.ToByteArray();" },
             { "string","return returnValueObj.ToString();" },
             { "string[]","return returnValueObj.ToStringArray();" },
+            { "ulong[]","return returnValueObj.Value.Select(v => (ulong)v.ToValue()).ToArray();" },
+            { "bool[]","return returnValueObj.Value.Select(v => (bool)v.ToValue()).ToArray();" },
             { "decimal","return GetDecimalFromBytes(lastLogReturnData);" },
             { typeof(Decimal).Name,"return GetDecimalFromBytes(lastLogReturnData);" },
             { "AVM.ClientGenerator.ABI.ARC4.Types.UInt512", "return returnValueObj;" },

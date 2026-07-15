@@ -128,18 +128,20 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
 
         public override bool From(object instance)
         {
-            Value.Clear();
             if (instance is List<object> listV)
             {
+                Value.Clear();
                 foreach (var item in listV)
                 {
                     var wiretype = WireType.FromABIDescription(TypeHelpers.CSTypeToAbiType(instance.GetType()));
                     wiretype.From(item);
                     Value.Add(wiretype);
                 }
+                return true;
             }
             if (instance is byte[] bytes)
             {
+                Value.Clear();
                 foreach (var item in bytes)
                 {
                     var wiretype = WireType.FromABIDescription(TypeHelpers.CSTypeToAbiType(item.GetType()));
@@ -150,6 +152,40 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                     wiretype.From(item);
                     Value.Add(wiretype);
                 }
+                return true;
+            }
+            // Any other enumerable of raw CLR values (e.g. ulong[], bool[] passed to a FixedArray<T>, whose
+            // constructor already pre-sizes Value with one T per slot). If Value is already sized, fill each
+            // existing slot positionally so the correct concrete WireType per element is preserved; otherwise
+            // build it up fresh, inferring each element's WireType from its CLR type.
+            if (instance is System.Collections.IEnumerable enumerable)
+            {
+                var items = enumerable.Cast<object>().ToList();
+                if (Value.Count > 0)
+                {
+                    if (items.Count != Value.Count)
+                    {
+                        throw new ArgumentException($"Expected {Value.Count} elements but got {items.Count}.");
+                    }
+                    for (int i = 0; i < items.Count; i++)
+                    {
+                        Value[i].From(items[i]);
+                    }
+                }
+                else
+                {
+                    foreach (var item in items)
+                    {
+                        var wiretype = WireType.FromABIDescription(TypeHelpers.CSTypeToAbiType(item.GetType()));
+                        if (wiretype == null)
+                        {
+                            throw new Exception($"Unable to determine wiretype of {item.GetType()}");
+                        }
+                        wiretype.From(item);
+                        Value.Add(wiretype);
+                    }
+                }
+                return true;
             }
             return true;
         }

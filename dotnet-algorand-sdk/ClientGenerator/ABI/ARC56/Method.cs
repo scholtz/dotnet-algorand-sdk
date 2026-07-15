@@ -110,7 +110,10 @@ namespace AVM.ClientGenerator.ABI.ARC56
 
         internal bool IsAccountRef()
         {
-            return Type == "address";
+            // The ARC4 foreign-reference type is literally "account" (a 1-byte index into Txn.Accounts[]),
+            // distinct from the plain "address" value type (32 raw bytes) - conflating the two here would
+            // misencode any method that takes a plain address value (see AVMTypes' account(address)address).
+            return Type == "account";
         }
 
         internal bool IsApplicationRef()

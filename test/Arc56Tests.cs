@@ -868,5 +868,205 @@ namespace test
             };
             Assert.That(await contract.InnerStruct(innerStruct, acct1, 1000), Is.EqualTo(innerStruct));
         }
+
+        private async Task<(AVMTypes.AvmTypesProxy contract, Account acct, DefaultApi algodApiInstance)> CreateAvmTypesContractWithApi()
+        {
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+            Account acct1 = await GetAccount();
+
+            var contract = new AVMTypes.AvmTypesProxy(algodApiInstance, 0);
+            await contract.CreateApplication(acct1, 1000, "", _tx_callType: AVM.ClientGenerator.Core.OnCompleteType.CreateApplication);
+            return (contract, acct1, algodApiInstance);
+        }
+
+        private async Task<ulong> CreateTestAsset(DefaultApi algodApiInstance, Account acct1)
+        {
+            var transParams = await algodApiInstance.TransactionParamsAsync();
+            var assetCreate = new AssetCreateTransaction
+            {
+                Sender = acct1.Address,
+                AssetParams = new Algorand.Algod.Model.AssetParams { Total = 1000, Decimals = 0, UnitName = "TST", Name = "Test Asset", DefaultFrozen = false }
+            };
+            assetCreate.FillInParams(transParams);
+            var signed = assetCreate.Sign(acct1);
+            await Utils.SubmitTransaction(algodApiInstance, signed);
+            var confirmed = await Utils.WaitTransactionToComplete(algodApiInstance, assetCreate.TxID()) as AssetCreateTransaction;
+            return confirmed?.AssetIndex ?? throw new Exception("Asset index missing after creation");
+        }
+
+        [Test]
+        public async Task AVMTypes_StringReadonly()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            Assert.That(await contract.StringReadonly("readonly", acct1, 1000), Is.EqualTo("readonly"));
+        }
+
+        [Test]
+        public async Task AVMTypes_Biguint()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            var value = new AVM.ClientGenerator.ABI.ARC4.Types.UInt512(BigInteger.Parse("123456789012345678901234567890"));
+            Assert.That(await contract.Biguint(value, acct1, 1000), Is.EqualTo(value));
+        }
+
+        [Test]
+        public async Task AVMTypes_Struct()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            var data = new StructAddressUint256() { Address = acct1.Address, Uint256 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256(7) };
+            Assert.That(await contract.Struct(data, acct1, 1000), Is.EqualTo(data));
+        }
+
+        [Test]
+        public async Task AVMTypes_Uint64()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            Assert.That(await contract.Uint64(0, acct1, 1000), Is.EqualTo(0UL));
+            Assert.That(await contract.Uint64(18446744073709551615UL, acct1, 1000), Is.EqualTo(18446744073709551615UL));
+        }
+
+        [Test]
+        public async Task AVMTypes_Uint64Array()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            var data = new ulong[] { 1, 2, 3, ulong.MaxValue };
+            Assert.That(await contract.Uint64Array(data, acct1, 1000), Is.EqualTo(data));
+        }
+
+        [Test]
+        public async Task AVMTypes_BooleanArray()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            var data = new bool[] { true, false, true };
+            Assert.That(await contract.BooleanArray(data, acct1, 1000), Is.EqualTo(data));
+        }
+
+        [Test]
+        public async Task AVMTypes_Arc4Str()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            Assert.That(await contract.Arc4Str("arc4 string", acct1, 1000), Is.EqualTo("arc4 string"));
+        }
+
+        [Test]
+        public async Task AVMTypes_FixedArrayUint64()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            var data = new ulong[] { 10, 20, 30 };
+            Assert.That(await contract.FixedArrayUint64(data, acct1, 1000), Is.EqualTo(data));
+        }
+
+        [Test]
+        public async Task AVMTypes_Account()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            Assert.That(await contract.Account(acct1.Address, acct1, 1000), Is.EqualTo(acct1.Address));
+        }
+
+        [Test]
+        public async Task AVMTypes_Asset()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            Assert.That(await contract.Asset(12345UL, acct1, 1000), Is.EqualTo(12345UL));
+        }
+
+        [Test]
+        public async Task AVMTypes_Application()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            Assert.That(await contract.Application(contract.appId, acct1, 1000), Is.EqualTo(contract.appId));
+        }
+
+        [Test]
+        public async Task AVMTypes_AccountIndexed()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            Assert.That(await contract.AccountIndexed(acct1.Address, acct1, 1000), Is.EqualTo(acct1.Address));
+        }
+
+        [Test]
+        public async Task AVMTypes_AssetIndexed()
+        {
+            var (contract, acct1, algodApiInstance) = await CreateAvmTypesContractWithApi();
+            var assetId = await CreateTestAsset(algodApiInstance, acct1);
+            Assert.That(await contract.AssetIndexed(assetId, acct1, 1000, _tx_assets: new List<ulong> { assetId }), Is.EqualTo(assetId));
+        }
+
+        [Test]
+        public async Task AVMTypes_ApplicationIndexed()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            Assert.That(await contract.ApplicationIndexed(contract.appId, acct1, 1000, _tx_apps: new List<ulong> { contract.appId }), Is.EqualTo(contract.appId));
+        }
+
+        [Test]
+        public async Task AVMTypes_PaymentTxn()
+        {
+            var (contract, acct1, algodApiInstance) = await CreateAvmTypesContractWithApi();
+            var transParams = await algodApiInstance.TransactionParamsAsync();
+            var payment = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct1.Address, acct1.Address, 0, "", transParams);
+
+            var result = await contract.PaymentTxn(payment, acct1, 1000);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Length, Is.EqualTo(32));
+        }
+
+        [Test]
+        public async Task AVMTypes_Transaction()
+        {
+            var (contract, acct1, algodApiInstance) = await CreateAvmTypesContractWithApi();
+            var transParams = await algodApiInstance.TransactionParamsAsync();
+            var payment = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct1.Address, acct1.Address, 0, "", transParams);
+
+            var result = await contract.Transaction(payment, acct1, 1000);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Length, Is.EqualTo(32));
+        }
+
+        [Test]
+        public async Task AVMTypes_ApplicationCallTxn()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            var innerTxns = await contract.Boolean_Transactions(true, acct1, 1000);
+            var innerAppCall = innerTxns[0] as ApplicationCallTransaction;
+            Assert.That(innerAppCall, Is.Not.Null);
+
+            var result = await contract.ApplicationCallTxn(innerAppCall, acct1, 1000);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Length, Is.EqualTo(32));
+        }
+
+        [Test]
+        public async Task AVMTypes_AssetTransferTxn()
+        {
+            var (contract, acct1, algodApiInstance) = await CreateAvmTypesContractWithApi();
+            var assetId = await CreateTestAsset(algodApiInstance, acct1);
+
+            var axfer = new AssetTransferTransaction()
+            {
+                Sender = acct1.Address,
+                AssetReceiver = acct1.Address,
+                XferAsset = assetId,
+                AssetAmount = 0
+            };
+
+            var result = await contract.AssetTransferTxn(axfer, acct1, 1000, _tx_assets: new List<ulong> { assetId });
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Length, Is.EqualTo(32));
+        }
+
+        [Test]
+        public async Task AVMTypes_KeyRegistrationTxn()
+        {
+            var (contract, acct1) = await CreateAvmTypesContract();
+            var keyReg = new KeyRegisterOfflineTransaction() { Sender = acct1.Address };
+
+            var result = await contract.KeyRegistrationTxn(keyReg, acct1, 1000);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Length, Is.EqualTo(32));
+        }
     }
 }
