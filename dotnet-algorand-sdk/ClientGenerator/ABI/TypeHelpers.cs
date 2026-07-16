@@ -156,6 +156,21 @@ namespace AVM.ClientGenerator.ABI
 
                 string arrayComponent = methodABITypeString.Replace(methodABIType, "");
 
+                // methodABIType still ends in "]" for a multi-dimensional ABI array (e.g. "byte[][]", the ARC4
+                // dynamic-array-of-dynamic-byte-arrays type), since removeArrayComponent only strips one level.
+                // Recurse on the element type (one array level down) and wrap it in another array level, rather
+                // than falling through to the "unknown type -> nested struct" default below, which would emit a
+                // reference to a Structs.* type that was never actually defined.
+                if (methodABIType.EndsWith("]"))
+                {
+                    var inner = ABITypeToCSType(parentStructName, methodABIType, structs, isReturn);
+                    string csType = checkArrayType(arrayComponent, inner.dotnetArgInputType);
+                    int callParenIndex = inner.dotnetABIType.IndexOf('(');
+                    string innerWireTypeName = callParenIndex >= 0 ? inner.dotnetABIType.Substring(0, callParenIndex) : inner.dotnetABIType;
+                    string abiType = checkAbiArrayType(arrayComponent, innerWireTypeName);
+                    return (inner.bitwidthDecorator, csType, abiType, false);
+                }
+
                 if (methodABIType.StartsWith("uint"))
                 {
                     int bitwidth = Int32.Parse(methodABIType.Remove(0, 4));

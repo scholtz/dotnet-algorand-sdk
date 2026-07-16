@@ -522,9 +522,22 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             eventsObj.AddOpeningLine("{");
             eventsObj.AddClosingLine("}");
 
+            // ARC-28 allows overloaded events - multiple entries sharing the same name but distinguished by their
+            // arg types/selector (e.g. ARC-1400's "Issue" and "Redeem" events are each declared twice). Generating
+            // one class per entry under the same FormatStructName(evt.Name + "Event") would collide, so append a
+            // numeric suffix to any name reused by a later overload.
+            var usedEventClassNames = new HashSet<string>();
+
             foreach (var evt in Contract.Events)
             {
                 string className = MethodDescription.FormatStructName(evt.Name + "Event");
+                string baseClassName = className;
+                int classNameSuffix = 2;
+                while (!usedEventClassNames.Add(className))
+                {
+                    className = baseClassName + classNameSuffix;
+                    classNameSuffix++;
+                }
                 string signature = $"{evt.Name}({string.Join(",", evt.Args?.Select(a => a.Type) ?? Enumerable.Empty<string>())})";
                 byte[] selector = MethodDescription.ToARC4MethodSelector(signature);
 
@@ -705,7 +718,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                     var type = TypeHelpers.GetCSType(arg.Name, arg.Type, arg.Struct, structs, false);
                     if (type.abiType.StartsWith("AVM.") && !type.abiType.StartsWith(type.type))
                     {
-                        prependArgs += $"var {arg.Name}Abi = new {type.abiType};{arg.Name}Abi.From({arg.Name});\n";
+                        prependArgs += $"var {arg.Name}Abi = new {type.abiType};{arg.Name}Abi.From({MethodDescription.SafeIdentifier(arg.Name)});\n";
                         convertedToAbi.Add(arg.Name);
                     }
                 }
@@ -716,7 +729,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                     // populated below), and the ABI arg itself is just a 1-byte index into that array (accounts are
                     // 1-based, since index 0 implicitly means the sender; assets/apps are 0-based). See EmitRefIndexAssignments.
                     if (p.IsAccountRef() || p.IsAssetRef() || p.IsApplicationRef()) return p.Name + "RefIndex";
-                    return convertedToAbi.Contains(p.Name) ? p.Name + "Abi" : p.Name;
+                    return convertedToAbi.Contains(p.Name) ? p.Name + "Abi" : MethodDescription.SafeIdentifier(p.Name);
                 }))) + "}";
                 if (method.Description == "Constructor Bare Action")
                 {
@@ -775,7 +788,7 @@ $@"///<summary>
 
                 if (transactionParameters.Count > 0)
                 {
-                    abiMethodBody.AddOpeningLine("_tx_transactions.AddRange(new List<Transaction> {" + string.Join(",", transactionParameters.Select(p => p.Name)) + "});");
+                    abiMethodBody.AddOpeningLine("_tx_transactions.AddRange(new List<Transaction> {" + string.Join(",", transactionParameters.Select(p => MethodDescription.SafeIdentifier(p.Name))) + "});");
                 }
 
                 EmitRefIndexAssignments(abiMethodBody, appRefParameters, assetRefParameters, acctRefParameters);
@@ -834,7 +847,7 @@ $@"///<summary>
 
                 if (transactionParameters.Count > 0)
                 {
-                    abiMethodBodyForTransactions.AddOpeningLine("_tx_transactions.AddRange(new List<Transaction> {" + string.Join(",", transactionParameters.Select(p => p.Name)) + "});");
+                    abiMethodBodyForTransactions.AddOpeningLine("_tx_transactions.AddRange(new List<Transaction> {" + string.Join(",", transactionParameters.Select(p => MethodDescription.SafeIdentifier(p.Name))) + "});");
                 }
 
                 EmitRefIndexAssignments(abiMethodBodyForTransactions, appRefParameters, assetRefParameters, acctRefParameters);
@@ -857,7 +870,7 @@ $@"///<summary>
             if (appRefParameters.Count > 0)
             {
                 body.AddOpeningLine("int _appRefBase = _tx_apps.Count;");
-                body.AddOpeningLine("_tx_apps.AddRange(new List<ulong> {" + string.Join(",", appRefParameters.Select(p => p.Name)) + "});");
+                body.AddOpeningLine("_tx_apps.AddRange(new List<ulong> {" + string.Join(",", appRefParameters.Select(p => MethodDescription.SafeIdentifier(p.Name))) + "});");
                 for (int i = 0; i < appRefParameters.Count; i++)
                 {
                     body.AddOpeningLine($"byte {appRefParameters[i].Name}RefIndex = (byte)(_appRefBase + {i});");
@@ -867,7 +880,7 @@ $@"///<summary>
             if (assetRefParameters.Count > 0)
             {
                 body.AddOpeningLine("int _assetRefBase = _tx_assets.Count;");
-                body.AddOpeningLine("_tx_assets.AddRange(new List<ulong> {" + string.Join(",", assetRefParameters.Select(p => p.Name)) + "});");
+                body.AddOpeningLine("_tx_assets.AddRange(new List<ulong> {" + string.Join(",", assetRefParameters.Select(p => MethodDescription.SafeIdentifier(p.Name))) + "});");
                 for (int i = 0; i < assetRefParameters.Count; i++)
                 {
                     body.AddOpeningLine($"byte {assetRefParameters[i].Name}RefIndex = (byte)(_assetRefBase + {i});");
@@ -877,7 +890,7 @@ $@"///<summary>
             if (acctRefParameters.Count > 0)
             {
                 body.AddOpeningLine("int _acctRefBase = _tx_accounts.Count;");
-                body.AddOpeningLine("_tx_accounts.AddRange(new List<Address> {" + string.Join(",", acctRefParameters.Select(p => p.Name)) + "});");
+                body.AddOpeningLine("_tx_accounts.AddRange(new List<Address> {" + string.Join(",", acctRefParameters.Select(p => MethodDescription.SafeIdentifier(p.Name))) + "});");
                 for (int i = 0; i < acctRefParameters.Count; i++)
                 {
                     body.AddOpeningLine($"byte {acctRefParameters[i].Name}RefIndex = (byte)(_acctRefBase + {i} + 1);");
@@ -888,17 +901,17 @@ $@"///<summary>
         private string defineArgParameter(MethodArgument p, string methodName, List<string> structs)
         {
             var type = TypeHelpers.GetCSType(MethodDescription.FormatStructName(methodName + "_arg_" + p.Name), p.Type, p.Struct, structs, false).type;
-            return $"{type} {p.Name}";
+            return $"{type} {MethodDescription.SafeIdentifier(p.Name)}";
         }
 
         private string defineAssetRefParameter(MethodArgument p)
         {
-            return $"ulong {p.Name}";
+            return $"ulong {MethodDescription.SafeIdentifier(p.Name)}";
         }
 
         private string defineAcctRefParameter(MethodArgument p)
         {
-            return $"Address {p.Name}";
+            return $"Address {MethodDescription.SafeIdentifier(p.Name)}";
         }
 
         private string defineTransactionParameter(MethodArgument p)
@@ -906,13 +919,13 @@ $@"///<summary>
             string parmType = p.Type.ToString();
             if (!string.IsNullOrWhiteSpace(p.Struct)) parmType = p.Struct;
             string outputParmType = TypeHelpers.determineTransactionType(parmType);
-            return $"{outputParmType} {p.Name}";
+            return $"{outputParmType} {MethodDescription.SafeIdentifier(p.Name)}";
         }
 
 
         private string defineAppRefParameter(MethodArgument p)
         {
-            return $"ulong {p.Name}";
+            return $"ulong {MethodDescription.SafeIdentifier(p.Name)}";
         }
     }
 }

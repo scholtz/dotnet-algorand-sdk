@@ -18,6 +18,7 @@ using System.Net.Http;
 using System.Net.WebSockets;
 using System.Numerics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,6 +49,7 @@ namespace test
             var appProxy = await generator.ToProxy("XGovRegistry");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("XGovRegistryProxy.cs", appProxy);
+            CompileAndPublishGeneratedClient("XGovRegistryProxy.cs", appProxy);
         }
         [Test]
         public async Task GenerateXgovProposalClient()
@@ -68,6 +70,7 @@ namespace test
             var appProxy = await generator.ToProxy("XGovProposal");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("XGovProposalProxy.cs", appProxy);
+            CompileAndPublishGeneratedClient("XGovProposalProxy.cs", appProxy);
         }
 
 
@@ -90,6 +93,7 @@ namespace test
             var appProxy = await generator.ToProxy("ARC1400");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("ARC1400Proxy.cs", appProxy);
+            CompileAndPublishGeneratedClient("ARC1400Proxy.cs", appProxy);
         }
 
         [Test]
@@ -116,6 +120,7 @@ namespace test
             var assembly = CompileGeneratedClient(appProxy, "AVMTypesGenerated_" + Guid.NewGuid().ToString("N"));
             var proxyType = assembly.GetType("AVMTypes.AvmTypesProxy");
             Assert.That(proxyType, Is.Not.Null, "Could not locate generated AvmTypesProxy type in the compiled assembly");
+            CompileAndPublishGeneratedClient("AVMTypesProxy.cs", appProxy);
 
             // Exercise the freshly compiled client against a running node to prove it actually works
             Account acct1 = await GetAccount();
@@ -161,6 +166,20 @@ namespace test
             return Assembly.Load(ms.ToArray());
         }
 
+        /// <summary>
+        /// Proves that freshly generated ARC56 proxy source is valid, standalone C# by compiling it, then - only
+        /// once compilation succeeds - publishes it into the checked-in test/Generated folder so the proxy is
+        /// compiled as part of every normal test build rather than only when this generator test happens to run.
+        /// </summary>
+        private static void CompileAndPublishGeneratedClient(string fileName, string appProxy, [CallerFilePath] string testFilePath = "")
+        {
+            CompileGeneratedClient(appProxy, Path.GetFileNameWithoutExtension(fileName) + "_" + Guid.NewGuid().ToString("N"));
+
+            var generatedDir = Path.Combine(Path.GetDirectoryName(testFilePath)!, "Generated");
+            Directory.CreateDirectory(generatedDir);
+            File.WriteAllText(Path.Combine(generatedDir, fileName), appProxy);
+        }
+
         [Test]
         public async Task GenerateARC200Client()
         {
@@ -181,6 +200,7 @@ namespace test
             var appProxy = await generator.ToProxy("ARC200");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("ARC200Proxy.cs", appProxy);
+            CompileAndPublishGeneratedClient("ARC200Proxy.cs", appProxy);
         }
         [Test]
         public async Task GenerateClientAmm()
@@ -202,6 +222,7 @@ namespace test
             var appProxy = await generator.ToProxy("BiatecClammPoolArc56");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("Arc56BiatecClammPoolProxy.cs", appProxy);
+            CompileAndPublishGeneratedClient("Arc56BiatecClammPoolProxy.cs", appProxy);
         }
         [Test]
         public async Task GenerateClientPP()
@@ -223,6 +244,7 @@ namespace test
             var appProxy = await generator.ToProxy("BiatecPoolProviderArc56");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("Arc56BiatecPoolProviderProxy.cs", appProxy);
+            CompileAndPublishGeneratedClient("Arc56BiatecPoolProviderProxy.cs", appProxy);
         }
         [Test]
         public async Task GenerateClientConf()
@@ -244,6 +266,7 @@ namespace test
             var appProxy = await generator.ToProxy("BiatecConfigArc56");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("Arc56BiatecConfigProxy.cs", appProxy);
+            CompileAndPublishGeneratedClient("Arc56BiatecConfigProxy.cs", appProxy);
         }
         [Test]
         public async Task GenerateClientBI()
@@ -265,6 +288,7 @@ namespace test
             var appProxy = await generator.ToProxy("BiatecIdentityArc56");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("Arc56BiatecIdentityProxy.cs", appProxy);
+            CompileAndPublishGeneratedClient("Arc56BiatecIdentityProxy.cs", appProxy);
         }
 
         [Test]
@@ -283,6 +307,7 @@ namespace test
             var appProxy = await generator.ToProxy("AVMGasStation.GeneratedClients");
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             File.WriteAllText("GasStationProxy.cs", appProxy);
+            CompileAndPublishGeneratedClient("GasStationProxy.cs", appProxy);
         }
 
         // LocalNet only genesis-funds the accounts in the "unencrypted-default-wallet" wallet;
@@ -462,7 +487,9 @@ namespace test
                     _tx_apps: new List<ulong>() { contractConf.appId }
                     );
                 await contractBI.Bootstrap(
-                    acct1.Address, acct1.Address, acct1.Address,
+                    governor: acct1.Address,
+                    verificationSetter: acct1.Address,
+                    engagementSetter: acct1.Address,
                     _tx_sender: acct1,
                     _tx_fee: 1000,
                     appBiatecConfigProvider: contractConf.appId,

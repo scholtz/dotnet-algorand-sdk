@@ -379,5 +379,17 @@ $@"{"\t\t"}///<summary>
         {
             return name.ToPascalCase();
         }
+
+        /// <summary>
+        /// ARC56 method/event argument names are free-form and may collide with a C# reserved word (e.g. an ABI
+        /// arg literally named "operator", as in ARC-1400's arc1410IsOperator). Since the generator otherwise
+        /// emits arg.Name verbatim as a C# identifier (parameter declarations and in-body references), escape it
+        /// with "@" whenever it is one, matching the C# verbatim-identifier syntax.
+        /// </summary>
+        public static string SafeIdentifier(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return name;
+            return SyntaxFacts.GetKeywordKind(name) != SyntaxKind.None ? "@" + name : name;
+        }
     }
 }
