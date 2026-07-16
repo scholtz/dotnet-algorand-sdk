@@ -28,7 +28,7 @@ namespace Algorand.Algod.Model
     /// <br/></summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.0)")]
     [MessagePack.MessagePackObject]
-    public partial class Account
+    public partial class Account : IDisposable
     {
 
 
@@ -152,6 +152,15 @@ namespace Algorand.Algod.Model
                 return "?Address?";
             }
             return $"{str.Substring(0, 4)}..{str.Substring(str.Length-4)}";
+        }
+
+        /// <summary>
+        /// Best-effort wipe of this account's private key material. See
+        /// <see cref="KeyPair.Dispose"/> for what this can and cannot guarantee.
+        /// </summary>
+        public void Dispose()
+        {
+            KeyPair?.Dispose();
         }
     }
 }

@@ -21,12 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto">
-      <HintPath>..\dotnet-algorand-sdk\Libs\BouncyCastle.Crypto.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Arc56\GasStation.arc56.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

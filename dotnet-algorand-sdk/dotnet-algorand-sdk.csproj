@@ -127,20 +127,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="Libs\BouncyCastle.Crypto.dll">
-			<Pack>true</Pack>
-			<PackagePath>lib\$(TargetFramework)</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
-
-	<ItemGroup>
 		<PackageReference Include="docfx.console" Version="2.59.4">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 			<ExcludeAssets>buildtransitive</ExcludeAssets>
 		</PackageReference>
+		<PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
 		<PackageReference Include="JsonSubTypes" Version="2.0.1" />
 		<PackageReference Include="MessagePack" Version="3.1.8" />
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.5" />
@@ -411,10 +403,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="BouncyCastle.Crypto">
-			<HintPath>Libs\BouncyCastle.Crypto.dll</HintPath>
-			<Private>True</Private>
-		</Reference>
 		<Reference Include="UnityEditor" Condition="'$(Configuration)|$(Platform)'=='Unity|AnyCPU'">
 			<HintPath>Libs\UnityEditor.dll</HintPath>
 		</Reference>

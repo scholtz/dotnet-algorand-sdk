@@ -1,12 +1,14 @@
 using Algorand;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
+using Algorand.Crypto;
 using Algorand.Utils;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Org.BouncyCastle.Crypto.Parameters;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace test
 {
@@ -51,6 +53,26 @@ namespace test
             // verify transaction ID
             string txID = signedTx.Tx.TxID();
             Assert.That(txID, Is.EqualTo(REF_TX_ID));
+        }
+
+        [Test]
+        public void testDisposeWipesPrivateKey()
+        {
+            Account account = new Account();
+            byte[] privateKeyRef = account.KeyPair.ClearTextPrivateKey;
+            Assert.That(privateKeyRef.Any(b => b != 0), Is.True, "sanity check: freshly generated key should not already be all zeros");
+
+            account.Dispose();
+
+            Assert.That(privateKeyRef.All(b => b == 0), Is.True, "private key bytes should be zeroed after Dispose");
+        }
+
+        [Test]
+        public void testKeyPairDisposeIsIdempotent()
+        {
+            KeyPair keyPair = new KeyPair(new Org.BouncyCastle.Security.SecureRandom());
+            keyPair.Dispose();
+            Assert.DoesNotThrow(() => keyPair.Dispose());
         }
 
         //    [Test]
@@ -339,7 +361,7 @@ namespace test
         //        try
         //        {
         //            var signer = new Org.BouncyCastle.Crypto.Signers.Ed25519Signer();
-        //            signer.Init(false, pk); //false´ú±íÓÃÓÚVerifySignature
+        //            signer.Init(false, pk); //falseï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½VerifySignature
         //            signer.BlockUpdate(buf.ToArray(), 0, buf.ToArray().Length);
         //            verified = signer.VerifySignature(sig1.Bytes);
         //        }
