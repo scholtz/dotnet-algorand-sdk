@@ -168,6 +168,26 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                     }
                 }
             }
+
+            // Unlike MethodArgument/EventArgument, StructField has no separate "Struct" annotation - per ARC56 its
+            // Type is either a raw ABI type, a struct name (optionally array-suffixed), or a raw anonymous tuple
+            // (optionally array-suffixed). Rewrite that last case in place to the resolved struct name(+array
+            // suffix), same as arg.Struct above, so defineStructs's "is this a struct field?" check
+            // (WireType.FromABIDescription(structItem.Type) == null) sees a struct name instead of raw tuple text.
+            foreach (var structName in Contract.Structs.Keys.ToList())
+            {
+                var fields = Contract.Structs[structName];
+                for (int i = 0; i < fields.Count; i++)
+                {
+                    var field = fields[i];
+                    if (string.IsNullOrEmpty(field.Type)) continue;
+                    string bare = SplitTrailingArrayComponent(field.Type, out string arrayComponent);
+                    if (Contract.Structs.ContainsKey(bare)) continue; // already a named-struct reference
+
+                    var resolved = ResolveTupleType(field.Type, $"{structName}_{field.Name}", shapeCache);
+                    if (resolved != null) field.Type = resolved + arrayComponent;
+                }
+            }
         }
 
         private static string SplitTrailingArrayComponent(string abiType, out string arrayComponent)
@@ -317,6 +337,30 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             var formattedRoot = Formatter.Format(root, workspace, options);
             return formattedRoot.ToFullString();
         }
+        /// <summary>
+        /// True if fieldType is an array of a named struct (e.g. "SomeStruct[]" or "SomeStruct[5]") - the one
+        /// struct-field shape defineStructs' encode/decode can't handle via the plain "abiDescriptor == null ->
+        /// scalar struct usage" path below, since WireType.FromABIDescription also returns null for it (its
+        /// element isn't a raw ABI type either) but a plain Parse()/ToByteArray() call is a scalar
+        /// StructType.Parse(...), not the StructType[] the property is actually declared as.
+        /// </summary>
+        private bool TryGetStructArrayField(string fieldType, out string structTypeName, out bool isFixedLength, out string fixedLength)
+        {
+            structTypeName = null; isFixedLength = false; fixedLength = "0";
+            string trimmed = (fieldType ?? "").Trim();
+            if (!trimmed.EndsWith("]")) return false;
+            int idx = trimmed.LastIndexOf('[');
+            if (idx < 0) return false;
+            string bare = trimmed.Substring(0, idx);
+            string arrayComponent = trimmed.Substring(idx);
+            if (!Contract.Structs.ContainsKey(bare)) return false;
+
+            structTypeName = $"Structs.{MethodDescription.FormatStructName(bare)}";
+            isFixedLength = arrayComponent.Length > 2;
+            fixedLength = isFixedLength ? arrayComponent.TrimStart('[').TrimEnd(']') : "0";
+            return true;
+        }
+
         private void defineStructs(Code proxyBody)
         {
             var structsObj = proxyBody.AddChild();
@@ -334,6 +378,11 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 foreach (var structItem in item.Value)
                 {
                     var structItemObj = structObj.AddChild();
+                    // By this point ResolveAnonymousTuples has already rewritten any raw-tuple structItem.Type
+                    // (e.g. "(byte[4],uint64)[]") into a named-struct reference, so parentStructName only actually
+                    // matters here for ABITypeToCSType's "unknown type -> reference an existing struct" fallback -
+                    // which reconstructs the struct name from parentStructName, not from methodABIType. Passing
+                    // structItem.Type itself keeps that fallback resolving to the right struct.
                     var p = TypeHelpers.ABITypeToCSType(structItem.Type, structItem.Type, new List<string>(), false);
                     var appendInitiator = p.useNew ? $" = new {p.Item2}();" : "";
                     structItemObj.AddOpeningLine($"public {p.Item2} {structItem.Name.ToPascalCase()} {{get; set;}}{appendInitiator}");
@@ -352,7 +401,22 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 foreach (var structItem in item.Value)
                 {
                     var abiDescriptor = WireType.FromABIDescription(structItem.Type);
-                    if (abiDescriptor == null)
+                    if (TryGetStructArrayField(structItem.Type, out string arrStructType, out bool arrIsFixedLength, out string arrFixedLength))
+                    {
+                        string fieldName = structItem.Name.ToPascalCase();
+                        structF1.AddOpeningLine($"var arr{fieldName} = new AVM.ClientGenerator.ABI.ARC4.Types.StructArray<{arrStructType}>(x => {arrStructType}.Parse(x)) {{ IsFixedLength = {(arrIsFixedLength ? "true" : "false")}, FixedLength = {arrFixedLength} }};");
+                        structF1.AddOpeningLine($"arr{fieldName}.Value = ({fieldName} ?? Array.Empty<{arrStructType}>()).ToList();");
+                        if (IsFieldTypeDynamic(structItem.Type))
+                        {
+                            structF1.AddOpeningLine($"stringRef[ret.Count] = arr{fieldName}.Encode();");
+                            structF1.AddOpeningLine($"ret.AddRange(new byte[2]);");
+                        }
+                        else
+                        {
+                            structF1.AddOpeningLine($"ret.AddRange(arr{fieldName}.Encode());");
+                        }
+                    }
+                    else if (abiDescriptor == null)
                     {
                         // struct usage
                         if (IsFieldTypeDynamic(structItem.Type))
@@ -429,7 +493,26 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 foreach (var structItem in item.Value)
                 {
                     var abiDescriptor = WireType.FromABIDescription(structItem.Type);
-                    if (abiDescriptor == null)
+                    if (TryGetStructArrayField(structItem.Type, out string arrStructType, out bool arrIsFixedLength, out string arrFixedLength))
+                    {
+                        string fieldName = structItem.Name.ToPascalCase();
+                        if (IsFieldTypeDynamic(structItem.Type))
+                        {
+                            structF2.AddOpeningLine($"var index{fieldName} = queue.Dequeue() * 256 + queue.Dequeue();");
+                            structF2.AddOpeningLine($"var arr{fieldName} = new AVM.ClientGenerator.ABI.ARC4.Types.StructArray<{arrStructType}>(x => {arrStructType}.Parse(x)) {{ IsFixedLength = {(arrIsFixedLength ? "true" : "false")}, FixedLength = {arrFixedLength} }};");
+                            structF2.AddOpeningLine($"arr{fieldName}.Decode(bytes.Skip(index{fieldName} + prefixOffset).ToArray());");
+                            structF2.AddOpeningLine($"ret.{fieldName} = arr{fieldName}.Value.ToArray();");
+                        }
+                        else
+                        {
+                            // A static (fixed-length, static-element) struct array is inlined directly, matching
+                            // how ARC4 encodes a static array - no offset/tail indirection.
+                            structF2.AddOpeningLine($"var arr{fieldName} = new AVM.ClientGenerator.ABI.ARC4.Types.StructArray<{arrStructType}>(x => {arrStructType}.Parse(x)) {{ IsFixedLength = {(arrIsFixedLength ? "true" : "false")}, FixedLength = {arrFixedLength} }};");
+                            structF2.AddOpeningLine($"{{ var consumed{fieldName} = (int)arr{fieldName}.Decode(queue.ToArray()); for (int i = 0; i < consumed{fieldName} && queue.Count > 0; i++){{queue.Dequeue();}} }}");
+                            structF2.AddOpeningLine($"ret.{fieldName} = arr{fieldName}.Value.ToArray();");
+                        }
+                    }
+                    else if (abiDescriptor == null)
                     {
                         // struct usage
                         var name = MethodDescription.FormatStructName(structItem.Type, true);
@@ -553,12 +636,19 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
 
                 var args = evt.Args ?? new List<EventArgument>();
                 var propNames = new List<string>();
+                // Keep the per-arg dotnetArgInputType computed here (with a proper, unique struct name) so the
+                // decode body below can reuse it instead of re-deriving it from arg.Type directly - re-deriving it
+                // there passed arg.Type itself as the parentStructName, which for a tuple/array event arg (e.g.
+                // "(byte[4],uint64)[]") produced the raw ABI type text as a "type name" (invalid C# syntax) rather
+                // than the synthesized struct name TypeToStructs actually registered.
+                var argCsTypes = new List<string>();
                 for (int i = 0; i < args.Count; i++)
                 {
                     var arg = args[i];
                     string propName = string.IsNullOrEmpty(arg.Name) || char.IsDigit(arg.Name[0]) ? $"Field{i}" : arg.Name.ToPascalCase();
                     propNames.Add(propName);
                     var p = TypeHelpers.GetCSType(MethodDescription.FormatStructName($"{evt.Name}_evtarg_{i}"), arg.Type, arg.Struct, new List<string>(), false);
+                    argCsTypes.Add(p.type);
                     eventTop.AddOpeningLine($"public {p.type} {propName} {{ get; set; }}");
                 }
 
@@ -632,12 +722,11 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                         }
                         else
                         {
-                            var p = TypeHelpers.ABITypeToCSType(arg.Type, arg.Type, new List<string>(), false);
                             decodeBody.AddOpeningLine($"AVM.ClientGenerator.ABI.ARC4.Types.WireType v{propName} = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription(\"{arg.Type}\");");
                             decodeBody.AddOpeningLine($"count = v{propName}.Decode(queue.ToArray());");
                             decodeBody.AddOpeningLine($"for (int i = 0; i < Convert.ToInt32(count); i++){{queue.Dequeue();}}");
                             decodeBody.AddOpeningLine($"var value{propName} = v{propName}.ToValue();");
-                            decodeBody.AddOpeningLine($"if (value{propName} is {p.dotnetArgInputType} v{propName}Value){{ret.{propName} = v{propName}Value;}}");
+                            decodeBody.AddOpeningLine($"if (value{propName} is {argCsTypes[i]} v{propName}Value){{ret.{propName} = v{propName}Value;}}");
                         }
                     }
                 }

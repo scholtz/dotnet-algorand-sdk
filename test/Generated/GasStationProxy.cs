@@ -279,7 +279,7 @@ namespace AVMGasStation.GeneratedClients
             var lastLogBytes = result.Last();
             if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
             var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
-            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>("byte");
             returnValueObj.Decode(lastLogReturnData);
             return returnValueObj.ToByteArray();
 
@@ -326,7 +326,7 @@ namespace AVMGasStation.GeneratedClients
             var lastLogBytes = result.Last();
             if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
             var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
-            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>("byte");
             returnValueObj.Decode(lastLogReturnData);
             return returnValueObj.ToByteArray();
 
@@ -367,9 +367,9 @@ namespace AVMGasStation.GeneratedClients
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 198, 29, 86, 245 };
-            var voteKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); voteKeyAbi.From(voteKey);
-            var selectionKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); selectionKeyAbi.From(selectionKey);
-            var stateProofKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); stateProofKeyAbi.From(stateProofKey);
+            var voteKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>("byte"); voteKeyAbi.From(voteKey);
+            var selectionKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>("byte"); selectionKeyAbi.From(selectionKey);
+            var stateProofKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>("byte"); stateProofKeyAbi.From(stateProofKey);
             var voteFirstAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteFirstAbi.From(voteFirst);
             var voteLastAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteLastAbi.From(voteLast);
             var voteKeyDilutionAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteKeyDilutionAbi.From(voteKeyDilution);
@@ -379,7 +379,7 @@ namespace AVMGasStation.GeneratedClients
             var lastLogBytes = result.Last();
             if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
             var lastLogReturnData = lastLogBytes.Skip(4).ToArray();
-            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>();
+            var returnValueObj = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>("byte");
             returnValueObj.Decode(lastLogReturnData);
             return returnValueObj.ToByteArray();
 
@@ -393,9 +393,9 @@ namespace AVMGasStation.GeneratedClients
             _tx_apps ??= new List<ulong>();
             _tx_accounts ??= new List<Address>();
             byte[] abiHandle = { 198, 29, 86, 245 };
-            var voteKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); voteKeyAbi.From(voteKey);
-            var selectionKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); selectionKeyAbi.From(selectionKey);
-            var stateProofKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>(); stateProofKeyAbi.From(stateProofKey);
+            var voteKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>("byte"); voteKeyAbi.From(voteKey);
+            var selectionKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>("byte"); selectionKeyAbi.From(selectionKey);
+            var stateProofKeyAbi = new AVM.ClientGenerator.ABI.ARC4.Types.VariableArray<AVM.ClientGenerator.ABI.ARC4.Types.Byte>("byte"); stateProofKeyAbi.From(stateProofKey);
             var voteFirstAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteFirstAbi.From(voteFirst);
             var voteLastAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteLastAbi.From(voteLast);
             var voteKeyDilutionAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); voteKeyDilutionAbi.From(voteKeyDilution);

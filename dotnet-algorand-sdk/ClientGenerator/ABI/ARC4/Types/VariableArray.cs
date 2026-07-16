@@ -1,4 +1,4 @@
-﻿using Org.BouncyCastle.Utilities;
+using Org.BouncyCastle.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,8 +7,43 @@ using System.Text;
 
 namespace AVM.ClientGenerator.ABI.ARC4.Types
 {
-    public class VariableArray<T> : WireType where T : WireType, new()
+    public class VariableArray<T> : WireType where T : WireType
     {
+        // The ABI type of a single element (e.g. "uint80", "ufixed64x2", "byte[16]"). See FixedArray<T>.ElementSpec
+        // for why elements are built from this spec via WireType.FromABIDescription instead of a `new T()` /
+        // `where T : new()` constraint.
+        public string ElementSpec { get; private set; }
+
+        public VariableArray() : this((string)null)
+        {
+        }
+
+        public VariableArray(string elementSpec)
+        {
+            ElementSpec = elementSpec;
+        }
+
+        private T CreateElement()
+        {
+            WireType wireType;
+            if (!string.IsNullOrEmpty(ElementSpec))
+            {
+                wireType = WireType.FromABIDescription(ElementSpec);
+                if (wireType == null)
+                {
+                    throw new InvalidOperationException($"Unable to construct VariableArray element from ABI spec '{ElementSpec}'.");
+                }
+            }
+            else
+            {
+                // Backward-compatible fallback for callers that don't supply a spec (e.g. String() : base()) -
+                // relies on T having a public parameterless constructor, same as the previous `new T()`-based
+                // implementation.
+                wireType = (WireType)Activator.CreateInstance(typeof(T));
+            }
+            return (T)wireType;
+        }
+
         public override string GetDescription()
         {
             return Value.FirstOrDefault().GetDescription() + "[]";
@@ -28,7 +63,7 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
             tuple.Value = new List<WireType>(length);
             for (int i = 0; i < length; i++)
             {
-                tuple.Value.Add(new T());
+                tuple.Value.Add(CreateElement());
             }
             data = data.Skip(2).ToArray();
             //decode the tuple
@@ -77,7 +112,7 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
             }
             if (instance is string[] stringA)
             {
-                Value.AddRange(stringA.Select(s => { var t = new T(); t.From(s); return t; }));
+                Value.AddRange(stringA.Select(s => { var t = CreateElement(); t.From(s); return t; }));
                 return true;
             }
             // Generic fallback: any other enumerable of raw CLR values (e.g. ulong[], bool[], uint[]) - convert
@@ -87,7 +122,7 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                 Value.Clear();
                 foreach (var item in enumerable)
                 {
-                    var t = new T();
+                    var t = CreateElement();
                     t.From(item);
                     Value.Add(t);
                 }

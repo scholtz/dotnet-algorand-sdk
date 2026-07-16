@@ -91,6 +91,11 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                     int arraySizePosition = abiType.LastIndexOf('[');
                     string baseType = abiType.Substring(0,arraySizePosition);
                     WireType baseWireType = FromABIDescription(baseType);
+                    // A null base type means the array element isn't a raw ABI type but a reference to a named
+                    // ARC56 struct (e.g. "myStruct[]") - propagate null so callers (e.g.
+                    // ClientGeneratorARC56.defineStructs) fall back to their own "struct usage" handling instead
+                    // of crashing on GetType() of a null WireType.
+                    if (baseWireType == null) return null;
                     string size = abiType.Substring(arraySizePosition + 1, abiType.Length - arraySizePosition - 2);
                     var ret=CreateGeneric(typeof(FixedArray<>), baseWireType.GetType(), int.Parse(size),baseType) as WireType;
                     return ret; // return the constructed fixed array wire type
@@ -101,6 +106,7 @@ namespace AVM.ClientGenerator.ABI.ARC4.Types
                     //[] - variable
                     string baseType = abiType.Substring(0, abiType.Length - 2);
                     WireType baseWireType = FromABIDescription(baseType);
+                    if (baseWireType == null) return null;
                     return CreateGeneric(typeof(VariableArray<>), baseWireType.GetType(),baseType) as WireType;
                 }
             }

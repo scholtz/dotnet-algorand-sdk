@@ -1117,5 +1117,108 @@ namespace test
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Length, Is.EqualTo(32));
         }
+
+        // Regression coverage for a batch of Arc56Registry-reported generator crashes/compile failures, all
+        // rooted in the same handful of bugs: FixedArray<T>/VariableArray<T> required `T : WireType, new()`, which
+        // blew up (either a runtime TypeLoadException inside the generator, or a CS0310 in the generated output)
+        // for any element type without a public parameterless constructor - a parametric-bitwidth uintN/ufixedNxM,
+        // or a nested FixedArray/VariableArray used as another array's element (e.g. "byte[64][]"). Fixing that
+        // uncovered further latent bugs in raw-tuple-array and struct-array field handling once the generator
+        // stopped crashing before ever reaching that code. Each of these downloads the exact spec from the
+        // Arc56Registry report and proves the generator produces valid, compilable C# for it - see
+        // https://github.com/scholtz/dotnet-algorand-sdk/issues (search "Arc56Registry" reports around 2026-07-16).
+        private static async Task<string> DownloadArc56Spec(string url)
+        {
+            using var client = new HttpClient();
+            var response = await client.GetAsync(url);
+            Assert.That((int)response.StatusCode, Is.EqualTo(200), $"Failed to download {url}");
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.That(content.Trim().StartsWith("{"), Is.True, "File content is not valid JSON");
+            return content;
+        }
+
+        [Test]
+        public async Task GenerateTruthRegistryClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/0xYuvi/TrustAnchor/HEAD/projects/TrustAnchor-contracts/smart_contracts/artifacts/truth_registry/TruthRegistry.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("TruthRegistryRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("TruthRegistryProxy.cs", appProxy);
+        }
+
+        [Test]
+        public async Task GenerateAbstractedAccountFactoryClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/akita-protocol/akita-sc/HEAD/projects/akita-sc/smart_contracts/artifacts/arc58/account/AbstractedAccountFactory.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("AbstractedAccountFactoryRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("AbstractedAccountFactoryProxy.cs", appProxy);
+        }
+
+        [Test]
+        public async Task GenerateAkitaDAOTypesClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/akita-protocol/akita-sc/HEAD/projects/akita-sc/smart_contracts/artifacts/arc58/dao/AkitaDAOTypes.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("AkitaDAOTypesRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("AkitaDAOTypesProxy.cs", appProxy);
+        }
+
+        [Test]
+        public async Task GenerateMerkleAssetGateClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/akita-protocol/akita-sc/HEAD/projects/akita-sc/smart_contracts/artifacts/gates/sub-gates/merkle-asset/MerkleAssetGate.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("MerkleAssetGateRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("MerkleAssetGateProxy.cs", appProxy);
+        }
+
+        [Test]
+        public async Task GenerateStakingPoolPluginClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/akita-protocol/akita-sc/HEAD/projects/akita-sc/smart_contracts/artifacts/arc58/plugins/staking-pool/StakingPoolPlugin.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("StakingPoolPluginRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("StakingPoolPluginProxy.cs", appProxy);
+        }
+
+        [Test]
+        public async Task GenerateARC55Client()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/algorandfoundation/arc55-encryption/HEAD/smart_contracts/artifacts/multisig/ARC55.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("ARC55Regression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("ARC55Proxy.cs", appProxy);
+        }
+
+        [Test]
+        public async Task GenerateMultisigClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/algorandfoundation/arc55-encryption/HEAD/smart_contracts/artifacts/multisig/Multisig.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("MultisigRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("MultisigProxy.cs", appProxy);
+        }
     }
 }
