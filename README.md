@@ -6,7 +6,7 @@
 
 A comprehensive .NET SDK for the [Algorand](https://www.algorand.co/) blockchain (and AVM-compatible networks such as Voi and Aramid). It provides everything needed to build, sign, and submit transactions, query the chain, and interact with smart contracts from any .NET application (`netstandard2.1`), including a dedicated Unity build.
 
-**Full API documentation:** <https://frankszendzielarz.github.io/dotnet-algorand-sdk/api/index.html>
+**Full API documentation:** <https://scholtz.github.io/dotnet-algorand-sdk/>
 
 ## Table of contents
 
