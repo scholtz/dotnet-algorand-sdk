@@ -387,6 +387,16 @@ $@"{"\t"}///<summary>
             defineMethods(proxyBody, structs);
             defineArc4Callers(proxyBody);
 
+            // defineMethods (and State.ToProxy above) populate `structs` with tuple/struct declarations
+            // referenced by parameter and return types (e.g. DoAppCallArgAppCallParams); those types must
+            // be emitted into the proxy class body itself, since the proxy is a standalone class that does
+            // not share scope with the XxxReference class that ToSmartContractReference declares them in.
+            var structsBody = proxyBody.AddChild();
+            foreach (var st in structs)
+            {
+                structsBody.AddOpeningLine(st);
+            }
+
 
             var sourceVars = proxyBody.AddChild();
             sourceVars.AddOpeningLine($"protected override string SourceApproval {{ get; set; }}= \"{Source.Approval}\";");
@@ -469,7 +479,7 @@ $@"{"\t"}///<summary>
 
                 string argsList = "new List<object> {" + string.Join(",", new List<string> { "abiHandle" }.Concat(argParameters.Select(p => p.Name))) + "}";
 
-                var t = TypeHelpers.GetCSType(Contract.Name + "return", returnType.Type, returnType.TypeDetail, structs, false);
+                var t = TypeHelpers.GetCSType(MethodDescription.FormatStructName(methodName + "return"), returnType.Type, returnType.TypeDetail, structs, false);
                 string methodReturnType;
                 if (t.type != "void")
                 {
@@ -552,6 +562,11 @@ $@"///<summary>
                         abiMethodBody.AddOpeningLine("var lastLogBytes = result.Last();");
                         abiMethodBody.AddOpeningLine("if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception(\"Invalid ABI handle\");");
                         abiMethodBody.AddOpeningLine("var lastLogReturnData = lastLogBytes.Skip(4).ToArray();");
+                        if (retline.Contains("returnValueObj"))
+                        {
+                            abiMethodBody.AddOpeningLine($"var returnValueObj = new {t.abiType};");
+                            abiMethodBody.AddOpeningLine("returnValueObj.Decode(lastLogReturnData);");
+                        }
                         abiMethodBody.AddOpeningLine(retline);
                     }
                     else

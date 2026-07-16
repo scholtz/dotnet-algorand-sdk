@@ -5,8 +5,6 @@ using Algorand.Algod.Model.Transactions;
 using Algorand.AVM.ClientGenerator.ABI.ARC56;
 using Algorand.KMD;
 using Algorand.Utils;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
@@ -18,7 +16,6 @@ using System.Net.Http;
 using System.Net.WebSockets;
 using System.Numerics;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -137,48 +134,11 @@ namespace test
             Assert.That(boolResult, Is.True);
         }
 
-        /// <summary>
-        /// Compiles ARC56-generated proxy source code into an in-memory assembly, referencing every
-        /// assembly already loaded in the current process (which includes the SDK, AVM.ClientGenerator
-        /// runtime types and BCL assemblies used by the generated code).
-        /// </summary>
         private static Assembly CompileGeneratedClient(string sourceCode, string assemblyName)
-        {
-            var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode, new CSharpParseOptions(LanguageVersion.Latest));
+            => GeneratedClientCompiler.CompileGeneratedClient(sourceCode, assemblyName);
 
-            var references = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
-                .Select(a => (MetadataReference)MetadataReference.CreateFromFile(a.Location))
-                .ToList();
-
-            var compilation = CSharpCompilation.Create(
-                assemblyName,
-                new[] { syntaxTree },
-                references,
-                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-
-            using var ms = new MemoryStream();
-            var emitResult = compilation.Emit(ms);
-            var errors = emitResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).ToList();
-            Assert.That(emitResult.Success, Is.True, "Generated client failed to compile:" + Environment.NewLine + string.Join(Environment.NewLine, errors));
-
-            ms.Seek(0, SeekOrigin.Begin);
-            return Assembly.Load(ms.ToArray());
-        }
-
-        /// <summary>
-        /// Proves that freshly generated ARC56 proxy source is valid, standalone C# by compiling it, then - only
-        /// once compilation succeeds - publishes it into the checked-in test/Generated folder so the proxy is
-        /// compiled as part of every normal test build rather than only when this generator test happens to run.
-        /// </summary>
-        private static void CompileAndPublishGeneratedClient(string fileName, string appProxy, [CallerFilePath] string testFilePath = "")
-        {
-            CompileGeneratedClient(appProxy, Path.GetFileNameWithoutExtension(fileName) + "_" + Guid.NewGuid().ToString("N"));
-
-            var generatedDir = Path.Combine(Path.GetDirectoryName(testFilePath)!, "Generated");
-            Directory.CreateDirectory(generatedDir);
-            File.WriteAllText(Path.Combine(generatedDir, fileName), appProxy);
-        }
+        private static void CompileAndPublishGeneratedClient(string fileName, string appProxy)
+            => GeneratedClientCompiler.CompileAndPublishGeneratedClient(fileName, appProxy);
 
         [Test]
         public async Task GenerateARC200Client()

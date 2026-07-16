@@ -196,18 +196,18 @@ namespace algorand_tests.Features.Unit
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pending Transaction Information2: /v2/transactions/pending?format=msgpack")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pending Transaction Information2: /v2/transactions/pending?format=msgpack&max=0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Algod REST API v2 Paths")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("unit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("unit.algod")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "/v2/transactions/pending?format=msgpack")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "/v2/transactions/pending?format=msgpack")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "/v2/transactions/pending?format=msgpack&max=0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "/v2/transactions/pending?format=msgpack&max=0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:max", "0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:format", "msgpack")]
-        public void PendingTransactionInformation2_V2TransactionsPendingFormatMsgpack()
+        public void PendingTransactionInformation2_V2TransactionsPendingFormatMsgpackMax0()
         {
 #line 16
-  this.PendingTransactionInformation2("/v2/transactions/pending?format=msgpack", "0", "msgpack", ((string[])(null)));
+  this.PendingTransactionInformation2("/v2/transactions/pending?format=msgpack&max=0", "0", "msgpack", ((string[])(null)));
 #line hidden
         }
         
@@ -268,22 +268,22 @@ namespace algorand_tests.Features.Unit
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pending Transactions By Address: /v2/accounts/7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUF" +
-            "UBNBD64C73F3UHRTHAIOF6Q/transactions/pending?format=msgpack")]
+            "UBNBD64C73F3UHRTHAIOF6Q/transactions/pending?format=msgpack&max=0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Algod REST API v2 Paths")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("unit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("unit.algod")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "/v2/accounts/7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q/transacti" +
-            "ons/pending?format=msgpack")]
+            "ons/pending?format=msgpack&max=0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "/v2/accounts/7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q/transacti" +
-            "ons/pending?format=msgpack")]
+            "ons/pending?format=msgpack&max=0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:account", "7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:max", "0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:format", "msgpack")]
-        public void PendingTransactionsByAddress_V2Accounts7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6QTransactionsPendingFormatMsgpack()
+        public void PendingTransactionsByAddress_V2Accounts7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6QTransactionsPendingFormatMsgpackMax0()
         {
 #line 25
   this.PendingTransactionsByAddress("/v2/accounts/7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q/transacti" +
-                    "ons/pending?format=msgpack", "7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q", "0", "msgpack", ((string[])(null)));
+                    "ons/pending?format=msgpack&max=0", "7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q", "0", "msgpack", ((string[])(null)));
 #line hidden
         }
         
@@ -605,18 +605,18 @@ namespace algorand_tests.Features.Unit
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Account Information 2: /v2/accounts/47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ES" +
-            "WDQNCQ52OPASU")]
+            "WDQNCQ52OPASU?exclude=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Algod REST API v2 Paths")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("unit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("unit.algod.ledger_refactoring")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "/v2/accounts/47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "/v2/accounts/47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "/v2/accounts/47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU?exclude=")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "/v2/accounts/47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU?exclude=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:account", "47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:exclude", "")]
-        public void AccountInformation2_V2Accounts47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU()
+        public void AccountInformation2_V2Accounts47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASUExclude()
         {
 #line 74
-  this.AccountInformation2("/v2/accounts/47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU", "47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU", "", ((string[])(null)));
+  this.AccountInformation2("/v2/accounts/47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU?exclude=", "47YPQTIGQEO7T4Y4RWDYWEKV6RTR2UNBQXBABEEGM72ESWDQNCQ52OPASU", "", ((string[])(null)));
 #line hidden
         }
         

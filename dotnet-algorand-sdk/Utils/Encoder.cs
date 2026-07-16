@@ -109,22 +109,46 @@ namespace Algorand.Utils
                         new MessagePack.IFormatterResolver[] { MessagePack.Resolvers.ContractlessStandardResolver.Instance }
                     )
                 );
-                return MessagePack.MessagePackSerializer.Deserialize<T>(input, options);
+                var result = MessagePack.MessagePackSerializer.Deserialize<T>(input, options);
+                if (!MayBeMisresolvedKeyreg(result))
+                {
+                    return result;
+                }
+                // fall through to the Newtonsoft.Msgpack path below - see MayBeMisresolvedKeyreg for why
             }
             catch
             {
-                MemoryStream st = new MemoryStream(input);
-                //memoryStream.Write(input, 0, input.Length);
-                //memoryStream.Seek(0, SeekOrigin.Begin);
-                JsonSerializer serializer = new JsonSerializer()
-                {
-                    DefaultValueHandling = DefaultValueHandling.Ignore,
-                    Formatting = Formatting.None
-                };
-                MessagePackReader reader = new MessagePackReader(st);
-                return serializer.Deserialize<T>(reader);
-                //return DecodeFromJson<T>(MessagePackSerializer.ConvertToJson(input));
+                // fall through to the Newtonsoft.Msgpack path below
             }
+
+            MemoryStream st = new MemoryStream(input);
+            //memoryStream.Write(input, 0, input.Length);
+            //memoryStream.Seek(0, SeekOrigin.Begin);
+            JsonSerializer serializer = new JsonSerializer()
+            {
+                DefaultValueHandling = DefaultValueHandling.Ignore,
+                Formatting = Formatting.None
+            };
+            MessagePackReader reader = new MessagePackReader(st);
+            return serializer.Deserialize<T>(reader);
+            //return DecodeFromJson<T>(MessagePackSerializer.ConvertToJson(input));
+        }
+
+        /// <summary>
+        /// KeyRegisterOfflineTransaction's fields are a strict subset of KeyRegisterOnlineTransaction's, and
+        /// Algorand's canonical msgpack transactions are plain field maps rather than MessagePack-CSharp's own
+        /// [typeId, payload] union framing - so the native contractless [Union] resolver above can't actually
+        /// tell the two apart from the wire bytes, and it doesn't throw when it silently guesses "Offline". A
+        /// transaction that decoded as Offline is exactly the ambiguous case (a genuine offline txn would decode
+        /// the same way, so this is a deliberately cheap, over-inclusive check): re-decode via the
+        /// Newtonsoft.Msgpack + JsonSubtypes path instead, which honors the KnownSubTypeWithProperty
+        /// discriminators declared on KeyRegistrationTransaction and resolves correctly either way.
+        /// </summary>
+        private static bool MayBeMisresolvedKeyreg<T>(T result)
+        {
+            if (result is KeyRegisterOfflineTransaction) return true;
+            var signedTransaction = result as SignedTransaction;
+            return signedTransaction != null && signedTransaction.Tx is KeyRegisterOfflineTransaction;
         }
 
         /// <summary>

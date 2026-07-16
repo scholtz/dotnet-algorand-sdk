@@ -79,7 +79,13 @@ namespace algorand_tests.StepDefinitions
 
             KeyRegistrationTransaction keyreg = null;
 
-            if ((votefirst??0) ==0)
+            // "nonpart" registrations are wire-encoded as a KeyRegisterOnlineTransaction too (that class carries
+            // every optional keyreg field - nonpart, vote*, sprfkey), so route there whenever any of those fields
+            // is actually set, not just when a vote-first round is given.
+            bool isOnline = nonpart || (votefirst ?? 0) != 0 || (votelast ?? 0) != 0 || (keydilution ?? 0) != 0
+                || !string.IsNullOrEmpty(votepk) || !string.IsNullOrEmpty(selectpk) || !string.IsNullOrEmpty(stateproofpk);
+
+            if (!isOnline)
             {
 
                 keyreg = new KeyRegisterOfflineTransaction()
@@ -88,13 +94,13 @@ namespace algorand_tests.StepDefinitions
                     FirstValid = firstValid,
                     LastValid = lastValid,
                     GenesisHash = new Digest(genesisHash),
-                    GenesisID = genesisId,
+                    GenesisId = genesisId,
                     Sender = senderAddress,
-           
+
 
                 };
-            
-            
+
+
             }
             else
             {
@@ -105,15 +111,16 @@ namespace algorand_tests.StepDefinitions
                     FirstValid = firstValid,
                     LastValid = lastValid,
                     GenesisHash=new Digest(genesisHash),
-                    GenesisID=genesisId,
+                    GenesisId=genesisId,
                     Sender = senderAddress,
                     NonParticipation = nonpart,
                     VoteFirst = votefirst,
                     VoteLast = votelast,
                     VoteKeyDilution = keydilution,
-                    VotePK = new Algorand.ParticipationPublicKey(Convert.FromBase64String(votepk)),
-                    SelectionPK = new Algorand.VRFPublicKey(Convert.FromBase64String(selectpk))
-                    
+                    Votepk = string.IsNullOrEmpty(votepk) ? null : new Algorand.ParticipationPublicKey(Convert.FromBase64String(votepk)),
+                    SelectionPk = string.IsNullOrEmpty(selectpk) ? null : new Algorand.VRFPublicKey(Convert.FromBase64String(selectpk)),
+                    StateProofPK = string.IsNullOrEmpty(stateproofpk) ? null : Convert.FromBase64String(stateproofpk)
+
 
                 };
             }
@@ -169,7 +176,7 @@ namespace algorand_tests.StepDefinitions
                 FirstValid = firstValid,
                 LastValid = lastValid,
                 GenesisHash = new Digest(genesisHash),
-                GenesisID = genesisId
+                GenesisId = genesisId
             };
 
             _scenarioContext["transaction"] = payment;

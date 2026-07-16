@@ -267,7 +267,7 @@ namespace specflow.StepDefinitions
         [Then(@"the parsed Get Block response should have rewards pool ""([^""]*)""")]
         public void ExpectParsedGetBlockToHaveRewardPool(string pool)
         {
-            block?.Block.RewardsPool.Should().Be(pool);
+            block?.Block.RewardsPool.Should().Be(new Address(Convert.FromBase64String(pool)));
         }
 
         TransactionParametersResponse? transactionParameters;

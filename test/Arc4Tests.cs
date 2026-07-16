@@ -58,6 +58,8 @@ namespace test
 
             File.WriteAllText("BiatecClammPoolRef.cs", appref);
             File.WriteAllText("BiatecClammPoolProxy.cs", appProxy);
+            GeneratedClientCompiler.CompileAndPublishGeneratedClient("BiatecClammPoolRef.cs", appref);
+            GeneratedClientCompiler.CompileAndPublishGeneratedClient("BiatecClammPoolProxy.cs", appProxy);
         }
         [Test]
         public async Task GenerateClientPP()
@@ -89,6 +91,8 @@ namespace test
 
             File.WriteAllText("BiatecPoolProviderRef.cs", appref);
             File.WriteAllText("BiatecPoolProviderProxy.cs", appProxy);
+            GeneratedClientCompiler.CompileAndPublishGeneratedClient("BiatecPoolProviderRef.cs", appref);
+            GeneratedClientCompiler.CompileAndPublishGeneratedClient("BiatecPoolProviderProxy.cs", appProxy);
         }
         [Test]
         public async Task GenerateClientConf()
@@ -120,6 +124,8 @@ namespace test
 
             File.WriteAllText("BiatecConfigProviderRef.cs", appref);
             File.WriteAllText("BiatecConfigProviderProxy.cs", appProxy);
+            GeneratedClientCompiler.CompileAndPublishGeneratedClient("BiatecConfigProviderRef.cs", appref);
+            GeneratedClientCompiler.CompileAndPublishGeneratedClient("BiatecConfigProviderProxy.cs", appProxy);
         }
         [Test]
         public async Task GenerateClientBI()
@@ -151,6 +157,8 @@ namespace test
 
             File.WriteAllText("BiatecIdentityProviderRef.cs", appref);
             File.WriteAllText("BiatecIdentityProviderProxy.cs", appProxy);
+            GeneratedClientCompiler.CompileAndPublishGeneratedClient("BiatecIdentityProviderRef.cs", appref);
+            GeneratedClientCompiler.CompileAndPublishGeneratedClient("BiatecIdentityProviderProxy.cs", appProxy);
         }
         private async Task<Account> GetAccount()
         {
@@ -301,7 +309,9 @@ namespace test
                     _tx_apps: new List<ulong>() { contractConf.appId }
                     );
                 await contractBI.bootstrap(
-
+                    governor: acct1.Address,
+                    verificationSetter: acct1.Address,
+                    engagementSetter: acct1.Address,
                     _tx_sender: acct1,
                     _tx_fee: 1000,
                     appBiatecConfigProvider: contractConf.appId,

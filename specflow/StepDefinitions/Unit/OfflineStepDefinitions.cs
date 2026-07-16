@@ -13,7 +13,12 @@ using TechTalk.SpecFlow.Events;
 namespace algorand_tests.StepDefinitions
 {
 
+    // Scoped to @unit scenarios: WhenISignTheTransactionWithThePrivateKey() has an identically-worded
+    // (but differently-implemented, context-key-incompatible) counterpart in
+    // Integration.AlgodStepDefinitions. Without scoping, SpecFlow can't disambiguate which binding to
+    // use for a matching step text and throws BindingException: Ambiguous step definitions found.
     [Binding]
+    [Scope(Tag = "unit")]
     public class OfflineStepDefinitions
     {
 
@@ -104,7 +109,7 @@ namespace algorand_tests.StepDefinitions
                 Receiver = new Address(to),
                 CloseRemainderTo = new Address(close),
                 Amount = amt,
-                GenesisID = gen,
+                GenesisId = gen,
                 Note = Convert.FromBase64String(note)
             };
             

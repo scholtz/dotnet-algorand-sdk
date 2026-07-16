@@ -17,7 +17,12 @@ using TechTalk.SpecFlow;
 namespace algorand_tests.StepDefinitions
 {
     
+    // Scoped to @unit scenarios: WhenISignTheMultisigTransactionWithThePrivateKey() has an identically-worded
+    // (but differently-implemented, context-key-incompatible) counterpart in
+    // Integration.SendingTransactionsStepDefinitions. Without scoping, SpecFlow can't disambiguate which
+    // binding to use for a matching step text and throws BindingException: Ambiguous step definitions found.
     [Binding]
+    [Scope(Tag = "unit")]
     public class TransactionFeeTestStepDefinitions
     {
         ScenarioContext _scenarioContext;
@@ -309,7 +314,7 @@ namespace algorand_tests.StepDefinitions
                 Receiver = new Address(to),
                 CloseRemainderTo = new Address(close),
                 Amount = amt,
-                GenesisID = gen,
+                GenesisId = gen,
                 Note = Convert.FromBase64String(note)
             };
 
@@ -358,7 +363,7 @@ namespace algorand_tests.StepDefinitions
                 Receiver = new Address(to),
                 CloseRemainderTo = new Address(close),
                 Amount = amt,
-                GenesisID = gen,
+                GenesisId = gen,
                 Note = Convert.FromBase64String(note)
             };
 
