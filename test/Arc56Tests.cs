@@ -1220,5 +1220,72 @@ namespace test
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             CompileAndPublishGeneratedClient("MultisigProxy.cs", appProxy);
         }
+
+        // Regression tests for incident BizKorE_12a3f575: generated code used
+        // `new VariableArray<Byte>(x)` with a non-string argument, which does not compile
+        // (CS1729 - VariableArray<T>'s only 1-arg constructor takes a string ABI element spec).
+        [Test]
+        public async Task GenerateBizKorEClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/A-Maugli/akt03/HEAD/biz_kor/projects/biz_kor-contracts/smart_contracts/artifacts/biz_kor/BizKorE.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("BizKorERegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("BizKorEProxy.cs", appProxy);
+        }
+
+        // Regression test for incident WhisperBid_ad7b42ec (see BizKorE_12a3f575 above for root cause).
+        [Test]
+        public async Task GenerateWhisperBidClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/0M3REXE/whisperbid/HEAD/projects/whisperbid-contracts/smart_contracts/artifacts/whisper_bid/WhisperBid.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("WhisperBidRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("WhisperBidProxy.cs", appProxy);
+        }
+
+        // Regression test for incident IdentityRegistry_8b7065c3 (see BizKorE_12a3f575 above for root cause).
+        [Test]
+        public async Task GenerateIdentityRegistryClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/0xYuvi/TrustAnchor/HEAD/projects/TrustAnchor-contracts/smart_contracts/artifacts/identity_registry/IdentityRegistry.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("IdentityRegistryRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("IdentityRegistryProxy.cs", appProxy);
+        }
+
+        // Regression test for incident TrustAnchor_3ac8ef3e (see BizKorE_12a3f575 above for root cause).
+        [Test]
+        public async Task GenerateTrustAnchorClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/0xYuvi/TrustAnchor/HEAD/projects/TrustAnchor-contracts/smart_contracts/artifacts/trust_anchor/TrustAnchor.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("TrustAnchorRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("TrustAnchorProxy.cs", appProxy);
+        }
+
+        // Regression test for incident VerifiedProtocol_6470122f (see BizKorE_12a3f575 above for root cause).
+        [Test]
+        public async Task GenerateVerifiedProtocolClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/Aarti-panchal01/verifi.ed/HEAD/smart_contracts/artifacts/verified_protocol/VerifiedProtocol.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("VerifiedProtocolRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("VerifiedProtocolProxy.cs", appProxy);
+        }
     }
 }
