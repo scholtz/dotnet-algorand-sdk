@@ -1287,5 +1287,18 @@ namespace test
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             CompileAndPublishGeneratedClient("VerifiedProtocolProxy.cs", appProxy);
         }
+
+        // Regression test for incident BountyEscrowContract_0ac88497 (see BizKorE_12a3f575 above for root cause).
+        [Test]
+        public async Task GenerateBountyEscrowContractClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/AnuragAJ25/BaseCase-Web3-Algorand/HEAD/contracts/bounty_escrow/backend/contract_artifacts/BountyEscrowContract.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("BountyEscrowContractRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("BountyEscrowContractProxy.cs", appProxy);
+        }
     }
 }
