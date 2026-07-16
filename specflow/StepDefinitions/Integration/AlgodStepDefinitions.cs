@@ -177,7 +177,26 @@ namespace algorand_tests.StepDefinitions
             accs.Addresses.Should().NotBeNull();
             accs.Addresses.Count.Should().BeGreaterThan(0);
 
-            _scenarioContext["accounts"] = accs.Addresses;
+            // Steps in this fixture (and SendingTransactionsStepDefinitions) always use addresses[0] as the
+            // sender. Wallet addresses vary widely in balance (some are small utility accounts, others hold the
+            // LocalNet genesis funds) and KMD's key order isn't guaranteed, so put whichever candidate currently
+            // has the most ALGO first rather than assuming addresses[0] is well-funded.
+            var addresses = accs.Addresses.ToList();
+            string richestAddress = addresses[0];
+            ulong richestBalance = 0;
+            foreach (var candidate in addresses)
+            {
+                var info = await httpUtilities.algodDefaultApiInstance.AccountInformationAsync(candidate, null, null);
+                if (info.Amount > richestBalance)
+                {
+                    richestBalance = info.Amount;
+                    richestAddress = candidate;
+                }
+            }
+            addresses.Remove(richestAddress);
+            addresses.Insert(0, richestAddress);
+
+            _scenarioContext["accounts"] = addresses;
         }
 
         private async Task<string> getWalletHandleTokenAsync()
