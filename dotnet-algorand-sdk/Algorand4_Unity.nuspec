@@ -17,6 +17,9 @@
         <dependency id="System.ComponentModel.Annotations" version="5.0.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
+    <!-- MessagePack and MessagePack.Annotations are ILRepack-merged into Algorand.dll for the
+         Unity build (see ILRepack.Targets), so they are intentionally not listed as separate
+         nuspec dependencies. -->
   </metadata>
   <files>
     <file src="Algorand.dll" target="lib\netstandard2.1\Algorand.dll" />

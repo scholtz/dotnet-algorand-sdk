@@ -216,3 +216,70 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   significant if it added a hidden network call to a generated client method.
 - **First recorded**: 2026-07-16
 - **Last reviewed**: 2026-07-16
+
+## RISK-009 — Unity ILRepack build omits the `MessagePack` package
+
+- **Description**: `dotnet-algorand-sdk/ILRepack.Targets` merges several dependencies
+  into the ILRepacked `Algorand.dll` for the Unity build configurations, but does not
+  include `MessagePack` (the NuGet package the SDK's signing-critical serialization
+  attributes — `MessagePackObject`/`Key`/`IgnoreMember` — depend on at runtime).
+  `Algorand4_Unity.nuspec` also doesn't declare `MessagePack` as something the consumer
+  must separately install. This is a build/packaging correctness issue, not a
+  crypto-weakening one — see `AUDIT-2026-07-16b.md` finding U1.
+- **Who is exposed**: Unity/game developers who install the packed `Algorand4_Unity`
+  package and hit a missing-type error the first time they serialize or sign a
+  transaction.
+- **Mitigable by this repo?**: Yes — add `MessagePack` to the ILRepack merge list
+  and/or the nuspec dependency group.
+- **Current mitigation status**: Mitigated — `ILRepack.Targets` now also merges
+  `MessagePack` and `MessagePack.Annotations` (confirmed as a genuine separate
+  transitive assembly, not just an alias) alongside the existing dependencies. The
+  nuspec's `<dependencies>` group was left unchanged (Microsoft.CSharp,
+  System.ComponentModel.Annotations only) with a comment explaining `MessagePack` is
+  intentionally merged rather than declared as a separate consumer-installed
+  dependency. Verified: standard Release build and both non-network-dependent test
+  suites still pass (`SerialisationTests` 23/23, `test` 96/96 excluding the
+  LocalNet-dependent Arc4/Arc56 fixtures). The Unity configuration itself still fails
+  to *compile* end-to-end due to the pre-existing, unrelated Unity-stub-DLL issue
+  (missing `SerializeField`/`Tooltip`/`InspectorName`), confirmed still present in this
+  environment — so the ILRepack step's actual runtime output could not be produced or
+  verified here. A maintainer with a working Unity toolchain should confirm the packed
+  assembly resolves `MessagePack` types at runtime.
+- **5-year misuse likelihood**: **N/A — this is a functional/reliability risk, not a
+  security-misuse risk.** Recorded here per the audit instructions' registry scope
+  (all risks developers/users of this SDK face), but the percentage framework doesn't
+  apply since there's no "misuse" — a Unity developer following the package as
+  documented would simply hit a broken build, not a security compromise, until fixed.
+- **Impact if realized**: Build/runtime failure (`TypeLoadException` or similar) for
+  Unity consumers attempting to sign or serialize a transaction — no key-security
+  impact.
+- **First recorded**: 2026-07-16
+- **Last reviewed**: 2026-07-16 (remediation update, same day)
+
+## RISK-010 — Official SDK example prints a generated mnemonic to the console
+
+- **Description**: `sdk-examples/OfflineSigningExample.cs:26` calls
+  `Console.WriteLine("Backup mnemonic:    " + newAccount.ToMnemonic());` on a freshly
+  generated account. This models the exact anti-pattern `RISK-005` warns downstream
+  developers against — except here it's in code this repo's maintainers directly
+  control, unlike `RISK-005` which is about third-party application code. See
+  `AUDIT-2026-07-16b.md` finding E1.
+- **Who is exposed**: Developers who copy this example's pattern into applications
+  that log console output to a file, terminal-capture tool, or CI log, and end users
+  whose mnemonics get exposed as a result.
+- **Mitigable by this repo?**: Yes — remove or redact the printed mnemonic in the
+  example; trivial, no functional impact on the rest of the example.
+- **Current mitigation status**: Mitigated — the `Console.WriteLine` of
+  `newAccount.ToMnemonic()` was removed and replaced with a comment directing the
+  reader to persist the mnemonic via a secure channel of their own choosing; the
+  mnemonic remains available in-memory via `newAccount.ToMnemonic()` for the rest of
+  the example, unaffected. Verified: `sdk-examples/sdk-examples.csproj` builds with 0
+  errors after the change.
+- **5-year misuse likelihood**: **1%** (down from 5%) — the example no longer models
+  the anti-pattern at all, so residual risk is limited to a developer copying an older
+  cached/forked version of the file from before this fix.
+- **Impact if realized**: Loss of the specific mnemonic(s) printed and subsequently
+  captured by whatever consumed the console output (terminal scrollback, CI logs, a
+  captured-output log file).
+- **First recorded**: 2026-07-16
+- **Last reviewed**: 2026-07-16 (remediation update, same day)

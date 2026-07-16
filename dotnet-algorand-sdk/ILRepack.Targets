@@ -10,6 +10,8 @@
 			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'System.CodeDom'" />
 			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'BouncyCastle.Cryptography'" />
 			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'RestSharp'" />
+			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'MessagePack'" />
+			<InputAssemblies Include="@(ReferencePath)" Condition="'%(filename)' == 'MessagePack.Annotations'" />
 		</ItemGroup>
 
 		<ILRepack AllowDuplicateResources="false"

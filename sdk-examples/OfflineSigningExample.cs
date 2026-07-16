@@ -23,7 +23,8 @@ namespace sdk_examples
             // --- Key generation (do this on the offline device) -------------------------------
             var newAccount = new Account();
             Console.WriteLine("Generated address:  " + newAccount.Address);
-            Console.WriteLine("Backup mnemonic:    " + newAccount.ToMnemonic());
+            // Never print a mnemonic to the console/logs in real code — persist newAccount.ToMnemonic()
+            // via a secure channel of your own choosing (e.g. an offline, encrypted secret store).
 
             // If you want to use this mnemonic, fund this account ENOB5LVPJ7FZ6TO2DWET2DEBBV4NZUY5ZFQ6G2YX6SIER7UYLAM5FHE6TY using algokit first.
             var senderMnemonic = "arrive transfer silent pole congress loyal snap dirt dwarf relief easily plastic federal found siren point know polar quit very vanish ensure humor abstract broken";
