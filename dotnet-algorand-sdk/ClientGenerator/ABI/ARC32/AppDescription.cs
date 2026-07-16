@@ -407,8 +407,27 @@ $@"{"\t"}///<summary>
             sourceVars.AddOpeningLine($"protected override ulong? GlobalNumUints {{ get; set; }}={State.Global.NumUints};");
             sourceVars.AddOpeningLine($"protected override ulong? LocalNumByteSlices {{ get; set; }}={State.Local.NumByteSlices};");
             sourceVars.AddOpeningLine($"protected override ulong? LocalNumUints {{ get; set; }}={State.Local.NumUints};");
+            sourceVars.AddOpeningLine($"protected override ulong? ExtraProgramPages {{ get; set; }}={ComputeExtraProgramPages()};");
 
             return code.ToString();
+        }
+
+        // AVM consensus caps a single compiled program at MaxAppProgramLen (2048) bytes per page, and algod
+        // rejects app creation with "approval program too long" if either compiled program exceeds
+        // MaxAppProgramLen * (1 + ExtraProgramPages). goal/algod itself derives ExtraProgramPages from the
+        // compiled program sizes at creation time; the generated proxy has no such runtime step (it submits a
+        // fixed, pre-compiled program), so the required page count must be computed once here, at generation
+        // time, from the actual compiled AVM bytecode - leaving it hardcoded at 0 silently breaks creation for
+        // any contract whose compiled approval or clear program grows past a single page.
+        private const int MaxAppProgramLenBytes = 2048;
+        private const int MaxExtraAppProgramPages = 3;
+        private ulong ComputeExtraProgramPages()
+        {
+            int approvalLen = string.IsNullOrEmpty(Source.ApprovalAVM) ? 0 : Convert.FromBase64String(Source.ApprovalAVM).Length;
+            int clearLen = string.IsNullOrEmpty(Source.ClearAVM) ? 0 : Convert.FromBase64String(Source.ClearAVM).Length;
+            int largest = Math.Max(approvalLen, clearLen);
+            int extraPages = Math.Max(0, (int)Math.Ceiling(largest / (double)MaxAppProgramLenBytes) - 1);
+            return (ulong)Math.Min(extraPages, MaxExtraAppProgramPages);
         }
 
         private void defineArc4Callers(Code proxyBody)
@@ -477,7 +496,19 @@ $@"{"\t"}///<summary>
 
                 string parameters = string.Join(",", allParameters);
 
-                string argsList = "new List<object> {" + string.Join(",", new List<string> { "abiHandle" }.Concat(argParameters.Select(p => p.Name))) + "}";
+                // ARC4 account/asset/application reference args are not ABI-encoded by value: the actual
+                // account/asset/app ID goes into the txn's foreign-reference arrays (_tx_accounts/_tx_assets/
+                // _tx_apps, populated below via the RefIndex block), and the ABI arg itself is just a 1-byte
+                // index into that array (accounts are 1-based, since index 0 implicitly means the sender;
+                // assets/apps are 0-based). Transaction-typed args carry no app-arg byte at all - they're
+                // satisfied by a preceding grouped transaction instead - so they're passed through as-is here;
+                // ProxyBase's argument encoder (TealTypeUtils.EncodeArgument/EncodeElement) recognizes
+                // Transaction values and omits them from the encoded app-args bytes.
+                string argsList = "new List<object> {" + string.Join(",", new List<string> { "abiHandle" }.Concat(method.Args.Select(p =>
+                {
+                    if (p.IsAccountRef() || p.IsAssetRef() || p.IsApplicationRef()) return p.Name + "RefIndex";
+                    return p.Name;
+                }))) + "}";
 
                 var t = TypeHelpers.GetCSType(MethodDescription.FormatStructName(methodName + "return"), returnType.Type, returnType.TypeDetail, structs, false);
                 string methodReturnType;
@@ -536,21 +567,7 @@ $@"///<summary>
                     abiMethodBody.AddOpeningLine("_tx_transactions.AddRange(new List<Transaction> {" + string.Join(",", transactionParameters.Select(p => p.Name)) + "});");
                 }
 
-                if (appRefParameters.Count > 0)
-                {
-                    abiMethodBody.AddOpeningLine("_tx_apps.AddRange(new List<ulong> {" + string.Join(",", appRefParameters.Select(p => p.Name)) + "});");
-                }
-
-                if (assetRefParameters.Count > 0)
-                {
-                    abiMethodBody.AddOpeningLine("_tx_assets.AddRange(new List<ulong> {" + string.Join(",", assetRefParameters.Select(p => p.Name)) + "});");
-                }
-
-                if (acctRefParameters.Count > 0)
-                {
-                    abiMethodBody.AddOpeningLine("_tx_accounts.AddRange(new List<Address> {" + string.Join(",", acctRefParameters.Select(p => p.Name)) + "});");
-                }
-
+                EmitRefIndexAssignments(abiMethodBody, appRefParameters, assetRefParameters, acctRefParameters);
 
                 abiMethodBody.AddOpeningLine($"byte[] abiHandle = {{{String.Join(",", method.Selector)}}};");
                 abiMethodBody.AddOpeningLine($"var result = await base.CallApp({argsList}, _tx_fee: _tx_fee,  _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions , _tx_apps: _tx_apps, _tx_assets:_tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);");
@@ -576,8 +593,61 @@ $@"///<summary>
                 }
 
                 var abiMethodBodyForTransactions = abiMethodForTransactions.AddChild();
+                abiMethodBodyForTransactions.AddOpeningLine($"_tx_boxes ??= new List<BoxRef>();");
+                abiMethodBodyForTransactions.AddOpeningLine($"_tx_transactions ??= new List<Transaction>();");
+                abiMethodBodyForTransactions.AddOpeningLine($"_tx_assets ??= new List<ulong>();");
+                abiMethodBodyForTransactions.AddOpeningLine($"_tx_apps ??= new List<ulong>();");
+                abiMethodBodyForTransactions.AddOpeningLine($"_tx_accounts ??= new List<Address>();");
+
+                if (transactionParameters.Count > 0)
+                {
+                    abiMethodBodyForTransactions.AddOpeningLine("_tx_transactions.AddRange(new List<Transaction> {" + string.Join(",", transactionParameters.Select(p => p.Name)) + "});");
+                }
+
+                EmitRefIndexAssignments(abiMethodBodyForTransactions, appRefParameters, assetRefParameters, acctRefParameters);
                 abiMethodBodyForTransactions.AddOpeningLine($"byte[] abiHandle = {{{String.Join(",", method.Selector)}}};");
                 abiMethodBodyForTransactions.AddOpeningLine($"return await base.MakeTransactionList({argsList}, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions , _tx_apps: _tx_apps, _tx_assets:_tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);");
+            }
+        }
+
+        /// <summary>
+        /// Appends account/asset/application reference args to their respective _tx_accounts/_tx_assets/_tx_apps
+        /// foreign-reference arrays, and emits a "{name}RefIndex" byte variable for each - the 1-byte ARC4-encoded
+        /// index into that array that actually gets sent as the ABI argument (see the argsList construction in
+        /// defineMethods). Per ARC4: asset/application reference indices are 0-based directly into
+        /// Txn.Assets[]/Txn.Applications[]; account reference indices are 1-based into Txn.Accounts[], since
+        /// index 0 implicitly refers to the transaction sender.
+        /// </summary>
+        private void EmitRefIndexAssignments(Code body, List<ArgumentDescription> appRefParameters, List<ArgumentDescription> assetRefParameters, List<ArgumentDescription> acctRefParameters)
+        {
+            if (appRefParameters.Count > 0)
+            {
+                body.AddOpeningLine("int _appRefBase = _tx_apps.Count;");
+                body.AddOpeningLine("_tx_apps.AddRange(new List<ulong> {" + string.Join(",", appRefParameters.Select(p => p.Name)) + "});");
+                for (int i = 0; i < appRefParameters.Count; i++)
+                {
+                    body.AddOpeningLine($"byte {appRefParameters[i].Name}RefIndex = (byte)(_appRefBase + {i});");
+                }
+            }
+
+            if (assetRefParameters.Count > 0)
+            {
+                body.AddOpeningLine("int _assetRefBase = _tx_assets.Count;");
+                body.AddOpeningLine("_tx_assets.AddRange(new List<ulong> {" + string.Join(",", assetRefParameters.Select(p => p.Name)) + "});");
+                for (int i = 0; i < assetRefParameters.Count; i++)
+                {
+                    body.AddOpeningLine($"byte {assetRefParameters[i].Name}RefIndex = (byte)(_assetRefBase + {i});");
+                }
+            }
+
+            if (acctRefParameters.Count > 0)
+            {
+                body.AddOpeningLine("int _acctRefBase = _tx_accounts.Count;");
+                body.AddOpeningLine("_tx_accounts.AddRange(new List<Address> {" + string.Join(",", acctRefParameters.Select(p => p.Name)) + "});");
+                for (int i = 0; i < acctRefParameters.Count; i++)
+                {
+                    body.AddOpeningLine($"byte {acctRefParameters[i].Name}RefIndex = (byte)(_acctRefBase + {i} + 1);");
+                }
             }
         }
 

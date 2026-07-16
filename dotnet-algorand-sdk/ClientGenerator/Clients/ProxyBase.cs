@@ -430,7 +430,10 @@ namespace AVM.ClientGenerator
                     {
                         if (int.TryParse(match.Groups[1].Value, out var pc))
                         {
-                            var si = App.SourceInfo.Approval.SourceInfo.Where(si => si.Pc.Contains(pc) && !string.IsNullOrEmpty(si.ErrorMessage)).FirstOrDefault();
+                            // App (ARC56 source-map info) is only populated for ARC56-generated proxies; ARC32
+                            // ones leave it null, so this pc-lookup is best-effort and must not blow up the
+                            // original algod error with an unrelated NullReferenceException.
+                            var si = App?.SourceInfo?.Approval?.SourceInfo?.Where(si => si.Pc.Contains(pc) && !string.IsNullOrEmpty(si.ErrorMessage)).FirstOrDefault();
                             if (si != null)
                             {
                                 throw new ProxyException(si.ErrorMessage + $" [pc {pc}]", ex);
@@ -543,7 +546,10 @@ namespace AVM.ClientGenerator
                     {
                         if (int.TryParse(match.Groups[1].Value, out var pc))
                         {
-                            var si = App.SourceInfo.Approval.SourceInfo.Where(si => si.Pc.Contains(pc) && !string.IsNullOrEmpty(si.ErrorMessage)).FirstOrDefault();
+                            // App (ARC56 source-map info) is only populated for ARC56-generated proxies; ARC32
+                            // ones leave it null, so this pc-lookup is best-effort and must not blow up the
+                            // original algod error with an unrelated NullReferenceException.
+                            var si = App?.SourceInfo?.Approval?.SourceInfo?.Where(si => si.Pc.Contains(pc) && !string.IsNullOrEmpty(si.ErrorMessage)).FirstOrDefault();
                             if (si != null)
                             {
                                 throw new ProxyException(si.ErrorMessage + $" [pc {pc}]", ex);

@@ -22,7 +22,13 @@ namespace AVM.ClientGenerator.ABI.ARC4
 
         internal bool IsAccountRef()
         {
-            return Type == "address";
+            // The ARC4 foreign-reference type is literally "account" (a 1-byte index into Txn.Accounts[]),
+            // distinct from the plain "address" value type (32 raw bytes) - conflating the two here misencodes
+            // any method that takes a plain address value (e.g. BiatecIdentityProvider.bootstrap's
+            // governor/verificationSetter/engagementSetter address args), since it would silently drop the
+            // 32-byte value from the ABI args and instead register it as a foreign-account reference that
+            // nothing in the method signature actually asked for.
+            return Type == "account";
         }
 
         internal bool IsApplicationRef()
