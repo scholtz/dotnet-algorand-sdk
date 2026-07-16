@@ -56,6 +56,18 @@ namespace sdk_examples
                 case nameof(MultisigExample):
                     await MultisigExample.Main(args);
                     break;
+                case nameof(KeyRegistrationExample):
+                    await KeyRegistrationExample.Main(args);
+                    break;
+                case nameof(SimulateTransactionExample):
+                    await SimulateTransactionExample.Main(args);
+                    break;
+                case nameof(NodeAndBlockExample):
+                    await NodeAndBlockExample.Main(args);
+                    break;
+                case nameof(OfflineSigningExample):
+                    await OfflineSigningExample.Main(args);
+                    break;
                 default:
                     Console.WriteLine($"Unknown example '{example}'. Defaulting to BasicExample.");
                     await BasicExample.Main(args);

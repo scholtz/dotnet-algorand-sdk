@@ -148,6 +148,10 @@ dotnet run --project sdk-examples -- AssetExample
 | [AtomicTransferExample.cs](sdk-examples/AtomicTransferExample.cs) | Grouping transactions so they atomically succeed or fail together |
 | [MultisigExample.cs](sdk-examples/MultisigExample.cs) | Creating a multisig address and collecting signatures |
 | [RekeyExample.cs](sdk-examples/RekeyExample.cs) | Rekeying an account to a different signing key |
+| [OfflineSigningExample.cs](sdk-examples/OfflineSigningExample.cs) | Cold-wallet workflow: generating accounts, serializing unsigned transactions to msgpack, signing offline, submitting the signed bytes |
+| [SimulateTransactionExample.cs](sdk-examples/SimulateTransactionExample.cs) | Dry-running a transaction group with the simulate endpoint before submitting it |
+| [KeyRegistrationExample.cs](sdk-examples/KeyRegistrationExample.cs) | Registering an account online/offline for consensus participation (key registration transactions) |
+| [NodeAndBlockExample.cs](sdk-examples/NodeAndBlockExample.cs) | Reading node status, waiting for rounds, and fetching blocks, block hashes, and transaction ids |
 | [KMDExample.cs](sdk-examples/KMDExample.cs) | Using KMD to list wallets and retrieve LocalNet test accounts |
 | [IndexerExample.cs](sdk-examples/IndexerExample.cs) | Querying historical data through the Indexer client |
 | [CompileTeal.cs](sdk-examples/CompileTeal.cs) | Compiling TEAL source with the node |
