@@ -1,5 +1,4 @@
 ﻿using MessagePack;
-using MessagePack;
 using MessagePack.Formatters;
 using System;
 using System.Buffers;

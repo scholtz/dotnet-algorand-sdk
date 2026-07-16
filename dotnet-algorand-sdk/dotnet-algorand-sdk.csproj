@@ -21,6 +21,7 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'!='Unity|AnyCPU'">
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>8.0</LangVersion>
+		<Nullable>annotations</Nullable>
 		<RootNamespace>Algorand</RootNamespace>
 		<AssemblyName>Algorand</AssemblyName>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -48,6 +49,7 @@
 	<PropertyGroup Condition="'$(Configuration)' == 'Unity' Or '$(Configuration)' == 'Unity_debug'">
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>8.0</LangVersion>
+		<Nullable>annotations</Nullable>
 		<RootNamespace>Algorand</RootNamespace>
 		<AssemblyName>Algorand</AssemblyName>
 		<!-- Pack straight from Algorand4_Unity.nuspec (its own <id>/<dependencies> win over

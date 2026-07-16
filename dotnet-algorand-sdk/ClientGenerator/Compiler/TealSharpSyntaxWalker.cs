@@ -126,7 +126,7 @@ namespace AVM.ClientGenerator.Compiler
                     return true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 var diagnostic = DiagnosticDescriptors.Create("E012", node.GetLocation(), line, caller, messageArgs: info);
                 State.ReportDiagnostic(reportDiagnostic, diagnostic);
@@ -847,7 +847,6 @@ namespace AVM.ClientGenerator.Compiler
 
                     List<string> parmNames = new List<string>();
 
-                    int c = 0;
                     foreach (var arg in node.ArgumentList.Arguments)
                     {
 
@@ -1214,8 +1213,12 @@ namespace AVM.ClientGenerator.Compiler
                     return;
                 }
 
-                var declaratorSymbol = semanticModel.GetDeclaredSymbol(node.Designation);
-                TryStateOperation(() => State.DeclareScratchVariable(declaratorSymbol, machineValueType), node.Designation, declaratorSymbol.Name, false);
+                // SemanticModel.GetDeclaredSymbol(VariableDesignationSyntax) always returns null (RS1039);
+                // the SingleVariableDesignationSyntax overload is the one that actually resolves the symbol.
+                var declaratorSymbol = node.Designation is SingleVariableDesignationSyntax single
+                    ? semanticModel.GetDeclaredSymbol(single)
+                    : null;
+                TryStateOperation(() => State.DeclareScratchVariable(declaratorSymbol, machineValueType), node.Designation, declaratorSymbol?.Name, false);
 
 
             });

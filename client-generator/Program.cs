@@ -15,12 +15,12 @@ namespace client_generator
             /// File name from local filesystem
             /// </summary>
             [Option('f', "file", Required = false, HelpText = "Specify the AR56 file path - File from local filesystem.")]
-            public string File { get; set; }
+            public string? File { get; set; }
             /// <summary>
             /// Specify the AR56 URL
             /// </summary>
             [Option('u', "url", Required = false, HelpText = "Specify the AR56 URL.")]
-            public string Url { get; set; }
+            public string? Url { get; set; }
             /// <summary>
             /// namespace
             /// </summary>
@@ -73,7 +73,7 @@ namespace client_generator
                     }
                     else
                     {
-                        content = File.ReadAllBytes(opts.File);
+                        content = File.ReadAllBytes(opts.File!);
                     }
 
                     var generator = new ClientGeneratorARC56();

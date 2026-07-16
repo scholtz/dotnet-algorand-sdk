@@ -40,7 +40,6 @@ namespace sdk_examples
 
             CompileResponse approvalProgram;
             CompileResponse clearProgram;
-            CompileResponse approvalProgramRefactored;
 
             using (var datams = new MemoryStream(Encoding.UTF8.GetBytes(approvalProgramSource)))
             {

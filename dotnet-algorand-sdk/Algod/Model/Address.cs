@@ -313,5 +313,14 @@ namespace Algorand
             }
             return false;
         }
+        public override int GetHashCode()
+        {
+            var hash = new HashCode();
+            hash.Add(version);
+            hash.Add(threshold);
+            foreach (var key in publicKeys)
+                hash.Add(key);
+            return hash.ToHashCode();
+        }
     }
 }

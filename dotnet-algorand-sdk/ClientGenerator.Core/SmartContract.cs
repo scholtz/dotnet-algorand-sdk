@@ -55,7 +55,7 @@ namespace AVM.ClientGenerator.Core
         public byte[] TealBytesFromDecimal(decimal dec) => throw new IntentionallyNotImplementedException();
         public decimal DecimalFromTealBytes(byte[] dec) => throw new IntentionallyNotImplementedException();
         public void Fail() { throw new IntentionallyNotImplementedException(); }
-        public ulong CreateAsset(ulong total, uint decimals, bool defaultFrozen, byte[]? unitName = null, byte[]? assetName = null, byte[]? url = null, byte[]? metaDataHash = null, byte[] manager = null, byte[]? reserve = null, byte[]? freeze = null, byte[]? clawback = null) => throw new IntentionallyNotImplementedException();
+        public ulong CreateAsset(ulong total, uint decimals, bool defaultFrozen, byte[]? unitName = null, byte[]? assetName = null, byte[]? url = null, byte[]? metaDataHash = null, byte[]? manager = null, byte[]? reserve = null, byte[]? freeze = null, byte[]? clawback = null) => throw new IntentionallyNotImplementedException();
         public void InvokeSmartContractMethod() => throw new IntentionallyNotImplementedException();
         public void LogBytes(byte[] bytes) => throw new IntentionallyNotImplementedException();
         public void LogInt(long integral) => throw new IntentionallyNotImplementedException();

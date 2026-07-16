@@ -73,11 +73,11 @@ namespace algorand_tests.StepDefinitions
                 var id = (await Utils.SubmitTransaction(httpUtilities.algodDefaultApiInstance, st)).Txid;
                 _scenarioContext["submittedTxnid"] = id;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                error = true;    
+                error = true;
             }
-            _scenarioContext["error"] = error;  
+            _scenarioContext["error"] = error;
         }
 
         [Then(@"the transaction should not go through")]
@@ -102,7 +102,7 @@ namespace algorand_tests.StepDefinitions
             addresses = new List<string> { keyRegAddress };
             _scenarioContext["accounts"] = addresses;
 
-            KeyRegistrationTransaction txn=null;
+            KeyRegistrationTransaction? txn=null;
             switch (online)
             {
                 case "online":
@@ -164,7 +164,7 @@ namespace algorand_tests.StepDefinitions
         {
             var wallets = await httpUtilities.kmdApi.ListWalletsAsync(new object());
             var wallet = wallets.Wallets.Where(w => w.Name == WalletName).FirstOrDefault();
-            var handle = await httpUtilities.kmdApi.InitWalletHandleTokenAsync(new Algorand.KMD.InitWalletHandleTokenRequest() { Wallet_id = wallet.Id, Wallet_password = WalletPassword });
+            var handle = await httpUtilities.kmdApi.InitWalletHandleTokenAsync(new Algorand.KMD.InitWalletHandleTokenRequest() { Wallet_id = wallet!.Id, Wallet_password = WalletPassword });
 
             var generated = await httpUtilities.kmdApi.GenerateKeyAsync(new Algorand.KMD.GenerateKeyRequest() { Wallet_handle_token = handle.Wallet_handle_token });
             var newAddress = generated.Address;
@@ -172,7 +172,7 @@ namespace algorand_tests.StepDefinitions
             // Wallet addresses vary widely in balance (some are small utility accounts, others hold the LocalNet
             // genesis funds), so fund from whichever candidate currently has the most ALGO rather than assuming
             // addresses[0] is well-funded.
-            string funderAddress = null;
+            string? funderAddress = null;
             ulong bestBalance = 0;
             foreach (var candidate in candidateFunders)
             {
@@ -184,7 +184,7 @@ namespace algorand_tests.StepDefinitions
                 }
             }
 
-            var funderExport = await httpUtilities.kmdApi.ExportKeyAsync(new Algorand.KMD.ExportKeyRequest() { Address = funderAddress, Wallet_handle_token = handle.Wallet_handle_token, Wallet_password = WalletPassword });
+            var funderExport = await httpUtilities.kmdApi.ExportKeyAsync(new Algorand.KMD.ExportKeyRequest() { Address = funderAddress!, Wallet_handle_token = handle.Wallet_handle_token, Wallet_password = WalletPassword });
             var funder = new Account(funderExport.Private_key);
 
             var suggestedParms = await httpUtilities.algodDefaultApiInstance.TransactionParamsAsync();

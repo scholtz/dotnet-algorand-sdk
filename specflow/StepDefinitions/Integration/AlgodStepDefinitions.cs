@@ -43,7 +43,7 @@ namespace algorand_tests.StepDefinitions
 
                 await httpUtilities.algodDefaultApiInstance.HealthCheckAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 error = true;
             }
@@ -108,7 +108,7 @@ namespace algorand_tests.StepDefinitions
 
                 await httpUtilities.algodDefaultApiInstance.WaitForBlockAsync(status!.LastRound);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 error = true;
             }
@@ -127,7 +127,7 @@ namespace algorand_tests.StepDefinitions
 
                 await httpUtilities.algodDefaultApiInstance.GetBlockAsync(status!.LastRound, null);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 error = true;
             }
@@ -142,7 +142,7 @@ namespace algorand_tests.StepDefinitions
             {
                 await httpUtilities.algodDefaultApiInstance.GetSupplyAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 error = true;
             }
