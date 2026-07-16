@@ -547,13 +547,6 @@ namespace BiatecIdentityArc56
                 public static UserInfoShortV1 Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new UserInfoShortV1();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vVersion = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint8");

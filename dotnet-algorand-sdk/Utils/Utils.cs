@@ -41,7 +41,7 @@ namespace Algorand.Utils
 
                 if (pendingInfo != null)
                 {
-                    if (pendingInfo.ConfirmedRound != null && pendingInfo.ConfirmedRound > 0)
+                    if (pendingInfo.ConfirmedRound > 0)
                     {
                         // Got the completed Transaction
                         return pendingInfo;

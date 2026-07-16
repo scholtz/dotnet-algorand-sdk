@@ -56,13 +56,6 @@ namespace AVMTypes
                 public static InnerStruct Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new InnerStruct();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vNum = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
@@ -133,13 +126,6 @@ namespace AVMTypes
                 public static StructAddressUint256 Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new StructAddressUint256();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vAddress = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("address");
@@ -212,13 +198,6 @@ namespace AVMTypes
                 public static Arc4UintN82TupleArgData Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new Arc4UintN82TupleArgData();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vField0 = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint8");
@@ -297,13 +276,6 @@ namespace AVMTypes
                 public static Arc4UintN83TupleArgData Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new Arc4UintN83TupleArgData();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vField0 = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint8");
@@ -386,13 +358,6 @@ namespace AVMTypes
                 public static Arc4ComplexTupleArgData Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new Arc4ComplexTupleArgData();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vField0 = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("address");
@@ -467,13 +432,6 @@ namespace AVMTypes
                 public static Arc4ComplexTupleArgDataField1 Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new Arc4ComplexTupleArgDataField1();
                     uint count = 0;
                     var vField0 = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();
@@ -704,7 +662,6 @@ namespace AVMTypes
                     var ret = new StringReadonlyEvent();
                     var eventData = log.Skip(4).ToArray();
                     var queue = new Queue<byte>(eventData);
-                    uint count = 0;
                     var indexField0 = queue.Dequeue() * 256 + queue.Dequeue();
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vField0 = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
                     vField0.Decode(eventData.Skip(indexField0).ToArray());
@@ -729,7 +686,6 @@ namespace AVMTypes
                     var ret = new StringEvent();
                     var eventData = log.Skip(4).ToArray();
                     var queue = new Queue<byte>(eventData);
-                    uint count = 0;
                     var indexField0 = queue.Dequeue() * 256 + queue.Dequeue();
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vField0 = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
                     vField0.Decode(eventData.Skip(indexField0).ToArray());
@@ -854,7 +810,6 @@ namespace AVMTypes
                     var ret = new StructEvent();
                     var eventData = log.Skip(4).ToArray();
                     var queue = new Queue<byte>(eventData);
-                    uint count = 0;
                     ret.Field0 = Structs.StructAddressUint256.Parse(queue.ToArray());
                     { var consumedField0 = ret.Field0.ToByteArray().Length; for (int i = 0; i < consumedField0 && queue.Count > 0; i++) { queue.Dequeue(); } }
                     return ret;
@@ -876,7 +831,6 @@ namespace AVMTypes
                     var ret = new InnerStructEvent();
                     var eventData = log.Skip(4).ToArray();
                     var queue = new Queue<byte>(eventData);
-                    uint count = 0;
                     ret.Field0 = Structs.InnerStruct.Parse(queue.ToArray());
                     { var consumedField0 = ret.Field0.ToByteArray().Length; for (int i = 0; i < consumedField0 && queue.Count > 0; i++) { queue.Dequeue(); } }
                     return ret;
@@ -1298,7 +1252,6 @@ namespace AVMTypes
                     var ret = new Arc4DynamicArrayOfStructEvent();
                     var eventData = log.Skip(4).ToArray();
                     var queue = new Queue<byte>(eventData);
-                    uint count = 0;
                     var indexField0 = queue.Dequeue() * 256 + queue.Dequeue();
                     var arrField0 = new AVM.ClientGenerator.ABI.ARC4.Types.StructArray<Structs.StructAddressUint256>(x => Structs.StructAddressUint256.Parse(x)) { IsFixedLength = false, FixedLength = 0 };
                     arrField0.Decode(eventData.Skip(indexField0).ToArray());
@@ -1347,7 +1300,6 @@ namespace AVMTypes
                     var ret = new Arc4StaticArrayOf2StructsEvent();
                     var eventData = log.Skip(4).ToArray();
                     var queue = new Queue<byte>(eventData);
-                    uint count = 0;
                     var indexField0 = queue.Dequeue() * 256 + queue.Dequeue();
                     var arrField0 = new AVM.ClientGenerator.ABI.ARC4.Types.StructArray<Structs.StructAddressUint256>(x => Structs.StructAddressUint256.Parse(x)) { IsFixedLength = true, FixedLength = 2 };
                     arrField0.Decode(eventData.Skip(indexField0).ToArray());
@@ -1773,7 +1725,6 @@ namespace AVMTypes
                     var ret = new Arc4StrEvent();
                     var eventData = log.Skip(4).ToArray();
                     var queue = new Queue<byte>(eventData);
-                    uint count = 0;
                     var indexField0 = queue.Dequeue() * 256 + queue.Dequeue();
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vField0 = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("string");
                     vField0.Decode(eventData.Skip(indexField0).ToArray());
@@ -1798,7 +1749,6 @@ namespace AVMTypes
                     var ret = new Arc4TupleEvent();
                     var eventData = log.Skip(4).ToArray();
                     var queue = new Queue<byte>(eventData);
-                    uint count = 0;
                     var indexField0 = queue.Dequeue() * 256 + queue.Dequeue();
                     ret.Field0 = Structs.Arc4TupleArgData.Parse(eventData.Skip(indexField0).ToArray());
                     return ret;

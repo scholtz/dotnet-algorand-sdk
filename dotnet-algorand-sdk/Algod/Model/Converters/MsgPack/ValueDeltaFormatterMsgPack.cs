@@ -8,9 +8,9 @@ using System.Text;
 
 namespace Algorand.Algod.Model.Converters.MsgPack
 {
-    public class ValueDeltaFormatterMsgPack : IMessagePackFormatter<ValueDelta>
+    public class ValueDeltaFormatterMsgPack : IMessagePackFormatter<ValueDelta?>
     {
-        public void Serialize(ref MessagePackWriter writer, ValueDelta value, MessagePackSerializerOptions options)
+        public void Serialize(ref MessagePackWriter writer, ValueDelta? value, MessagePackSerializerOptions options)
         {
             if (value == null)
             {
@@ -20,7 +20,7 @@ namespace Algorand.Algod.Model.Converters.MsgPack
             writer.Write(value.Bytes);
         }
 
-        public ValueDelta Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+        public ValueDelta? Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
                 return null;

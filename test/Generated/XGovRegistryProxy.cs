@@ -66,13 +66,6 @@ namespace XGovRegistry
                 public static ProposerBoxValue Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new ProposerBoxValue();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vActiveProposal = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
@@ -266,13 +259,6 @@ namespace XGovRegistry
                 public static TypedGlobalState Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new TypedGlobalState();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vPausedRegistry = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("bool");
@@ -471,13 +457,6 @@ namespace XGovRegistry
                 public static XGovBoxValue Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new XGovBoxValue();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vVotingAddress = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("address");
@@ -606,13 +585,6 @@ namespace XGovRegistry
                 public static XGovRegistryConfig Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new XGovRegistryConfig();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vXgovFee = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
@@ -736,13 +708,6 @@ namespace XGovRegistry
                 public static XGovSubscribeRequestBoxValue Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new XGovSubscribeRequestBoxValue();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vXgovAddr = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("address");

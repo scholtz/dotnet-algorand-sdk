@@ -3,7 +3,7 @@ using MessagePack;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    [MessagePackObject]
+    [MessagePackObject(AllowPrivate = true)]
     public partial class AssetDestroyTransaction : AssetChangeTransaction
     {
         

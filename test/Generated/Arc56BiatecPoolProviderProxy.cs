@@ -328,13 +328,6 @@ namespace BiatecPoolProviderArc56
                 public static AppPoolInfo Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new AppPoolInfo();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
@@ -698,13 +691,6 @@ namespace BiatecPoolProviderArc56
                 public static PoolConfig Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new PoolConfig();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
@@ -828,13 +814,6 @@ namespace BiatecPoolProviderArc56
                 public static FullConfig Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new FullConfig();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vAppId = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");
@@ -938,13 +917,6 @@ namespace BiatecPoolProviderArc56
                 public static AssetsCombined Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new AssetsCombined();
                     uint count = 0;
                     AVM.ClientGenerator.ABI.ARC4.Types.WireType vAssetA = AVM.ClientGenerator.ABI.ARC4.Types.WireType.FromABIDescription("uint64");

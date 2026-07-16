@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Algorand.Algod.Model.Converters.MsgPack
 {
-    public class ParticipationPublicKeyFormatterMsgPack : IMessagePackFormatter<ParticipationPublicKey>
+    public class ParticipationPublicKeyFormatterMsgPack : IMessagePackFormatter<ParticipationPublicKey?>
     {
-        public void Serialize(ref MessagePackWriter writer, ParticipationPublicKey value, MessagePackSerializerOptions options)
+        public void Serialize(ref MessagePackWriter writer, ParticipationPublicKey? value, MessagePackSerializerOptions options)
         {
             if (value == null)
             {
@@ -19,7 +19,7 @@ namespace Algorand.Algod.Model.Converters.MsgPack
             writer.Write(value.Bytes);
         }
 
-        public ParticipationPublicKey Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+        public ParticipationPublicKey? Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
                 return null;

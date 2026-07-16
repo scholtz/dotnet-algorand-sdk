@@ -1,4 +1,4 @@
-
+#nullable enable annotations
 namespace Algorand.Algod.Model.Transactions
 {
 

@@ -10,7 +10,7 @@ using UnityEngine;
 #if UNITY
 [System.Serializable]
 #endif
-    [MessagePack.MessagePackObject]
+    [MessagePack.MessagePackObject(AllowPrivate = true)]
     public partial class AssetClawbackTransaction : AssetTransferTransaction
     {
 

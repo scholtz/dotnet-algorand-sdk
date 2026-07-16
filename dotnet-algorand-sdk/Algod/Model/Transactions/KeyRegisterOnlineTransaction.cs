@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    [MessagePackObject]
+    [MessagePackObject(AllowPrivate = true)]
     public partial class KeyRegisterOnlineTransaction : KeyRegistrationTransaction
     {
         public bool ShouldSerializeVoteKeyDilution()

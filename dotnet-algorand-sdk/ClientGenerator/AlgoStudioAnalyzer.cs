@@ -12,6 +12,11 @@ using System.Threading;
 
 namespace AVM.ClientGenerator
 {
+    // RS1036/RS1038/RS1041 assume this type ships as a real, separately-packaged Roslyn analyzer
+    // (loaded into arbitrary host compilations via an <Analyzer> reference). It never is - it's only
+    // ever instantiated directly by the in-process TealSharp compiler (see TealSharpSyntaxWalker), so
+    // the Workspaces-reference/multi-targeting/EnforceExtendedAnalyzerRules packaging rules don't apply.
+#pragma warning disable RS1036, RS1038, RS1041
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class ClientGeneratorAnalyzer : DiagnosticAnalyzer
     {
@@ -55,7 +60,7 @@ namespace AVM.ClientGenerator
 
 
     }
+#pragma warning restore RS1036, RS1038, RS1041
 
 
-  
 }

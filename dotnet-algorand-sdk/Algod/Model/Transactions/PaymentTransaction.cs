@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    [MessagePackObject]
+    [MessagePackObject(AllowPrivate = true)]
     public partial class PaymentTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type")]

@@ -1234,7 +1234,6 @@ namespace Algorand.Algod
         public async System.Threading.Tasks.Task<AccountAssetResponse> AccountAssetInformationAsync(System.Threading.CancellationToken cancellationToken, string address, ulong assetId, Format? format = null)
         {
             if (address == null) throw new System.ArgumentNullException("address");
-            if (assetId == null) throw new System.ArgumentNullException("assetId");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/accounts/{address}/assets/{asset-id}?");
             urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1552,7 +1551,6 @@ namespace Algorand.Algod
         public async System.Threading.Tasks.Task<AccountApplicationResponse> AccountApplicationInformationAsync(System.Threading.CancellationToken cancellationToken, string address, ulong applicationId, Format? format = null)
         {
             if (address == null) throw new System.ArgumentNullException("address");
-            if (applicationId == null) throw new System.ArgumentNullException("applicationId");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/accounts/{address}/applications/{application-id}?");
             urlBuilder_.Replace("{address}", System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1763,7 +1761,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<CertifiedBlock> GetBlockAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null, bool? headerOnly = null)
         {
-            if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/blocks/{round}?");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1861,7 +1858,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<BlockTxidsResponse> GetBlockTxidsAsync(System.Threading.CancellationToken cancellationToken, ulong round)
         {
-            if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/blocks/{round}/txids");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1950,7 +1946,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<BlockHashResponse> GetBlockHashAsync(System.Threading.CancellationToken cancellationToken, ulong round)
         {
-            if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/blocks/{round}/hash");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
@@ -2051,7 +2046,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<TransactionProofResponse> GetTransactionProofAsync(System.Threading.CancellationToken cancellationToken, ulong round, string txid, Format? format = null, string? hashtype = null)
         {
-            if (round == null) throw new System.ArgumentNullException("round");
             if (txid == null) throw new System.ArgumentNullException("txid");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/blocks/{round}/transactions/{txid}/proof?");
@@ -2151,7 +2145,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<BlockLogsResponse> GetBlockLogsAsync(System.Threading.CancellationToken cancellationToken, ulong round)
         {
-            if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/blocks/{round}/logs");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
@@ -2414,7 +2407,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<NodeStatusResponse> WaitForBlockAsync(System.Threading.CancellationToken cancellationToken, ulong round)
         {
-            if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/status/wait-for-block-after/{round}");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3094,7 +3086,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<LedgerStateDelta> GetLedgerStateDeltaAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null)
         {
-            if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/deltas/{round}?");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3192,7 +3183,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<TransactionGroupLedgerStateDeltasForRoundResponse> GetTransactionGroupLedgerStateDeltasForRoundAsync(System.Threading.CancellationToken cancellationToken, ulong round, Format? format = null)
         {
-            if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/deltas/{round}/txn/group?");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3384,7 +3374,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<StateProof> GetStateProofAsync(System.Threading.CancellationToken cancellationToken, ulong round)
         {
-            if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/stateproofs/{round}");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3473,7 +3462,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<LightBlockHeaderProof> GetLightBlockHeaderProofAsync(System.Threading.CancellationToken cancellationToken, ulong round)
         {
-            if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/blocks/{round}/lightheader/proof");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3564,7 +3552,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Application> GetApplicationByIDAsync(System.Threading.CancellationToken cancellationToken, ulong applicationId)
         {
-            if (applicationId == null) throw new System.ArgumentNullException("applicationId");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/applications/{application-id}");
             urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(applicationId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3661,7 +3648,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<BoxesResponse> GetApplicationBoxesAsync(System.Threading.CancellationToken cancellationToken, ulong applicationId, ulong? max = null)
         {
-            if (applicationId == null) throw new System.ArgumentNullException("applicationId");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/applications/{application-id}/boxes?");
             urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(applicationId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3770,7 +3756,6 @@ namespace Algorand.Algod
         public async System.Threading.Tasks.Task<Box> GetApplicationBoxByNameAsync(System.Threading.CancellationToken cancellationToken, ulong applicationId, string? name = null)
         {
             if (name == null) throw new System.ArgumentNullException("name");
-            if (applicationId == null) throw new System.ArgumentNullException("applicationId");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/applications/{application-id}/box?");
             urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(applicationId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3866,7 +3851,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Asset> GetAssetByIDAsync(System.Threading.CancellationToken cancellationToken, ulong assetId)
         {
-            if (assetId == null) throw new System.ArgumentNullException("assetId");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/assets/{asset-id}");
             urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(assetId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -4125,7 +4109,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<string> SetSyncRoundAsync(System.Threading.CancellationToken cancellationToken, ulong round)
         {
-            if (round == null) throw new System.ArgumentNullException("round");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/ledger/sync/{round}");
             urlBuilder_.Replace("{round}", System.Uri.EscapeDataString(ConvertToString(round, System.Globalization.CultureInfo.InvariantCulture)));
@@ -4679,7 +4662,6 @@ namespace Algorand.Algod
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<string> SetBlockTimeStampOffsetAsync(System.Threading.CancellationToken cancellationToken, ulong offset)
         {
-            if (offset == null) throw new System.ArgumentNullException("offset");
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("v2/devmode/blocks/offset/{offset}");
             urlBuilder_.Replace("{offset}", System.Uri.EscapeDataString(ConvertToString(offset, System.Globalization.CultureInfo.InvariantCulture)));

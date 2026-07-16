@@ -44,6 +44,11 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity;Unity_debug</Configurations>
 		<AssemblyOriginatorKeyFile>Algorand.snk</AssemblyOriginatorKeyFile>
+		<!-- Newtonsoft.Msgpack 0.1.11 (the JsonWriter/JsonReader bridge Utils/Encoder.cs uses for canonical
+		     msgpack encoding) has no strong-named build, and 0.1.11 is the newest version on nuget.org - there
+		     is no newer release to upgrade to. CS8002 here is an unfixable upstream packaging gap, not a
+		     signal about our own code, so it's suppressed rather than left to accumulate as noise. -->
+		<NoWarn>$(NoWarn);CS8002</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Unity' Or '$(Configuration)' == 'Unity_debug'">
@@ -87,6 +92,11 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity;Unity_debug</Configurations>
 		<AssemblyOriginatorKeyFile>Algorand.snk</AssemblyOriginatorKeyFile>
+		<!-- Newtonsoft.Msgpack 0.1.11 (the JsonWriter/JsonReader bridge Utils/Encoder.cs uses for canonical
+		     msgpack encoding) has no strong-named build, and 0.1.11 is the newest version on nuget.org - there
+		     is no newer release to upgrade to. CS8002 here is an unfixable upstream packaging gap, not a
+		     signal about our own code, so it's suppressed rather than left to accumulate as noise. -->
+		<NoWarn>$(NoWarn);CS8002</NoWarn>
 	</PropertyGroup>
 
 

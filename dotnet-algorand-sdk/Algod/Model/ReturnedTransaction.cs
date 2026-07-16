@@ -16,7 +16,7 @@ namespace Algorand.Algod.Model
 #if UNITY
     [System.Serializable]
 #endif
-    [MessagePack.MessagePackObject]
+    [MessagePack.MessagePackObject(AllowPrivate = true)]
     public class ReturnedTransaction
     {
 

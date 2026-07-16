@@ -11,7 +11,7 @@ namespace Algorand.Algod.Model.Transactions
     [JsonSubtypes.KnownSubTypeWithProperty(typeof(ApplicationCreateTransaction), "apap")]
     [JsonSubtypes.KnownSubTypeWithProperty(typeof(ApplicationCreateTransaction), "apsu")]
     [JsonSubtypes.FallBackSubType(typeof(ApplicationNoopTransaction))]
-    [MessagePack.MessagePackObject]
+    [MessagePack.MessagePackObject(AllowPrivate = true)]
 
     public partial class ApplicationNoopTransaction : ApplicationCallTransaction
     {

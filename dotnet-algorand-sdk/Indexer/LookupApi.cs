@@ -1180,7 +1180,6 @@ namespace Algorand.Indexer
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<ApplicationResponse> lookupApplicationByIDAsync(System.Threading.CancellationToken cancellationToken,ulong applicationId,bool? includeAll=null)
        {
-              if (applicationId == null) throw new System.ArgumentNullException("applicationId");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/applications/{application-id}?");
               urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(applicationId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1288,7 +1287,6 @@ namespace Algorand.Indexer
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<ApplicationLogsResponse> lookupApplicationLogsByIDAsync(System.Threading.CancellationToken cancellationToken,ulong applicationId,ulong? limit=null,ulong? maxRound=null,ulong? minRound=null,string? next=null,Address? senderAddress=null,string? txid=null)
        {
-              if (applicationId == null) throw new System.ArgumentNullException("applicationId");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/applications/{application-id}/logs?");
               urlBuilder_.Replace("{application-id}", System.Uri.EscapeDataString(ConvertToString(applicationId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1406,7 +1404,6 @@ namespace Algorand.Indexer
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<AssetResponse> lookupAssetByIDAsync(System.Threading.CancellationToken cancellationToken,ulong assetId,bool? includeAll=null)
        {
-              if (assetId == null) throw new System.ArgumentNullException("assetId");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/assets/{asset-id}?");
               urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(assetId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1520,7 +1517,6 @@ namespace Algorand.Indexer
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<AssetBalancesResponse> lookupAssetBalancesAsync(System.Threading.CancellationToken cancellationToken,ulong assetId,ulong? currencyGreaterThan=null,ulong? currencyLessThan=null,bool? includeAll=null,ulong? limit=null,string? next=null)
        {
-              if (assetId == null) throw new System.ArgumentNullException("assetId");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/assets/{asset-id}/balances?");
               urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(assetId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1682,7 +1678,6 @@ namespace Algorand.Indexer
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<TransactionsResponse> lookupAssetTransactionsAsync(System.Threading.CancellationToken cancellationToken,ulong assetId,Address? address=null,string? addressRole=null,string? afterTime=null,string? beforeTime=null,ulong? currencyGreaterThan=null,ulong? currencyLessThan=null,bool? excludeCloseTo=null,ulong? limit=null,ulong? maxRound=null,ulong? minRound=null,string? next=null,string? notePrefix=null,bool? rekeyTo=null,ulong? round=null,string? sigType=null,string? txType=null,string? txid=null)
        {
-              if (assetId == null) throw new System.ArgumentNullException("assetId");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/assets/{asset-id}/transactions?");
               urlBuilder_.Replace("{asset-id}", System.Uri.EscapeDataString(ConvertToString(assetId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1840,7 +1835,6 @@ namespace Algorand.Indexer
        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
        public async System.Threading.Tasks.Task<Block> lookupBlockAsync(System.Threading.CancellationToken cancellationToken,ulong roundNumber)
        {
-              if (roundNumber == null) throw new System.ArgumentNullException("roundNumber");
               var urlBuilder_ = new System.Text.StringBuilder();
               urlBuilder_.Append("/v2/blocks/{round-number}");
               urlBuilder_.Replace("{round-number}", System.Uri.EscapeDataString(ConvertToString(roundNumber, System.Globalization.CultureInfo.InvariantCulture)));

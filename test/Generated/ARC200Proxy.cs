@@ -66,13 +66,6 @@ namespace ARC200
                 public static ApprovalStruct Parse(byte[] bytes)
                 {
                     var queue = new Queue<byte>(bytes);
-                    var prefixOffset = 0;
-                    var retPrefix = new byte[4] { bytes[0], bytes[1], bytes[2], bytes[3] };
-                    if (retPrefix.SequenceEqual(Constants.RetPrefix))
-                    {
-                        prefixOffset = 4;
-                        for (int i = 0; i < 4 && queue.Count > 0; i++) { queue.Dequeue(); }
-                    }
                     var ret = new ApprovalStruct();
                     uint count = 0;
                     var vApprovalAmount = new AVM.ClientGenerator.ABI.ARC4.Types.UInt256();

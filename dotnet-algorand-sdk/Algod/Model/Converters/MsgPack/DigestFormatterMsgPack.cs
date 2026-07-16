@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Algorand.Algod.Model.Converters.MsgPack
 {
-    public class DigestFormatterMsgPack : IMessagePackFormatter<Digest>
+    public class DigestFormatterMsgPack : IMessagePackFormatter<Digest?>
     {
-        public void Serialize(ref MessagePackWriter writer, Digest value, MessagePackSerializerOptions options)
+        public void Serialize(ref MessagePackWriter writer, Digest? value, MessagePackSerializerOptions options)
         {
             if (value == null)
             {
@@ -20,7 +20,7 @@ namespace Algorand.Algod.Model.Converters.MsgPack
             writer.Write(value.Bytes);
         }
 
-        public Digest Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+        public Digest? Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
                 return null;

@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Algorand.Algod.Model.Converters.MsgPack
 {
-    public class AddressFormatterMsgPack : IMessagePackFormatter<Address>
+    public class AddressFormatterMsgPack : IMessagePackFormatter<Address?>
     {
-        public void Serialize(ref MessagePackWriter writer, Address value, MessagePackSerializerOptions options)
+        public void Serialize(ref MessagePackWriter writer, Address? value, MessagePackSerializerOptions options)
         {
             if (value == null)
             {
@@ -19,7 +19,7 @@ namespace Algorand.Algod.Model.Converters.MsgPack
             writer.Write(value.Bytes);
         }
 
-        public Address Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+        public Address? Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
                 return null;

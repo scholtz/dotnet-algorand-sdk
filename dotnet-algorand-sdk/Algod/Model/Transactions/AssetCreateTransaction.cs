@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    [MessagePackObject]
+    [MessagePackObject(AllowPrivate = true)]
     public partial class AssetCreateTransaction : AssetConfigurationTransaction
     {
 #if UNITY

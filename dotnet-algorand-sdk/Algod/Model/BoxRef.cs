@@ -1,9 +1,5 @@
-﻿namespace Algorand.Algod.Model
+namespace Algorand.Algod.Model
 {
-#if UNITY
-    using UnityEngine;
-#endif
-
     using System = global::System;
 #if UNITY
 using UnityEngine;

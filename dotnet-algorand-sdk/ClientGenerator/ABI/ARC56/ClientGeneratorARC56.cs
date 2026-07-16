@@ -398,11 +398,33 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
 
                 var structF2In = structF2.AddChild();
 
+                // prefixOffset/count are only emitted when a field's decode path actually reads them below -
+                // declaring them unconditionally produced CS0219 "assigned but never used" for structs whose
+                // fields never hit those paths (e.g. all-static-struct or all-string-free-of-struct fields).
+                bool needsPrefixOffset = item.Value.Any(structItem =>
+                {
+                    var abiDescriptor = WireType.FromABIDescription(structItem.Type);
+                    return abiDescriptor == null
+                        ? IsFieldTypeDynamic(structItem.Type)
+                        : structItem.Type == "string";
+                });
+                bool needsCount = item.Value.Any(structItem =>
+                {
+                    var abiDescriptor = WireType.FromABIDescription(structItem.Type);
+                    return abiDescriptor != null && structItem.Type != "string";
+                });
+
                 structF2.AddOpeningLine($"var queue = new Queue<byte>(bytes);");
-                structF2.AddOpeningLine($"var prefixOffset = 0;");
-                structF2.AddOpeningLine($"var retPrefix = new byte[4] {{ bytes[0], bytes[1], bytes[2], bytes[3] }};\r\n                if (retPrefix.SequenceEqual(Constants.RetPrefix))\r\n                {{\r\n                    prefixOffset=4;\r\n                    for (int i = 0; i < 4 && queue.Count > 0; i++){{queue.Dequeue();}}\r\n                }}");
+                if (needsPrefixOffset)
+                {
+                    structF2.AddOpeningLine($"var prefixOffset = 0;");
+                    structF2.AddOpeningLine($"var retPrefix = new byte[4] {{ bytes[0], bytes[1], bytes[2], bytes[3] }};\r\n                if (retPrefix.SequenceEqual(Constants.RetPrefix))\r\n                {{\r\n                    prefixOffset=4;\r\n                    for (int i = 0; i < 4 && queue.Count > 0; i++){{queue.Dequeue();}}\r\n                }}");
+                }
                 structF2.AddOpeningLine($"var ret = new {item.Key.ToPascalCase()}();");
-                structF2.AddOpeningLine($"uint count = 0;");
+                if (needsCount)
+                {
+                    structF2.AddOpeningLine($"uint count = 0;");
+                }
 
                 foreach (var structItem in item.Value)
                 {
@@ -543,7 +565,13 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                     // decode: static args are consumed directly off the queue, dynamic ones (string, nested
                     // struct) are read as a 2-byte offset into eventData.
                     decodeBody.AddOpeningLine("var queue = new Queue<byte>(eventData);");
-                    decodeBody.AddOpeningLine("uint count = 0;");
+                    // Only declared when an arg actually falls through to the plain-scalar decode path below -
+                    // events made up solely of struct/string args never read it, which produced CS0219.
+                    bool needsCount = args.Any(a => string.IsNullOrEmpty(a.Struct) && a.Type.Trim().ToLowerInvariant() != "string");
+                    if (needsCount)
+                    {
+                        decodeBody.AddOpeningLine("uint count = 0;");
+                    }
                     for (int i = 0; i < args.Count; i++)
                     {
                         var arg = args[i];

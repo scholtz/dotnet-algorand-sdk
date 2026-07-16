@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    [MessagePack.MessagePackObject]
+    [MessagePack.MessagePackObject(AllowPrivate = true)]
     public partial class ApplicationUpdateTransaction : ApplicationCallTransaction
     {
         [JsonProperty(PropertyName = "apan")]

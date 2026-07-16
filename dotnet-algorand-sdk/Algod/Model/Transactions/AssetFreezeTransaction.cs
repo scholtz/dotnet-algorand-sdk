@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {
-    [MessagePackObject]
+    [MessagePackObject(AllowPrivate = true)]
     public partial class AssetFreezeTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type", Required = Required.Always)]

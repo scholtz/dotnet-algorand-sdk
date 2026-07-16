@@ -58,13 +58,14 @@ namespace Algorand.Algod.Model.Transactions
         public bool ShouldSerializeFirstValid() { return FirstValid!= 0; }
         public bool ShouldSerializeLastValid() { return LastValid != 0; }
         [IgnoreMember]
-        private byte[] _lease { get; set; }
 #if UNITY
     [field:SerializeField]
-    [Tooltip(@"")]
+    [field:Tooltip(@"")]
     [field:InspectorName(@"Lease")]
+#endif
+        private byte[] _lease { get; set; }
+#if UNITY
         [Newtonsoft.Json.JsonIgnore]
-       
 #endif
         [Newtonsoft.Json.JsonProperty("lx", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("lx")]
@@ -81,13 +82,14 @@ namespace Algorand.Algod.Model.Transactions
             }
         }
         [IgnoreMember]
-        private byte[] _note { get; set; }
 #if UNITY
     [field:SerializeField]
-    [Tooltip(@"")]
+    [field:Tooltip(@"")]
     [field:InspectorName(@"Note")]
-    [Newtonsoft.Json.JsonIgnore]
-  
+#endif
+        private byte[] _note { get; set; }
+#if UNITY
+        [Newtonsoft.Json.JsonIgnore]
 #endif
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("note")]

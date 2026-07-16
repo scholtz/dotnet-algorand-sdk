@@ -7,7 +7,7 @@ using System.Text;
 namespace Algorand.Algod.Model.Transactions
 {
     [Serializable]
-    [MessagePackObject]
+    [MessagePackObject(AllowPrivate = true)]
     public partial class HeartBeatTransaction : Transaction
     {
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
