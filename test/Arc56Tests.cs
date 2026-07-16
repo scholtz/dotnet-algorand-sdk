@@ -285,6 +285,16 @@ namespace test
             File.WriteAllText("GasStationProxy.cs", appProxy);
         }
 
+        // LocalNet only genesis-funds the accounts in the "unencrypted-default-wallet" wallet;
+        // other wallets (e.g. AlgoKit's "DEPLOYER") start empty and only hold whatever a prior
+        // test run happened to send them. KMD's ListWalletsAsync has no guaranteed ordering, so
+        // picking the first wallet returned can silently select an unfunded one.
+        private const string FundedWalletName = "unencrypted-default-wallet";
+        // Contract-deployment tests in this fixture fund app accounts and pay fees repeatedly,
+        // so require a healthy safety margin rather than just "greater than zero".
+        private const ulong MinAccountBalanceMicroAlgos = 1_000_000_000_000UL; // 1,000,000 Algos
+        private const ulong DispenseAmountMicroAlgos = 2_000_000_000_000UL; // 2,000,000 Algos
+
         private async Task<Account> GetAccount(int index = 0)
         {
 
@@ -303,14 +313,56 @@ namespace test
             }
             var a = accs.Addresses.Reverse().Skip(index).First();
             var resp = await kmdApi.ExportKeyAsync(new ExportKeyRequest() { Address = a, Wallet_handle_token = handle, Wallet_password = "" });
-            return new Account(resp.Private_key);
+            var account = new Account(resp.Private_key);
+
+            await EnsureFundedAsync(account, accs.Addresses, kmdApi, handle);
+
+            return account;
         }
         private static async Task<string> getWalletHandleToken(Api kmdApi)
         {
             var wallets = await kmdApi.ListWalletsAsync(null);
-            var wallet = wallets.Wallets.FirstOrDefault();
+            var wallet = wallets.Wallets.FirstOrDefault(w => w.Name == FundedWalletName) ?? wallets.Wallets.FirstOrDefault();
             var handle = await kmdApi.InitWalletHandleTokenAsync(new InitWalletHandleTokenRequest() { Wallet_id = wallet.Id, Wallet_password = "" });
             return handle.Wallet_handle_token;
+        }
+
+        // KMD key order isn't stable across runs, and newly generated keys start unfunded, so
+        // `GetAccount` can hand back an account with a near-zero balance. Top it up from whichever
+        // key in the same wallet currently holds the most funds before handing it to the caller.
+        private async Task EnsureFundedAsync(Account account, ICollection<string> walletAddresses, Api kmdApi, string handle)
+        {
+            var ALGOD_API_ADDR = "http://localhost:4001/";
+            var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
+            var algodApiInstance = new DefaultApi(httpClient);
+
+            var address = account.Address.ToString();
+            var info = await algodApiInstance.AccountInformationAsync(address, null, null);
+            if (info.Amount >= MinAccountBalanceMicroAlgos) return;
+
+            string dispenserAddress = null;
+            ulong dispenserBalance = 0;
+            foreach (var candidateAddress in walletAddresses)
+            {
+                if (candidateAddress == address) continue;
+                var candidateInfo = await algodApiInstance.AccountInformationAsync(candidateAddress, null, null);
+                if (candidateInfo.Amount > dispenserBalance)
+                {
+                    dispenserBalance = candidateInfo.Amount;
+                    dispenserAddress = candidateAddress;
+                }
+            }
+            if (dispenserAddress == null || dispenserBalance < DispenseAmountMicroAlgos)
+            {
+                throw new InvalidOperationException(
+                    $"LocalNet KMD wallet has no account funded with at least {DispenseAmountMicroAlgos} microAlgos to dispense to {address}. " +
+                    "Restart AlgoKit LocalNet (`algokit localnet reset`) to restore genesis-funded accounts.");
+            }
+
+            var keyResp = await kmdApi.ExportKeyAsync(new ExportKeyRequest() { Address = dispenserAddress, Wallet_handle_token = handle, Wallet_password = "" });
+            var dispenser = new Account(keyResp.Private_key);
+            await FundAccount.PayTo(account.Address, DispenseAmountMicroAlgos, dispenser, algodApiInstance);
         }
         [Test]
         public void ObjectConversionToByteArray()

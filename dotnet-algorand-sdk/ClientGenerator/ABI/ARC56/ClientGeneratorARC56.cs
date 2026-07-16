@@ -796,7 +796,9 @@ $@"///<summary>
                     string scalarStructType = !string.IsNullOrEmpty(returnType.Struct) ? $"Structs.{MethodDescription.FormatStructName(returnType.Struct)}" : null;
                     if (scalarStructType != null && t.type == scalarStructType)
                     {
-                        abiMethodBody.AddOpeningLine($"return {t.type}.Parse(result.Last());");
+                        abiMethodBody.AddOpeningLine("var lastLogBytes = result.Last();");
+                        abiMethodBody.AddOpeningLine("if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception(\"Invalid ABI handle\");");
+                        abiMethodBody.AddOpeningLine($"return {t.type}.Parse(lastLogBytes.Skip(4).ToArray());");
                     }
                     else if (scalarStructType != null && t.type == scalarStructType + "[]")
                     {

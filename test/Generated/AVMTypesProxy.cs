@@ -2061,7 +2061,9 @@ namespace AVMTypes
             byte[] abiHandle = { 3, 7, 75, 25 };
 
             var result = await base.CallApp(new List<object> { abiHandle, data }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return Structs.StructAddressUint256.Parse(result.Last());
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            return Structs.StructAddressUint256.Parse(lastLogBytes.Skip(4).ToArray());
 
         }
 
@@ -2092,7 +2094,9 @@ namespace AVMTypes
             byte[] abiHandle = { 114, 64, 179, 102 };
 
             var result = await base.CallApp(new List<object> { abiHandle, data }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return Structs.InnerStruct.Parse(result.Last());
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            return Structs.InnerStruct.Parse(lastLogBytes.Skip(4).ToArray());
 
         }
 
@@ -3275,7 +3279,9 @@ namespace AVMTypes
             byte[] abiHandle = { 218, 245, 108, 211 };
 
             var result = await base.CallApp(new List<object> { abiHandle, data }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return Structs.Arc4UintN82TupleArgData.Parse(result.Last());
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            return Structs.Arc4UintN82TupleArgData.Parse(lastLogBytes.Skip(4).ToArray());
 
         }
 
@@ -3306,7 +3312,9 @@ namespace AVMTypes
             byte[] abiHandle = { 185, 112, 147, 243 };
 
             var result = await base.CallApp(new List<object> { abiHandle, data }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return Structs.Arc4UintN83TupleArgData.Parse(result.Last());
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            return Structs.Arc4UintN83TupleArgData.Parse(lastLogBytes.Skip(4).ToArray());
 
         }
 
@@ -3337,7 +3345,9 @@ namespace AVMTypes
             byte[] abiHandle = { 182, 22, 3, 242 };
 
             var result = await base.CallApp(new List<object> { abiHandle, data }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return Structs.Arc4ComplexTupleArgData.Parse(result.Last());
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            return Structs.Arc4ComplexTupleArgData.Parse(lastLogBytes.Skip(4).ToArray());
 
         }
 
@@ -3520,7 +3530,9 @@ namespace AVMTypes
             byte[] abiHandle = { 144, 85, 147, 201 };
 
             var result = await base.CallApp(new List<object> { abiHandle, data }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return Structs.Arc4TupleArgData.Parse(result.Last());
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            return Structs.Arc4TupleArgData.Parse(lastLogBytes.Skip(4).ToArray());
 
         }
 
@@ -3551,7 +3563,9 @@ namespace AVMTypes
             byte[] abiHandle = { 41, 87, 190, 201 };
 
             var result = await base.CallApp(new List<object> { abiHandle, data }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return Structs.NativeTupleArgData.Parse(result.Last());
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            return Structs.NativeTupleArgData.Parse(lastLogBytes.Skip(4).ToArray());
 
         }
 

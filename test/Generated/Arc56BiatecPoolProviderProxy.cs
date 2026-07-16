@@ -1004,7 +1004,9 @@ namespace BiatecPoolProviderArc56
             var appPoolIdAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appPoolIdAbi.From(appPoolId);
 
             var result = await base.SimApp(new List<object> { abiHandle, appPoolIdAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return Structs.AppPoolInfo.Parse(result.Last());
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            return Structs.AppPoolInfo.Parse(lastLogBytes.Skip(4).ToArray());
 
         }
 
@@ -1380,7 +1382,9 @@ namespace BiatecPoolProviderArc56
             var appPoolIdAbi = new AVM.ClientGenerator.ABI.ARC4.Types.UInt64(); appPoolIdAbi.From(appPoolId);
 
             var result = await base.SimApp(new List<object> { abiHandle, assetAAbi, assetBAbi, appPoolIdAbi }, _tx_fee: _tx_fee, _tx_callType: _tx_callType, _tx_roundValidity: _tx_roundValidity, _tx_note: _tx_note, _tx_sender: _tx_sender, _tx_transactions: _tx_transactions, _tx_apps: _tx_apps, _tx_assets: _tx_assets, _tx_accounts: _tx_accounts, _tx_boxes: _tx_boxes);
-            return Structs.AppPoolInfo.Parse(result.Last());
+            var lastLogBytes = result.Last();
+            if (lastLogBytes.Length < 4 || lastLogBytes[0] != 21 || lastLogBytes[1] != 31 || lastLogBytes[2] != 124 || lastLogBytes[3] != 117) throw new Exception("Invalid ABI handle");
+            return Structs.AppPoolInfo.Parse(lastLogBytes.Skip(4).ToArray());
 
         }
 
