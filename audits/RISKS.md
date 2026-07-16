@@ -283,3 +283,33 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   captured-output log file).
 - **First recorded**: 2026-07-16
 - **Last reviewed**: 2026-07-16 (remediation update, same day)
+
+## RISK-011 — `Utils.GetRandomAssetMetaHash()` uses `System.Random`, not a CSPRNG
+
+- **Description**: `dotnet-algorand-sdk/Utils/Utils.cs:89-96` generates a 32-byte value
+  for the `AssetParams.MetadataHash` field using `System.Random` (time-seeded,
+  predictable) rather than a cryptographic RNG. This is **not** in the key-generation or
+  signing path — `Account()`'s real key generation uses BouncyCastle's `SecureRandom`,
+  confirmed unaffected — and `MetadataHash` is a public, on-chain value with no
+  confidentiality requirement. The risk is purely that the method's name/lack of
+  documentation could mislead a developer into assuming its output carries a
+  cryptographic guarantee it doesn't have. See `AUDIT-2026-07-16c.md` finding G1.
+- **Who is exposed**: Developers who call this helper expecting an unpredictable or
+  tamper-evident value for asset metadata; no end-user key or fund is directly at risk.
+- **Mitigable by this repo?**: Yes — switch to `RandomNumberGenerator`-backed
+  generation, or add an XML-doc caveat that the output has no cryptographic guarantee.
+  Trivial, low-priority fix.
+- **Current mitigation status**: Mitigated — `GetRandomAssetMetaHash()` now fills the
+  32-byte buffer via `System.Security.Cryptography.RandomNumberGenerator.Fill(bts)`
+  instead of `System.Random`. Verified: `dotnet build --configuration Release` (0
+  errors), `SerialisationTests` (23/23) and `test.csproj` non-LocalNet subset (96/96)
+  all still pass.
+- **5-year misuse likelihood**: **N/A — this is a functional/API-honesty risk, not a
+  key-security risk.** Recorded here per the audit instructions' full-threat-picture
+  registry scope, but the percentage framework doesn't apply since no plausible misuse
+  path leads to key or fund loss — at worst a developer relies on a weaker-than-expected
+  "hash" for a public metadata field.
+- **Impact if realized**: No direct impact to key/fund security; at most a predictable
+  public asset-metadata value where a developer expected unpredictability.
+- **First recorded**: 2026-07-16
+- **Last reviewed**: 2026-07-16

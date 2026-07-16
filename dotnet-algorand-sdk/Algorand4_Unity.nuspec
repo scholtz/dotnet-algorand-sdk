@@ -12,7 +12,7 @@
     <description>Algorand SDK for .Net 2</description>
     <repository url="https://github.com/scholtz/dotnet-algorand-sdk" />
     <dependencies>
-      <group targetFramework=".NETStandard2.0">
+      <group targetFramework=".NETStandard2.1">
         <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />
         <dependency id="System.ComponentModel.Annotations" version="5.0.0" exclude="Build,Analyzers" />
       </group>

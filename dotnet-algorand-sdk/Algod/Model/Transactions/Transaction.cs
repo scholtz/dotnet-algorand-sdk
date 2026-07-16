@@ -112,28 +112,33 @@ namespace Algorand.Algod.Model.Transactions
         [Tooltip(@"")]
         [field: InspectorName(@"ConfirmedRound")]
         [JsonIgnore]
+        [IgnoreMember]
         public ulong ConfirmedRound { get; internal set; }
 
-       
+
         [JsonIgnore]
+        [IgnoreMember]
         public bool Committed => ConfirmedRound > 0;
 
         [field: SerializeField]
         [Tooltip(@"")]
         [field: InspectorName(@"ReceiverRewards")]
         [JsonIgnore]
+        [IgnoreMember]
         public ulong ReceiverRewards { get; internal set; }
 
         [field: SerializeField]
         [Tooltip(@"")]
         [field: InspectorName(@"SenderRewards")]
         [JsonIgnore]
+        [IgnoreMember]
         public ulong SenderRewards { get; internal set; }
 
         [field: SerializeField]
         [Tooltip(@"")]
         [field: InspectorName(@"CloseRewards")]
         [JsonIgnore]
+        [IgnoreMember]
         public ulong CloseRewards { get; internal set; }
 #else
         [JsonIgnore]

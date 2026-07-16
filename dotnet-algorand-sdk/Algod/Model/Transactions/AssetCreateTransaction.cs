@@ -15,6 +15,7 @@ namespace Algorand.Algod.Model.Transactions
         [Tooltip(@"")]
         [field: InspectorName(@"ConfirmedRound")]
         [JsonIgnore]
+        [IgnoreMember]
         public ulong AssetIndex { get; internal set; }
 #else
         [JsonIgnore]

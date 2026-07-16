@@ -24,6 +24,7 @@ using UnityEngine;
 #else
         [MessagePack.Key("sig")]
         public Algorand.Signature Sig { get; set; }
+#endif
 
         [Newtonsoft.Json.JsonProperty("txn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
@@ -36,7 +37,6 @@ using UnityEngine;
         public Transaction Tx { get; set; }
 #endif
 
-#endif
         [Newtonsoft.Json.JsonProperty("msig", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
     [field:SerializeField]

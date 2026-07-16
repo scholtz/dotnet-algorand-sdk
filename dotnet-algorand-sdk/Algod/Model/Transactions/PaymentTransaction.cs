@@ -97,6 +97,7 @@ namespace Algorand.Algod.Model.Transactions
         [Tooltip(@"")]
         [field: InspectorName(@"ClosingAmount")]
         [JsonIgnore]
+        [IgnoreMember]
         public ulong? ClosingAmount { get; internal set; }
 #else
 

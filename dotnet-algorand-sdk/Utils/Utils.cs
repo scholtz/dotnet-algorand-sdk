@@ -88,10 +88,8 @@ namespace Algorand.Utils
         /// <returns>a 32 bytes string</returns>
         public static string GetRandomAssetMetaHash()
         {
-            Random rd = new Random();
             byte[] bts = new byte[32];
-            rd.NextBytes(bts);
-            //var base64 = Convert.ToBase64String(bts);
+            System.Security.Cryptography.RandomNumberGenerator.Fill(bts);
             return Convert.ToBase64String(bts);
         }
        

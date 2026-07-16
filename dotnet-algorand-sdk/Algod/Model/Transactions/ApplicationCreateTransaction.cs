@@ -40,6 +40,7 @@ namespace Algorand.Algod.Model.Transactions
         [Tooltip(@"")]
         [field: InspectorName(@"ApplicationIndex")]
         [JsonIgnore]
+        [IgnoreMember]
         public ulong ApplicationIndex { get; internal set; }
 #else
         [JsonIgnore]
