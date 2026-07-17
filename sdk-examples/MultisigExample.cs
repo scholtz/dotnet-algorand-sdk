@@ -1,4 +1,4 @@
-﻿using Algorand;
+using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
@@ -36,21 +36,21 @@ namespace sdk_examples
                 var randomAccount = new Account();
 
                 var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-                DefaultApi algodApiInstance = new DefaultApi(httpClient);
+                var algod = new AlgodClient(httpClient);
 
                 // A multisig address is the hash of the following information
                 // Note that the second argument (2) means in this case "2 of 3 signatures are required"
                 MultisigAddress multiAddress = new MultisigAddress(1, 2, new List<byte[]> { acc1.Address.Bytes, acc2.Address.Bytes, acc3.Address.Bytes });
 
                 // Send *to* the multisig address
-                var transParams = await algodApiInstance.TransactionParamsAsync();
+                var transParams = await algod.TransactionParamsAsync();
                 var payment = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acc1.Address, multiAddress.ToAddress(), 110000, "to multsig", transParams);
                 var signedTx = payment.Sign(acc1);
-                var tx = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                await Utils.WaitTransactionToComplete(algodApiInstance,tx.Txid);
+                var tx = await Utils.SubmitTransaction(algod, signedTx);
+                await Utils.WaitTransactionToComplete(algod,tx.Txid);
 
                 // now to send *from* the multi-address we need a certain number of signatures specified by the threshold
-                transParams = await algodApiInstance.TransactionParamsAsync();
+                transParams = await algod.TransactionParamsAsync();
                 var payment2 = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(multiAddress.ToAddress(),randomAccount.Address, 110000, "from multisig", transParams);
 
                 // sign with 2 addresses (2 of 3 threshold)
@@ -58,11 +58,11 @@ namespace sdk_examples
                 var signedTx2 = payment2.Sign(multiAddress,acc2);
                 signedTx = SignedTransaction.MergeMultisigTransactions(signedTx1, signedTx2);
                
-                tx = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                var result= await Utils.WaitTransactionToComplete(algodApiInstance, tx.Txid);
+                tx = await Utils.SubmitTransaction(algod, signedTx);
+                var result= await Utils.WaitTransactionToComplete(algod, tx.Txid);
 
                 // now let's check the account received the amount
-                var accountInfo = await algodApiInstance.AccountInformationAsync(randomAccount.Address.ToString(), null, null);
+                var accountInfo = await algod.AccountInformationAsync(randomAccount.Address.ToString(), null, null);
                 Console.WriteLine($"For account address {randomAccount.Address} the account balance is {accountInfo.Amount}");
 
 
@@ -75,3 +75,5 @@ namespace sdk_examples
         }
     }
 }
+
+

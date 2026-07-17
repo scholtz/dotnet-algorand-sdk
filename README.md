@@ -79,26 +79,26 @@ try
 
     // Connect to a node. Presets: MainNet, TestNet, BetaNet, DockerNet (AlgoKit LocalNet), VoiMain, AramidMain
     using var httpClient = HttpClientConfigurator.ConfigureHttpClient(AlgodConfiguration.DockerNet);
-    var algodApiInstance = new DefaultApi(httpClient);
+    var algod = new AlgodClient(httpClient);
 
     // Query the node
-    var supply = await algodApiInstance.GetSupplyAsync();
+    var supply = await algod.GetSupplyAsync();
     Console.WriteLine($"Total Algorand Supply: {supply.TotalMoney}");
 
-    var accountInfo = await algodApiInstance.AccountInformationAsync(src.Address.ToString(), null, null);
+    var accountInfo = await algod.AccountInformationAsync(src.Address.ToString(), null, null);
     Console.WriteLine($"Account Balance: {accountInfo.Amount} microAlgos");
 
     // Build, sign, submit, and confirm a payment transaction
-    var transParams = await algodApiInstance.TransactionParamsAsync();
+    var transParams = await algod.TransactionParamsAsync();
     var amount = Utils.AlgosToMicroalgos(1);
     var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(
         src.Address, new Address(DEST_ADDR), amount, "pay message", transParams);
     var signedTx = tx.Sign(src);
 
-    var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
+    var id = await Utils.SubmitTransaction(algod, signedTx);
     Console.WriteLine($"Successfully sent tx with id: {id.Txid}");
 
-    var resp = await Utils.WaitTransactionToComplete(algodApiInstance, id.Txid);
+    var resp = await Utils.WaitTransactionToComplete(algod, id.Txid);
     Console.WriteLine($"Confirmed Round is: {resp.ConfirmedRound}");
 }
 catch (ApiException<ErrorResponse> e)
@@ -114,7 +114,7 @@ To connect to a custom node, pass the host and API token explicitly:
 var httpClient = HttpClientConfigurator.ConfigureHttpClient(
     "http://localhost:4001/",
     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-var algod = new DefaultApi(httpClient);
+var algod = new AlgodClient(httpClient);
 ```
 
 ## Core concepts
@@ -122,7 +122,7 @@ var algod = new DefaultApi(httpClient);
 | Concept | Type(s) | Notes |
 |---|---|---|
 | Node connection | `HttpClientConfigurator`, `AlgodConfiguration` | Creates a configured `HttpClient`; pass it to a client proxy. |
-| Algod API | `Algorand.Algod.DefaultApi`, `CommonApi` | The `Default` and `Common` API sets cover all normal network interaction. (`Private` APIs are node-admin-only and not exposed.) |
+| Algod API | `Algorand.Algod.AlgodClient`, `CommonApi` | Use `AlgodClient` for the primary Algod API. Derives from `DefaultApi` for backward compatibility. The `Common` API set covers additional network interaction. (`Private` APIs are node-admin-only and not exposed.) |
 | Accounts & keys | `Algorand.Algod.Model.Account`, `Address` | `new Account(mnemonic)` restores a key pair; `new Account()` generates one. `Account` also signs transactions. |
 | Transactions | `Algorand.Algod.Model.Transactions.*` | `PaymentTransaction`, `AssetCreateTransaction`, `ApplicationCallTransaction`, `KeyRegistrationTransaction`, … each with static factory helpers. |
 | Submitting & waiting | `Algorand.Utils.Utils` | `SubmitTransaction`, `WaitTransactionToComplete`, `AlgosToMicroalgos`, atomic group helpers. |

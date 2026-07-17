@@ -1,4 +1,4 @@
-﻿using Algorand;
+using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
@@ -31,17 +31,17 @@ namespace sdk_examples
                 var DEST_ADDR = "5KFWCRTIJUMDBXELQGMRBGD2OQ2L3ZQ2MB54KT2XOQ3UWPKUU4Y7TQ4X7U";
 
                 using var httpClient = HttpClientConfigurator.ConfigureHttpClient(AlgodConfiguration.DockerNet);
-                DefaultApi algodApiInstance = new DefaultApi(httpClient);
+                var algod = new AlgodClient(httpClient);
 
-                var supply = await algodApiInstance.GetSupplyAsync();
+                var supply = await algod.GetSupplyAsync();
                 Console.WriteLine("Total Algorand Supply: " + supply.TotalMoney);
                 Console.WriteLine("Online Algorand Supply: " + supply.OnlineMoney);
 
-                var accountInfo = await algodApiInstance.AccountInformationAsync(src.Address.ToString(), null, null);
+                var accountInfo = await algod.AccountInformationAsync(src.Address.ToString(), null, null);
 
                 Console.WriteLine($"Account Balance: {accountInfo.Amount} microAlgos");
 
-                var transParams = await algodApiInstance.TransactionParamsAsync();
+                var transParams = await algod.TransactionParamsAsync();
 
                 var amount = Utils.AlgosToMicroalgos(1);
                 var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(src.Address, new Address(DEST_ADDR), amount, "pay message", transParams);
@@ -50,10 +50,10 @@ namespace sdk_examples
                 Console.WriteLine("Signed transaction with transaction ID: " + signedTx.Tx.TxID());
 
                 // send the transaction to the network
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
+                var id = await Utils.SubmitTransaction(algod, signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
 
-                var resp = await Utils.WaitTransactionToComplete(algodApiInstance, id.Txid);
+                var resp = await Utils.WaitTransactionToComplete(algod, id.Txid);
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
             }
             catch (ApiException<ErrorResponse> exc)
@@ -63,3 +63,4 @@ namespace sdk_examples
         }
     }
 }
+

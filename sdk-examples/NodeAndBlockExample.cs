@@ -18,37 +18,37 @@ namespace sdk_examples
             var ALGOD_API_TOKEN = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+            var algod = new AlgodClient(httpClient);
 
             try
             {
                 // Current node status
-                var status = await algodApiInstance.GetStatusAsync();
+                var status = await algod.GetStatusAsync();
                 Console.WriteLine($"Last round:        {status.LastRound}");
                 Console.WriteLine($"Consensus version: {status.LastVersion}");
                 Console.WriteLine($"Time since last round: {status.TimeSinceLastRound / 1_000_000} ms");
 
                 // Network / genesis information
-                var transParams = await algodApiInstance.TransactionParamsAsync();
+                var transParams = await algod.TransactionParamsAsync();
                 Console.WriteLine($"Genesis ID:   {transParams.GenesisId}");
                 Console.WriteLine($"Genesis hash: {Convert.ToBase64String(transParams.GenesisHash)}");
                 Console.WriteLine($"Min fee:      {transParams.MinFee} microAlgos");
 
                 // Block until the next round is produced (long-polls the node)
-                var next = await algodApiInstance.WaitForBlockAsync(status.LastRound);
+                var next = await algod.WaitForBlockAsync(status.LastRound);
                 Console.WriteLine($"New round arrived: {next.LastRound}");
 
                 // Fetch a whole block, including its transactions
                 var round = next.LastRound;
-                var certifiedBlock = await algodApiInstance.GetBlockAsync(round);
+                var certifiedBlock = await algod.GetBlockAsync(round);
                 var block = certifiedBlock.Block;
                 Console.WriteLine($"Block {block.Round} contains {block.Transactions?.Count ?? 0} transaction(s)");
 
                 // Block hash and the ids of the transactions inside the block
-                var blockHash = await algodApiInstance.GetBlockHashAsync(round);
+                var blockHash = await algod.GetBlockHashAsync(round);
                 Console.WriteLine($"Block hash: {blockHash.Blockhash}");
 
-                var txids = await algodApiInstance.GetBlockTxidsAsync(round);
+                var txids = await algod.GetBlockTxidsAsync(round);
                 foreach (var txid in txids.Blocktxids.Take(10))
                     Console.WriteLine($"  txid: {txid}");
             }
@@ -59,3 +59,4 @@ namespace sdk_examples
         }
     }
 }
+

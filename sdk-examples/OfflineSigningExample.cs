@@ -31,12 +31,12 @@ namespace sdk_examples
             var senderAddress = new Account(senderMnemonic).Address;
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+            var algod = new AlgodClient(httpClient);
 
             try
             {
                 // --- Online: build the unsigned transaction ----------------------------------
-                var transParams = await algodApiInstance.TransactionParamsAsync();
+                var transParams = await algod.TransactionParamsAsync();
                 var amount = Utils.AlgosToMicroalgos(1);
                 var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(senderAddress, newAccount.Address, amount, "offline signing demo", transParams);
 
@@ -57,10 +57,10 @@ namespace sdk_examples
 
                 // --- Online: decode the signed bytes and submit -------------------------------
                 var decodedSignedTx = Encoder.DecodeFromMsgPack<SignedTransaction>(signedBytes);
-                var id = await Utils.SubmitTransaction(algodApiInstance, decodedSignedTx);
+                var id = await Utils.SubmitTransaction(algod, decodedSignedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
 
-                var resp = await Utils.WaitTransactionToComplete(algodApiInstance, id.Txid);
+                var resp = await Utils.WaitTransactionToComplete(algod, id.Txid);
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
             }
             catch (ApiException<ErrorResponse> e)
@@ -70,3 +70,5 @@ namespace sdk_examples
         }
     }
 }
+
+

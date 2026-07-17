@@ -27,9 +27,9 @@ namespace sdk_examples
             var srcAccount = new Account("arrive transfer silent pole congress loyal snap dirt dwarf relief easily plastic federal found siren point know polar quit very vanish ensure humor abstract broken");
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+            var algod = new AlgodClient(httpClient);
 
-            var transParams = await algodApiInstance.TransactionParamsAsync();
+            var transParams = await algod.TransactionParamsAsync();
 
             var amount = Utils.AlgosToMicroalgos(1);
             var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(srcAccount.Address, new Address(DEST_ADDR), amount, "simulated payment", transParams);
@@ -52,7 +52,7 @@ namespace sdk_examples
 
             try
             {
-                var response = await algodApiInstance.SimulateTransactionAsync(request);
+                var response = await algod.SimulateTransactionAsync(request);
 
                 Console.WriteLine($"Simulated at round: {response.LastRound}");
                 foreach (var group in response.TxnGroups)
@@ -79,3 +79,4 @@ namespace sdk_examples
         }
     }
 }
+

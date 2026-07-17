@@ -1,4 +1,4 @@
-﻿using Algorand;
+using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
@@ -27,12 +27,12 @@ namespace sdk_examples
                 Account acct3 = new Account();
 
                 var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-                DefaultApi algodApiInstance = new DefaultApi(httpClient);
+                var algod = new AlgodClient(httpClient);
 
-                await FundAccount.PayTo(acct3.Address, 1_000_000, acct1, algodApiInstance);
+                await FundAccount.PayTo(acct3.Address, 1_000_000, acct1, algod);
 
 
-                var transParams = await algodApiInstance.TransactionParamsAsync();
+                var transParams = await algod.TransactionParamsAsync();
 
                 ulong amount = 200000;
 
@@ -42,12 +42,12 @@ namespace sdk_examples
                     // this uses the payment transaction to rekey to Acct3 to use Acct1 signing keys
                     rekeyAcct3ToAcct1tx.RekeyTo = acct2.Address;
                     var signedTx = rekeyAcct3ToAcct1tx.Sign(acct3);
-                    await Utils.SubmitTransaction(algodApiInstance, signedTx);
+                    await Utils.SubmitTransaction(algod, signedTx);
 
                     // let's try it again with the acct3 signing key
                     var failToExecuteTxWithAcct3Signature = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct3.Address, acct2.Address, amount, "pay message", transParams);
                     signedTx = failToExecuteTxWithAcct3Signature.Sign(acct3);
-                    await Utils.SubmitTransaction(algodApiInstance, signedTx); //this should fail
+                    await Utils.SubmitTransaction(algod, signedTx); //this should fail
 
                 }
                 catch (ApiException<ErrorResponse> e)
@@ -62,14 +62,14 @@ namespace sdk_examples
                 // let's try it again with the acct3 signing key
                 var signWithAcct2WithRekeyInfo = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct3.Address, acct2.Address, amount, "pay message", transParams);
                 var signWithAcct2WithRekeyInfoSigned = signWithAcct2WithRekeyInfo.Sign(acct2);
-                await Utils.SubmitTransaction(algodApiInstance, signWithAcct2WithRekeyInfoSigned); //this will be ok, as acct2 acts now as acct3 public address with acct2 signing keys
+                await Utils.SubmitTransaction(algod, signWithAcct2WithRekeyInfoSigned); //this will be ok, as acct2 acts now as acct3 public address with acct2 signing keys
 
 
                 //rekey it back
                 var rekeyBackTx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct3.Address, acct2.Address, amount, "pay message", transParams);
                 rekeyBackTx.RekeyTo = acct3.Address;
                 var rekeyBackTxSigned = rekeyBackTx.Sign(acct2);
-                await Utils.SubmitTransaction(algodApiInstance, rekeyBackTxSigned);
+                await Utils.SubmitTransaction(algod, rekeyBackTxSigned);
 
             }
             catch (Exception e)
@@ -80,3 +80,4 @@ namespace sdk_examples
         }
     }
 }
+

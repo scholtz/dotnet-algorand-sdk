@@ -27,9 +27,9 @@ namespace sdk_examples
             var account = new Account("arrive transfer silent pole congress loyal snap dirt dwarf relief easily plastic federal found siren point know polar quit very vanish ensure humor abstract broken");
 
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
-            DefaultApi algodApiInstance = new DefaultApi(httpClient);
+            var algod = new AlgodClient(httpClient);
 
-            var transParams = await algodApiInstance.TransactionParamsAsync();
+            var transParams = await algod.TransactionParamsAsync();
 
             // Placeholder participation keys - replace with real values from `algokit goal account partkeyinfo`.
             // Vote and selection keys are 32 bytes; the state proof key is 64 bytes (all base64 in partkeyinfo output).
@@ -59,8 +59,8 @@ namespace sdk_examples
             try
             {
                 var signedTx = onlineTx.Sign(account);
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                var resp = await Utils.WaitTransactionToComplete(algodApiInstance, id.Txid);
+                var id = await Utils.SubmitTransaction(algod, signedTx);
+                var resp = await Utils.WaitTransactionToComplete(algod, id.Txid);
                 Console.WriteLine($"Account registered online in round: {resp.ConfirmedRound}");
             }
             catch (ApiException<ErrorResponse> e)
@@ -82,8 +82,8 @@ namespace sdk_examples
             try
             {
                 var signedTx = offlineTx.Sign(account);
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
-                var resp = await Utils.WaitTransactionToComplete(algodApiInstance, id.Txid);
+                var id = await Utils.SubmitTransaction(algod, signedTx);
+                var resp = await Utils.WaitTransactionToComplete(algod, id.Txid);
                 Console.WriteLine($"Account registered offline in round: {resp.ConfirmedRound}");
             }
             catch (ApiException<ErrorResponse> e)
@@ -93,3 +93,5 @@ namespace sdk_examples
         }
     }
 }
+
+

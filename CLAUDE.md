@@ -30,7 +30,7 @@ The solution has configurations `Debug;Release;Test_Debug;Integration_Test_Debug
 
 ### Model code generation (important — don't hand-edit generated files)
 
-Most of `Algod/Model/`, `Algod/Model/Transactions/`, and the Algod client (`DefaultApi.cs`) are generated from Algorand's official OpenAPI spec, not written by hand:
+Most of `Algod/Model/`, `Algod/Model/Transactions/`, and the Algod client (`DefaultApi.cs`) are generated from Algorand's official OpenAPI spec, not written by hand. The recommended client class is `AlgodClient` (defined in `AlgodClient.cs`), which derives from the generated `DefaultApi` for backward compatibility.
 
 - Spec source: `api-generator/dotnet_templates/algod.oas2.json`, pinned to a specific commit of `algorand/go-algorand`'s `daemon/algod/api/algod.oas2.json` (see `.github/workflows/generator_build.yml` for the exact URL/commit — updating the model means bumping that commit and re-downloading).
 - Generator: `api-generator/generator-1.0.0-jar-with-dependencies.jar` (a Java 17 tool, Velocity templates in `api-generator/dotnet_templates/*.vm`), invoked three times:
