@@ -35,10 +35,25 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         /// <returns></returns>
         public bool LoadFromByteArray(byte[] data)
         {
-            Contract = JsonConvert.DeserializeObject<AppDescriptionArc56>(Encoding.UTF8.GetString(data), new JsonSerializerSettings()
+            var json = Encoding.UTF8.GetString(data);
+            Contract = JsonConvert.DeserializeObject<AppDescriptionArc56>(json, new JsonSerializerSettings()
             {
                 MissingMemberHandling = MissingMemberHandling.Ignore
             });
+
+            // Some real-world ARC-56 artifacts (e.g. from older/nonstandard build tooling) emit the compiled
+            // bytecode under a snake_case "byte_code" key instead of the spec's camelCase "byteCode" - fall back
+            // to it so ExtraProgramPages (ToProxy below) can still be computed instead of silently staying null.
+            if (Contract != null && Contract.ByteCode == null)
+            {
+                var root = Newtonsoft.Json.Linq.JObject.Parse(json);
+                var byteCodeToken = root["byte_code"];
+                if (byteCodeToken != null)
+                {
+                    Contract.ByteCode = byteCodeToken.ToObject<ProgramSource>();
+                }
+            }
+
             return true;
         }
         public string GetOutputFileName()
@@ -94,9 +109,16 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             }
 
 
+            // ExtraProgramPages is derived from the compiled approval program size, but ByteCode is optional in
+            // ARC-56 (some artifacts only ship source/sourceInfo) - fall back to 0 rather than crash when it or
+            // its Approval program is missing.
+            ulong extraProgramPages = string.IsNullOrEmpty(Contract.ByteCode?.Approval)
+                ? 0
+                : (ulong)(Convert.FromBase64String(Contract.ByteCode.Approval).Length / 2048);
+
             proxyBody.AddOpeningLine($"public class {className} : ProxyBase");
             proxyBody.AddOpeningLine("{");
-            proxyBody.AddClosingLine($"protected override ulong? ExtraProgramPages {{get; set; }} = {Convert.FromBase64String(Contract.ByteCode.Approval).Length / 2048};");
+            proxyBody.AddClosingLine($"protected override ulong? ExtraProgramPages {{get; set; }} = {extraProgramPages};");
             proxyBody.AddClosingLine($"protected string _ARC56DATA = \"{Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(Contract)))}\";");
             proxyBody.AddClosingLine("}");
 

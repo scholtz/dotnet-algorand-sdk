@@ -1300,5 +1300,21 @@ namespace test
             Assert.That(appProxy.Length, Is.GreaterThan(1));
             CompileAndPublishGeneratedClient("BountyEscrowContractProxy.cs", appProxy);
         }
+
+        // Regression test for incident CadenciaEscrow_08254c5a: this spec puts the compiled bytecode under a
+        // snake_case "byte_code" key instead of the ARC-56 spec's camelCase "byteCode", which left
+        // AppDescriptionArc56.ByteCode null and crashed ToProxy with a NullReferenceException while computing
+        // ExtraProgramPages from Contract.ByteCode.Approval.
+        [Test]
+        public async Task GenerateCadenciaEscrowClient()
+        {
+            var content = await DownloadArc56Spec("https://raw.githubusercontent.com/AdityaWagh19/Cadencia-A2A-Platform/HEAD/backend/artifacts/CadenciaEscrow.arc56.json");
+
+            var generator = new ClientGeneratorARC56();
+            generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));
+            var appProxy = await generator.ToProxy("CadenciaEscrowRegression");
+            Assert.That(appProxy.Length, Is.GreaterThan(1));
+            CompileAndPublishGeneratedClient("CadenciaEscrowProxy.cs", appProxy);
+        }
     }
 }
