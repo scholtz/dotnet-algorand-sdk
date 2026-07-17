@@ -240,3 +240,5 @@ NuGet package versions (4.x and onward) track the version of the algod build the
 ## License
 
 Distributed under the [GNU General Public License v3.0](LICENSE).
+
+The package icon (`icon.png`) is derived from the official Algorand logomark, geometry sourced from [Algorand_mark.svg](https://commons.wikimedia.org/wiki/File:Algorand_mark.svg) on Wikimedia Commons, licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).

@@ -42,6 +42,7 @@
 		<RepositoryUrl>https://github.com/scholtz/dotnet-algorand-sdk</RepositoryUrl>
 		<PackageId>Algorand4</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>icon.png</PackageIcon>
 		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity;Unity_debug</Configurations>
 		<AssemblyOriginatorKeyFile>Algorand.snk</AssemblyOriginatorKeyFile>
 		<!-- Newtonsoft.Msgpack 0.1.11 (the JsonWriter/JsonReader bridge Utils/Encoder.cs uses for canonical
@@ -145,6 +146,11 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="icon.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
