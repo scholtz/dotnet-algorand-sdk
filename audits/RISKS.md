@@ -313,3 +313,85 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   public asset-metadata value where a developer expected unpredictability.
 - **First recorded**: 2026-07-16
 - **Last reviewed**: 2026-07-16
+
+## RISK-012 — Canonical transaction encoding depends on an unmaintained, single-maintainer bridge package
+
+- **Description**: `dotnet-algorand-sdk/Utils/Encoder.cs`'s canonical msgpack encode path
+  (`EncodeToMsgPackOrdered`/`EncodeToMsgPackNoOrder`, used before every transaction
+  signature) and its decode path both go through `Newtonsoft.Msgpack`'s
+  `MessagePackWriter`/`MessagePackReader`, not the `MessagePack`-CSharp library. The
+  `Newtonsoft.Msgpack` NuGet package (`0.1.11`, pinned in `dotnet-algorand-sdk.csproj`) has
+  a single maintainer (`darkl`), 12 releases total, and was last published 2019-08-31 —
+  `0.1.11` remains the newest version on nuget.org over 6 years later, and it has no
+  strong-named build. See `AUDIT-2026-07-18.md` finding F2.
+- **Who is exposed**: All developers depending on `Algorand4` for transaction signing,
+  transitively all their end users, if a future vulnerability were ever found in this
+  package's encode/decode logic with no maintainer available to patch it.
+- **Mitigable by this repo?**: Partially — no immediate action possible (no newer version
+  exists), but the repo could eventually replace `Newtonsoft.Msgpack`'s role with
+  `MessagePack`-CSharp's own APIs (already a direct dependency) to remove the dependency,
+  though this is a non-trivial refactor since the ordered-field-encoding behavior the
+  canonical-encoding tests depend on comes from `Newtonsoft.Msgpack`'s
+  `JsonSerializer`+`ContractResolver` approach specifically.
+- **Current mitigation status**: Unmitigated (no known CVE today; risk is supply-chain
+  continuity, not a live exploit)
+- **5-year misuse likelihood**: **2%** — no known vulnerability exists in this package
+  today; the risk is contingent on one being discovered in a package with no active
+  maintainer, which is possible but not the default expected outcome for a narrowly-scoped
+  serialization bridge with a small, stable feature surface.
+- **Impact if realized**: Depending on the nature of a hypothetical parsing flaw, ranges
+  from a denial-of-service (malformed input crash) to, in the worst case, a signing/decoding
+  integrity issue affecting consumers who can't upgrade past the vulnerable version.
+- **First recorded**: 2026-07-18
+- **Last reviewed**: 2026-07-18
+
+## RISK-013 — Unused Roslyn `using` in a `MessagePack` formatter (dependency itself confirmed legitimate, not bloat)
+
+- **Description**: `dotnet-algorand-sdk/Algod/Model/Converters/MsgPack/NoDefaultsFormatter.cs:5`
+  had a stray `using Microsoft.CodeAnalysis.Host;` with no corresponding type usage
+  anywhere in that file. This row was originally filed (same day) as a broader claim that
+  the main project's unconditional `Microsoft.CodeAnalysis.CSharp`/`.CSharp.Workspaces`/
+  `.Workspaces.Common` `PackageReference`s (`4.14.0`) were unnecessary dependency bloat.
+  **That broader claim was wrong and is corrected here**: attempting the fix and rebuilding
+  showed `ClientGenerator/Compiler/TealSharpSyntaxWalker.cs` and
+  `ClientGenerator/Compiler/CompilerStates/*.cs` (which do use Roslyn syntax/symbol types
+  extensively) have no `<Compile Remove>` exclusion in `dotnet-algorand-sdk.csproj`, so
+  they compile into the main `Algorand4` package via default SDK-style globbing, not only
+  into the separate `ClientGenerator/AlgoStudio.csproj` project as originally assumed.
+  Removing the three package references produced 819 `CS0246` build errors, confirming they
+  are genuinely required. See `AUDIT-2026-07-18.md` finding F1 for the full correction.
+- **Who is exposed**: N/A for the dependency itself (legitimate, not exposure). The only
+  real issue was the single unused `using` — no exposure once removed.
+- **Mitigable by this repo?**: Yes — remove the stray `using` (the `PackageReference`s
+  themselves should stay).
+- **Current mitigation status**: Mitigated — the stray `using` was removed same day;
+  verified via a full `Release` solution build (0 warnings, 0 errors, `Algorand4` package
+  builds and packs). The three Roslyn `PackageReference`s were restored/left in place as
+  confirmed-necessary.
+- **5-year misuse likelihood**: **N/A — this was a dependency-hygiene finding, not a
+  misuse-likelihood risk, and the underlying dependencies are legitimate, not bloat.**
+- **Impact if realized**: None — no exposure; the corrected understanding is that these
+  dependencies are load-bearing for the main package's own code-generation/compilation
+  features, not avoidable bloat.
+- **First recorded**: 2026-07-18
+- **Last reviewed**: 2026-07-18 (corrected and mitigated same day)
+
+## RISK-014 — `Microsoft.Build.Utilities.Core` CVE-2025-55247 in the Unity build-time helper task
+
+- **Description**: `BuildTasks/IlRepackMergeTask/IlRepackMergeTask.csproj` (a build-time-only
+  helper, never shipped in either NuGet package — see `AUDIT-2026-07-16d.md`) referenced
+  `Microsoft.Build.Utilities.Core` `17.14.8`, within the vulnerable range
+  (`>=17.14.0, <=17.14.8`) of `CVE-2025-55247`/`GHSA-w3q9-fxm7-j8fq`. Commit `b912e53`
+  bumped it to `17.14.28`, confirmed to be exactly the first patched version for the
+  17.14.x branch. See `AUDIT-2026-07-18.md` finding F3.
+- **Who is exposed**: Nobody at runtime (build-tooling-only, not distributed in any
+  package); at most a developer building the Unity configuration from source with a
+  vulnerable cached package.
+- **Mitigable by this repo?**: Yes — already done.
+- **Current mitigation status**: Mitigated
+- **5-year misuse likelihood**: **<1%** — build-tooling-only dependency, never distributed,
+  now on a patched version.
+- **Impact if realized**: None expected now that this is patched; historically, at most a
+  build-environment-local issue, not a distributed-package issue.
+- **First recorded**: 2026-07-18
+- **Last reviewed**: 2026-07-18

@@ -2,7 +2,6 @@
 using MessagePack;
 using MessagePack.Formatters;
 using MessagePack.Resolvers;
-using Microsoft.CodeAnalysis.Host;
 using Org.BouncyCastle.Crypto;
 using System;
 using System.Collections.Generic;
