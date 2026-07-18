@@ -6,7 +6,6 @@ using Algorand.Utils;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Org.BouncyCastle.Crypto.Parameters;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

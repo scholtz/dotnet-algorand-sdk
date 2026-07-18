@@ -1,6 +1,5 @@
 ﻿using Algorand;
 using Algorand.Algod;
-using Algorand.Algod.Model;
 using Algorand.KMD;
 using System.Net.Http;
 using TechTalk.SpecFlow;

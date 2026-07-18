@@ -1,6 +1,4 @@
-﻿using AVM.ClientGenerator.Compiler;
-using Microsoft.CodeAnalysis;
-using System;
+﻿using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 
 namespace AVM.ClientGenerator.Compiler.Structures

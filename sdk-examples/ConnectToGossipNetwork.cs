@@ -1,11 +1,8 @@
-﻿using Algorand;
-using Algorand.Algod;
-using Algorand.Gossip;
+﻿using Algorand.Gossip;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace sdk_examples

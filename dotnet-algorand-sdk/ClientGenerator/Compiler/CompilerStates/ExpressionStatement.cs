@@ -1,11 +1,8 @@
 ﻿using AVM.ClientGenerator.Compiler.Exceptions;
 using AVM.ClientGenerator.Compiler.Operators;
-using AVM.ClientGenerator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AVM.ClientGenerator.Compiler.CompilerStates
 {

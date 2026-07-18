@@ -2,8 +2,6 @@
 
 
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace Algorand.Algod.Model.Transactions
 {

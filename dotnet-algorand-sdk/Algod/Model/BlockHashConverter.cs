@@ -1,6 +1,5 @@
 using Algorand.Utils;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Utilities.Encoders;
 using System;
 using System.Linq;
 

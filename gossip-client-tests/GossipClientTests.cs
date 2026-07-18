@@ -1,9 +1,6 @@
 using Algorand.Algod.Model.Transactions;
 using Algorand.Gossip;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
-using NUnit.Framework;
-using System.Text;
 
 namespace gossip_client_tests
 {

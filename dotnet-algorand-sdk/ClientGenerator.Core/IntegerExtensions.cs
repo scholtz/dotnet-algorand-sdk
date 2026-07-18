@@ -1,9 +1,4 @@
-﻿using AVM.ClientGenerator.Core.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System.Numerics;
 
 namespace AVM.ClientGenerator.Core
 {

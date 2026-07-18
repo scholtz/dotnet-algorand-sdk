@@ -1,23 +1,6 @@
-﻿using Algorand.Algod;
-using Algorand.AVM.ClientGenerator.ABI.ARC32;
-using AVM.ClientGenerator.ABI.ARC4;
-using AVM.ClientGenerator.Clients;
-using AVM.ClientGenerator.Compiler;
-using AVM.ClientGenerator.Compiler.Variables;
-using AVM.ClientGenerator.Core.Attributes;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AVM.ClientGenerator.ABI.ARC56
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Algorand.Algod.Model.Exceptions
+﻿namespace Algorand.Algod.Model.Exceptions
 {
     public class UnnamedResourceException : System.Exception
     {

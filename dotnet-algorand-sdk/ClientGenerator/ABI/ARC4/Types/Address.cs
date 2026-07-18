@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace AVM.ClientGenerator.ABI.ARC4.Types
+﻿namespace AVM.ClientGenerator.ABI.ARC4.Types
 {
     public class Address : FixedArray<Byte>
     {

@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Algorand.Algod.Model.Transactions
+﻿namespace Algorand.Algod.Model.Transactions
 {
     [MessagePack.MessagePackObject(AllowPrivate = true)]
     public partial class AssetAcceptTransaction : AssetMovementsTransaction

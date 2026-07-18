@@ -3,7 +3,6 @@ using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Exceptions;
 using Algorand.Algod.Model.Transactions;
-using Algorand.KMD;
 using AVM.ClientGenerator.Compiler;
 using System;
 using System.Collections.Generic;

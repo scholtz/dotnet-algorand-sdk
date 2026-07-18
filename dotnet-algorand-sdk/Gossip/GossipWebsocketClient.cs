@@ -1,9 +1,7 @@
 ﻿using Algorand.Algod.Model.Transactions;
 using Algorand.Gossip.Model;
-using AVM.ClientGenerator.ABI.ARC4.Types;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

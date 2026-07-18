@@ -1,12 +1,3 @@
-using Algorand;
-using Algorand.Algod.Model.Transactions;
-using Algorand.Utils;
-using FluentAssertions;
-using Newtonsoft.Json;
-using System;
-using System.Net.Http.Headers;
-using System.Reflection;
-using TechTalk.SpecFlow;
 #if TEST_DEBUG
 namespace algorand_tests.StepDefinitions
 {

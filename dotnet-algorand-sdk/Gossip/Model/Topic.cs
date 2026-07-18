@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Algorand.Gossip.Model
+﻿namespace Algorand.Gossip.Model
 {
     /// <summary>
     /// https://github.com/algorand/go-algorand/blob/d9e8f58b7065158565cfe9b98734b86998003c6b/network/topics.go

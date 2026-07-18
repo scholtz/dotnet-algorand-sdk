@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AVM.ClientGenerator.Compiler.CompiledCodeModel
+﻿namespace AVM.ClientGenerator.Compiler.CompiledCodeModel
 {
     internal abstract class RootCode : CodeBuilder
     {

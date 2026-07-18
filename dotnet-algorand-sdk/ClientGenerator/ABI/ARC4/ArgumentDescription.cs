@@ -1,9 +1,6 @@
 ﻿
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Byte = AVM.ClientGenerator.ABI.ARC4.Types.Byte;
 
 namespace AVM.ClientGenerator.ABI.ARC4
 {

@@ -1,7 +1,6 @@
 using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
-using Algorand.Utils;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

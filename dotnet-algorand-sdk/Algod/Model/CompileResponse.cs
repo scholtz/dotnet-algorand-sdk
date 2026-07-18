@@ -2,7 +2,6 @@
 namespace Algorand.Algod.Model
 {
     using Newtonsoft.Json.Linq;
-    using System = global::System;
 #if UNITY
     using UnityEngine;
 #endif

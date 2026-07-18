@@ -1,9 +1,4 @@
-﻿using AVM.ClientGenerator.Core.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AVM.ClientGenerator.Core
+﻿namespace AVM.ClientGenerator.Core
 {
     public sealed class KeyRegistration : InnerTransaction
     {

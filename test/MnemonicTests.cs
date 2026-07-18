@@ -1,4 +1,3 @@
-using Algorand;
 using Algorand.Utils;
 using NUnit.Framework;
 using System;

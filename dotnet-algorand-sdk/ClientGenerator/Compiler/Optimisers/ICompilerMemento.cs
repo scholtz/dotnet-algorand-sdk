@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AVM.ClientGenerator.Optimisers
+﻿namespace AVM.ClientGenerator.Optimisers
 {
     public interface ICompilerMemento
     {

@@ -2,16 +2,10 @@
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
-using AVM.ClientGenerator.Compiler.CompilerStates;
 using AVM.ClientGenerator.Compiler.Exceptions;
 using AVM.ClientGenerator.Compiler.Variables;
-using AVM.ClientGenerator;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Operations;
-using AVM.ClientGenerator.Clients;
-using System.Numerics;
 using AVM.ClientGenerator.Compiler.CompiledCodeModel;
-using Algorand.KMD;
 
 namespace AVM.ClientGenerator.Compiler
 {

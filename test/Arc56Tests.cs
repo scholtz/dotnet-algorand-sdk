@@ -13,7 +13,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.WebSockets;
 using System.Numerics;
 using System.Reflection;
 using System.Security.Cryptography;

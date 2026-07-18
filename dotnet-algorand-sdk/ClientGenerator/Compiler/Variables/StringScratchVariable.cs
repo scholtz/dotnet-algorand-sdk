@@ -1,12 +1,9 @@
 ﻿using AVM.ClientGenerator.Compiler.Exceptions;
 using AVM.ClientGenerator.Compiler.Predefineds;
-using AVM.ClientGenerator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Operations;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AVM.ClientGenerator.Compiler.CompiledCodeModel;
 
 namespace AVM.ClientGenerator.Compiler.Variables

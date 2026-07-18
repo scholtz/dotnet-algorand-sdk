@@ -3,7 +3,6 @@ using System;
 using Newtonsoft.Json;
 using System.IO;
 using System.Reflection;
-using Algorand.Utils;
 
 namespace Algorand.Utils
 {

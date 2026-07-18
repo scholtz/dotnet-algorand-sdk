@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Algorand
+﻿namespace Algorand
 {
     // Hand-patched: unlike the raw NSwag/client.vm generated default, Message/ToString()
     // deliberately do NOT embed the raw HTTP response body. Some endpoints this exception

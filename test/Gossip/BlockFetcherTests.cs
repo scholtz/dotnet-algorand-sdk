@@ -2,13 +2,10 @@
 using Algorand.Algod;
 using Algorand.Algod.Model.Transactions;
 using Algorand.Gossip;
-using AVM.ClientGenerator.Core;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace test.Gossip

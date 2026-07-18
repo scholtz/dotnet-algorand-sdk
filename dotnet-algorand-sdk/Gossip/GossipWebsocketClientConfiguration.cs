@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Algorand.Gossip
+﻿namespace Algorand.Gossip
 {
     public class GossipWebsocketClientConfiguration
     {

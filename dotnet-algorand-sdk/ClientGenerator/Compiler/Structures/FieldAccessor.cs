@@ -1,6 +1,4 @@
-﻿using AVM.ClientGenerator.Compiler;
-
-namespace AVM.ClientGenerator.Compiler.Structures
+﻿namespace AVM.ClientGenerator.Compiler.Structures
 {
 
     internal class FieldAccessor

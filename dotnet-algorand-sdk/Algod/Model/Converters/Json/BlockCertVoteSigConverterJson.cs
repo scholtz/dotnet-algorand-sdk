@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Text;
 
 namespace Algorand.Algod.Model.Converters.Json
 {

@@ -1,6 +1,4 @@
-﻿
-using AVM.ClientGenerator;
-using AVM.ClientGenerator.Core.Attributes;
+﻿using AVM.ClientGenerator.Core.Attributes;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Linq;

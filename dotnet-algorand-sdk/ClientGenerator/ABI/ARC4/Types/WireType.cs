@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AVM.ClientGenerator.ABI.ARC4.Types
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AVM.ClientGenerator.Core
+﻿namespace AVM.ClientGenerator.Core
 {
     public static class Constants
     {

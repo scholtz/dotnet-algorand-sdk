@@ -3,11 +3,9 @@
 
 using Algorand.Algod.Model.Converters.MsgPack;
 using Algorand.Utils;
-using AVM.ClientGenerator.ABI.ARC4.Types;
 using MessagePack;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 

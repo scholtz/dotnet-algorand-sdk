@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AVM.ClientGenerator.Compiler.CompiledCodeModel;
+﻿using AVM.ClientGenerator.Compiler.CompiledCodeModel;
 
 namespace AVM.ClientGenerator.Compiler
 {

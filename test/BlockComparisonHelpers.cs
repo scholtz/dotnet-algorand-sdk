@@ -1,6 +1,5 @@
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
-using System.Collections.Generic;
 
 namespace test
 {

@@ -1,9 +1,6 @@
 ﻿using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
-using AVM.ClientGenerator.ABI;
-using AVM.ClientGenerator;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;

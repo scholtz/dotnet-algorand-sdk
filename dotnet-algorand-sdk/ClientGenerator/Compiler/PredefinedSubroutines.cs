@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AVM.ClientGenerator.Compiler
+﻿namespace AVM.ClientGenerator.Compiler
 {
 
    

@@ -3,8 +3,6 @@ using MessagePack;
 using MessagePack.Formatters;
 using System;
 using System.Buffers;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Algorand.Algod.Model.Converters.MsgPack
 {

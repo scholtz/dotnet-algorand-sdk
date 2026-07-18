@@ -1,10 +1,5 @@
-﻿using AVM.ClientGenerator.Clients;
-using AVM.ClientGenerator.Compiler.CompiledCodeModel;
+﻿using AVM.ClientGenerator.Compiler.CompiledCodeModel;
 using AVM.ClientGenerator.Compiler.Exceptions;
-using AVM.ClientGenerator.Compiler.Operators;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AVM.ClientGenerator.Compiler.Operators
 {

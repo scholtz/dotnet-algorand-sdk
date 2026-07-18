@@ -1,10 +1,7 @@
 ﻿using AVM.ClientGenerator.Compiler.CompiledCodeModel;
 using AVM.ClientGenerator.Compiler.Exceptions;
 using AVM.ClientGenerator.Compiler.Structures;
-using Org.BouncyCastle.Utilities;
-using System.CodeDom;
 using System.Linq;
-using static AVM.ClientGenerator.Compiler.CompilationGroup;
 
 namespace AVM.ClientGenerator.Compiler.Predefineds
 {

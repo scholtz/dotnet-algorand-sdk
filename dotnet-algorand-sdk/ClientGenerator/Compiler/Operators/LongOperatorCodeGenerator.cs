@@ -1,12 +1,5 @@
-﻿using AVM.ClientGenerator.Clients;
-using AVM.ClientGenerator.Compiler.CompiledCodeModel;
+﻿using AVM.ClientGenerator.Compiler.CompiledCodeModel;
 using AVM.ClientGenerator.Compiler.Exceptions;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Org.BouncyCastle.Math.Field;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AVM.ClientGenerator.Compiler.Operators
 {

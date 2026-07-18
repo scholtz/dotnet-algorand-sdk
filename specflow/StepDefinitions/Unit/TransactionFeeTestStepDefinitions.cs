@@ -1,18 +1,3 @@
-using Algorand;
-using Algorand.Algod.Model;
-using Algorand.Algod.Model.Transactions;
-using Algorand.Utils;
-using FluentAssertions;
-using Newtonsoft.Json;
-using SpecFlow.Internal.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using TechTalk.SpecFlow;
-
 #if TEST_DEBUG
 namespace algorand_tests.StepDefinitions
 {

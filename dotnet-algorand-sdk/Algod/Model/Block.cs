@@ -2,7 +2,6 @@
 {
     using Algorand.Algod.Model.Converters.Json;
     using Algorand.Algod.Model.Transactions;
-    using System.ComponentModel.DataAnnotations;
 #if UNITY
     using UnityEngine;
 #endif

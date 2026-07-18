@@ -3,7 +3,6 @@ using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
 using Algorand.Utils;
-using AVM.ClientGenerator;
 using System;
 using System.IO;
 using System.Text;

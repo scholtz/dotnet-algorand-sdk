@@ -1,9 +1,6 @@
 ﻿using AVM.ClientGenerator.Compiler.Exceptions;
-using AVM.ClientGenerator;
 using Microsoft.CodeAnalysis;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using AVM.ClientGenerator.Compiler.CompiledCodeModel;
 
 namespace AVM.ClientGenerator.Compiler.CompilerStates

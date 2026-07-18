@@ -1,5 +1,4 @@
 ﻿using AVM.ClientGenerator.Compiler.Exceptions;
-using AVM.ClientGenerator;
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 

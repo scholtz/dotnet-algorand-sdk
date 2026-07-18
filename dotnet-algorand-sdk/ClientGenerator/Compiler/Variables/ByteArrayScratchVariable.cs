@@ -1,6 +1,5 @@
 ﻿using AVM.ClientGenerator.Compiler.Exceptions;
 using AVM.ClientGenerator.Compiler.Predefineds;
-using AVM.ClientGenerator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;

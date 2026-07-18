@@ -4,7 +4,6 @@ namespace Algorand.Algod
     using Algorand.Algod.Model.Transactions;
     using Algorand.Utils;
     using System.Collections.Generic;
-    using System.IO;
     using System = global::System;
     using Newtonsoft.Msgpack;
 

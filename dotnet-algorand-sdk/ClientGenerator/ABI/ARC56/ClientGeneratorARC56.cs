@@ -1,15 +1,10 @@
 ﻿using AVM.ClientGenerator.ABI;
-using AVM.ClientGenerator.ABI.ARC32;
 using AVM.ClientGenerator.ABI.ARC4;
 using AVM.ClientGenerator.ABI.ARC56;
 using AVM.ClientGenerator.Clients;
-using AVM.ClientGenerator.Compiler;
 using Newtonsoft.Json;
-using RestSharp.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -18,7 +13,6 @@ using Algorand.AVM.ClientGenerator.Extensions;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Formatting;
 using Microsoft.CodeAnalysis.Formatting;
-using System.Linq.Expressions;
 using AVM.ClientGenerator.ABI.ARC4.Types;
 
 namespace Algorand.AVM.ClientGenerator.ABI.ARC56

@@ -1,5 +1,4 @@
 ﻿using Algorand;
-using Algorand.Algod.Model.Transactions;
 using Algorand.AVM.ClientGenerator.ABI.ARC56;
 using AVM.ClientGenerator.ABI.ARC4;
 using AVM.ClientGenerator.Compiler.Variables;
@@ -13,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Text;
 
 

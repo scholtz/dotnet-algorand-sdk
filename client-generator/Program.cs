@@ -1,9 +1,6 @@
-﻿using Algorand.Algod;
-using Algorand.AVM.ClientGenerator.ABI.ARC56;
-using Algorand;
+﻿using Algorand.AVM.ClientGenerator.ABI.ARC56;
 using System.Text;
 using CommandLine;
-using System.Xml.Linq;
 
 namespace client_generator
 {

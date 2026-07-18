@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
-using AVM.ClientGenerator.Compiler;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using AVM.ClientGenerator.Core.Attributes;
 using AVM.ClientGenerator.Compiler.Variables;
 using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Bcpg;
 using AVM.ClientGenerator.ABI.ARC32;
 using AVM.ClientGenerator.ABI.ARC4.Types;
-using RestSharp.Extensions;
-using System.Globalization;
 using Algorand.AVM.ClientGenerator.Extensions;
 
 

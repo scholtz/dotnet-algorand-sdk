@@ -7,8 +7,6 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Algorand.Crypto
 {

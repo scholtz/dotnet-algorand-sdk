@@ -2,7 +2,6 @@
 using AVM.ClientGenerator.Optimisers;
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace AVM.ClientGenerator.Compiler.CompilerStates
 {

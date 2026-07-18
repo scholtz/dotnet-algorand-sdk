@@ -1,7 +1,4 @@
-﻿using AVM.ClientGenerator.Optimisers;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace AVM.ClientGenerator.Optimisers
 {

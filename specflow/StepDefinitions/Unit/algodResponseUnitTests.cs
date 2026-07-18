@@ -1,23 +1,4 @@
-﻿using Algorand.Algod.Model;
-using Algorand.Algod.Test;
-using System.Net.Http;
-using System.Net;
-using FluentAssertions;
-using System;
-using TechTalk.SpecFlow;
-
-using algorand_tests;
-using System.IO;
-using System.Threading.Tasks;
-using System.Transactions;
-using Algorand.Algod.Model.Transactions;
-using System.Collections.Generic;
-using System.Linq;
-using Algorand;
-using MsgPack;
-using MsgPack.Serialization;
-
-#if TEST_DEBUG
+﻿#if TEST_DEBUG
 namespace specflow.StepDefinitions
 {
     [Binding]
