@@ -181,10 +181,9 @@ namespace Algorand.Gossip
             };
 
             var requestOfInterestMsgPack = MessagePack.MessagePackSerializer.Serialize(requestOfInterest);
+            var requestOfInterestFrame = Encoding.ASCII.GetBytes(Tag.MsgOfInterestTag).Concat(requestOfInterestMsgPack).ToArray();
 
-            //client.Send(requestOfInterestMsgPack);
-            //await client.Send("{ message }"));
-
+            client.Send(requestOfInterestFrame);
         }
 
         protected virtual void Dispose(bool disposing)
