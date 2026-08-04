@@ -21,7 +21,10 @@ namespace Algorand.Gossip
         AlgorandMainNet,
         VoiMainNet,
         AramidMainNetBiatec,
-        AramidMainNetAWallet
+        AramidMainNetAWallet,
+        // Appended rather than inserted alongside AlgorandMainNet so existing members keep their
+        // underlying int values for anyone persisting/comparing this enum numerically.
+        AlgorandTestNet
     }
 
     public class GossipHttpConfiguration
@@ -94,6 +97,9 @@ namespace Algorand.Gossip
                 case GossipNetwork.AlgorandMainNet:
                     domain = "mainnet.algorand.network";
                     break;
+                case GossipNetwork.AlgorandTestNet:
+                    domain = "testnet.algorand.network";
+                    break;
                 case GossipNetwork.VoiMainNet:
                     domain = "voimain.mainnet-voi.network";
                     break;
@@ -119,6 +125,8 @@ namespace Algorand.Gossip
             {
                 case GossipNetwork.AlgorandMainNet:
                     return "mainnet-v1.0";
+                case GossipNetwork.AlgorandTestNet:
+                    return "testnet-v1.0";
                 case GossipNetwork.VoiMainNet:
                     return "voimain-v1.0";
                 case GossipNetwork.AramidMainNetBiatec:
