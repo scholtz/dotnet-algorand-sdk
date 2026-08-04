@@ -92,6 +92,8 @@ namespace test.Gossip
 
         [TestCase(GossipNodePurpose.Archival, GossipNetwork.AlgorandMainNet, "_archive._tcp.mainnet.algorand.network")]
         [TestCase(GossipNodePurpose.Relay, GossipNetwork.AlgorandMainNet, "_algobootstrap._tcp.mainnet.algorand.network")]
+        [TestCase(GossipNodePurpose.Archival, GossipNetwork.AlgorandTestNet, "_archive._tcp.testnet.algorand.network")]
+        [TestCase(GossipNodePurpose.Relay, GossipNetwork.AlgorandTestNet, "_algobootstrap._tcp.testnet.algorand.network")]
         [TestCase(GossipNodePurpose.Archival, GossipNetwork.VoiMainNet, "_archive._tcp.voimain.mainnet-voi.network")]
         [TestCase(GossipNodePurpose.Relay, GossipNetwork.VoiMainNet, "_algobootstrap._tcp.voimain.mainnet-voi.network")]
         [TestCase(GossipNodePurpose.Archival, GossipNetwork.AramidMainNetBiatec, "_archive._tcp.aramidmain.biatec.io")]
@@ -104,6 +106,7 @@ namespace test.Gossip
         }
 
         [TestCase(GossipNetwork.AlgorandMainNet, "mainnet-v1.0")]
+        [TestCase(GossipNetwork.AlgorandTestNet, "testnet-v1.0")]
         [TestCase(GossipNetwork.VoiMainNet, "voimain-v1.0")]
         [TestCase(GossipNetwork.AramidMainNetBiatec, "aramidmain-v1.0")]
         [TestCase(GossipNetwork.AramidMainNetAWallet, "aramidmain-v1.0")]
@@ -128,6 +131,8 @@ namespace test.Gossip
         // records (mirrors test.Gossip.BlockFetcherTests, which hits MainNet gossip nodes directly).
         [TestCase(GossipNodePurpose.Archival, GossipNetwork.AlgorandMainNet)]
         [TestCase(GossipNodePurpose.Relay, GossipNetwork.AlgorandMainNet)]
+        [TestCase(GossipNodePurpose.Archival, GossipNetwork.AlgorandTestNet)]
+        [TestCase(GossipNodePurpose.Relay, GossipNetwork.AlgorandTestNet)]
         [TestCase(GossipNodePurpose.Archival, GossipNetwork.VoiMainNet)]
         [TestCase(GossipNodePurpose.Relay, GossipNetwork.VoiMainNet)]
         [TestCase(GossipNodePurpose.Archival, GossipNetwork.AramidMainNetBiatec)]
