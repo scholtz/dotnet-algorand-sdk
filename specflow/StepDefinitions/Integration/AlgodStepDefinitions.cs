@@ -10,7 +10,6 @@ using Algorand.Algod.Model;
 using Algorand;
 using System.Collections.Generic;
 using System.Text;
-using Algorand.Utils;
 
 namespace algorand_tests.StepDefinitions
 {

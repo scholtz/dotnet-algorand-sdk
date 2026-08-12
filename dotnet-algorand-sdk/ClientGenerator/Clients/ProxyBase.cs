@@ -11,7 +11,6 @@ using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using AlgoUtils = Algorand.Utils;
 
 namespace AVM.ClientGenerator
 {

@@ -2,7 +2,6 @@ using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
-using Algorand.Utils;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System;

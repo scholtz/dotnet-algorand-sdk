@@ -4,7 +4,6 @@ using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
 using Algorand.AVM.ClientGenerator.ABI.ARC56;
 using Algorand.KMD;
-using Algorand.Utils;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
