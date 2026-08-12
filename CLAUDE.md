@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A .NET SDK (`Algorand5` NuGet package, target `netstandard2.1`) for talking to Algorand nodes: Algod, Indexer, Kmd, and the gossip network, plus transaction building/signing and an ARC56 smart-contract client generator. There is also a Unity build variant (single ILRepacked assembly). NuGet package version corresponds to the algod build it targets. Full docs: https://frankszendzielarz.github.io/dotnet-algorand-sdk/api/index.html
+A .NET SDK (`Algorand5` NuGet package, target `netstandard2.1`) for talking to Algorand nodes: Algod, Indexer, Kmd, and the gossip network, plus transaction building/signing and an ARC56 smart-contract client generator. There is also a Unity build variant (single ILRepacked assembly). NuGet package version corresponds to the algod build it targets. Full docs: https://scholtz.github.io/dotnet-algorand-sdk/ (DocFX site built from `docfx/` by `.github/workflows/publish-docs.yml` using the built-in `modern` template — do not add custom template overlays without verifying them against the DocFX version CI installs).
 
 ## Build / test commands
 

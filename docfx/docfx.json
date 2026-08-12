@@ -49,17 +49,17 @@
       }
     ],
     "dest": "_site",
-    "globalMetadataFiles": [],
-    "fileMetadataFiles": [],
     "template": [
-      "statictoc",
-      "templates/darkfx"
+      "default",
+      "modern"
     ],
-    "postProcessors": [],
-    "markdownEngineName": "markdig",
-    "noLangKeyword": false,
-    "keepFileLink": false,
-    "cleanupCacheHistory": false,
-    "disableGitFeatures": false
+    "globalMetadata": {
+      "_appName": "Algorand .NET SDK",
+      "_appTitle": "Algorand .NET SDK",
+      "_appFooter": "<span>Algorand .NET SDK (Algorand5) &mdash; <a href=\"https://github.com/scholtz/dotnet-algorand-sdk\">GitHub</a> &middot; <a href=\"https://www.nuget.org/packages/Algorand5/\">NuGet</a></span>",
+      "_enableSearch": true,
+      "_disableNextArticle": false
+    },
+    "markdownEngineName": "markdig"
   }
 }
