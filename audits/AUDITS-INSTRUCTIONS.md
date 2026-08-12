@@ -21,12 +21,15 @@ rather than blindly re-deriving everything from scratch.
 
 ## Audit cadence and output
 
-- Each audit produces a new file `audits/AUDIT-YYYY-MM-DD.md` (UTC date of the audit).
+- Each audit produces a new file `audits/AUDIT-YYYY-MM-DD-<shorthash>.md`, where
+  `YYYY-MM-DD` is the UTC date of the audit and `<shorthash>` is the short git hash
+  (`git rev-parse --short HEAD`) of the audited commit, e.g. `AUDIT-2026-08-12-9df6a8f.md`.
 - Each audit updates `audits/RISKS.md` (see below) — never overwrite the risk register,
   extend/revise it.
 - Never edit past `audits/AUDIT-*.md` files after the fact — if a finding turns out to be
   wrong, correct it in the *next* audit's file with a note referencing the original.
-- Record the git commit hash the audit was performed against at the top of the audit file.
+- Record the full git commit hash the audit was performed against at the top of the
+  audit file (the file name carries only the short hash).
 
 ## Scope — what every audit must examine
 
@@ -151,14 +154,14 @@ and keep the method consistent across audits so the numbers are comparable over 
   and keep it for historical traceability; lower its percentage to reflect that
   exploitation now requires the fix to be bypassed or reverted.
 
-## Report format for `audits/AUDIT-YYYY-MM-DD.md`
+## Report format for `audits/AUDIT-YYYY-MM-DD-<shorthash>.md`
 
 ```markdown
 # Security Audit — dotnet-algorand-sdk — YYYY-MM-DD
 
-Audited commit: <git hash>
-Auditor: AI agent (Claude) per audits/AI-AUDITS-INSTRUCTIONS.md
-Previous audit: audits/AUDIT-<prev-date>.md (or "none — first audit")
+Audited commit: <full git hash>
+Auditor: AI agent (Claude) per audits/AUDITS-INSTRUCTIONS.md
+Previous audit: audits/AUDIT-<prev-date>-<prev-shorthash>.md (or "none — first audit")
 
 ## Summary
 <2-5 sentence top-line verdict: does the SDK, as of this commit, put user private keys
