@@ -65,6 +65,32 @@ using UnityEngine;
 
 
 
+        [Newtonsoft.Json.JsonProperty("group-fees-paid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("group-fees-paid")]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Total fees paid by the transaction group and all of its descendant inner transaction groups.")]
+    [field:InspectorName(@"GroupFeesPaid")]
+    public ulong GroupFeesPaid {get;set;}
+#else
+        public ulong? GroupFeesPaid { get; set; }
+#endif
+
+
+
+        [Newtonsoft.Json.JsonProperty("group-usage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("group-usage")]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Fee usage for the transaction group, including all descendant inner transactions, in millionths of a basic transaction fee unit.")]
+    [field:InspectorName(@"GroupUsage")]
+    public ulong GroupUsage {get;set;}
+#else
+        public ulong? GroupUsage { get; set; }
+#endif
+
+
+
         [Newtonsoft.Json.JsonProperty("txn-results", Required = Newtonsoft.Json.Required.Always)]
         [MessagePack.Key("txn-results")]
         [System.ComponentModel.DataAnnotations.Required]

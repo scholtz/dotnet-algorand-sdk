@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<!-- Single source of truth for the package version: both the regular Algorand4 package
-	     and the Unity-specific Algorand4_Unity package (built from the same assembly, see
-	     ILRepack.Targets/Algorand4_Unity.nuspec) must always ship the same version number,
+	<!-- Single source of truth for the package version: both the regular Algorand5 package
+	     and the Unity-specific Algorand5_Unity package (built from the same assembly, see
+	     ILRepack.Targets/Algorand5_Unity.nuspec) must always ship the same version number,
 	     since they wrap identical source at the same commit. Bump the version prefix here only. -->
 	<PropertyGroup>
-		<AlgorandSdkVersion>4.7.4.$([System.DateTime]::UtcNow.ToString(yyyyMMddHH))</AlgorandSdkVersion>
+		<AlgorandSdkVersion>5.0.0.$([System.DateTime]::UtcNow.ToString(yyyyMMddHH))</AlgorandSdkVersion>
 		<!-- ILRepack.Lib.MSBuild's own build/ILRepack.Lib.MSBuild.targets auto-imports
 		     unconditionally (on every configuration) once the package has ever been restored for
 		     this project - restoring under Unity is enough to make it apply to a later Release/Debug
@@ -40,7 +40,7 @@
 		<Copyright></Copyright>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<RepositoryUrl>https://github.com/scholtz/dotnet-algorand-sdk</RepositoryUrl>
-		<PackageId>Algorand4</PackageId>
+		<PackageId>Algorand5</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageIcon>icon.png</PackageIcon>
 		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity;Unity_debug</Configurations>
@@ -58,7 +58,7 @@
 		<Nullable>annotations</Nullable>
 		<RootNamespace>Algorand</RootNamespace>
 		<AssemblyName>Algorand</AssemblyName>
-		<!-- Pack straight from Algorand4_Unity.nuspec (its own <id>/<dependencies> win over
+		<!-- Pack straight from Algorand5_Unity.nuspec (its own <id>/<dependencies> win over
 		     the csproj-derived metadata below) instead of shelling out to the classic `nuget.exe`
 		     CLI: NuspecFile/NuspecBasePath/NuspecProperties are native MSBuild/NuGet.Build.Tasks
 		     properties, so `dotnet build`/`dotnet pack` produce the .nupkg on any OS (including
@@ -66,7 +66,7 @@
 		     and is not available on ubuntu-latest. -->
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<IsPackable>True</IsPackable>
-		<NuspecFile>Algorand4_Unity.nuspec</NuspecFile>
+		<NuspecFile>Algorand5_Unity.nuspec</NuspecFile>
 		<!-- Must not reference $(TargetDir): that property is defined by the SDK's common targets,
 		     imported at the bottom of this file, so it's still empty when this early PropertyGroup
 		     is evaluated - it would silently resolve to an empty NuspecBasePath. $(Configuration)
@@ -89,7 +89,7 @@
 		<Copyright></Copyright>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<RepositoryUrl>https://github.com/scholtz/dotnet-algorand-sdk</RepositoryUrl>
-		<PackageId>Algorand4</PackageId>
+		<PackageId>Algorand5</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Configurations>Debug;Release;Test_Debug;Integration_Test_Debug;Unity;Unity_debug</Configurations>
 		<AssemblyOriginatorKeyFile>Algorand.snk</AssemblyOriginatorKeyFile>
@@ -244,21 +244,6 @@
 		</Compile>
 		<Compile Update="Algod\Model\CompileResponse.Generated.cs">
 			<DependentUpon>CompileResponse.cs</DependentUpon>
-		</Compile>
-		<Compile Update="Algod\Model\DryrunRequest.Generated.cs">
-			<DependentUpon>DryrunRequest.cs</DependentUpon>
-		</Compile>
-		<Compile Update="Algod\Model\DryrunResponse.Generated.cs">
-			<DependentUpon>DryrunResponse.cs</DependentUpon>
-		</Compile>
-		<Compile Update="Algod\Model\DryrunSource.Generated.cs">
-			<DependentUpon>DryrunSource.cs</DependentUpon>
-		</Compile>
-		<Compile Update="Algod\Model\DryrunState.Generated.cs">
-			<DependentUpon>DryrunState.cs</DependentUpon>
-		</Compile>
-		<Compile Update="Algod\Model\DryrunTxnResult.Generated.cs">
-			<DependentUpon>DryrunTxnResult.cs</DependentUpon>
 		</Compile>
 		<Compile Update="Algod\Model\ErrorResponse.Generated.cs">
 			<DependentUpon>ErrorResponse.cs</DependentUpon>
@@ -471,7 +456,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Algorand4_Unity.nuspec">
+		<None Update="Algorand5_Unity.nuspec">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

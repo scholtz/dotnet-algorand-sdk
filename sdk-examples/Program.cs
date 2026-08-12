@@ -23,9 +23,6 @@ namespace sdk_examples
                 case nameof(LogicSignatureExample):
                     await LogicSignatureExample.Main(args);
                     break;
-                case nameof(DryrunDebuggingExample):
-                    await DryrunDebuggingExample.Main(args);
-                    break;
                 case nameof(LogicSignatureContractAccountExample):
                     await LogicSignatureContractAccountExample.Main(args);
                     break;

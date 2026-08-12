@@ -1,6 +1,6 @@
 ---
 description: Upgrade the SDK to track a new algod build version end-to-end — spec refresh, model regen, version bump everywhere, tests
-argument-hint: <new version, e.g. 4.7.4>
+argument-hint: <new version, e.g. 5.0.0>
 ---
 
 Full upgrade checklist for moving this SDK from one algod build version to `$ARGUMENTS`. Do not skip steps — this exists because version bumps have previously drifted (see `audits/` for past incidents of independent, out-of-sync version strings). Work through them in order and report what changed at the end.
@@ -26,10 +26,10 @@ If the spec has not changed at all for this bump (patch releases sometimes don't
 
 ## 2. Bump the version string everywhere
 
-The package version is a **single source of truth**: `<AlgorandSdkVersion>` in `dotnet-algorand-sdk/dotnet-algorand-sdk.csproj` (see the comment above it) drives both the regular `Algorand4` package and `Algorand4_Unity` — do not add a second independent version anywhere in the csproj.
+The package version is a **single source of truth**: `<AlgorandSdkVersion>` in `dotnet-algorand-sdk/dotnet-algorand-sdk.csproj` (see the comment above it) drives both the regular `Algorand5` package and `Algorand5_Unity` — do not add a second independent version anywhere in the csproj.
 
 1. Update `<AlgorandSdkVersion>` in `dotnet-algorand-sdk/dotnet-algorand-sdk.csproj` to `$ARGUMENTS.$([System.DateTime]::UtcNow.ToString(yyyyMMddHH))`.
-2. Grep the whole repo for the *old* version string (e.g. `git grep -n '4\.7\.3'` for a 4.7.3→4.7.4 bump) to catch every remaining occurrence — do not rely on this checklist's fixed list alone, since new ones get added over time. As of this writing that list includes:
+2. Grep the whole repo for the *old* version string (e.g. `git grep -n '4\.7\.3'` for a 4.7.3→5.0.0 bump) to catch every remaining occurrence — do not rely on this checklist's fixed list alone, since new ones get added over time. As of this writing that list includes:
    - `compose-client-generator-docker.sh` — the `ver=` default.
    - `.github/workflows/client-generator-docker.yml` — the `workflow_dispatch.inputs.version` description example and `default`, and the fallback `ver="..."` in the "Determine version" step.
    - This file's own `argument-hint` example above.

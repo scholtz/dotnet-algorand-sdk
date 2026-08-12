@@ -273,35 +273,6 @@ namespace specflow.StepDefinitions
             transactionParameters?.LastRound.Should().Be(round);
         }
 
-        DryrunResponse? dryrunResponse;
-        [When(@"we make any Dryrun call")]
-        public async Task WeMakeAnyDryrunCall()
-        {
-            httpUtilities.setUp();
-            try
-            {
-                error = "";
-                dryrunResponse = await httpUtilities.algodDefaultApiInstance.TealDryrunAsync(new DryrunRequest());
-            }
-            catch (ApiException<ErrorResponse> ex)
-            {
-                error = ex.Result.Message;
-            }
-        }
-
-        [Then(@"the parsed Dryrun Response should have global delta ""([^""]*)"" with (\d+)")]
-        public void ExpectParsedDryrunResponseShouldHaveGlobalDelta(string key, ulong creator)
-        {
-            dryrunResponse?.Txns
-                .SelectMany(t => t.GlobalDelta)
-                .Where(kv => kv.Key == key)
-                .Select(kv => kv.Value)
-                .FirstOrDefault()
-                ?.Action
-                .Should()
-                .Be(creator);
-        }
-
         [Then(@"expect error string to contain ""([^""]*)""$")]
         public void ExpectErrorStringToBe(string err)
         {

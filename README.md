@@ -1,7 +1,7 @@
-# Algorand .NET SDK (`Algorand4`)
+# Algorand .NET SDK (`Algorand5`)
 
-[![NuGet](https://img.shields.io/nuget/v/Algorand4.svg?label=Algorand4)](https://www.nuget.org/packages/Algorand4/)
-[![NuGet Unity](https://img.shields.io/nuget/v/Algorand4_Unity.svg?label=Algorand4_Unity)](https://www.nuget.org/packages/Algorand4_Unity/)
+[![NuGet](https://img.shields.io/nuget/v/Algorand5.svg?label=Algorand5)](https://www.nuget.org/packages/Algorand5/)
+[![NuGet Unity](https://img.shields.io/nuget/v/Algorand5_Unity.svg?label=Algorand5_Unity)](https://www.nuget.org/packages/Algorand5_Unity/)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
 A comprehensive .NET SDK for the [Algorand](https://www.algorand.co/) blockchain (and AVM-compatible networks such as Voi and Aramid). It provides everything needed to build, sign, and submit transactions, query the chain, and interact with smart contracts from any .NET application (`netstandard2.1`), including a dedicated Unity build.
@@ -29,23 +29,23 @@ A comprehensive .NET SDK for the [Algorand](https://www.algorand.co/) blockchain
 - **Atomic transfers** — build and sign grouped transactions.
 - **ABI / ARC4 / ARC56 support** — encode/decode ABI values and generate fully typed C# clients from ARC56 contract specs.
 - **Gossip network client** — connect directly to the Algorand relay network and fetch blocks without an API service.
-- **Unity build** — single ILRepacked assembly (`Algorand4_Unity`) that avoids Newtonsoft/CodeDom conflicts and supports WebGL via an injectable HTTP shim.
+- **Unity build** — single ILRepacked assembly (`Algorand5_Unity`) that avoids Newtonsoft/CodeDom conflicts and supports WebGL via an injectable HTTP shim.
 
 ## Installation
 
-Install the [`Algorand4`](https://www.nuget.org/packages/Algorand4/) package from NuGet:
+Install the [`Algorand5`](https://www.nuget.org/packages/Algorand5/) package from NuGet:
 
 ```powershell
-dotnet add package Algorand4
+dotnet add package Algorand5
 ```
 
 or via the Package Manager console:
 
 ```powershell
-Install-Package Algorand4
+Install-Package Algorand5
 ```
 
-For Unity projects use [`Algorand4_Unity`](https://www.nuget.org/packages/Algorand4_Unity/), a single wrapped assembly usable directly in Unity. Its `HttpClientConfigurator` accepts an optional shim parameter so WebGL builds can delegate to a different HTTP client.
+For Unity projects use [`Algorand5_Unity`](https://www.nuget.org/packages/Algorand5_Unity/), a single wrapped assembly usable directly in Unity. Its `HttpClientConfigurator` accepts an optional shim parameter so WebGL builds can delegate to a different HTTP client.
 
 ## Quick start
 
@@ -159,7 +159,6 @@ dotnet run --project sdk-examples -- AssetExample
 | [LogicSignatureContractAccountExample.cs](sdk-examples/LogicSignatureContractAccountExample.cs) | Contract accounts controlled by a TEAL program |
 | [StatefulContractExample.cs](sdk-examples/StatefulContractExample.cs) | Deploying and calling a stateful smart contract (application) |
 | [SimpleBoxExample.cs](sdk-examples/SimpleBoxExample.cs) | Application box storage |
-| [DryrunDebuggingExample.cs](sdk-examples/DryrunDebuggingExample.cs) | Debugging smart contracts with dryrun |
 | [ConnectToGossipNetwork.cs](sdk-examples/ConnectToGossipNetwork.cs) | Connecting to the Algorand gossip (relay) network directly |
 
 The test suites double as extensive usage references:

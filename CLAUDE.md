@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A .NET SDK (`Algorand4` NuGet package, target `netstandard2.1`) for talking to Algorand nodes: Algod, Indexer, Kmd, and the gossip network, plus transaction building/signing and an ARC56 smart-contract client generator. There is also a Unity build variant (single ILRepacked assembly). NuGet package version corresponds to the algod build it targets. Full docs: https://frankszendzielarz.github.io/dotnet-algorand-sdk/api/index.html
+A .NET SDK (`Algorand5` NuGet package, target `netstandard2.1`) for talking to Algorand nodes: Algod, Indexer, Kmd, and the gossip network, plus transaction building/signing and an ARC56 smart-contract client generator. There is also a Unity build variant (single ILRepacked assembly). NuGet package version corresponds to the algod build it targets. Full docs: https://frankszendzielarz.github.io/dotnet-algorand-sdk/api/index.html
 
 ## Build / test commands
 
@@ -55,4 +55,4 @@ Types are dual-annotated for both `Newtonsoft.Json` (`JsonProperty`) and `Messag
 
 ### Publishing
 
-`.github/workflows/publish-nuget.yml` builds, tests, and pushes the `Algorand4` NuGet package using nuget.org **Trusted Publishing** (GitHub OIDC — no long-lived `NUGET_API_KEY` secret). It fires on `v*` tags or manual dispatch. Requires a one-time Trusted Publishing policy on nuget.org (repository owner `scholtz`, repo `dotnet-algorand-sdk`, workflow file `publish-nuget.yml`, environment `nuget-publish`) and a `NUGET_USER` secret (your nuget.org profile name) in that environment.
+`.github/workflows/publish-nuget.yml` builds, tests, and pushes the `Algorand5` NuGet package using nuget.org **Trusted Publishing** (GitHub OIDC — no long-lived `NUGET_API_KEY` secret). It fires on `v*` tags or manual dispatch. Requires a one-time Trusted Publishing policy on nuget.org (repository owner `scholtz`, repo `dotnet-algorand-sdk`, workflow file `publish-nuget.yml`, environment `nuget-publish`) and a `NUGET_USER` secret (your nuget.org profile name) in that environment.

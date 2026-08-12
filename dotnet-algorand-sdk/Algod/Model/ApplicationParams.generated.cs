@@ -69,6 +69,32 @@ using UnityEngine;
 
 
 
+        [Newtonsoft.Json.JsonProperty("family-box-access", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("family-box-access")]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"\[fba\] if true, apps with the same creator may read and write this app's boxes")]
+    [field:InspectorName(@"FamilyBoxAccess")]
+    public bool FamilyBoxAccess {get;set;}
+#else
+        public bool? FamilyBoxAccess { get; set; }
+#endif
+
+
+
+        [Newtonsoft.Json.JsonProperty("foreign-box-reads", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("foreign-box-reads")]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"\[fbr\] if true, any app may read this app's boxes")]
+    [field:InspectorName(@"ForeignBoxReads")]
+    public bool ForeignBoxReads {get;set;}
+#else
+        public bool? ForeignBoxReads { get; set; }
+#endif
+
+
+
         [Newtonsoft.Json.JsonProperty("global-state", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("global-state")]
 #if UNITY

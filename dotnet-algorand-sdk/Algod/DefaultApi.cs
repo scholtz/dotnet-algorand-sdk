@@ -265,11 +265,11 @@ namespace Algorand.Algod
         /// </summary>
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(List<SignedTransaction> rawtxn);
+        System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(List<SignedTransaction> rawtxn, bool? skipPqAddressCheck = null);
 
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn);
+        System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn, bool? skipPqAddressCheck = null);
 
         /// <summary>Fast track for broadcasting a raw transaction or transaction group to the
         /// network through the tx handler without performing most of the checks and
@@ -278,11 +278,11 @@ namespace Algorand.Algod
         /// </summary>
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(List<SignedTransaction> rawtxn);
+        System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(List<SignedTransaction> rawtxn, bool? skipPqAddressCheck = null);
 
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn);
+        System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn, bool? skipPqAddressCheck = null);
 
         /// <summary>Simulates a raw transaction or transaction group as it would be evaluated on the
         /// network. The simulation will use blockchain state from the latest committed
@@ -517,18 +517,6 @@ namespace Algorand.Algod
         /// <param name="source">TEAL program binary to be disassembled</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<DisassembleResponse> TealDisassembleAsync(System.Threading.CancellationToken cancellationToken, System.IO.Stream source);
-
-        /// <summary>Executes TEAL program(s) in context and returns debugging information about the
-        /// execution. This endpoint is only enabled when a node's configuration file sets
-        /// EnableDeveloperAPI to true.
-        /// </summary>
-        /// <param name="request">Transaction (or group) and any accompanying state-simulation data.</param>
-        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<DryrunResponse> TealDryrunAsync(DryrunRequest request);
-
-        /// <param name="request">Transaction (or group) and any accompanying state-simulation data.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<DryrunResponse> TealDryrunAsync(System.Threading.CancellationToken cancellationToken, DryrunRequest request);
 
         /// <summary>Returns OK if experimental API is enabled.
         /// </summary>
@@ -2482,9 +2470,9 @@ namespace Algorand.Algod
         /// </summary>
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(List<SignedTransaction> rawtxn)
+        public System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(List<SignedTransaction> rawtxn, bool? skipPqAddressCheck = null)
         {
-            return TransactionsAsync(System.Threading.CancellationToken.None, rawtxn);
+            return TransactionsAsync(System.Threading.CancellationToken.None, rawtxn, skipPqAddressCheck);
         }
 
         /// <summary>>Broadcasts a raw transaction or transaction group to the network.
@@ -2492,11 +2480,16 @@ namespace Algorand.Algod
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn)
+        public async System.Threading.Tasks.Task<PostTransactionsResponse> TransactionsAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn, bool? skipPqAddressCheck = null)
         {
             if (rawtxn == null) throw new System.ArgumentNullException("rawtxn");
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("v2/transactions");
+            urlBuilder_.Append("v2/transactions?");
+            if (skipPqAddressCheck != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("skip-pq-address-check") + "=").Append(System.Uri.EscapeDataString(ConvertToString(skipPqAddressCheck, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -2576,9 +2569,9 @@ namespace Algorand.Algod
         /// </summary>
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(List<SignedTransaction> rawtxn)
+        public System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(List<SignedTransaction> rawtxn, bool? skipPqAddressCheck = null)
         {
-            return RawTransactionAsyncAsync(System.Threading.CancellationToken.None, rawtxn);
+            return RawTransactionAsyncAsync(System.Threading.CancellationToken.None, rawtxn, skipPqAddressCheck);
         }
 
         /// <summary>>Fast track for broadcasting a raw transaction or transaction group to the
@@ -2589,11 +2582,16 @@ namespace Algorand.Algod
         /// <param name="rawtxn">The byte encoded signed transaction to broadcast to network</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn)
+        public async System.Threading.Tasks.Task<string> RawTransactionAsyncAsync(System.Threading.CancellationToken cancellationToken, List<SignedTransaction> rawtxn, bool? skipPqAddressCheck = null)
         {
             if (rawtxn == null) throw new System.ArgumentNullException("rawtxn");
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("v2/transactions/async");
+            urlBuilder_.Append("v2/transactions/async?");
+            if (skipPqAddressCheck != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("skip-pq-address-check") + "=").Append(System.Uri.EscapeDataString(ConvertToString(skipPqAddressCheck, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -4344,100 +4342,6 @@ namespace Algorand.Algod
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<DisassembleResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        //Algorand Generator cannot distinguish between response codes
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ErrorResponse>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-
-        }
-
-
-
-
-        /// <summary>Executes TEAL program(s) in context and returns debugging information about the
-        /// execution. This endpoint is only enabled when a node's configuration file sets
-        /// EnableDeveloperAPI to true.
-        /// </summary>
-        /// <param name="request">Transaction (or group) and any accompanying state-simulation data.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<DryrunResponse> TealDryrunAsync(DryrunRequest request)
-        {
-            return TealDryrunAsync(System.Threading.CancellationToken.None, request);
-        }
-
-        /// <summary>>Executes TEAL program(s) in context and returns debugging information about the
-        /// execution. This endpoint is only enabled when a node's configuration file sets
-        /// EnableDeveloperAPI to true.
-        /// </summary>
-        /// <param name="request">Transaction (or group) and any accompanying state-simulation data.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException<ErrorResponse>">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<DryrunResponse> TealDryrunAsync(System.Threading.CancellationToken cancellationToken, DryrunRequest request)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("v2/teal/dryrun");
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                    System.Net.Http.ByteArrayContent content_ = new System.Net.Http.ByteArrayContent(Encoder.EncodeToMsgPackOrdered(request));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/msgpack");
-                    request_.Content = content_;
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<DryrunResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);

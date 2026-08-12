@@ -41,6 +41,19 @@ using UnityEngine;
 
 
 
+        [Newtonsoft.Json.JsonProperty("fees-paid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [MessagePack.Key("fees-paid")]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"Total fees paid by this transaction and all of its descendant inner transactions.")]
+    [field:InspectorName(@"FeesPaid")]
+    public ulong FeesPaid {get;set;}
+#else
+        public ulong? FeesPaid { get; set; }
+#endif
+
+
+
         [Newtonsoft.Json.JsonProperty("fixed-signer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [MessagePack.Key("fixed-signer")]
 #if UNITY

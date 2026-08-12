@@ -1,6 +1,6 @@
 name: Publish NuGet
 
-# Publishes the Algorand4 NuGet package using NuGet.org Trusted Publishing (OIDC) -
+# Publishes the Algorand5 NuGet package using NuGet.org Trusted Publishing (OIDC) -
 # no long-lived NUGET_API_KEY secret is stored in this repo.
 #
 # One-time setup on nuget.org (required before this workflow can push):
@@ -9,10 +9,10 @@ name: Publish NuGet
 #      Repository:        dotnet-algorand-sdk
 #      Workflow File:     publish-nuget.yml   (file name only, no path)
 #      Environment:        nuget-publish       (must match the `environment:` below)
-#   3. Do this once for each package id you own: Algorand4 and Algorand4_Unity.
+#   3. Do this once for each package id you own: Algorand5 and Algorand5_Unity.
 #
-# The Unity-specific Algorand4_Unity package (an ILRepacked single-assembly build - see
-# dotnet-algorand-sdk/ILRepack.Targets) is built and published alongside Algorand4 from the same
+# The Unity-specific Algorand5_Unity package (an ILRepacked single-assembly build - see
+# dotnet-algorand-sdk/ILRepack.Targets) is built and published alongside Algorand5 from the same
 # commit, so both packages always carry the same version (dotnet-algorand-sdk.csproj's
 # $(AlgorandSdkVersion) is the single source of truth for both).
 
@@ -82,7 +82,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: nupkg
-          # Algorand4 (Release) and Algorand4_Unity (Unity - see ILRepack.Targets, lands directly
+          # Algorand5 (Release) and Algorand5_Unity (Unity - see ILRepack.Targets, lands directly
           # under bin/Unity/ rather than a TFM subfolder, since it's packed via NuspecFile).
           path: |
             dotnet-algorand-sdk/bin/Release/*.nupkg
@@ -113,7 +113,7 @@ jobs:
         shell: pwsh
         run: |
           # -Recurse: actions/upload-artifact preserves each glob's directory structure (Release/
-          # and Unity/ subfolders here), so both Algorand4 and Algorand4_Unity packages need a
+          # and Unity/ subfolders here), so both Algorand5 and Algorand5_Unity packages need a
           # recursive search to be found under the downloaded nupkg/ root.
           Get-ChildItem nupkg -Filter *.nupkg -Recurse | ForEach-Object {
             dotnet nuget push $_.FullName --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

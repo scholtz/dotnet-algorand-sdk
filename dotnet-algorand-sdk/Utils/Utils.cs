@@ -108,27 +108,6 @@ namespace Algorand.Utils
        
       
      
-        public async static Task<Algod.Model.DryrunResponse> GetDryrunResponse(Algod.DefaultApi client, SignedTransaction stxn, byte[] source = null)
-        {
-            List<DryrunSource> sources = new List<DryrunSource>();
-            List<SignedTransaction> stxns = new List<SignedTransaction>();
-            //compiled 
-            if (source is null)
-            {
-                stxns.Add(stxn);
-            }
-            // source
-            else
-            {
-                sources.Add(new Algod.Model.DryrunSource(){
-                    FieldName= "lsig",
-                    Source= Encoding.UTF8.GetString(source), TxnIndex= 0 });
-                stxns.Add(stxn);
-            }
-            if (sources.Count < 1) sources = null;
-            return await client.TealDryrunAsync(new DryrunRequest() { Txns = stxns, Sources = sources });
-        }
-
         internal static byte[] CombineBytes(byte[] b1, byte[] b2)
         {
             byte[] ret = new byte[b1.Length + b2.Length];

@@ -687,61 +687,6 @@ namespace algorand_tests.Features.Unit
   this.SuggestedTransactionParametersResponse("suggestedParams.json", "v2algodclient_responsejsons", "", "6222155", ((string[])(null)));
 #line hidden
         }
-        
-        public virtual void DryrunResponse(string jsonfiles, string directory, string key, string action, string[] exampleTags)
-        {
-            string[] @__tags = new string[] {
-                    "unit.dryrun"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("jsonfiles", jsonfiles);
-            argumentsOfScenario.Add("directory", directory);
-            argumentsOfScenario.Add("key", key);
-            argumentsOfScenario.Add("action", action);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Dryrun response", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 105
-  this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 106
-    testRunner.Given(string.Format("mock http responses in \"{0}\" loaded from \"{1}\"", jsonfiles, directory), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 107
-    testRunner.When("we make any Dryrun call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 108
-    testRunner.Then(string.Format("the parsed Dryrun Response should have global delta {0} with {1}", key, action), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Dryrun response: dryrunResponse.json")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Algod REST API v2 Responses")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("unit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("unit.dryrun")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "dryrunResponse.json")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:jsonfiles", "dryrunResponse.json")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:directory", "v2algodclient_responsejsons")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:key", "\"Creator\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:action", "2")]
-        public void DryrunResponse_DryrunResponse_Json()
-        {
-#line 105
-  this.DryrunResponse("dryrunResponse.json", "v2algodclient_responsejsons", "\"Creator\"", "2", ((string[])(null)));
-#line hidden
-        }
     }
 }
 #pragma warning restore
