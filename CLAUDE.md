@@ -49,6 +49,16 @@ Types are dual-annotated for both `Newtonsoft.Json` (`JsonProperty`) and `Messag
 
 `dotnet-algorand-sdk/ClientGenerator` (project `AlgoStudio`) and `client-generator/` generate a typed C# client from an ARC56 smart-contract JSON spec, distributed as the `scholtz2/dotnet-avm-generated-client` Docker image (see `compose-client-generator-docker.sh`, `client-generator/Dockerfile`). Usage examples: `test/Arc56Tests.cs`, README "ARC56 DotNet c# Client generator" section.
 
+### SDK examples
+
+Each example in `sdk-examples/` is a standalone class with its own `static Main`, selected at runtime by the dispatcher in `sdk-examples/Program.cs` (the `EXAMPLE` environment variable takes priority over the first CLI argument). When adding a new example, wire it up in **three** places, all keyed on the same class name:
+
+1. A `case nameof(NewExample):` branch in the `sdk-examples/Program.cs` dispatcher.
+2. A launch profile in `sdk-examples/Properties/launchSettings.json` (`"NewExample": { "commandName": "Project", "commandLineArgs": "", "workingDirectory": "$(ProjectDir)", "environmentVariables": { "EXAMPLE": "NewExample" } }`) so it's runnable from the Visual Studio profile picker. Note that `dotnet run` picks up the *first* profile from this file unless `--no-launch-profile` is passed, which silently overrides the `EXAMPLE` variable exported in the shell.
+3. A row in the README's "Examples" table.
+
+When deleting an example, remove all three again (a stale launch profile or dispatcher case referencing a deleted class breaks the build or misleads users).
+
 ### Signing key
 
 `dotnet-algorand-sdk/Algorand.snk` strong-names the assembly (`SignAssembly=true`) — required for the build to produce a valid package.

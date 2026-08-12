@@ -35,10 +35,9 @@ namespace sdk_examples
             var httpClient = HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN);
             var algod = new AlgodClient(httpClient);
 
-            // A funded classic account to dispense from (LocalNet: export one with
-            // `algokit goal account export`, or use kmd as in the unit tests).
-            var funder = new Account(Environment.GetEnvironmentVariable("FUNDER_MNEMONIC")
-                ?? throw new InvalidOperationException("set FUNDER_MNEMONIC to a funded account's 25-word mnemonic"));
+            // A funded classic account to dispense from, exported from LocalNet's KMD
+            // (the genesis accounts live in the "unencrypted-default-wallet").
+            var funder = await GetFundedKmdAccount();
 
             // 1. Create a post-quantum account. `new FalconAccount()` uses a fresh random seed;
             //    passing a 32-byte seed makes key generation deterministic (SDK-specific
@@ -105,6 +104,56 @@ namespace sdk_examples
             var spendRekeyedSubmit = await Utils.SubmitTransaction(algod, spendRekeyedSigned);
             var spendRekeyedResult = await Utils.WaitTransactionToComplete(algod, spendRekeyedSubmit.Txid);
             Console.WriteLine($"Spent from rekeyed account under PQ authorizer in round {spendRekeyedResult.ConfirmedRound}");
+        }
+
+        /// <summary>
+        /// Exports the richest account from LocalNet KMD's genesis-funded
+        /// "unencrypted-default-wallet" to use as a dispenser.
+        /// </summary>
+        private static async Task<Account> GetFundedKmdAccount()
+        {
+            var KMD_API_ADDR = Environment.GetEnvironmentVariable("KMD_API_ADDR") ?? "http://localhost:4002";
+            var KMD_API_TOKEN = Environment.GetEnvironmentVariable("KMD_API_TOKEN") ?? "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            var ALGOD_API_ADDR = Environment.GetEnvironmentVariable("ALGOD_API_ADDR") ?? "http://localhost:4001/";
+            var ALGOD_API_TOKEN = Environment.GetEnvironmentVariable("ALGOD_API_TOKEN") ?? "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+            var kmdHttpClient = new System.Net.Http.HttpClient();
+            kmdHttpClient.DefaultRequestHeaders.Add("X-KMD-API-Token", KMD_API_TOKEN);
+            var kmd = new Algorand.KMD.Api(kmdHttpClient) { BaseUrl = KMD_API_ADDR };
+
+            var wallets = await kmd.ListWalletsAsync(null);
+            Algorand.KMD.APIV1Wallet wallet = null;
+            foreach (var w in wallets.Wallets)
+            {
+                if (w.Name == "unencrypted-default-wallet") { wallet = w; break; }
+            }
+            if (wallet == null) throw new InvalidOperationException("LocalNet KMD wallet 'unencrypted-default-wallet' not found - is AlgoKit LocalNet running?");
+
+            var handle = (await kmd.InitWalletHandleTokenAsync(new Algorand.KMD.InitWalletHandleTokenRequest()
+            {
+                Wallet_id = wallet.Id,
+                Wallet_password = ""
+            })).Wallet_handle_token;
+            var keys = await kmd.ListKeysInWalletAsync(new Algorand.KMD.ListKeysRequest() { Wallet_handle_token = handle });
+
+            // Pick whichever key currently holds the most funds.
+            var algod = new AlgodClient(HttpClientConfigurator.ConfigureHttpClient(ALGOD_API_ADDR, ALGOD_API_TOKEN));
+            string best = null;
+            ulong bestAmount = 0;
+            foreach (var address in keys.Addresses)
+            {
+                var info = await algod.AccountInformationAsync(address, null, null);
+                if (info.Amount > bestAmount) { bestAmount = info.Amount; best = address; }
+            }
+            if (best == null) throw new InvalidOperationException("no funded account found in LocalNet default wallet");
+
+            var exported = await kmd.ExportKeyAsync(new Algorand.KMD.ExportKeyRequest()
+            {
+                Address = best,
+                Wallet_handle_token = handle,
+                Wallet_password = ""
+            });
+            return new Account(exported.Private_key);
         }
     }
 }
