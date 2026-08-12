@@ -179,6 +179,12 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 			<ExcludeAssets>buildtransitive</ExcludeAssets>
 		</PackageReference>
+		<!-- The 2.6.2 pin is load-bearing beyond normal dependency hygiene:
+		     Algod/Model/FalconAccount.cs (KeygenReflection) drives BouncyCastle's *internal*
+		     Falcon keygen types by reflection to stay bit-identical with algokey's deterministic
+		     reference keygen. Any version bump must keep the Falcon golden-vector tests green
+		     (test/PQSignatureTests.cs: AddressDerivationMatchesAlgokey,
+		     MnemonicRecoveryMatchesAlgokey) - they run in the normal unit-test pass. -->
 		<PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
 		<PackageReference Include="JsonSubTypes" Version="2.0.1" />
 		<PackageReference Include="MessagePack" Version="3.1.8" />

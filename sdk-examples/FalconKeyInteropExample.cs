@@ -46,12 +46,13 @@ namespace sdk_examples
             var fresh = new FalconAccount();
             var mnemonic = fresh.ToMnemonic();
             Console.WriteLine();
-            Console.WriteLine("New account (write the mnemonic down - it is the only backup):");
+            Console.WriteLine("New account created; its 25-word mnemonic is the only backup.");
             Console.WriteLine($"  address:  {fresh.Address}");
-            Console.WriteLine($"  mnemonic: {mnemonic}");
+            // Never print a mnemonic to the console/logs in real code - persist fresh.ToMnemonic()
+            // via a secure channel of your own choosing (e.g. an offline, encrypted secret store).
             Console.WriteLine();
             Console.WriteLine("Import it into a node with:");
-            Console.WriteLine($"  algokey pq import -m \"{mnemonic}\" --keyfile my.key");
+            Console.WriteLine("  algokey pq import -m \"<the 25-word mnemonic>\" --keyfile my.key");
             Console.WriteLine("  algokey pq info --keyfile my.key   # shows the same PQ address");
 
             // Recovery round-trip: the mnemonic alone regenerates the identical key pair.

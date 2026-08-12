@@ -3,7 +3,6 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Pqc.Crypto.Falcon;
 using Org.BouncyCastle.Security;
 using System;
-using System.Linq;
 
 namespace Algorand.Algod.Model
 {
@@ -29,7 +28,7 @@ namespace Algorand.Algod.Model
     /// Note: a transaction authorized by a Falcon-1024 pqsig owes an additional 2x the network min
     /// fee on top of the base fee (3x min fee in total for an otherwise plain transaction).
     /// </summary>
-    public class FalconAccount
+    public class FalconAccount : IDisposable
     {
         /// <summary>Size in bytes of a Falcon-1024 public key, including the 0x0A header byte.</summary>
         public const int PublicKeySize = 1793;
@@ -44,11 +43,25 @@ namespace Algorand.Algod.Model
         private const int GLen = 640;               // trim_i8(g)
         private const int BigFLen = 1024;           // trim_i8(F), 8 bits/coeff * 1024 / 8
 
-        /// <summary>The full 1793-byte Falcon-1024 public key (0x0A header + h).</summary>
-        public byte[] PublicKey { get; }
+        private readonly byte[] publicKey;
+        private readonly byte[] privateKey;
+        private bool disposed;
 
-        /// <summary>The full 2305-byte Falcon-1024 private key (0x5A header + f || g || F).</summary>
-        public byte[] PrivateKey { get; }
+        /// <summary>The full 1793-byte Falcon-1024 public key (0x0A header + h). Returns a
+        /// defensive copy on every access.</summary>
+        public byte[] PublicKey => (byte[])publicKey.Clone();
+
+        /// <summary>The full 2305-byte Falcon-1024 private key (0x5A header + f || g || F).
+        /// Returns a defensive copy on every access - clear it after use, and see
+        /// <see cref="Dispose"/> for wiping the account's own copy.</summary>
+        public byte[] PrivateKey
+        {
+            get
+            {
+                ThrowIfDisposed();
+                return (byte[])privateKey.Clone();
+            }
+        }
 
         /// <summary>The canonical address salt for this public key.</summary>
         public byte Salt { get; }
@@ -91,9 +104,11 @@ namespace Algorand.Algod.Model
             }
 
             var (pk, sk) = ReferenceKeygen(seed);
-            PublicKey = pk;
-            PrivateKey = sk;
-            Salt = PQSignature.FindCanonicalSalt(PQSignature.SchemeFalcon1024, PublicKey, out var address);
+            if (asEntropy)
+                Array.Clear(seed, 0, seed.Length); // this copy was derived here; the entropy field is the backup
+            publicKey = pk;
+            privateKey = sk;
+            Salt = PQSignature.FindCanonicalSalt(PQSignature.SchemeFalcon1024, publicKey, out var address);
             Address = address;
         }
 
@@ -124,9 +139,11 @@ namespace Algorand.Algod.Model
         /// Returns the 25-word mnemonic backing this account (algokey-compatible). Only available
         /// for accounts created from entropy (FromMnemonic / FromEntropy / the default
         /// constructor); accounts imported from a raw key pair or keygen seed carry no entropy.
+        /// Never print or log the result - persist it via a secure channel only.
         /// </summary>
         public string ToMnemonic()
         {
+            ThrowIfDisposed();
             if (entropy == null)
                 throw new InvalidOperationException(
                     "this account was imported from raw keys or a keygen seed, so no mnemonic entropy is available");
@@ -158,9 +175,9 @@ namespace Algorand.Algod.Model
             if (privateKey == null || privateKey.Length != PrivateKeySize || privateKey[0] != PrivateKeyHeader)
                 throw new ArgumentException($"private key must be {PrivateKeySize} bytes with 0x5A header", nameof(privateKey));
 
-            PublicKey = (byte[])publicKey.Clone();
-            PrivateKey = (byte[])privateKey.Clone();
-            Salt = PQSignature.FindCanonicalSalt(PQSignature.SchemeFalcon1024, PublicKey, out var address);
+            this.publicKey = (byte[])publicKey.Clone();
+            this.privateKey = (byte[])privateKey.Clone();
+            Salt = PQSignature.FindCanonicalSalt(PQSignature.SchemeFalcon1024, this.publicKey, out var address);
             Address = address;
         }
 
@@ -171,27 +188,64 @@ namespace Algorand.Algod.Model
         public PQSignature SignPQRawBytes(byte[] data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
+            ThrowIfDisposed();
 
-            var skBody = PrivateKey.Skip(1).ToArray(); // f || g || F
-            var skParams = new FalconPrivateKeyParameters(
-                FalconParameters.falcon_1024,
-                skBody.Take(FLen).ToArray(),
-                skBody.Skip(FLen).Take(GLen).ToArray(),
-                skBody.Skip(FLen + GLen).Take(BigFLen).ToArray(),
-                PublicKey.Skip(1).ToArray());
-
-            var salt = PQSignature.MakeSalt(PQSignature.DefaultSaltVersion);
-            var signer = new FalconSigner();
-            signer.Init(true, new ParametersWithRandom(skParams, new DetSigningRandom(salt, PrivateKey, data)));
-            var detached = signer.GenerateSignature(data);
-
-            return new PQSignature
+            // Slice f || g || F out of the private key into buffers this method wipes again as
+            // soon as the signature exists. BouncyCastle's key-parameter object keeps its own
+            // internal copies, which the CLR gives no way to clear from here.
+            var f = new byte[FLen];
+            var g = new byte[GLen];
+            var F = new byte[BigFLen];
+            Array.Copy(privateKey, 1, f, 0, FLen);
+            Array.Copy(privateKey, 1 + FLen, g, 0, GLen);
+            Array.Copy(privateKey, 1 + FLen + GLen, F, 0, BigFLen);
+            var pkBody = new byte[PublicKeySize - 1];
+            Array.Copy(publicKey, 1, pkBody, 0, pkBody.Length);
+            try
             {
-                Scheme = PQSignature.SchemeFalcon1024,
-                Salt = Salt,
-                PublicKey = (byte[])PublicKey.Clone(),
-                Signature = PQSignature.RepackToUnsalted(detached, salt, PQSignature.DefaultSaltVersion),
-            };
+                var skParams = new FalconPrivateKeyParameters(FalconParameters.falcon_1024, f, g, F, pkBody);
+
+                var salt = PQSignature.MakeSalt(PQSignature.DefaultSaltVersion);
+                var signer = new FalconSigner();
+                signer.Init(true, new ParametersWithRandom(skParams, new DetSigningRandom(salt, privateKey, data)));
+                var detached = signer.GenerateSignature(data);
+
+                return new PQSignature
+                {
+                    Scheme = PQSignature.SchemeFalcon1024,
+                    Salt = Salt,
+                    PublicKey = (byte[])publicKey.Clone(),
+                    Signature = PQSignature.RepackToUnsalted(detached, salt, PQSignature.DefaultSaltVersion),
+                };
+            }
+            finally
+            {
+                Array.Clear(f, 0, f.Length);
+                Array.Clear(g, 0, g.Length);
+                Array.Clear(F, 0, F.Length);
+            }
+        }
+
+        /// <summary>
+        /// Best-effort wipe of the key material held by this instance: zeroes the private key
+        /// and the mnemonic entropy. Like <see cref="Crypto.KeyPair.Dispose"/>, this cannot
+        /// guarantee no copy remains elsewhere in process memory (GC compaction history,
+        /// BouncyCastle's own per-signature copies, defensive copies handed out by
+        /// <see cref="PrivateKey"/>), but it removes the copies this instance keeps live
+        /// references to. The account cannot sign or export after disposal.
+        /// </summary>
+        public void Dispose()
+        {
+            Array.Clear(privateKey, 0, privateKey.Length);
+            if (entropy != null)
+                Array.Clear(entropy, 0, entropy.Length);
+            disposed = true;
+        }
+
+        private void ThrowIfDisposed()
+        {
+            if (disposed)
+                throw new ObjectDisposedException(nameof(FalconAccount));
         }
 
         private static byte[] RandomSeed()

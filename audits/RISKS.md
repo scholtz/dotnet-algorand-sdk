@@ -276,23 +276,26 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   whose mnemonics get exposed as a result.
 - **Mitigable by this repo?**: Yes — remove or redact the printed mnemonic in the
   example; trivial, no functional impact on the rest of the example.
-- **Current mitigation status**: Partially mitigated / **Recurring** — the original
-  `OfflineSigningExample` fix stands (mnemonic no longer printed there), but the new
+- **Current mitigation status**: Mitigated (re-mitigated same day after a recurrence) —
+  the original `OfflineSigningExample` fix stands, but the new
   `sdk-examples/FalconKeyInteropExample.cs` (added this cycle, commit `cfbe28b`)
-  re-introduces the identical anti-pattern at lines 51 and 54: it prints a freshly
+  re-introduced the identical anti-pattern at lines 51 and 54: it printed a freshly
   generated Falcon-1024 account's 25-word mnemonic to the console twice (once directly,
-  once interpolated into a printed `algokey pq import -m "..."` command). The example's
-  account is unfunded and in-process, so the example itself leaks nothing of value, but
-  it again models mnemonic-to-console for copy-pasting developers. See
-  `AUDIT-2026-08-12-71d6cfc.md` finding F1.
-- **5-year misuse likelihood**: **5%** (up from 1%) — raised because the anti-pattern is
-  back in shipped, official sample code on the newly-promoted post-quantum path, which
-  is exactly the flow developers will copy when provisioning long-lived PQ accounts.
+  once interpolated into a printed `algokey pq import -m "..."` command). See
+  `AUDIT-2026-08-12-71d6cfc.md` finding F1. Fixed same day: both prints replaced with
+  the same redaction approach as the `OfflineSigningExample` fix (comment directing the
+  reader to persist the mnemonic securely; the printed `algokey` command now shows a
+  `<the 25-word mnemonic>` placeholder). The in-memory round-trip verification is
+  unchanged. Verified via full Release solution build.
+- **5-year misuse likelihood**: **2%** — the live anti-pattern is removed again, but
+  scored above the previous post-fix 1% because the pattern has now recurred once,
+  showing new examples can re-introduce it; residual risk also includes developers
+  copying the pre-fix version of the file.
 - **Impact if realized**: Loss of the specific mnemonic(s) printed and subsequently
   captured by whatever consumed the console output (terminal scrollback, CI logs, a
   captured-output log file).
 - **First recorded**: 2026-07-16
-- **Last reviewed**: 2026-08-12 (recurrence recorded)
+- **Last reviewed**: 2026-08-12 (recurrence recorded and re-mitigated, same day)
 
 ## RISK-011 — `Utils.GetRandomAssetMetaHash()` uses `System.Random`, not a CSPRNG
 
@@ -425,17 +428,27 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   `IDisposable` + `Array.Clear` on `PrivateKey`/`entropy`, defensive-copy getters, and
   clearing the transient signing copies. The CLR still gives no strong guarantee all
   copies are scrubbed.
-- **Current mitigation status**: Unmitigated
-- **5-year misuse likelihood**: **2%** — requires a memory-read-level attacker or a
-  leaked heap dump (same prerequisites as `RISK-001`/`RISK-007`), scored slightly above
-  the mitigated classic path (1%) because here no wiping is even attempted and the
-  public live-buffer getter widens accidental-exposure surface (e.g. a serializer
-  reflecting over public properties would emit the private key).
+- **Current mitigation status**: Mitigated (best-effort, same day) — `FalconAccount` now
+  implements `IDisposable`: `Dispose()` zeroes the private key and mnemonic entropy and
+  the account refuses to sign/export afterwards (`ObjectDisposedException`).
+  `PublicKey`/`PrivateKey` getters now return defensive copies instead of the live
+  internal buffers, the per-signature `f`/`g`/`F` slices are wiped in a `finally` block
+  as soon as the signature is produced, and the internally-derived keygen seed is
+  cleared after key generation. Residual, per the CLR caveats shared with `RISK-001`:
+  BouncyCastle's own per-signature internal copies can't be cleared from here, defensive
+  copies handed to callers are the callers' responsibility, and disposal remains opt-in.
+  Verified: full Release build (SDK project 0 warnings/0 errors), `PQSignatureTests`
+  10/10 including both algokey golden-vector tests, `SerialisationTests` 23/23, and the
+  non-LocalNet `test.csproj` subset 107/107.
+- **5-year misuse likelihood**: **1%** (down from 2%) — now on par with the mitigated
+  classic path (`RISK-001`): wiping is available and the accidental-exposure surface of
+  the live-buffer getter is closed; residual risk is a memory-read attacker catching a
+  copy before disposal, or a developer never disposing.
 - **Impact if realized**: Loss of the specific Falcon key(s) held by the compromised
   process — the account's funds and its authorization role (including accounts rekeyed
   to it).
 - **First recorded**: 2026-08-12
-- **Last reviewed**: 2026-08-12
+- **Last reviewed**: 2026-08-12 (remediation update, same day)
 
 ## RISK-016 — Falcon keygen depends on BouncyCastle 2.6.2 *internal* APIs via reflection
 
@@ -455,9 +468,12 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   This is a recovery-failure/availability risk, not a key-theft vector.
 - **Mitigable by this repo?**: Partially — keep the golden-vector tests as a mandatory
   gate on any BC version bump; document the coupling next to the version pin.
-- **Current mitigation status**: Partially mitigated (fail-fast reflection + pinned
-  version + golden-vector tests already in the default unit-test pass; the csproj pin
-  comment does not yet mention this coupling).
+- **Current mitigation status**: Partially mitigated — fail-fast reflection + pinned
+  version + golden-vector tests already in the default unit-test pass; as of same-day
+  remediation, the csproj now carries a comment on the `BouncyCastle.Cryptography`
+  `PackageReference` documenting the coupling and naming the golden-vector tests any
+  version bump must keep green. The inherent coupling to BC internals remains (only a
+  refactor away from reflection, or an upstream BC public API, would remove it).
 - **5-year misuse likelihood**: **N/A — functional/recovery risk, not a security-misuse
   risk.** Recorded per the registry's full-threat-picture scope; the realistic bad
   outcome is a loud keygen failure or a caught test regression, not exploitation.
