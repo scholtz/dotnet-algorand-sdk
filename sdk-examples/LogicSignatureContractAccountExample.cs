@@ -48,13 +48,13 @@ namespace sdk_examples
 
             try
             {
-                await Utils.SubmitTransaction(algod, payEscrowTx);//Fund the escrow
+                await algod.SubmitTransaction(payEscrowTx);//Fund the escrow
 
                 var signedTx = tx.Sign(lsig); // sign the payment from the logic signature address with the logic sig itself
-                var id = await Utils.SubmitTransaction(algod, signedTx);
+                var id = await algod.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx logic sig tx id: " + id);
                 Console.WriteLine("Confirmed Round is: " +
-                    Utils.WaitTransactionToComplete(algod, id.Txid).Result.ConfirmedRound);
+                    algod.WaitTransactionToComplete(id.Txid).Result.ConfirmedRound);
             }
             catch (ApiException<ErrorResponse> e)
             {

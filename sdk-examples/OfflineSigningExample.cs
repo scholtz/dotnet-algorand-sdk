@@ -57,10 +57,10 @@ namespace sdk_examples
 
                 // --- Online: decode the signed bytes and submit -------------------------------
                 var decodedSignedTx = Encoder.DecodeFromMsgPack<SignedTransaction>(signedBytes);
-                var id = await Utils.SubmitTransaction(algod, decodedSignedTx);
+                var id = await algod.SubmitTransaction(decodedSignedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
 
-                var resp = await Utils.WaitTransactionToComplete(algod, id.Txid);
+                var resp = await algod.WaitTransactionToComplete(id.Txid);
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
             }
             catch (ApiException<ErrorResponse> e)

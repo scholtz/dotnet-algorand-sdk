@@ -49,6 +49,18 @@ Types are dual-annotated for both `Newtonsoft.Json` (`JsonProperty`) and `Messag
 
 `dotnet-algorand-sdk/ClientGenerator` (project `AlgoStudio`) and `client-generator/` generate a typed C# client from an ARC56 smart-contract JSON spec, distributed as the `scholtz2/dotnet-avm-generated-client` Docker image (see `compose-client-generator-docker.sh`, `client-generator/Dockerfile`). Usage examples: `test/Arc56Tests.cs`, README "ARC56 DotNet c# Client generator" section.
 
+### Submitting transactions (standard API)
+
+The standard way to submit and await transactions is via the algod client extension methods in `Algod/DefaultApiExtensions.cs` (work on `DefaultApi` and `AlgodClient`, need `using Algorand.Algod;`):
+
+```cs
+var submit = await algod.SubmitTransaction(signedTx);        // single signed transaction
+var submit = await algod.SubmitTransactions(signedTxGroup);  // enumerable, e.g. an atomic group
+var result = await algod.WaitTransactionToComplete(submit.Txid);
+```
+
+The old statics `Algorand.Utils.Utils.SubmitTransaction(algod, tx)` / `Utils.WaitTransactionToComplete(algod, txid)` are `[Obsolete]` shims that delegate to these — never use them in new code, examples, or docs, and prefer migrating any call sites you touch.
+
 ### SDK examples
 
 Each example in `sdk-examples/` is a standalone class with its own `static Main`, selected at runtime by the dispatcher in `sdk-examples/Program.cs` (the `EXAMPLE` environment variable takes priority over the first CLI argument). When adding a new example, wire it up in **three** places, all keyed on the same class name:

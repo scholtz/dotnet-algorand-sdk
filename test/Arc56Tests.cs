@@ -1,4 +1,4 @@
-﻿using Algorand;
+using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
@@ -463,7 +463,7 @@ namespace test
                 var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct1.Address, contractBI.AppAddress, 1_000_000, "", transParams);
                 var signedTx = tx.Sign(acct1);
 
-                var id = await Utils.SubmitTransaction(algodApiInstance, signedTx);
+                var id = await algodApiInstance.SubmitTransaction(signedTx);
 
                 byte[] prefix = new byte[] { (byte)'i' };
                 byte[] box = prefix.Concat(acct1.Address.Bytes).ToArray();
@@ -940,8 +940,8 @@ namespace test
             };
             assetCreate.FillInParams(transParams);
             var signed = assetCreate.Sign(acct1);
-            await Utils.SubmitTransaction(algodApiInstance, signed);
-            var confirmed = await Utils.WaitTransactionToComplete(algodApiInstance, assetCreate.TxID()) as AssetCreateTransaction;
+            await algodApiInstance.SubmitTransaction(signed);
+            var confirmed = await algodApiInstance.WaitTransactionToComplete(assetCreate.TxID()) as AssetCreateTransaction;
             return confirmed?.AssetIndex ?? throw new Exception("Asset index missing after creation");
         }
 

@@ -137,9 +137,9 @@ namespace sdk_examples
                 var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
-                var id = await Utils.SubmitTransaction(client, signedTx);
+                var id = await client.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
-                var resp = await Utils.WaitTransactionToComplete(client, id.Txid);
+                var resp = await client.WaitTransactionToComplete(id.Txid);
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
                 Console.WriteLine("Application ID is: " + appId);
             }
@@ -170,9 +170,9 @@ namespace sdk_examples
                 var signedTx = tx.Sign(creator);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
-                var id = await Utils.SubmitTransaction(client, signedTx);
+                var id = await client.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
-                var resp = await Utils.WaitTransactionToComplete(client, id.Txid);
+                var resp = await client.WaitTransactionToComplete(id.Txid);
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
                 Console.WriteLine("Application ID is: " + appid);
             }
@@ -210,9 +210,9 @@ namespace sdk_examples
                 var signedTx = tx.Sign(creator);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
-                var id = await Utils.SubmitTransaction(client, signedTx);
+                var id = await client.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
-                var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationCreateTransaction;
+                var resp = await client.WaitTransactionToComplete(id.Txid) as ApplicationCreateTransaction;
                 Console.WriteLine("Application ID is: " + resp.ApplicationIndex.ToString());
                 return resp.ApplicationIndex;
             }
@@ -243,9 +243,9 @@ namespace sdk_examples
                 var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
-                var id = await Utils.SubmitTransaction(client, signedTx);
+                var id = await client.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
-                var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationOptInTransaction;
+                var resp = await client.WaitTransactionToComplete(id.Txid) as ApplicationOptInTransaction;
                 Console.WriteLine(string.Format("Address {0} optin to Application({1})", sender.Address.ToString(), resp.ApplicationId));
             }
             catch (Algorand.ApiException<ErrorResponse> e)
@@ -274,9 +274,9 @@ namespace sdk_examples
                 var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
-                var id = await Utils.SubmitTransaction(client, signedTx);
+                var id = await client.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
-                var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationDeleteTransaction;
+                var resp = await client.WaitTransactionToComplete(id.Txid) as ApplicationDeleteTransaction;
                 Console.WriteLine("Success deleted the application " + resp.ApplicationId);
             }
             catch (Algorand.ApiException<ErrorResponse> e)
@@ -304,9 +304,9 @@ namespace sdk_examples
                 var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
-                var id = await Utils.SubmitTransaction(client, signedTx);
+                var id = await client.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
-                var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationClearStateTransaction;
+                var resp = await client.WaitTransactionToComplete(id.Txid) as ApplicationClearStateTransaction;
                 Console.WriteLine("Success cleared the application " + resp.ApplicationId);
             }
             catch (Algorand.ApiException<ErrorResponse> e)
@@ -336,9 +336,9 @@ namespace sdk_examples
                 var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
-                var id = await Utils.SubmitTransaction(client, signedTx);
+                var id = await client.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
-                var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationNoopTransaction;
+                var resp = await client.WaitTransactionToComplete(id.Txid) as ApplicationNoopTransaction;
                 Console.WriteLine("Confirmed at round: " + resp.ConfirmedRound);
                 Console.WriteLine(string.Format("Call Application({0}) success.", resp.ApplicationId));
 

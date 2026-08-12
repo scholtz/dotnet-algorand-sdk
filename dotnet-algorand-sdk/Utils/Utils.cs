@@ -23,37 +23,10 @@ namespace Algorand.Utils
         /// <param name="txID">transaction ID</param>
         /// <param name="timeout">how many rounds do you wish to check pending transactions for</param>
         /// <returns>The pending transaction response</returns>
-        public static async Task<Transaction> WaitTransactionToComplete(Algod.DefaultApi instance, string txID, ulong timeout = 3) 
+        [Obsolete("Use the algod client extension method instead: algod.WaitTransactionToComplete(txID)")]
+        public static async Task<Transaction> WaitTransactionToComplete(Algod.DefaultApi instance, string txID, ulong timeout = 3)
         {
-
-            if (instance == null || txID == null || txID.Length == 0 || timeout < 0)
-            {
-                throw new ArgumentException("Bad arguments for waitForConfirmation.");
-            }
-            NodeStatusResponse nodeStatusResponse = await instance.GetStatusAsync();            
-            var startRound = nodeStatusResponse.LastRound + 1;
-            var currentRound = startRound;
-            while (currentRound < (startRound + timeout))
-            {
-                var pendingInfo = await instance.PendingTransactionInformationAsync(txID,null) as Transaction;
-
-                if (pendingInfo != null)
-                {
-                    if (pendingInfo.ConfirmedRound > 0)
-                    {
-                        // Got the completed Transaction
-                        return pendingInfo;
-                    }
-                    if (pendingInfo.PoolError != null && pendingInfo.PoolError.Length > 0)
-                    {
-                        // If there was a pool error, then the transaction has been rejected!
-                        throw new Exception("The transaction has been rejected with a pool error: " + pendingInfo.PoolError);
-                    }
-                }
-                await instance.WaitForBlockAsync(currentRound);
-                currentRound++;
-            }
-            throw new Exception("Transaction not confirmed after " + timeout + " rounds!");
+            return await Algorand.Algod.DefaultApiExtensions.WaitTransactionToComplete(instance, txID, timeout);
         }
       
 
@@ -64,11 +37,10 @@ namespace Algorand.Utils
         /// <param name="instance"></param>
         /// <param name="signedTx"></param>
         /// <returns></returns>
+        [Obsolete("Use the algod client extension method instead: algod.SubmitTransaction(signedTx)")]
         public static async Task<PostTransactionsResponse> SubmitTransaction(Algod.DefaultApi instance, SignedTransaction signedTx) //throws Exception
         {
-                    
-                return await instance.TransactionsAsync(new List<SignedTransaction> { signedTx });
-         
+            return await Algorand.Algod.DefaultApiExtensions.SubmitTransaction(instance, signedTx);
         }
         public static ulong AlgosToMicroalgos(double algos)
         {

@@ -139,8 +139,8 @@ namespace sdk_examples
 
             try
             {
-                var response = await Utils.SubmitTransaction(apiInstance, signedTx);
-                var result = await Utils.WaitTransactionToComplete(apiInstance, response.Txid);
+                var response = await apiInstance.SubmitTransaction(signedTx);
+                var result = await apiInstance.WaitTransactionToComplete(response.Txid);
                 Console.WriteLine($"Transaction ID: {response.Txid}\nConfirmed round: {result.ConfirmedRound}\n");
 
                 if (result is AssetCreateTransaction)

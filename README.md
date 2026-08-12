@@ -95,10 +95,10 @@ try
         src.Address, new Address(DEST_ADDR), amount, "pay message", transParams);
     var signedTx = tx.Sign(src);
 
-    var id = await Utils.SubmitTransaction(algod, signedTx);
+    var id = await algod.SubmitTransaction(signedTx);
     Console.WriteLine($"Successfully sent tx with id: {id.Txid}");
 
-    var resp = await Utils.WaitTransactionToComplete(algod, id.Txid);
+    var resp = await algod.WaitTransactionToComplete(id.Txid);
     Console.WriteLine($"Confirmed Round is: {resp.ConfirmedRound}");
 }
 catch (ApiException<ErrorResponse> e)
@@ -125,7 +125,7 @@ var algod = new AlgodClient(httpClient);
 | Algod API | `Algorand.Algod.AlgodClient`, `CommonApi` | Use `AlgodClient` for the primary Algod API. Derives from `DefaultApi` for backward compatibility. The `Common` API set covers additional network interaction. (`Private` APIs are node-admin-only and not exposed.) |
 | Accounts & keys | `Algorand.Algod.Model.Account`, `Address` | `new Account(mnemonic)` restores a key pair; `new Account()` generates one. `Account` also signs transactions. |
 | Transactions | `Algorand.Algod.Model.Transactions.*` | `PaymentTransaction`, `AssetCreateTransaction`, `ApplicationCallTransaction`, `KeyRegistrationTransaction`, … each with static factory helpers. |
-| Submitting & waiting | `Algorand.Utils.Utils` | `SubmitTransaction`, `WaitTransactionToComplete`, `AlgosToMicroalgos`, atomic group helpers. |
+| Submitting & waiting | `algod.SubmitTransaction(...)` / `algod.SubmitTransactions(...)` / `algod.WaitTransactionToComplete(...)` | Extension methods on the algod client (`Algorand.Algod.DefaultApiExtensions`) — the standard way to broadcast a signed transaction (or an atomic group) and await confirmation. The old `Algorand.Utils.Utils` statics are obsolete. |
 | Error handling | `ApiException<ErrorResponse>` | Catch this to read the node's error details from `e.Result.Message`. |
 | Indexer | `Algorand.Indexer` clients | Separate model from Algod by design — it keeps historical/deprecated fields so old data stays describable. |
 | KMD | `Algorand.KMD.Api` | Wallet management via a node's KMD service; see the [KMD example](sdk-examples/KMDExample.cs). |

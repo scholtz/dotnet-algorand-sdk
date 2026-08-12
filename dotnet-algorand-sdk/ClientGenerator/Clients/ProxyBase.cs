@@ -1,4 +1,4 @@
-﻿using Algorand;
+using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Exceptions;
@@ -401,7 +401,7 @@ namespace AVM.ClientGenerator
                 if (_tx_callType == Core.OnCompleteType.CreateApplication)
                 {
 
-                    var resp = await AlgoUtils.Utils.WaitTransactionToComplete(client, tx.TxID()) as ApplicationCreateTransaction;
+                    var resp = await client.WaitTransactionToComplete(tx.TxID()) as ApplicationCreateTransaction;
 
 #if UNITY
                     this.appId = resp.ApplicationIndex;
@@ -413,7 +413,7 @@ namespace AVM.ClientGenerator
                 }
                 else
                 {
-                    var resp = await AlgoUtils.Utils.WaitTransactionToComplete(client, tx.TxID()) as ApplicationCallTransaction;
+                    var resp = await client.WaitTransactionToComplete(tx.TxID()) as ApplicationCallTransaction;
 
                     LastCallLogs = resp.Logs ?? new List<byte[]>();
                     return resp.Logs;

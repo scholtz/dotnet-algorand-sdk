@@ -61,8 +61,8 @@ namespace sdk_examples
                 var amount = Utils.AlgosToMicroalgos(1);
                 var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(creator.Address, Address.ForApplication(appid.Value), amount, "pay message", transParams);
                 var signedTx = tx.Sign(creator);
-                var id = await Utils.SubmitTransaction(algod, signedTx);
-                var resp = await Utils.WaitTransactionToComplete(algod, id.Txid);
+                var id = await algod.SubmitTransaction(signedTx);
+                var resp = await algod.WaitTransactionToComplete(id.Txid);
                 Console.WriteLine("Successfully funded app with tx id: " + id.Txid+ " at round " + resp.ConfirmedRound);
 
 
@@ -112,9 +112,9 @@ namespace sdk_examples
                 var signedTx = tx.Sign(creator);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
 
-                var id = await Utils.SubmitTransaction(client, signedTx);
+                var id = await client.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
-                var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationCreateTransaction;
+                var resp = await client.WaitTransactionToComplete(id.Txid) as ApplicationCreateTransaction;
                 Console.WriteLine("Application ID is: " + resp.ApplicationIndex.ToString());
                 return resp.ApplicationIndex;
             }
@@ -147,9 +147,9 @@ namespace sdk_examples
 
                 var signedTx = tx.Sign(sender);
                 Console.WriteLine("Signed transaction with txid: " + signedTx.Tx.TxID());
-                var id = await Utils.SubmitTransaction(client, signedTx);
+                var id = await client.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
-                var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationNoopTransaction;
+                var resp = await client.WaitTransactionToComplete(id.Txid) as ApplicationNoopTransaction;
                 Console.WriteLine("Confirmed at round: " + resp.ConfirmedRound);
                 Console.WriteLine(string.Format("Call Application({0}) success.", resp.ApplicationId));
 

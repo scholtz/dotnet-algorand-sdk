@@ -58,8 +58,8 @@ namespace sdk_examples
             var fundTx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(
                 funder.Address, falcon.Address, 2_000_000, "fund PQ account", transParams);
             var fundSigned = fundTx.Sign(funder);
-            var fundSubmit = await Utils.SubmitTransaction(algod, fundSigned);
-            await Utils.WaitTransactionToComplete(algod, fundSubmit.Txid);
+            var fundSubmit = await algod.SubmitTransaction(fundSigned);
+            await algod.WaitTransactionToComplete(fundSubmit.Txid);
             Console.WriteLine($"Funded {falcon.Address} with 2 Algos (tx {fundSubmit.Txid})");
 
             // 4. Spend from the PQ account. The Falcon-1024 signature contributes an extra 2x the
@@ -74,8 +74,8 @@ namespace sdk_examples
             Console.WriteLine($"pqsig size: {paySigned.PQSig.Signature.Length} bytes (Falcon-1024 compressed)");
             Console.WriteLine($"pqsig verifies locally: {paySigned.PQSig.Verify(payTx.BytesToSign())}");
 
-            var paySubmit = await Utils.SubmitTransaction(algod, paySigned);
-            var payResult = await Utils.WaitTransactionToComplete(algod, paySubmit.Txid);
+            var paySubmit = await algod.SubmitTransaction(paySigned);
+            var payResult = await algod.WaitTransactionToComplete(paySubmit.Txid);
             Console.WriteLine($"PQ payment confirmed in round {payResult.ConfirmedRound} (tx {paySubmit.Txid})");
 
             // 5. Migration path: rekey an existing ed25519 account to the PQ address. After the
@@ -85,15 +85,15 @@ namespace sdk_examples
             transParams = await algod.TransactionParamsAsync();
             var seedClassicTx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(
                 funder.Address, classic.Address, 1_000_000, "seed classic account", transParams);
-            var seedSubmit = await Utils.SubmitTransaction(algod, seedClassicTx.Sign(funder));
-            await Utils.WaitTransactionToComplete(algod, seedSubmit.Txid);
+            var seedSubmit = await algod.SubmitTransaction(seedClassicTx.Sign(funder));
+            await algod.WaitTransactionToComplete(seedSubmit.Txid);
 
             transParams = await algod.TransactionParamsAsync();
             var rekeyTx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(
                 classic.Address, classic.Address, 0, "rekey to PQ authorizer", transParams);
             rekeyTx.RekeyTo = falcon.Address;
-            var rekeySubmit = await Utils.SubmitTransaction(algod, rekeyTx.Sign(classic));
-            await Utils.WaitTransactionToComplete(algod, rekeySubmit.Txid);
+            var rekeySubmit = await algod.SubmitTransaction(rekeyTx.Sign(classic));
+            await algod.WaitTransactionToComplete(rekeySubmit.Txid);
             Console.WriteLine($"Rekeyed {classic.Address} -> PQ authorizer {falcon.Address}");
 
             transParams = await algod.TransactionParamsAsync();
@@ -101,8 +101,8 @@ namespace sdk_examples
                 classic.Address, funder.Address, 100_000, "spend under PQ authorizer", transParams);
             spendRekeyedTx.Fee = minFee * (1 + PQSignature.Falcon1024FeeContributionFactor);
             var spendRekeyedSigned = spendRekeyedTx.SignPQ(falcon); // AuthAddr = falcon.Address
-            var spendRekeyedSubmit = await Utils.SubmitTransaction(algod, spendRekeyedSigned);
-            var spendRekeyedResult = await Utils.WaitTransactionToComplete(algod, spendRekeyedSubmit.Txid);
+            var spendRekeyedSubmit = await algod.SubmitTransaction(spendRekeyedSigned);
+            var spendRekeyedResult = await algod.WaitTransactionToComplete(spendRekeyedSubmit.Txid);
             Console.WriteLine($"Spent from rekeyed account under PQ authorizer in round {spendRekeyedResult.ConfirmedRound}");
         }
 

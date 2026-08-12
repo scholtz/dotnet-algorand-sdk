@@ -1,3 +1,4 @@
+using Algorand.Algod;
 using specflow.StepDefinitions;
 using System;
 using TechTalk.SpecFlow;
@@ -68,7 +69,7 @@ namespace algorand_tests.StepDefinitions
             SignedTransaction st = (SignedTransaction)_scenarioContext["signedTransaction"];
             try
             {
-                var id = (await Utils.SubmitTransaction(httpUtilities.algodDefaultApiInstance, st)).Txid;
+                var id = (await httpUtilities.algodDefaultApiInstance.SubmitTransaction(st)).Txid;
                 _scenarioContext["submittedTxnid"] = id;
             }
             catch (Exception)
@@ -188,8 +189,8 @@ namespace algorand_tests.StepDefinitions
             var suggestedParms = await httpUtilities.algodDefaultApiInstance.TransactionParamsAsync();
             var fundingTxn = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(funder.Address, new Address(newAddress), 1_000_000, "", suggestedParms);
             var signed = fundingTxn.Sign(funder);
-            var resp = await Utils.SubmitTransaction(httpUtilities.algodDefaultApiInstance, signed);
-            await Utils.WaitTransactionToComplete(httpUtilities.algodDefaultApiInstance, resp.Txid);
+            var resp = await httpUtilities.algodDefaultApiInstance.SubmitTransaction(signed);
+            await httpUtilities.algodDefaultApiInstance.WaitTransactionToComplete(resp.Txid);
 
             return newAddress;
         }

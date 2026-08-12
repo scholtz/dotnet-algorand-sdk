@@ -45,8 +45,8 @@ namespace sdk_examples
                 var transParams = await algod.TransactionParamsAsync();
                 var payment = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acc1.Address, multiAddress.ToAddress(), 110000, "to multsig", transParams);
                 var signedTx = payment.Sign(acc1);
-                var tx = await Utils.SubmitTransaction(algod, signedTx);
-                await Utils.WaitTransactionToComplete(algod,tx.Txid);
+                var tx = await algod.SubmitTransaction(signedTx);
+                await algod.WaitTransactionToComplete(tx.Txid);
 
                 // now to send *from* the multi-address we need a certain number of signatures specified by the threshold
                 transParams = await algod.TransactionParamsAsync();
@@ -57,8 +57,8 @@ namespace sdk_examples
                 var signedTx2 = payment2.Sign(multiAddress,acc2);
                 signedTx = SignedTransaction.MergeMultisigTransactions(signedTx1, signedTx2);
                
-                tx = await Utils.SubmitTransaction(algod, signedTx);
-                var result= await Utils.WaitTransactionToComplete(algod, tx.Txid);
+                tx = await algod.SubmitTransaction(signedTx);
+                var result= await algod.WaitTransactionToComplete(tx.Txid);
 
                 // now let's check the account received the amount
                 var accountInfo = await algod.AccountInformationAsync(randomAccount.Address.ToString(), null, null);

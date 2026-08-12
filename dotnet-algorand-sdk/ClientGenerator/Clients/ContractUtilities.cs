@@ -1,4 +1,4 @@
-﻿using Algorand;
+using Algorand;
 using Algorand.Algod;
 using Algorand.Algod.Model;
 using Algorand.Algod.Model.Transactions;
@@ -39,8 +39,8 @@ namespace AVM.ClientGenerator.Clients
 
 
             var signedTx = tx.Sign(creator);
-            var id = await Utils.SubmitTransaction(client, signedTx);
-            var resp = await Utils.WaitTransactionToComplete(client, id.Txid) as ApplicationCreateTransaction;
+            var id = await client.SubmitTransaction(signedTx);
+            var resp = await client.WaitTransactionToComplete(id.Txid) as ApplicationCreateTransaction;
             return resp.ApplicationIndex;
 
         }
@@ -111,8 +111,8 @@ namespace AVM.ClientGenerator.Clients
             var tx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(account.Address, appToFund, microAlgos, $"fund {appId}", transParams);
             var signedTx = tx.Sign(account);
 
-            var id = await Utils.SubmitTransaction(api, signedTx);
-            var resp = await Utils.WaitTransactionToComplete(api, id.Txid);
+            var id = await api.SubmitTransaction(signedTx);
+            var resp = await api.WaitTransactionToComplete(id.Txid);
 
             if (!resp.Committed) { throw new Exception("FundContract did not complete."); }
 
@@ -143,8 +143,8 @@ namespace AVM.ClientGenerator.Clients
             };
             var signedTx = tx.Sign(account);
 
-            var id = await Utils.SubmitTransaction(api, signedTx);
-            var resp = await Utils.WaitTransactionToComplete(api, id.Txid);
+            var id = await api.SubmitTransaction(signedTx);
+            var resp = await api.WaitTransactionToComplete(id.Txid);
 
             if (!resp.Committed) { throw new Exception("OptIn did not complete."); }
 
@@ -166,8 +166,8 @@ namespace AVM.ClientGenerator.Clients
             };
 
             var signedTx = tx.Sign(sender);
-            var id = await Utils.SubmitTransaction(api, signedTx);
-            var resp = await Utils.WaitTransactionToComplete(api, id.Txid);
+            var id = await api.SubmitTransaction(signedTx);
+            var resp = await api.WaitTransactionToComplete(id.Txid);
 
             if (!resp.Committed) { throw new Exception("Deletion did not complete."); }
         }
@@ -186,8 +186,8 @@ namespace AVM.ClientGenerator.Clients
             };
 
             var signedTx = tx.Sign(sender);
-            var id = await Utils.SubmitTransaction(api, signedTx);
-            var resp = await Utils.WaitTransactionToComplete(api, id.Txid) as ApplicationClearStateTransaction;
+            var id = await api.SubmitTransaction(signedTx);
+            var resp = await api.WaitTransactionToComplete(id.Txid) as ApplicationClearStateTransaction;
 
             if (!resp.Committed) { throw new Exception("Deletion did not complete."); }
 

@@ -42,12 +42,12 @@ namespace sdk_examples
                     // this uses the payment transaction to rekey to Acct3 to use Acct1 signing keys
                     rekeyAcct3ToAcct1tx.RekeyTo = acct2.Address;
                     var signedTx = rekeyAcct3ToAcct1tx.Sign(acct3);
-                    await Utils.SubmitTransaction(algod, signedTx);
+                    await algod.SubmitTransaction(signedTx);
 
                     // let's try it again with the acct3 signing key
                     var failToExecuteTxWithAcct3Signature = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct3.Address, acct2.Address, amount, "pay message", transParams);
                     signedTx = failToExecuteTxWithAcct3Signature.Sign(acct3);
-                    await Utils.SubmitTransaction(algod, signedTx); //this should fail
+                    await algod.SubmitTransaction(signedTx); //this should fail
 
                 }
                 catch (ApiException<ErrorResponse> e)
@@ -62,14 +62,14 @@ namespace sdk_examples
                 // let's try it again with the acct3 signing key
                 var signWithAcct2WithRekeyInfo = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct3.Address, acct2.Address, amount, "pay message", transParams);
                 var signWithAcct2WithRekeyInfoSigned = signWithAcct2WithRekeyInfo.Sign(acct2);
-                await Utils.SubmitTransaction(algod, signWithAcct2WithRekeyInfoSigned); //this will be ok, as acct2 acts now as acct3 public address with acct2 signing keys
+                await algod.SubmitTransaction(signWithAcct2WithRekeyInfoSigned); //this will be ok, as acct2 acts now as acct3 public address with acct2 signing keys
 
 
                 //rekey it back
                 var rekeyBackTx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(acct3.Address, acct2.Address, amount, "pay message", transParams);
                 rekeyBackTx.RekeyTo = acct3.Address;
                 var rekeyBackTxSigned = rekeyBackTx.Sign(acct2);
-                await Utils.SubmitTransaction(algod, rekeyBackTxSigned);
+                await algod.SubmitTransaction(rekeyBackTxSigned);
 
             }
             catch (Exception e)

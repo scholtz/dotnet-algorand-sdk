@@ -50,10 +50,10 @@ namespace sdk_examples
                 Console.WriteLine("Signed transaction with transaction ID: " + signedTx.Tx.TxID());
 
                 // send the transaction to the network
-                var id = await Utils.SubmitTransaction(algod, signedTx);
+                var id = await algod.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx with id: " + id.Txid);
 
-                var resp = await Utils.WaitTransactionToComplete(algod, id.Txid);
+                var resp = await algod.WaitTransactionToComplete(id.Txid);
                 Console.WriteLine("Confirmed Round is: " + resp.ConfirmedRound);
             }
             catch (ApiException<ErrorResponse> exc)

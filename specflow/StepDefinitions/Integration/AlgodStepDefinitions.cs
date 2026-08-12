@@ -1,3 +1,4 @@
+using Algorand.Algod;
 using specflow.StepDefinitions;
 using System;
 using System.Threading.Tasks;
@@ -293,7 +294,7 @@ namespace algorand_tests.StepDefinitions
             _scenarioContext["error"] = false;
             SignedTransaction st = (SignedTransaction)_scenarioContext["signedTransaction"];
 
-            var id = (await Utils.SubmitTransaction(httpUtilities.algodDefaultApiInstance, st)).Txid;
+            var id = (await httpUtilities.algodDefaultApiInstance.SubmitTransaction(st)).Txid;
             _scenarioContext["submittedTxnid"] = id;
 
         }
@@ -303,7 +304,7 @@ namespace algorand_tests.StepDefinitions
         {
             string txid = (string)_scenarioContext["submittedTxnid"];
 
-            var resp = await Utils.WaitTransactionToComplete(httpUtilities.algodDefaultApiInstance, txid) as Transaction;
+            var resp = await httpUtilities.algodDefaultApiInstance.WaitTransactionToComplete(txid) as Transaction;
         }
 
         [Then(@"I get pending transactions")]

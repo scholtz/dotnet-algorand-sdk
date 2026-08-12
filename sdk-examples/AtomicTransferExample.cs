@@ -43,8 +43,8 @@ namespace sdk_examples
 
             try
             {
-                var response = await algod.TransactionsAsync(signedTxGroup);
-                var round = Utils.WaitTransactionToComplete(algod, response.Txid).Result.ConfirmedRound;
+                var response = await algod.SubmitTransactions(signedTxGroup);
+                var round = (await algod.WaitTransactionToComplete(response.Txid)).ConfirmedRound;
                 Console.WriteLine($"Transaction ID: {response.Txid}\nConfirmed round: {round}");
             }
             catch (ApiException<ErrorResponse> e)

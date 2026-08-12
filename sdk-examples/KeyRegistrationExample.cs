@@ -59,8 +59,8 @@ namespace sdk_examples
             try
             {
                 var signedTx = onlineTx.Sign(account);
-                var id = await Utils.SubmitTransaction(algod, signedTx);
-                var resp = await Utils.WaitTransactionToComplete(algod, id.Txid);
+                var id = await algod.SubmitTransaction(signedTx);
+                var resp = await algod.WaitTransactionToComplete(id.Txid);
                 Console.WriteLine($"Account registered online in round: {resp.ConfirmedRound}");
             }
             catch (ApiException<ErrorResponse> e)
@@ -82,8 +82,8 @@ namespace sdk_examples
             try
             {
                 var signedTx = offlineTx.Sign(account);
-                var id = await Utils.SubmitTransaction(algod, signedTx);
-                var resp = await Utils.WaitTransactionToComplete(algod, id.Txid);
+                var id = await algod.SubmitTransaction(signedTx);
+                var resp = await algod.WaitTransactionToComplete(id.Txid);
                 Console.WriteLine($"Account registered offline in round: {resp.ConfirmedRound}");
             }
             catch (ApiException<ErrorResponse> e)

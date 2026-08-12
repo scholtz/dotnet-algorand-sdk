@@ -40,10 +40,10 @@ namespace sdk_examples
 
             try
             {
-                var response = await Utils.SubmitTransaction(algod, signedTx);
+                var response = await algod.SubmitTransaction(signedTx);
                 Console.WriteLine("Successfully sent tx logic sig tx id: " + response.Txid);
                 Console.WriteLine("Confirmed Round is: " +
-                        Utils.WaitTransactionToComplete(algod, response.Txid).Result.ConfirmedRound);
+                        algod.WaitTransactionToComplete(response.Txid).Result.ConfirmedRound);
             }
             catch (ApiException e)
             {

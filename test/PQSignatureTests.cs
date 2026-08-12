@@ -165,8 +165,8 @@ namespace test
             var fundTx = PaymentTransaction.GetPaymentTransactionFromNetworkTransactionParameters(
                 funder.Address, falcon.Address, 1_000_000, "fund falcon account", transParams);
             var fundSigned = fundTx.Sign(funder);
-            var fundResp = await Utils.SubmitTransaction(algod, fundSigned);
-            await Utils.WaitTransactionToComplete(algod, fundResp.Txid);
+            var fundResp = await algod.SubmitTransaction(fundSigned);
+            await algod.WaitTransactionToComplete(fundResp.Txid);
 
             // Spend from the PQ account: a Falcon-1024 pqsig owes 2x min fee on top of the base fee.
             transParams = await algod.TransactionParamsAsync();
@@ -176,8 +176,8 @@ namespace test
             payTx.Fee = minFee * (1 + PQSignature.Falcon1024FeeContributionFactor);
 
             var paySigned = payTx.SignPQ(falcon);
-            var payResp = await Utils.SubmitTransaction(algod, paySigned);
-            var confirmed = await Utils.WaitTransactionToComplete(algod, payResp.Txid);
+            var payResp = await algod.SubmitTransaction(paySigned);
+            var confirmed = await algod.WaitTransactionToComplete(payResp.Txid);
             Assert.That(confirmed.ConfirmedRound, Is.GreaterThan(0));
 
             var falconInfo = await algod.AccountInformationAsync(falcon.Address.ToString(), null, null);
