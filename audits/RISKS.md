@@ -2,7 +2,7 @@
 
 Living register of risks faced by developers and end-users of this SDK and of code
 produced by its ARC56 client generator, maintained per
-`audits/AI-AUDITS-INSTRUCTIONS.md`. Includes risks this repository has **no ability to
+`audits/AUDITS-INSTRUCTIONS.md`. Includes risks this repository has **no ability to
 mitigate** — the goal is a complete threat picture for downstream developers, not just
 a changelog of fixes. Percentages are estimates of the likelihood the risk is actually
 exploited/misused *somewhere* across the SDK's user base within the next 5 years (see
@@ -37,7 +37,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   inherently partial.
 - **Impact if realized**: Loss of the specific key(s) held by the compromised process.
 - **First recorded**: 2026-07-16
-- **Last reviewed**: 2026-07-16 (remediation update, same day)
+- **Last reviewed**: 2026-08-12 — classic `Account`/`KeyPair` unchanged, mitigation
+  intact; note that the new post-quantum `FalconAccount` (added this cycle) has the same
+  class of gap *without* the mitigation — tracked separately as `RISK-015`.
 
 ## RISK-002 — BouncyCastle crypto dependency vendored as an unpinned local DLL
 
@@ -67,7 +69,10 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Impact if realized**: Depending on the nature of a hypothetical crypto flaw, up to
   full key compromise across all consumers on the vulnerable version.
 - **First recorded**: 2026-07-16
-- **Last reviewed**: 2026-07-16 (remediation update, same day)
+- **Last reviewed**: 2026-08-12 — still on the official pinned `BouncyCastle.Cryptography`
+  2.6.2 NuGet package. Note: the pin is now additionally load-bearing because the new
+  Falcon-1024 keygen reflects into BC internals (`RISK-016`) — a future CVE-driven
+  upgrade needs the Falcon golden-vector tests to pass, not just a version bump.
 
 ## RISK-003 — Exception messages can carry exported key material into application logs
 
@@ -96,7 +101,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   sink, plus any secondary exposure from that log sink's own access controls (e.g. a
   shared logging dashboard, a third-party log aggregator).
 - **First recorded**: 2026-07-16
-- **Last reviewed**: 2026-07-16 (remediation update, same day)
+- **Last reviewed**: 2026-08-12 — `ApiException.cs` was edited this cycle
+  (using-directive cleanup only); verified the redaction behavior and its warning
+  comment survived intact.
 
 ## RISK-004 — Kmd's remote-custody model means keys are sent over the wire by design
 
@@ -269,20 +276,23 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   whose mnemonics get exposed as a result.
 - **Mitigable by this repo?**: Yes — remove or redact the printed mnemonic in the
   example; trivial, no functional impact on the rest of the example.
-- **Current mitigation status**: Mitigated — the `Console.WriteLine` of
-  `newAccount.ToMnemonic()` was removed and replaced with a comment directing the
-  reader to persist the mnemonic via a secure channel of their own choosing; the
-  mnemonic remains available in-memory via `newAccount.ToMnemonic()` for the rest of
-  the example, unaffected. Verified: `sdk-examples/sdk-examples.csproj` builds with 0
-  errors after the change.
-- **5-year misuse likelihood**: **1%** (down from 5%) — the example no longer models
-  the anti-pattern at all, so residual risk is limited to a developer copying an older
-  cached/forked version of the file from before this fix.
+- **Current mitigation status**: Partially mitigated / **Recurring** — the original
+  `OfflineSigningExample` fix stands (mnemonic no longer printed there), but the new
+  `sdk-examples/FalconKeyInteropExample.cs` (added this cycle, commit `cfbe28b`)
+  re-introduces the identical anti-pattern at lines 51 and 54: it prints a freshly
+  generated Falcon-1024 account's 25-word mnemonic to the console twice (once directly,
+  once interpolated into a printed `algokey pq import -m "..."` command). The example's
+  account is unfunded and in-process, so the example itself leaks nothing of value, but
+  it again models mnemonic-to-console for copy-pasting developers. See
+  `AUDIT-2026-08-12-71d6cfc.md` finding F1.
+- **5-year misuse likelihood**: **5%** (up from 1%) — raised because the anti-pattern is
+  back in shipped, official sample code on the newly-promoted post-quantum path, which
+  is exactly the flow developers will copy when provisioning long-lived PQ accounts.
 - **Impact if realized**: Loss of the specific mnemonic(s) printed and subsequently
   captured by whatever consumed the console output (terminal scrollback, CI logs, a
   captured-output log file).
 - **First recorded**: 2026-07-16
-- **Last reviewed**: 2026-07-16 (remediation update, same day)
+- **Last reviewed**: 2026-08-12 (recurrence recorded)
 
 ## RISK-011 — `Utils.GetRandomAssetMetaHash()` uses `System.Random`, not a CSPRNG
 
@@ -343,7 +353,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   from a denial-of-service (malformed input crash) to, in the worst case, a signing/decoding
   integrity issue affecting consumers who can't upgrade past the vulnerable version.
 - **First recorded**: 2026-07-18
-- **Last reviewed**: 2026-07-18
+- **Last reviewed**: 2026-08-12 — still pinned at 0.1.11, still the newest upstream
+  release, no CVE observed; unchanged.
 
 ## RISK-013 — Unused Roslyn `using` in a `MessagePack` formatter (dependency itself confirmed legitimate, not bloat)
 
@@ -395,3 +406,63 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   build-environment-local issue, not a distributed-package issue.
 - **First recorded**: 2026-07-18
 - **Last reviewed**: 2026-07-18
+
+## RISK-015 — `FalconAccount` post-quantum private key is a plain, publicly-gettable, never-cleared `byte[]`
+
+- **Description**: The new Falcon-1024 account class
+  (`dotnet-algorand-sdk/Algod/Model/FalconAccount.cs`, added this cycle) holds its
+  2305-byte private key and 32-byte mnemonic entropy as ordinary managed arrays for the
+  object's whole lifetime, with no `IDisposable`/wiping support — the mitigation
+  `Account`/`KeyPair` gained under `RISK-001` was not carried over. `PrivateKey` is a
+  public getter returning the *live* internal array (readable and mutable by any code
+  handed the account), and each `SignPQRawBytes` call materializes several additional
+  uncleared LINQ copies of the key components on the GC heap (plus BouncyCastle's own
+  per-signature `FalconPrivateKeyParameters` copies). Same CLR-inherent best-effort
+  caveats as `RISK-001`. See `AUDIT-2026-08-12-71d6cfc.md` finding F2.
+- **Who is exposed**: End users whose Falcon-1024 keys are held by a long-running
+  developer application — notably, PQ keys are chosen precisely for long-lived accounts.
+- **Mitigable by this repo?**: Partially — mirror the `RISK-001` remediation:
+  `IDisposable` + `Array.Clear` on `PrivateKey`/`entropy`, defensive-copy getters, and
+  clearing the transient signing copies. The CLR still gives no strong guarantee all
+  copies are scrubbed.
+- **Current mitigation status**: Unmitigated
+- **5-year misuse likelihood**: **2%** — requires a memory-read-level attacker or a
+  leaked heap dump (same prerequisites as `RISK-001`/`RISK-007`), scored slightly above
+  the mitigated classic path (1%) because here no wiping is even attempted and the
+  public live-buffer getter widens accidental-exposure surface (e.g. a serializer
+  reflecting over public properties would emit the private key).
+- **Impact if realized**: Loss of the specific Falcon key(s) held by the compromised
+  process — the account's funds and its authorization role (including accounts rekeyed
+  to it).
+- **First recorded**: 2026-08-12
+- **Last reviewed**: 2026-08-12
+
+## RISK-016 — Falcon keygen depends on BouncyCastle 2.6.2 *internal* APIs via reflection
+
+- **Description**: `FalconAccount.ReferenceKeygen` drives BouncyCastle's non-public
+  `SHAKE256`/`FalconKeygen`/`FalconCodec` types by reflection to reproduce algokey's
+  deterministic reference keygen bit-for-bit (BC's public generator can't). Lookups
+  fail fast with clear exceptions if BC's internals change shape, and BC is pinned at
+  2.6.2 — but this couples key *derivation* (and therefore mnemonic-based recovery) to
+  unversioned internals of a dependency that `RISK-002` may one day force an urgent
+  upgrade of. A shape-compatible internal behavior change could in principle alter
+  derivation silently; the golden-vector tests
+  (`test/PQSignatureTests.cs` — `AddressDerivationMatchesAlgokey`,
+  `MnemonicRecoveryMatchesAlgokey`) are the guardrail that would catch any drift. See
+  `AUDIT-2026-08-12-71d6cfc.md` finding F4.
+- **Who is exposed**: Developers/users relying on Falcon mnemonic backup-recovery, if a
+  future BC upgrade breaks or (worse) silently changes derivation before tests catch it.
+  This is a recovery-failure/availability risk, not a key-theft vector.
+- **Mitigable by this repo?**: Partially — keep the golden-vector tests as a mandatory
+  gate on any BC version bump; document the coupling next to the version pin.
+- **Current mitigation status**: Partially mitigated (fail-fast reflection + pinned
+  version + golden-vector tests already in the default unit-test pass; the csproj pin
+  comment does not yet mention this coupling).
+- **5-year misuse likelihood**: **N/A — functional/recovery risk, not a security-misuse
+  risk.** Recorded per the registry's full-threat-picture scope; the realistic bad
+  outcome is a loud keygen failure or a caught test regression, not exploitation.
+- **Impact if realized**: Falcon account creation/recovery failure until fixed; in the
+  worst (silent-drift, tests-skipped) case, mnemonics that recover to a different key
+  pair than the one backed up — loss of access, not theft.
+- **First recorded**: 2026-08-12
+- **Last reviewed**: 2026-08-12
