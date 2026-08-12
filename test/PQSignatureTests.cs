@@ -65,6 +65,10 @@ namespace test
         private const string AlgokeyPublicKeyB64 =
             "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";
 
+        // The 25-word mnemonic algokey printed alongside the golden public key above.
+        private const string AlgokeyMnemonic =
+            "office route parade much super sphere wheel morning spawn true wire already siren unveil planet damage basket depend undo deer acquire popular what about clay";
+
         [Test]
         public void AddressDerivationMatchesAlgokey()
         {
@@ -74,6 +78,38 @@ namespace test
             var salt = PQSignature.FindCanonicalSalt(PQSignature.SchemeFalcon1024, publicKey, out var address);
             Assert.That(salt, Is.EqualTo(0));
             Assert.That(address.ToString(), Is.EqualTo("HTKQVJJ3KYQDTRBAV2ZBHAHXCJKP2OXZXHJ4KQZFYDORVBOR676MY4NLQE"));
+        }
+
+        /// <summary>
+        /// Full mnemonic interop with go-algorand's `algokey pq`: recovering from the algokey
+        /// mnemonic must regenerate the byte-identical Falcon-1024 public key and address.
+        /// </summary>
+        [Test]
+        public void MnemonicRecoveryMatchesAlgokey()
+        {
+            var acc = FalconAccount.FromMnemonic(AlgokeyMnemonic);
+
+            Assert.That(acc.PublicKey, Is.EqualTo(Convert.FromBase64String(AlgokeyPublicKeyB64)));
+            Assert.That(acc.Salt, Is.EqualTo(0));
+            Assert.That(acc.Address.ToString(), Is.EqualTo("HTKQVJJ3KYQDTRBAV2ZBHAHXCJKP2OXZXHJ4KQZFYDORVBOR676MY4NLQE"));
+            Assert.That(acc.ToMnemonic(), Is.EqualTo(AlgokeyMnemonic));
+        }
+
+        [Test]
+        public void MnemonicRoundTrip()
+        {
+            var fresh = new FalconAccount();
+            var mnemonic = fresh.ToMnemonic();
+            Assert.That(mnemonic.Split(' ').Length, Is.EqualTo(25));
+
+            var recovered = FalconAccount.FromMnemonic(mnemonic);
+            Assert.That(recovered.PublicKey, Is.EqualTo(fresh.PublicKey));
+            Assert.That(recovered.PrivateKey, Is.EqualTo(fresh.PrivateKey));
+            Assert.That(recovered.Address.ToString(), Is.EqualTo(fresh.Address.ToString()));
+
+            // Raw imports carry no entropy, so no mnemonic can be produced for them.
+            var rawImport = new FalconAccount(fresh.PublicKey, fresh.PrivateKey);
+            Assert.That(() => rawImport.ToMnemonic(), Throws.InvalidOperationException);
         }
 
         [Test]

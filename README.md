@@ -156,6 +156,7 @@ dotnet run --project sdk-examples -- AssetExample
 | [IndexerExample.cs](sdk-examples/IndexerExample.cs) | Querying historical data through the Indexer client |
 | [CompileTeal.cs](sdk-examples/CompileTeal.cs) | Compiling TEAL source with the node |
 | [FalconAccountExample.cs](sdk-examples/FalconAccountExample.cs) | Post-quantum Falcon-1024 accounts (pqsig): create, fund, spend, and rekey an ed25519 account to a PQ authorizer |
+| [FalconKeyInteropExample.cs](sdk-examples/FalconKeyInteropExample.cs) | Backing up / recovering Falcon-1024 accounts with the standard 25-word mnemonic, interoperable with `algokey pq` and other SDKs |
 | [LogicSignatureExample.cs](sdk-examples/LogicSignatureExample.cs) | Delegated logic signatures (smart signatures) |
 | [LogicSignatureContractAccountExample.cs](sdk-examples/LogicSignatureContractAccountExample.cs) | Contract accounts controlled by a TEAL program |
 | [StatefulContractExample.cs](sdk-examples/StatefulContractExample.cs) | Deploying and calling a stateful smart contract (application) |
