@@ -61,6 +61,17 @@ using UnityEngine;
         public Algorand.LogicsigSignature LSig { get; set; }
 #endif
 
+        [Newtonsoft.Json.JsonProperty("pqsig", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#if UNITY
+    [field:SerializeField]
+    [Tooltip(@"")]
+    [field:InspectorName(@"PQSig")]
+    public Algorand.PQSignature PQSig {get;set;}
+#else
+        [MessagePack.Key("pqsig")]
+        public Algorand.PQSignature PQSig { get; set; }
+#endif
+
         [Newtonsoft.Json.JsonProperty("sgnr", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
 #if UNITY
     [field:SerializeField]

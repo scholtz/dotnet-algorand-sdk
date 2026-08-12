@@ -415,6 +415,14 @@ namespace Algorand.Algod.Model.Converters.MsgPack
                             }
                             property.SetValue(instance, txDictLogicsigSignature.Deserialize<Algorand.LogicsigSignature>());
                             break;
+                        case "Algorand.PQSignature":
+                            var txDictPQSignature = value as Dictionary<object, object?>;
+                            if (txDictPQSignature == null)
+                            {
+                                throw new InvalidOperationException($"Expected a dictionary for property {property.Name}, but got {value?.GetType().FullName}");
+                            }
+                            property.SetValue(instance, txDictPQSignature.Deserialize<Algorand.PQSignature>());
+                            break;
                         case "Algorand.MultisigSignature":
                             var txDictMultisigSignature = value as Dictionary<object, object?>;
                             if (txDictMultisigSignature == null)
@@ -455,6 +463,9 @@ namespace Algorand.Algod.Model.Converters.MsgPack
                             break;
                         case "System.UInt16":
                             property.SetValue(instance, Convert.ToUInt16(value));
+                            break;
+                        case "System.Byte":
+                            property.SetValue(instance, Convert.ToByte(value));
                             break;
                         case "System.Object":
                             property.SetValue(instance, value);

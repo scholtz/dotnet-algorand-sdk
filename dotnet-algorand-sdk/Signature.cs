@@ -96,6 +96,22 @@ namespace Algorand
         public MultisigSignature Msig { get; set; }
 
         /// <summary>
+        /// Multisig delegation signature over ("MsigProgram" domain) - new in consensus v42.
+        /// Kept for wire compatibility when decoding; not populated by this SDK's signing helpers.
+        /// </summary>
+        [JsonProperty(PropertyName = "lmsig")]
+        [MessagePack.Key("lmsig")]
+        public MultisigSignature LMsig { get; set; }
+
+        /// <summary>
+        /// Post-quantum delegation signature (consensus v42): a PQ account delegates to this
+        /// program by signing "PQProgram" || delegator address || program bytes.
+        /// </summary>
+        [JsonProperty(PropertyName = "pqsig")]
+        [MessagePack.Key("pqsig")]
+        public PQSignature PQSig { get; set; }
+
+        /// <summary>
         /// LogicsigSignature
         /// </summary>
         /// <param name="logic">Unsigned logicsig object</param>
@@ -234,6 +250,21 @@ namespace Algorand
             this.Sig = signingAccount.SignRawBytes(bytesToSign);
 
 
+        }
+
+        /// <summary>
+        /// Delegates this program to a post-quantum Falcon-1024 account (consensus v42): the
+        /// account signs "PQProgram" || its address || program, allowing transactions from that
+        /// account to be authorized by this logic signature.
+        /// </summary>
+        public void SignPQ(Algod.Model.FalconAccount signingAccount)
+        {
+            var prefix = Encoding.UTF8.GetBytes("PQProgram");
+            var msg = new List<byte>(prefix.Length + 32 + Logic.Length);
+            msg.AddRange(prefix);
+            msg.AddRange(signingAccount.Address.Bytes);
+            msg.AddRange(this.Logic);
+            this.PQSig = signingAccount.SignPQRawBytes(msg.ToArray());
         }
 
         /// <summary>

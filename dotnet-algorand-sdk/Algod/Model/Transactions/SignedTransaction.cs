@@ -60,14 +60,21 @@ namespace Algorand.Algod.Model.Transactions
         public SignedTransaction() { }
 
         [JsonConstructor]
-        public SignedTransaction(Transaction txn, byte[] sig, MultisigSignature msig, LogicsigSignature lsig, Address sgnr)
+        public SignedTransaction(Transaction txn, byte[] sig, MultisigSignature msig, LogicsigSignature lsig, Address sgnr, PQSignature pqsig = null)
         {
             if (txn != null) Tx = txn;
             if (sig != null) Sig = new Signature(sig);
             if (msig != null) MSig = msig;
             if (lsig != null) LSig = lsig;
             if (sgnr != null) AuthAddr = sgnr;
+            if (pqsig != null) PQSig = pqsig;
 
+        }
+
+        public SignedTransaction(Transaction txn, PQSignature pqsig)
+        {
+            if (txn != null) Tx = txn;
+            if (pqsig != null) PQSig = pqsig;
         }
 
         public SignedTransaction(Transaction txn, Signature sig)
@@ -157,14 +164,22 @@ namespace Algorand.Algod.Model.Transactions
         {
             if (obj is SignedTransaction actual)
             {
-                if (!Tx.Equals(actual.Tx)) return false;
-                if (!Sig.Equals(actual.Sig)) return false;
-                if (!LSig.Equals(actual.LSig)) return false;
-                if (!AuthAddr.Equals(actual.AuthAddr)) return false;
-                return MSig.Equals(actual.MSig);
+                if (!NullSafeEquals(Tx, actual.Tx)) return false;
+                if (!NullSafeEquals(Sig, actual.Sig)) return false;
+                if (!NullSafeEquals(LSig, actual.LSig)) return false;
+                if (!NullSafeEquals(AuthAddr, actual.AuthAddr)) return false;
+                if (!NullSafeEquals(PQSig, actual.PQSig)) return false;
+                return NullSafeEquals(MSig, actual.MSig);
             }
             return false;
         }
+        private static bool NullSafeEquals(object a, object b)
+        {
+            if (a is null && b is null) return true;
+            if (a is null || b is null) return false;
+            return a.Equals(b);
+        }
+
         public override int GetHashCode()
         {
             return base.GetHashCode();

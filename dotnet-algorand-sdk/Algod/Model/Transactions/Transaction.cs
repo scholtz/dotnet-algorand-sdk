@@ -249,6 +249,23 @@ namespace Algorand.Algod.Model.Transactions
             return Sign(signingAccount);
         }
 
+        /// <summary>
+        /// Signs this transaction with a post-quantum Falcon-1024 account, producing a "pqsig"
+        /// authorized transaction (requires algod 5.0.0+ / consensus v42).
+        /// Note: the network charges an additional 2x min fee for a Falcon-1024 pqsig, so the
+        /// transaction's flat fee should be at least 3x the network min fee.
+        /// </summary>
+        public SignedTransaction SignPQ(FalconAccount signingAccount)
+        {
+            byte[] prefixEncodedTx = BytesToSign();
+            var pqsig = signingAccount.SignPQRawBytes(prefixEncodedTx);
+            var stx = new SignedTransaction(this, pqsig);
+            if (!Sender.Equals(signingAccount.Address))
+                stx.AuthAddr = signingAccount.Address;
+
+            return stx;
+        }
+
         public SignedTransaction Sign(LogicsigSignature lsig)
         {
             if (!lsig.Verify(Sender))
