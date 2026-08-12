@@ -1,5 +1,3 @@
-using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Pqc.Crypto.Falcon;
 using Org.BouncyCastle.Security;
 using System;
@@ -190,40 +188,108 @@ namespace Algorand.Algod.Model
             if (data == null) throw new ArgumentNullException(nameof(data));
             ThrowIfDisposed();
 
-            // Slice f || g || F out of the private key into buffers this method wipes again as
-            // soon as the signature exists. BouncyCastle's key-parameter object keeps its own
-            // internal copies, which the CLR gives no way to clear from here.
-            var f = new byte[FLen];
-            var g = new byte[GLen];
-            var F = new byte[BigFLen];
-            Array.Copy(privateKey, 1, f, 0, FLen);
-            Array.Copy(privateKey, 1 + FLen, g, 0, GLen);
-            Array.Copy(privateKey, 1 + FLen + GLen, F, 0, BigFLen);
-            var pkBody = new byte[PublicKeySize - 1];
-            Array.Copy(publicKey, 1, pkBody, 0, pkBody.Length);
+            var compressed = DetSignCompressed(data);
+            var sig = new byte[2 + compressed.Length];
+            sig[0] = PQSignature.UnsaltedHeader;
+            sig[1] = PQSignature.DefaultSaltVersion;
+            Array.Copy(compressed, 0, sig, 2, compressed.Length);
+
+            return new PQSignature
+            {
+                Scheme = PQSignature.SchemeFalcon1024,
+                Salt = Salt,
+                PublicKey = (byte[])publicKey.Clone(),
+                Signature = sig,
+            };
+        }
+
+        /// <summary>
+        /// Reference-exact falcon_det1024_sign_compressed (go-algorand's algorand/falcon
+        /// deterministic.c + falcon_sign_dyn_finish), producing the compressed s2 bytes. Signatures
+        /// must be BIT-IDENTICAL to every other det1024 implementation, not merely valid: the
+        /// verifier re-adds the fixed salt and cannot police deterministic sampling, so two
+        /// implementations emitting different valid signatures for the same (key, message) would
+        /// publish two distinct GPV preimages of one hash target - their difference is a short
+        /// vector of the secret NTRU lattice (key-recovery-grade leakage). BouncyCastle's public
+        /// FalconSigner cannot be used here: FalconNist.crypto_sign draws a 48-byte seed from its
+        /// SecureRandom and re-hashes it through a fresh SHAKE256 before seeding the sampler PRNG,
+        /// whereas the reference passes the det-RNG SHAKE directly to prng_init (which extracts
+        /// 56 bytes into ChaCha8) - so its output diverges from det1024 even when fed the det RNG
+        /// stream. Instead this drives BC's internal, faithfully-ported sign_dyn with the det-RNG
+        /// SHAKE itself. Pinned bit-for-bit against `algokey pq sign` by the golden vectors in
+        /// test/PQSignatureTests.DetSignaturesAreBitCompatibleWithAlgokey.
+        /// </summary>
+        private byte[] DetSignCompressed(byte[] data)
+        {
+            const uint logn = 10;
+            const int n = 1 << 10;
+            var r = FalconReflection.Instance;
+
+            // detrng = SHAKE256(logn || privkey || data), flipped to output mode.
+            object detrng = Activator.CreateInstance(r.Shake256Type, nonPublic: true);
+            r.ShakeInit.Invoke(detrng, null);
+            r.ShakeInject.Invoke(detrng, new object[] { new byte[] { (byte)logn }, 0, 1 });
+            r.ShakeInject.Invoke(detrng, new object[] { privateKey, 0, privateKey.Length });
+            r.ShakeInject.Invoke(detrng, new object[] { data, 0, data.Length });
+            r.ShakeFlip.Invoke(detrng, null);
+
+            // hm = hash_to_point_vartime(SHAKE256(fixed salt || data)).
+            var salt = PQSignature.MakeSalt(PQSignature.DefaultSaltVersion);
+            object hd = Activator.CreateInstance(r.Shake256Type, nonPublic: true);
+            r.ShakeInit.Invoke(hd, null);
+            r.ShakeInject.Invoke(hd, new object[] { salt, 0, salt.Length });
+            r.ShakeInject.Invoke(hd, new object[] { data, 0, data.Length });
+            r.ShakeFlip.Invoke(hd, null);
+            var hm = new ushort[n];
+            r.HashToPointVartime.Invoke(r.CommonInstance, new object[] { hd, hm, 0, logn });
+
+            // Decode f || g || F from the private key and complete the basis with G.
+            var f = new sbyte[n];
+            var g = new sbyte[n];
+            var F = new sbyte[n];
+            var G = new sbyte[n];
             try
             {
-                var skParams = new FalconPrivateKeyParameters(FalconParameters.falcon_1024, f, g, F, pkBody);
+                int u = 1;
+                u += InvokeDecode(r.TrimI8Decode, r.CodecInstance, f, logn, r.MaxFgBits, privateKey, u, "f");
+                u += InvokeDecode(r.TrimI8Decode, r.CodecInstance, g, logn, r.MaxFgBits, privateKey, u, "g");
+                u += InvokeDecode(r.TrimI8Decode, r.CodecInstance, F, logn, r.MaxFGBits, privateKey, u, "F");
+                if (u != PrivateKeySize)
+                    throw new InvalidOperationException($"falcon private key decoding consumed {u} bytes, want {PrivateKeySize}");
+                if ((int)r.CompletePrivate.Invoke(r.VrfyInstance,
+                        new object[] { G, 0, f, 0, g, 0, F, 0, logn, new ushort[2 * n], 0 }) == 0)
+                    throw new InvalidOperationException("falcon private key completion (G) failed");
 
-                var salt = PQSignature.MakeSalt(PQSignature.DefaultSaltVersion);
-                var signer = new FalconSigner();
-                signer.Init(true, new ParametersWithRandom(skParams, new DetSigningRandom(salt, privateKey, data)));
-                var detached = signer.GenerateSignature(data);
+                // sign_dyn samples s2, seeding its inner ChaCha8 PRNG from detrng per attempt,
+                // exactly like the reference do_sign_dyn loop.
+                var s2 = new short[n];
+                var tmp = Array.CreateInstance(r.FprType, 10 * n);
+                r.SignDyn.Invoke(r.SignInstance,
+                    new object[] { s2, 0, detrng, f, 0, g, 0, F, 0, G, 0, hm, 0, logn, tmp, 0 });
 
-                return new PQSignature
-                {
-                    Scheme = PQSignature.SchemeFalcon1024,
-                    Salt = Salt,
-                    PublicKey = (byte[])publicKey.Clone(),
-                    Signature = PQSignature.RepackToUnsalted(detached, salt, PQSignature.DefaultSaltVersion),
-                };
+                // Compressed encoding of s2 (variable length).
+                var esig = new byte[1409]; // FALCON_SIG_COMPRESSED_MAXSIZE(10) minus header/salt
+                int v = (int)r.CompEncode.Invoke(r.CodecInstance, new object[] { esig, 0, esig.Length, s2, 0, logn });
+                if (v == 0)
+                    throw new InvalidOperationException("falcon signature compression failed");
+                var outSig = new byte[v];
+                Array.Copy(esig, 0, outSig, 0, v);
+                return outSig;
             }
             finally
             {
                 Array.Clear(f, 0, f.Length);
                 Array.Clear(g, 0, g.Length);
                 Array.Clear(F, 0, F.Length);
+                Array.Clear(G, 0, G.Length);
             }
+        }
+
+        private static int InvokeDecode(System.Reflection.MethodInfo trim, object codec, sbyte[] dst, uint logn, uint bits, byte[] src, int off, string what)
+        {
+            int len = (int)trim.Invoke(codec, new object[] { dst, 0, logn, bits, src, off, src.Length - off });
+            if (len == 0) throw new InvalidOperationException($"falcon {what} decoding failed");
+            return len;
         }
 
         /// <summary>
@@ -266,7 +332,7 @@ namespace Algorand.Algod.Model
         {
             const uint logn = 10;
             const int n = 1 << 10;
-            var r = KeygenReflection.Instance;
+            var r = FalconReflection.Instance;
 
             object shake = Activator.CreateInstance(r.Shake256Type, nonPublic: true);
             r.ShakeInit.Invoke(shake, null);
@@ -304,17 +370,18 @@ namespace Algorand.Algod.Model
             return len;
         }
 
-        private sealed class KeygenReflection
+        private sealed class FalconReflection
         {
-            internal static readonly KeygenReflection Instance = new KeygenReflection();
+            internal static readonly FalconReflection Instance = new FalconReflection();
 
-            internal readonly Type Shake256Type;
+            internal readonly Type Shake256Type, FprType;
             internal readonly System.Reflection.MethodInfo ShakeInit, ShakeInject, ShakeFlip;
             internal readonly System.Reflection.MethodInfo Keygen, TrimI8Encode, ModqEncode;
-            internal readonly object KeygenInstance, CodecInstance;
+            internal readonly System.Reflection.MethodInfo TrimI8Decode, CompEncode, CompletePrivate, HashToPointVartime, SignDyn;
+            internal readonly object KeygenInstance, CodecInstance, CommonInstance, VrfyInstance, SignInstance;
             internal readonly uint MaxFgBits, MaxFGBits;
 
-            private KeygenReflection()
+            private FalconReflection()
             {
                 const System.Reflection.BindingFlags flags =
                     System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public;
@@ -322,23 +389,31 @@ namespace Algorand.Algod.Model
                 const string ns = "Org.BouncyCastle.Pqc.Crypto.Falcon.";
 
                 Shake256Type = RequireType(asm, ns + "SHAKE256");
+                FprType = RequireType(asm, ns + "FalconFPR");
                 var codecType = RequireType(asm, ns + "FalconCodec");
                 var commonType = RequireType(asm, ns + "FalconCommon");
                 var vrfyType = RequireType(asm, ns + "FalconVrfy");
                 var keygenType = RequireType(asm, ns + "FalconKeygen");
+                var signType = RequireType(asm, ns + "FalconSign");
 
                 ShakeInit = Require(Shake256Type.GetMethod("i_shake256_init", flags), "SHAKE256.i_shake256_init");
                 ShakeInject = Require(Shake256Type.GetMethod("i_shake256_inject", flags), "SHAKE256.i_shake256_inject");
                 ShakeFlip = Require(Shake256Type.GetMethod("i_shake256_flip", flags), "SHAKE256.i_shake256_flip");
 
                 CodecInstance = Activator.CreateInstance(codecType, nonPublic: true);
-                var common = Activator.CreateInstance(commonType, nonPublic: true);
-                var vrfy = Activator.CreateInstance(vrfyType, flags, null, new[] { common }, null);
-                KeygenInstance = Activator.CreateInstance(keygenType, flags, null, new[] { CodecInstance, vrfy }, null);
+                CommonInstance = Activator.CreateInstance(commonType, nonPublic: true);
+                VrfyInstance = Activator.CreateInstance(vrfyType, flags, null, new[] { CommonInstance }, null);
+                KeygenInstance = Activator.CreateInstance(keygenType, flags, null, new[] { CodecInstance, VrfyInstance }, null);
+                SignInstance = Activator.CreateInstance(signType, flags, null, new[] { CommonInstance }, null);
 
                 Keygen = Require(keygenType.GetMethod("keygen", flags), "FalconKeygen.keygen");
                 TrimI8Encode = Require(codecType.GetMethod("trim_i8_encode", flags), "FalconCodec.trim_i8_encode");
                 ModqEncode = Require(codecType.GetMethod("modq_encode", flags), "FalconCodec.modq_encode");
+                TrimI8Decode = Require(codecType.GetMethod("trim_i8_decode", flags), "FalconCodec.trim_i8_decode");
+                CompEncode = Require(codecType.GetMethod("comp_encode", flags), "FalconCodec.comp_encode");
+                CompletePrivate = Require(vrfyType.GetMethod("complete_private", flags), "FalconVrfy.complete_private");
+                HashToPointVartime = Require(commonType.GetMethod("hash_to_point_vartime", flags), "FalconCommon.hash_to_point_vartime");
+                SignDyn = Require(signType.GetMethod("sign_dyn", flags), "FalconSign.sign_dyn");
 
                 var fgField = Require(codecType.GetField("max_fg_bits", flags), "FalconCodec.max_fg_bits");
                 var fGField = Require(codecType.GetField("max_FG_bits", flags), "FalconCodec.max_FG_bits");
@@ -353,39 +428,5 @@ namespace Algorand.Algod.Model
                 => member ?? throw new NotSupportedException($"BouncyCastle internal member {name} not found; the pinned BouncyCastle.Cryptography version may have changed");
         }
 
-        /// <summary>
-        /// SecureRandom driving BouncyCastle's Falcon signer along the deterministic profile: the
-        /// first 40-byte request (the signature nonce) receives the fixed versioned salt, and all
-        /// further randomness (the Gaussian sampler seed) is drawn from SHAKE256(logn || privateKey
-        /// || message), following falcon_det1024_sign_compressed. The node's verifier only checks
-        /// the fixed salt, so signature validity does not depend on the sampler stream.
-        /// </summary>
-        private sealed class DetSigningRandom : SecureRandom
-        {
-            private readonly byte[] salt;
-            private bool saltConsumed;
-            private readonly ShakeDigest shake = new ShakeDigest(256);
-
-            public DetSigningRandom(byte[] salt, byte[] privateKey, byte[] message)
-            {
-                this.salt = salt;
-                shake.Update(10); // logn
-                shake.BlockUpdate(privateKey, 0, privateKey.Length);
-                shake.BlockUpdate(message, 0, message.Length);
-            }
-
-            public override void NextBytes(byte[] buf) => NextBytes(buf, 0, buf.Length);
-
-            public override void NextBytes(byte[] buf, int off, int len)
-            {
-                if (!saltConsumed && len == salt.Length)
-                {
-                    Array.Copy(salt, 0, buf, off, len);
-                    saltConsumed = true;
-                    return;
-                }
-                shake.Output(buf, off, len);
-            }
-        }
     }
 }

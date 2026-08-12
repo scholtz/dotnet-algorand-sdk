@@ -481,4 +481,51 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   worst (silent-drift, tests-skipped) case, mnemonics that recover to a different key
   pair than the one backed up — loss of access, not theft.
 - **First recorded**: 2026-08-12
-- **Last reviewed**: 2026-08-12
+- **Last reviewed**: 2026-08-12 (later the same day, the reflection surface grew to also
+  cover signing — see `RISK-017`, whose fix *depends* on this coupling; the golden-test
+  gate now also includes `DetSignaturesAreBitCompatibleWithAlgokey`)
+
+## RISK-017 — SDK det1024 Falcon signatures were valid but not bit-identical to go-algorand's, enabling a two-preimage key-leak scenario
+
+- **Description**: Discovered 2026-08-12 (after that day's audit was filed, prompted by an
+  external security expert's question about deterministic-Falcon implementation
+  divergence). Empirical cross-check showed the SDK's `FalconAccount.SignPQRawBytes`
+  produced signatures that verified correctly but were **not byte-identical** to
+  go-algorand 5.0.0's `algokey pq sign` for the same key, message, and fixed det1024
+  salt (e.g. 1225 vs 1232 bytes) — both implementations internally deterministic, but
+  divergent. Root cause: BouncyCastle's public signer (`FalconNist.crypto_sign`) draws a
+  48-byte seed from its `SecureRandom` and re-hashes it through a fresh SHAKE256 before
+  seeding the sampler PRNG, whereas the reference `falcon_sign_dyn_finish` passes the
+  det-RNG SHAKE directly to `prng_init` (56 bytes into ChaCha8). The fixed-salt (det1024)
+  scheme is only safe **because** signing is deterministic: Algorand's verifier re-adds
+  the fixed salt and cannot police sampling, so two different valid signatures over the
+  same (key, message) are two distinct GPV preimages of one hash target — their
+  difference is a short vector of the secret NTRU lattice, i.e. key-recovery-grade
+  leakage. Exploitation required the same key to sign the same message bytes in both a
+  go-based tool and this SDK (a realistic mixed-tool scenario given the SDK's advertised
+  mnemonic interop with `algokey pq`), with both signatures becoming visible.
+- **Who is exposed**: (Before the fix) end users whose Falcon key was used to sign the
+  identical message in both this SDK and go-algorand-based tooling; single-implementation
+  users were not exposed.
+- **Mitigable by this repo?**: Yes — make signing bit-identical to the reference det1024.
+- **Current mitigation status**: Mitigated (same day, TDD) — `SignPQRawBytes` now
+  replicates `falcon_det1024_sign_compressed` exactly by driving BouncyCastle's
+  *internal*, faithfully-ported `FalconSign.sign_dyn` with the det-RNG SHAKE itself
+  (`FalconAccount.DetSignCompressed`), bypassing the divergent public wrapper. Verified
+  test-first: golden vectors (3 transactions signed by `algokey pq sign` 5.0.0, commit
+  `da5946a1`, stored in `test/TestData/algokey-pq-signed-*.stxn`) were pinned in
+  `PQSignatureTests.DetSignaturesAreBitCompatibleWithAlgokey` and confirmed failing
+  against the old implementation, then passing after the fix — including full
+  signed-transaction encoding equality, not just the sig field. Full suites re-verified:
+  SDK builds 0 warnings/0 errors, PQ fixture green, non-LocalNet unit tests 109/109,
+  `SerialisationTests` 23/23. The logicsig delegation path (`LogicsigSignature.SignPQ`)
+  routes through the same fixed method. Note: pre-fix SDK versions remain divergent —
+  consumers should upgrade before using Falcon keys across multiple tools.
+- **5-year misuse likelihood**: **2%** — post-fix, exploitation requires a consumer
+  stuck on a pre-fix version *and* dual-tool signing of identical messages *and* an
+  attacker collecting both signatures; scored above <1% only because pre-fix packages
+  remain downloadable and the Falcon feature is newly promoted.
+- **Impact if realized**: Recovery of the affected Falcon private key (full compromise
+  of that account and anything rekeyed to it).
+- **First recorded**: 2026-08-12
+- **Last reviewed**: 2026-08-12 (remediation update, same day)

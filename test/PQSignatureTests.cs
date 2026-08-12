@@ -97,6 +97,42 @@ namespace test
             Assert.That(acc.ToMnemonic(), Is.EqualTo(AlgokeyMnemonic));
         }
 
+        /// <summary>
+        /// Bit-compatibility with go-algorand's deterministic Falcon-1024 signer: for each golden
+        /// file (a transaction signed by `algokey pq sign` 5.0.0 with the golden mnemonic above),
+        /// re-signing the same transaction with this SDK must produce the byte-identical pqsig -
+        /// not merely a valid one. This is a security requirement, not cosmetics: the Algorand
+        /// verifier re-adds the fixed det1024 salt and cannot police deterministic sampling, so two
+        /// implementations emitting different valid signatures for the same (key, message) would
+        /// hand an observer two distinct GPV preimages of one hash target, whose difference is a
+        /// short vector of the secret NTRU lattice (key-recovery-grade leakage).
+        /// </summary>
+        [Test]
+        public void DetSignaturesAreBitCompatibleWithAlgokey()
+        {
+            var files = Directory.GetFiles(
+                    Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData"),
+                    "algokey-pq-signed-*.stxn")
+                .OrderBy(f => f)
+                .ToArray();
+            Assert.That(files, Has.Length.EqualTo(3));
+
+            var acc = FalconAccount.FromMnemonic(AlgokeyMnemonic);
+            Assert.Multiple(() =>
+            {
+                foreach (var file in files)
+                {
+                    var golden = File.ReadAllBytes(file);
+                    var theirs = Encoder.DecodeFromMsgPack<SignedTransaction>(golden);
+                    var ours = theirs.Tx.SignPQ(acc);
+                    Assert.That(ours.PQSig.Signature, Is.EqualTo(theirs.PQSig.Signature),
+                        $"signature bytes differ from algokey for {Path.GetFileName(file)}");
+                    Assert.That(Encoder.EncodeToMsgPackOrdered(ours), Is.EqualTo(golden),
+                        $"full signed-transaction encoding differs from algokey for {Path.GetFileName(file)}");
+                }
+            });
+        }
+
         private sealed class AlgokeyPqVector
         {
             [JsonProperty("mnemonic")] public string Mnemonic { get; set; }

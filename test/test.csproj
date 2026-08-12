@@ -28,6 +28,9 @@
     <None Update="TestData\algokey-pq-accounts.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestData\algokey-pq-signed-1.stxn;TestData\algokey-pq-signed-2.stxn;TestData\algokey-pq-signed-3.stxn">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

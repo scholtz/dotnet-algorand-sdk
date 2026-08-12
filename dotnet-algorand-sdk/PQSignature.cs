@@ -156,20 +156,7 @@ namespace Algorand
 
         internal static byte DefaultSaltVersion => CurrentSaltVersion;
 
-        internal static byte[] RepackToUnsalted(byte[] bcDetachedSignature, byte[] expectedSalt, byte saltVersion)
-        {
-            // BouncyCastle's detached Falcon signature is header(0x3A) || nonce(40) || compressed s2.
-            if (bcDetachedSignature == null || bcDetachedSignature.Length < 42 || bcDetachedSignature[0] != SaltedCompressedHeader)
-                throw new InvalidOperationException("unexpected Falcon signature format");
-            for (int i = 0; i < 40; i++)
-                if (bcDetachedSignature[1 + i] != expectedSalt[i])
-                    throw new InvalidOperationException("Falcon signature was not produced over the deterministic salt");
-            var sig = new byte[bcDetachedSignature.Length - 40 + 1];
-            sig[0] = UnsaltedCompressedHeader;
-            sig[1] = saltVersion;
-            Array.Copy(bcDetachedSignature, 41, sig, 2, bcDetachedSignature.Length - 41);
-            return sig;
-        }
+        internal static byte UnsaltedHeader => UnsaltedCompressedHeader;
 
         private static readonly BigInteger Ed25519P = (BigInteger.One << 255) - 19;
 
