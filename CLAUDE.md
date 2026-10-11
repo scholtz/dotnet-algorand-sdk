@@ -77,7 +77,7 @@ When deleting an example, remove all three again (a stale launch profile or disp
 
 ### CI
 
-`.github/workflows/build-and-test.yml` is the full gate (Release + Unity build, unit and serialisation tests against an AlgoKit LocalNet). It runs on every pull request and is reused (`workflow_call`) by `publish-nuget.yml`, so a release is gated by exactly what PRs already passed. `lint.yml` is the separate formatting check.
+`.github/workflows/build-and-test.yml` is the full gate (Release + Unity build, unit and serialisation tests against an AlgoKit LocalNet). It runs on every pull request and is reused (`workflow_call`) by `publish-nuget.yml`, so PRs and releases share one build + test definition (the release re-runs it on the tagged commit). `lint.yml` is a separate formatting check and is not part of the release gate.
 
 ### Publishing
 
