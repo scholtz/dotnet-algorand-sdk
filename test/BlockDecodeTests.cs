@@ -31,6 +31,22 @@ namespace test
             Assert.That(lsig.Msig, Is.Null);
         }
 
+        // The Encoder falls back silently to a second decoder when the MessagePack-CSharp path throws,
+        // so also pin the fast path (NoDefaultsFormatter.Deserializer) directly.
+        [Test]
+        public void FastPathDecodesLargeLogicSigArgs()
+        {
+            var bytes = File.ReadAllBytes(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "mainnet-block-64000338.msgpack"));
+            var options = MessagePack.MessagePackSerializerOptions.Standard.WithResolver(
+                MessagePack.Resolvers.CompositeResolver.Create(
+                    new MessagePack.Formatters.IMessagePackFormatter[] { Algorand.Algod.Model.Converters.MsgPack.NullableStringFormatterMsgPack.Instance },
+                    new MessagePack.IFormatterResolver[] { MessagePack.Resolvers.ContractlessStandardResolver.Instance }));
+
+            var block = MessagePack.MessagePackSerializer.Deserialize<CertifiedBlock>(bytes, options);
+
+            Assert.That(block.Block.Transactions.Select(t => t.LSig).First(l => l != null).Args.Single().Length, Is.EqualTo(1226));
+        }
+
         private static int IndexOf(byte[] haystack, byte[] needle)
         {
             return haystack.AsSpan().IndexOf(needle.AsSpan());
