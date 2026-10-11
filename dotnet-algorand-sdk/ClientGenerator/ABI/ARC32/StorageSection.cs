@@ -1,4 +1,5 @@
-﻿using AVM.ClientGenerator.Clients;
+﻿using Algorand.AVM.ClientGenerator.Extensions;
+using AVM.ClientGenerator.Clients;
 using AVM.ClientGenerator.Compiler;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace AVM.ClientGenerator.ABI.ARC32
                 {
                     code.AddOpeningLine(
                     $@"{"\t"}///<summary>
-                        {"\t"}///{kv.Value.Descr?.Replace("\n", "\n///")}
+                        {"\t"}///{kv.Value.Descr.ToDocCommentText()}
                         {"\t"}///</summary>");
 
 

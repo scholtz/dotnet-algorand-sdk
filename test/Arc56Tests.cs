@@ -1309,8 +1309,12 @@ namespace test
             // The original third-party spec is no longer hosted, so derive the same shape from a checked-in
             // fixture: a valid spec whose compiled bytecode sits under the snake_case "byte_code" key.
             var content = File.ReadAllText("Arc56/GasStation.arc56.json");
-            Assert.That(content, Does.Contain("\"byteCode\":"));
-            content = content.Replace("\"byteCode\":", "\"byte_code\":");
+            var spec = Newtonsoft.Json.Linq.JObject.Parse(content);
+            var byteCode = spec["byteCode"];
+            Assert.That(byteCode, Is.Not.Null);
+            spec.Remove("byteCode");
+            spec["byte_code"] = byteCode;
+            content = spec.ToString();
 
             var generator = new ClientGeneratorARC56();
             generator.LoadFromByteArray(Encoding.UTF8.GetBytes(content));

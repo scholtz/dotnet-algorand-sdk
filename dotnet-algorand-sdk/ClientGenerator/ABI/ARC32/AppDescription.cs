@@ -1,4 +1,5 @@
-﻿using Algorand.Algod;
+﻿using Algorand.AVM.ClientGenerator.Extensions;
+using Algorand.Algod;
 using Algorand.AVM.ClientGenerator.ABI.ARC32;
 using AVM.ClientGenerator.ABI.ARC4;
 using AVM.ClientGenerator.Clients;
@@ -288,7 +289,7 @@ namespace AVM.ClientGenerator.ABI.ARC32
             {
                 crb.AppendLine(
 $@"{"\t"}///<summary>
-{"\t"}///{Contract.Desc?.Replace("\n", "\n///")}
+{"\t"}///{Contract.Desc.ToDocCommentText()}
 {"\t"}///</summary>");
             }
 
@@ -526,8 +527,8 @@ $@"{"\t"}///<summary>
 
                 abiMethod.AddOpeningLine(
 $@"///<summary>
-        ///{method.Desc?.Replace("\n", "\n///") ?? ""}
-        ///{method.OnCompletion.Summary?.Replace("\n", "\n///")}
+        ///{method.Desc.ToDocCommentText()}
+        ///{method.OnCompletion.Summary.ToDocCommentText()}
         ///</summary>");
 
                 foreach (var parm in method.Args)
@@ -537,7 +538,7 @@ $@"///<summary>
                     {
                         parmDefaultSummary = method.Defaults[parm.Name].Summary;
                     }
-                    abiMethod.AddOpeningLine($@"/// <param name=""{parm.Name}"">{parm.Desc?.Replace("\n", "\n///")} {parm.Summary?.Replace("\n", "\n///")} {parmDefaultSummary} </param>");
+                    abiMethod.AddOpeningLine($@"/// <param name=""{parm.Name}"">{parm.Desc.ToDocCommentText()} {parm.Summary.ToDocCommentText()} {parmDefaultSummary} </param>");
 
                 }
 

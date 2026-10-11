@@ -188,16 +188,6 @@ namespace AVM.ClientGenerator.ABI.ARC4
         }
 
 
-        /// <summary>
-        /// Text for a <c>///</c> XML doc comment. Every line break in the ARC32 description starts a new
-        /// comment line, otherwise the continuation would be emitted as code and break the generated client.
-        /// </summary>
-        private static string DocCommentText(string input)
-        {
-            if (string.IsNullOrEmpty(input)) return "";
-            return input.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", "\n\t\t///");
-        }
-
         private static string SanitizeForComment(string input)
         {
             if (string.IsNullOrWhiteSpace(input)) return "";
@@ -318,13 +308,13 @@ namespace AVM.ClientGenerator.ABI.ARC4
 
             scr.AppendLine(
 $@"{"\t\t"}///<summary>
-{"\t\t"}///{DocCommentText(Desc)}
+{"\t\t"}///{Desc.ToDocCommentText()}
 {"\t\t"}///</summary>");
             foreach (var arg in nonTxRefArgs)
             {
-                scr.AppendLine($@"{"\t\t"}///<param name=""{arg.arg.Name}"">{DocCommentText(arg.arg.Desc)}</param>");
+                scr.AppendLine($@"{"\t\t"}///<param name=""{arg.arg.Name}"">{arg.arg.Desc.ToDocCommentText()}</param>");
             }
-            scr.AppendLine($@"{"\t\t"}///<param name=""result"">{DocCommentText(Returns.Desc)}</param>");
+            scr.AppendLine($@"{"\t\t"}///<param name=""result"">{Returns.Desc.ToDocCommentText()}</param>");
 
             string retType;
             if (txRefArgs.Count == 0)

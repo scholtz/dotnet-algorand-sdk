@@ -45,5 +45,25 @@ namespace test
             var source = Load().ToProxy("Multiline");
             GeneratedClientCompiler.CompileGeneratedClient(source, "MultilineProxy_" + System.Guid.NewGuid().ToString("N"));
         }
+
+        [Test]
+        public async System.Threading.Tasks.Task Arc56ProxyWithMultilineDescriptionsCompiles()
+        {
+            var spec = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText("Arc56/GasStation.arc56.json"));
+            foreach (var method in spec["methods"])
+            {
+                method["desc"] = "Method line one\nMethod line two\r\nMethod line three";
+                foreach (var arg in method["args"])
+                {
+                    arg["desc"] = "Arg line one\nUSDC in ALGOUSDC\rArg line three";
+                }
+            }
+
+            var generator = new Algorand.AVM.ClientGenerator.ABI.ARC56.ClientGeneratorARC56();
+            generator.LoadFromByteArray(System.Text.Encoding.UTF8.GetBytes(spec.ToString()));
+            var source = await generator.ToProxy("MultilineArc56");
+
+            GeneratedClientCompiler.CompileGeneratedClient(source, "MultilineArc56_" + System.Guid.NewGuid().ToString("N"));
+        }
     }
 }

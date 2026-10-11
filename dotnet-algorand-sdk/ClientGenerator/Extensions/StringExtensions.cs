@@ -7,6 +7,16 @@ namespace Algorand.AVM.ClientGenerator.Extensions
 {
     public static class StringExtensions
     {
+        /// <summary>
+        /// Text for a <c>///</c> XML doc comment. Every line break in a contract description starts a new
+        /// comment line, otherwise the continuation would be emitted as code and break the generated client.
+        /// </summary>
+        public static string ToDocCommentText(this string s)
+        {
+            if (string.IsNullOrEmpty(s)) return "";
+            return s.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", "\n///");
+        }
+
         public static string ToPascalCase(this string s)
         {
             if (string.IsNullOrEmpty(s)) return "";
