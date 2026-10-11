@@ -98,7 +98,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             if (!string.IsNullOrEmpty(Contract.Description))
             {
                 proxyBody.AddOpeningLine("//");
-                proxyBody.AddOpeningLine($"// {Contract.Description?.Replace("\n", "\n//")}");
+                proxyBody.AddOpeningLine($"// {Contract.Description.ToLineCommentText()}");
                 proxyBody.AddOpeningLine("//");
             }
 
@@ -858,12 +858,12 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
 
                 abiMethod.AddOpeningLine(
 $@"///<summary>
-        ///{method.Description?.Replace("\n", "\n///") ?? ""}
+        ///{method.Description.ToDocCommentText()}
         ///</summary>");
 
                 foreach (var parm in method.Args)
                 {
-                    abiMethod.AddOpeningLine($@"/// <param name=""{parm.Name}"">{parm.Description?.Replace("\n", "\n///")} {parm.Struct?.Replace("\n", "\n///")}</param>");
+                    abiMethod.AddOpeningLine($@"/// <param name=""{parm.Name}"">{parm.Description.ToDocCommentText()} {parm.Struct.ToDocCommentText()}</param>");
                 }
 
                 if (!string.IsNullOrEmpty(parameters))
