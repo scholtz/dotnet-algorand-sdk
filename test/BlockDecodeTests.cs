@@ -26,6 +26,7 @@ namespace test
             Assert.That(arg.Length, Is.EqualTo(1226));
             // content, not just length: both must appear verbatim in the wire bytes
             Assert.That(IndexOf(bytes, arg), Is.GreaterThanOrEqualTo(0), "arg bytes differ from the wire data");
+            Assert.That(Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(arg)), Is.EqualTo("25EE682213E2A31A51CEBE59CF7A4EF4E0F109D3C0130BCEEDD693D030CC001C"));
             Assert.That(IndexOf(bytes, lsig.Logic), Is.GreaterThanOrEqualTo(0), "program bytes differ from the wire data");
             Assert.That(lsig.Sig, Is.Null);
             Assert.That(lsig.Msig, Is.Null);
