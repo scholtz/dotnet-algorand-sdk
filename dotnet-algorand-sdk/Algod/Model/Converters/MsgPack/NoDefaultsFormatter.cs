@@ -178,6 +178,24 @@ namespace Algorand.Algod.Model.Converters.MsgPack
                                     }
                                     property.SetValue(instance, ret);
                                     continue; // do not continue to next switch
+                                case "Args":
+                                    // LogicsigSignature.Args: array of byte strings, e.g. a Falcon signature argument
+                                    if (value is Object[] arrayArgs && property.PropertyType == typeof(List<byte[]>))
+                                    {
+                                        var retArgs = new List<byte[]>(arrayArgs.Length);
+                                        foreach (var item in arrayArgs)
+                                        {
+                                            var itemBytes = item as byte[];
+                                            if (itemBytes == null)
+                                            {
+                                                throw new Exception("Args cannot be deserialized");
+                                            }
+                                            retArgs.Add(itemBytes);
+                                        }
+                                        property.SetValue(instance, retArgs);
+                                        continue; // do not continue to next switch
+                                    }
+                                    break;
                             }
                             break;
                         case "ICollection`1":
