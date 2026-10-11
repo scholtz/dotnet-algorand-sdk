@@ -1,5 +1,6 @@
 using Algorand.Algod.Model;
 using NUnit.Framework;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -19,10 +20,20 @@ namespace test
             var block = Algorand.Utils.Encoder.DecodeFromMsgPack<CertifiedBlock>(bytes);
 
             Assert.That(block.Block.Round, Is.EqualTo(64000338UL));
-            var lsig = block.Block.Transactions.First().LSig;
-            Assert.That(lsig, Is.Not.Null);
+            var lsig = block.Block.Transactions.Select(t => t.LSig).First(l => l != null);
             Assert.That(lsig.Logic.Length, Is.EqualTo(1805));
-            Assert.That(lsig.Args.Single().Length, Is.EqualTo(1226));
+            var arg = lsig.Args.Single();
+            Assert.That(arg.Length, Is.EqualTo(1226));
+            // content, not just length: both must appear verbatim in the wire bytes
+            Assert.That(IndexOf(bytes, arg), Is.GreaterThanOrEqualTo(0), "arg bytes differ from the wire data");
+            Assert.That(IndexOf(bytes, lsig.Logic), Is.GreaterThanOrEqualTo(0), "program bytes differ from the wire data");
+            Assert.That(lsig.Sig, Is.Null);
+            Assert.That(lsig.Msig, Is.Null);
+        }
+
+        private static int IndexOf(byte[] haystack, byte[] needle)
+        {
+            return haystack.AsSpan().IndexOf(needle.AsSpan());
         }
     }
 }

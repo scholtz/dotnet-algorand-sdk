@@ -152,6 +152,28 @@ namespace Algorand.Algod.Model.Converters.MsgPack
                     switch (property.PropertyType.Name)
                     {
                         case "List`1":
+                            if (property.PropertyType == typeof(List<byte[]>))
+                            {
+                                // e.g. LogicsigSignature.Args: array of byte strings (such as a Falcon signature argument)
+                                if (value == null) continue;
+                                var arrayBytes = value as Object[];
+                                if (arrayBytes == null)
+                                {
+                                    throw new InvalidOperationException($"Expected an array for property {property.Name}, but got {value.GetType().FullName}");
+                                }
+                                var retBytes = new List<byte[]>(arrayBytes.Length);
+                                for (var i = 0; i < arrayBytes.Length; i++)
+                                {
+                                    var itemBytes = arrayBytes[i] as byte[];
+                                    if (itemBytes == null)
+                                    {
+                                        throw new InvalidOperationException($"{property.Name}[{i}] must be a byte string, but got {arrayBytes[i]?.GetType().FullName ?? "null"}");
+                                    }
+                                    retBytes.Add(itemBytes);
+                                }
+                                property.SetValue(instance, retBytes);
+                                continue; // do not continue to next switch
+                            }
                             switch (property.Name)
                             {
                                 case "Subsigs":
@@ -178,24 +200,6 @@ namespace Algorand.Algod.Model.Converters.MsgPack
                                     }
                                     property.SetValue(instance, ret);
                                     continue; // do not continue to next switch
-                                case "Args":
-                                    // LogicsigSignature.Args: array of byte strings, e.g. a Falcon signature argument
-                                    if (value is Object[] arrayArgs && property.PropertyType == typeof(List<byte[]>))
-                                    {
-                                        var retArgs = new List<byte[]>(arrayArgs.Length);
-                                        foreach (var item in arrayArgs)
-                                        {
-                                            var itemBytes = item as byte[];
-                                            if (itemBytes == null)
-                                            {
-                                                throw new Exception("Args cannot be deserialized");
-                                            }
-                                            retArgs.Add(itemBytes);
-                                        }
-                                        property.SetValue(instance, retArgs);
-                                        continue; // do not continue to next switch
-                                    }
-                                    break;
                             }
                             break;
                         case "ICollection`1":
