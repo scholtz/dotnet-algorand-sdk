@@ -75,6 +75,10 @@ When deleting an example, remove all three again (a stale launch profile or disp
 
 `dotnet-algorand-sdk/Algorand.snk` strong-names the assembly (`SignAssembly=true`) — required for the build to produce a valid package.
 
+### CI
+
+`.github/workflows/build-and-test.yml` is the full gate (Release + Unity build, unit and serialisation tests against an AlgoKit LocalNet). It runs on every pull request and is reused (`workflow_call`) by `publish-nuget.yml`, so PRs and releases share one build + test definition (the release re-runs it on the tagged commit). `lint.yml` is a separate formatting check and is not part of the release gate.
+
 ### Publishing
 
 `.github/workflows/publish-nuget.yml` builds, tests, and pushes the `Algorand5` NuGet package using nuget.org **Trusted Publishing** (GitHub OIDC — no long-lived `NUGET_API_KEY` secret). It fires on `v*` tags or manual dispatch. Requires a one-time Trusted Publishing policy on nuget.org (repository owner `scholtz`, repo `dotnet-algorand-sdk`, workflow file `publish-nuget.yml`, environment `nuget-publish`) and a `NUGET_USER` secret (your nuget.org profile name) in that environment.

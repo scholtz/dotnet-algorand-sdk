@@ -1,0 +1,90 @@
+name: Build and test
+
+# The full build + test gate: Release and Unity builds, then the unit and serialisation tests against an
+# AlgoKit LocalNet. Runs on every pull request (and manual dispatch), and is reused by publish-nuget.yml
+# so the build + test gate for a release is the same definition PRs run, re-run on the tagged commit.
+# lint.yml is separate and is not part of the release gate.
+#
+# Contract with publish-nuget.yml: this workflow uploads the `nupkg` artifact (outside PR runs), which
+# the publish job downloads by that name.
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+# Superseded PR runs are cancelled; release runs (workflow_call from a tag) are never cancelled.
+concurrency:
+  group: build-and-test-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build-and-test:
+    timeout-minutes: 45
+    # ubuntu-latest (not windows-latest) so Docker runs Linux containers natively -
+    # AlgoKit LocalNet's algod/indexer/conduit images are Linux-only.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            10.0.x
+
+      - name: Restore
+        run: dotnet restore dotnet-algorand-sdk.sln
+
+      - name: Build Release
+        run: dotnet build dotnet-algorand-sdk.sln --configuration Release --no-restore
+
+      - name: Build Unity package
+        # A dedicated restore first: the Unity configuration's ILRepack.Lib.MSBuild
+        # PackageReference is conditioned on Configuration=='Unity', and the plain solution-wide
+        # restore above isn't guaranteed to evaluate that condition as true.
+        run: |
+          dotnet restore dotnet-algorand-sdk/dotnet-algorand-sdk.csproj -p:Configuration=Unity
+          dotnet build dotnet-algorand-sdk/dotnet-algorand-sdk.csproj --configuration Unity --no-restore
+
+      - name: Install AlgoKit
+        run: pipx install algokit
+
+      - name: Start AlgoKit LocalNet
+        # test/Arc4Tests.cs and test/Arc56Tests.cs deploy against http://localhost:4001 (algod)
+        # and http://localhost:4002 (kmd), so LocalNet must be up before `dotnet test`.
+        run: algokit localnet start
+
+      - name: Run unit tests
+        # test.Gossip.BlockFetcherTests dials a hardcoded list of MainNet relay hostnames
+        # (GossipHttpConfiguration.MainNetArchival) that rotate over time - some no longer
+        # resolve via public DNS, so they fail from any runner regardless of network access.
+        # Excluded from the CI gate; run manually against a known-good relay list.
+        run: dotnet test test/test.csproj --configuration Release --no-build --filter "FullyQualifiedName!~test.Gossip.BlockFetcherTests"
+
+      - name: Run serialisation tests
+        run: dotnet test SerialisationTests/serialisation-tests.csproj --configuration Release --no-build
+
+      - name: Stop AlgoKit LocalNet
+        if: always()
+        run: algokit localnet stop
+
+      - name: Upload nupkg artifact
+        # Only the release path (tag push or manual publish dispatch) consumes the packages.
+        if: github.event_name == 'workflow_dispatch' || github.ref_type == 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkg
+          # Fail rather than silently publish a partial set (e.g. Algorand5 without Algorand5_Unity).
+          if-no-files-found: error
+          # Algorand5 (Release) and Algorand5_Unity (Unity - see ILRepack.Targets, lands directly
+          # under bin/Unity/ rather than a TFM subfolder, since it's packed via NuspecFile).
+          path: |
+            dotnet-algorand-sdk/bin/Release/*.nupkg
+            dotnet-algorand-sdk/bin/Unity/*.nupkg
