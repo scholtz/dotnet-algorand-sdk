@@ -2,14 +2,16 @@ name: Build and test
 
 # The full build + test gate: Release and Unity builds, then the unit and serialisation tests against an
 # AlgoKit LocalNet. Runs on every pull request (and manual dispatch), and is reused by publish-nuget.yml
-# so the build + test gate for a release is the same definition PRs run (lint.yml is separate and not
-# part of the release gate; the release runs it against the tagged commit, not the last PR head).
+# so the build + test gate for a release is the same definition PRs run, re-run on the tagged commit.
+# lint.yml is separate and is not part of the release gate.
 #
 # Contract with publish-nuget.yml: this workflow uploads the `nupkg` artifact (outside PR runs), which
 # the publish job downloads by that name.
 
 on:
   pull_request:
+  push:
+    branches: [master]
   workflow_dispatch:
   workflow_call:
 
@@ -37,14 +39,6 @@ jobs:
           dotnet-version: |
             10.0.x
 
-      - name: Install AlgoKit
-        run: pipx install algokit
-
-      - name: Start AlgoKit LocalNet
-        # test/Arc4Tests.cs and test/Arc56Tests.cs deploy against http://localhost:4001 (algod)
-        # and http://localhost:4002 (kmd), so LocalNet must be up before `dotnet test`.
-        run: algokit localnet start
-
       - name: Restore
         run: dotnet restore dotnet-algorand-sdk.sln
 
@@ -58,6 +52,14 @@ jobs:
         run: |
           dotnet restore dotnet-algorand-sdk/dotnet-algorand-sdk.csproj -p:Configuration=Unity
           dotnet build dotnet-algorand-sdk/dotnet-algorand-sdk.csproj --configuration Unity --no-restore
+
+      - name: Install AlgoKit
+        run: pipx install algokit
+
+      - name: Start AlgoKit LocalNet
+        # test/Arc4Tests.cs and test/Arc56Tests.cs deploy against http://localhost:4001 (algod)
+        # and http://localhost:4002 (kmd), so LocalNet must be up before `dotnet test`.
+        run: algokit localnet start
 
       - name: Run unit tests
         # test.Gossip.BlockFetcherTests dials a hardcoded list of MainNet relay hostnames
@@ -74,8 +76,8 @@ jobs:
         run: algokit localnet stop
 
       - name: Upload nupkg artifact
-        # Only the release path consumes the packages; PRs (including forks) don't need them stored.
-        if: github.event_name != 'pull_request'
+        # Only the release path (tag push or manual publish dispatch) consumes the packages.
+        if: github.event_name == 'workflow_dispatch' || github.ref_type == 'tag'
         uses: actions/upload-artifact@v4
         with:
           name: nupkg
