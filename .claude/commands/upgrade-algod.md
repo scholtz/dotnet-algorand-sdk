@@ -1,6 +1,6 @@
 ---
 description: Upgrade the SDK to track a new algod build version end-to-end — spec refresh, model regen, version bump everywhere, tests
-argument-hint: <new version, e.g. 5.0.0>
+argument-hint: <new version, e.g. 5.0.2>
 ---
 
 Full upgrade checklist for moving this SDK from one algod build version to `$ARGUMENTS`. Do not skip steps — this exists because version bumps have previously drifted (see `audits/` for past incidents of independent, out-of-sync version strings). Work through them in order and report what changed at the end.
