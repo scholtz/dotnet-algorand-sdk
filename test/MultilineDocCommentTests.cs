@@ -19,10 +19,10 @@ namespace test
   ""source"": { ""approval"": ""Cg=="", ""clear"": ""Cg=="", ""approvalAVM"": ""#pragma version 10\nint 1"", ""clearAVM"": ""#pragma version 10\nint 1"" },
   ""contract"": {
     ""name"": ""Multiline"",
-    ""desc"": ""Contract line one\nContract line two"",
+    ""desc"": ""Contract line one\rContract line two\u2028Contract line three"",
     ""methods"": [ {
       ""name"": ""swap"",
-      ""desc"": ""Method line one\nMethod line two"",
+      ""desc"": ""Method line one\nMethod line two\u0085Method line three"",
       ""args"": [ { ""name"": ""assetA"", ""type"": ""uint64"", ""desc"": ""Arg line one\nUSDC in ALGOUSDC\r\nArg line three"" } ],
       ""returns"": { ""type"": ""uint64"", ""desc"": ""Return line one\nReturn line two"" }
     } ]
@@ -50,6 +50,7 @@ namespace test
         public async System.Threading.Tasks.Task Arc56ProxyWithMultilineDescriptionsCompiles()
         {
             var spec = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText("Arc56/GasStation.arc56.json"));
+            spec["description"] = "Banner one\rBanner two";
             foreach (var method in spec["methods"])
             {
                 method["desc"] = "Method line one\nMethod line two\r\nMethod line three";

@@ -11,10 +11,20 @@ namespace Algorand.AVM.ClientGenerator.Extensions
         /// Text for a <c>///</c> XML doc comment. Every line break in a contract description starts a new
         /// comment line, otherwise the continuation would be emitted as code and break the generated client.
         /// </summary>
-        public static string ToDocCommentText(this string s)
+        public static string ToDocCommentText(this string s) => PrefixEveryLine(s, "///");
+
+        /// <summary>
+        /// Text for a <c>//</c> line comment; see <see cref="ToDocCommentText"/>.
+        /// </summary>
+        public static string ToLineCommentText(this string s) => PrefixEveryLine(s, "//");
+
+        private static string PrefixEveryLine(string s, string prefix)
         {
             if (string.IsNullOrEmpty(s)) return "";
-            return s.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", "\n///");
+            // also the Unicode line terminators the C# lexer recognises (NEL, LS, PS)
+            return s.Replace("\r\n", "\n").Replace("\r", "\n")
+                .Replace("\u0085", "\n").Replace("\u2028", "\n").Replace("\u2029", "\n")
+                .Replace("\n", "\n" + prefix);
         }
 
         public static string ToPascalCase(this string s)

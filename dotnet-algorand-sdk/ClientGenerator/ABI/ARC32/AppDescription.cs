@@ -367,7 +367,7 @@ $@"{"\t"}///<summary>
             if (!string.IsNullOrEmpty(Contract.Desc))
             {
                 proxyBody.AddOpeningLine("//");
-                proxyBody.AddOpeningLine($"// {Contract.Desc?.Replace("\n", "\n//")}");
+                proxyBody.AddOpeningLine($"// {Contract.Desc.ToLineCommentText()}");
                 proxyBody.AddOpeningLine("//");
             }
 
@@ -538,7 +538,7 @@ $@"///<summary>
                     {
                         parmDefaultSummary = method.Defaults[parm.Name].Summary;
                     }
-                    abiMethod.AddOpeningLine($@"/// <param name=""{parm.Name}"">{parm.Desc.ToDocCommentText()} {parm.Summary.ToDocCommentText()} {parmDefaultSummary} </param>");
+                    abiMethod.AddOpeningLine($@"/// <param name=""{parm.Name}"">{parm.Desc.ToDocCommentText()} {parm.Summary.ToDocCommentText()} {parmDefaultSummary.ToDocCommentText()} </param>");
 
                 }
 

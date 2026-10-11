@@ -192,7 +192,9 @@ namespace AVM.ClientGenerator.ABI.ARC4
         {
             if (string.IsNullOrWhiteSpace(input)) return "";
             // Replace comment terminators (*/), new lines, and other potentially harmful characters
-            return input.Replace("*/", "*\\/").Replace("\r", "\\r").Replace("\n", "\\n").Replace("\\", "\\\\");
+            // also the Unicode line terminators (NEL, LS, PS) that the C# lexer treats as the end of a // comment
+            return input.Replace("\\", "\\\\").Replace("*/", "*\\/").Replace("\r", "\\r").Replace("\n", "\\n")
+                .Replace("\u0085", "\\n").Replace("\u2028", "\\n").Replace("\u2029", "\\n");
         }
 
         private static string GetFullGenericTypeName(Type type)

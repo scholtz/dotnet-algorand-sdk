@@ -98,7 +98,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             if (!string.IsNullOrEmpty(Contract.Description))
             {
                 proxyBody.AddOpeningLine("//");
-                proxyBody.AddOpeningLine($"// {Contract.Description?.Replace("\n", "\n//")}");
+                proxyBody.AddOpeningLine($"// {Contract.Description.ToLineCommentText()}");
                 proxyBody.AddOpeningLine("//");
             }
 
