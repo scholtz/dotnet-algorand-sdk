@@ -718,9 +718,10 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   generator instance. A fifth round found that ARC32 `typeDetail` is emitted verbatim as a C# type (and the SDK's own spec
   generator writes Roslyn type text such as `List<ulong>` there), so it is validated by parsing it as a single
   C# type (`RequireCSharpType`) instead of as an ABI type; the parser accepts an expression as an array size,
-  so bracket contents are additionally limited to rank commas. Validation lives in the loaders: an
-  `AppDescription` deserialised directly with `JsonConvert` or built by hand (as the Roslyn-based
-  compile path does for trusted C# source) is not checked. A sixth round
+  so bracket contents are additionally limited to rank commas. Validation runs in the loaders and again at the start of `ToProxy` /
+  `ToSmartContractReference`, so an `AppDescription` deserialised directly with `JsonConvert` or built by
+  hand is checked too; the only exemption is a description built by the Roslyn-based path from the
+  developer's own C# source (`TrustedSource`), whose names may be any legal C# identifier. A sixth round
   also had the generated-file namespace and name-override arguments (and so the CLI `--namespace` option)
   validated as dotted identifiers, `source.*` strings as standard base64, and the selector check moved after
   the type checks. Known remaining gaps, accepted: struct and field names that

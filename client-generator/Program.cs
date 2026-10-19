@@ -37,14 +37,14 @@ namespace client_generator
                 {
                     // --help and --version are reported as "not parsed" too, but are not failures
                     if (errs.All(e => e is HelpRequestedError || e is VersionRequestedError || e is HelpVerbRequestedError)) return;
-                    Console.WriteLine("Invalid arguments. Use --help for usage.");
+                    Console.Error.WriteLine("Invalid arguments. Use --help for usage.");
                     Environment.ExitCode = 1;
                 })
                 .WithParsedAsync(async opts =>
                 {
                     if (!string.IsNullOrEmpty(opts.Url) && !string.IsNullOrEmpty(opts.File))
                     {
-                        Console.WriteLine("Error: You cannot specify both --url and --file.");
+                        Console.Error.WriteLine("Error: You cannot specify both --url and --file.");
                         Environment.ExitCode = 1;
                         return;
                     }
@@ -57,7 +57,7 @@ namespace client_generator
                         }
                         else
                         {
-                            Console.WriteLine("Error: Please specify either --url or --file.");
+                            Console.Error.WriteLine("Error: Please specify either --url or --file.");
                             Environment.ExitCode = 1;
                             return;
                         }

@@ -228,6 +228,15 @@ namespace test
         }
 
         [Test]
+        public void Arc32DescriptionBuiltByHandIsValidatedBeforeGeneration()
+        {
+            var app = new AppDescription();
+            app.Contract.Name = HostileLiteral;
+            Assert.Throws<SpecValidationException>(() => app.ToProxy("Probe"));
+            Assert.Throws<SpecValidationException>(() => app.ToSmartContractReference("Probe", ""));
+        }
+
+        [Test]
         public void ValidationMessageHandlesNullNames()
         {
             // the error message is built eagerly from names that may be missing

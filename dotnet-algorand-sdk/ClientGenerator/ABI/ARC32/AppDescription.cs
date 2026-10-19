@@ -31,6 +31,14 @@ namespace AVM.ClientGenerator.ABI.ARC32
 
         public StateDescription State { get; set; } = new StateDescription();
 
+        /// <summary>
+        /// True only for a description built from the developer's own C# smart contract source (any legal C#
+        /// identifier, including non-ASCII ones). Everything else is treated as an untrusted spec and validated
+        /// before code is generated from it.
+        /// </summary>
+        [JsonIgnore]
+        internal bool TrustedSource { get; set; }
+
         public CallConfigSpec Bare_call_config { get; set; }
 
         public Dictionary<string, HintSpec> Hints = new Dictionary<string, HintSpec>();
@@ -208,6 +216,7 @@ namespace AVM.ClientGenerator.ABI.ARC32
             {
 
                 contractDescription = new AppDescription();
+                contractDescription.TrustedSource = true; // names come from the developer's own C# source, not from a spec
                 contractDescription.Contract.Name = smartContractClass.Identifier.Text;
 
                 if (smartContractClass.HasStructuredTrivia)
@@ -352,7 +361,7 @@ namespace AVM.ClientGenerator.ABI.ARC32
 
             if (string.IsNullOrWhiteSpace(nameSpace)) nameSpace = "Algorand.Imports";
             SpecValidator.RequireNamespace(nameSpace, "namespace");
-            ValidateSpecNames(); // also covers an AppDescription that was deserialised or built without the Load* methods
+            if (!TrustedSource) ValidateSpecNames(); // covers an AppDescription deserialised or built without the Load* methods
             if (!string.IsNullOrWhiteSpace(nameOverride)) SpecValidator.RequireIdentifier(nameOverride, "name override");
 
             string name = Contract.Name;
@@ -416,7 +425,7 @@ $@"{"\t"}///<summary>
         public string ToProxy(string namespaceName)
         {
             SpecValidator.RequireNamespace(namespaceName, "namespace");
-            ValidateSpecNames(); // also covers an AppDescription that was deserialised or built without the Load* methods
+            if (!TrustedSource) ValidateSpecNames(); // covers an AppDescription deserialised or built without the Load* methods
             List<string> structs = new List<string>();
 
 
