@@ -35,10 +35,13 @@ namespace test
         // Text that would be live code if a description's line terminator escaped the comment.
         private const string Payload = "public static int InjectedByDescription = 1;";
 
+        // Every character the C# lexer treats as a line end (CR, LF, NEL, LS, PS).
+        private static readonly char[] LineTerminators = { (char)0x0D, (char)0x0A, (char)0x85, (char)0x2028, (char)0x2029 };
+
         private static void AssertOnlyInComments(string source)
         {
             Assert.That(source, Does.Contain("InjectedByDescription"), "payload should survive inside a comment");
-            foreach (var line in source.Split('\n'))
+            foreach (var line in source.Split(LineTerminators))
             {
                 if (!line.Contains("InjectedByDescription")) continue;
                 Assert.That(line.TrimStart(), Does.StartWith("//"), "description text escaped its comment: " + line);
@@ -54,13 +57,15 @@ namespace test
         {
             var json = Arc32.Replace("Contract line one", "Contract " + JsonConvert.ToString(char.ConvertFromUtf32(codePoint)).Trim('"') + Payload)
                             .Replace("Method line one", "Method " + JsonConvert.ToString(char.ConvertFromUtf32(codePoint)).Trim('"') + Payload)
-                            .Replace("Arg line one", "Arg " + JsonConvert.ToString(char.ConvertFromUtf32(codePoint)).Trim('"') + Payload);
+                            .Replace("Arg line one", "Arg " + JsonConvert.ToString(char.ConvertFromUtf32(codePoint)).Trim('"') + Payload)
+                            .Replace("Return line one", "Return " + JsonConvert.ToString(char.ConvertFromUtf32(codePoint)).Trim('"') + Payload);
             var app = JsonConvert.DeserializeObject<AppDescription>(json, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Ignore });
             AssertOnlyInComments(app.ToSmartContractReference("Multiline", ""));
             AssertOnlyInComments(app.ToProxy("Multiline"));
         }
 
         [TestCase(0x000D)]
+        [TestCase(0x000A)]
         [TestCase(0x0085)]
         [TestCase(0x2028)]
         [TestCase(0x2029)]
@@ -71,7 +76,7 @@ namespace test
             foreach (var method in spec["methods"])
             {
                 method["desc"] = "Method " + char.ConvertFromUtf32(codePoint) + Payload;
-                foreach (var arg in method["args"])
+                foreach (var arg in method["args"] ?? new Newtonsoft.Json.Linq.JArray())
                 {
                     arg["desc"] = "Arg " + char.ConvertFromUtf32(codePoint) + Payload;
                 }

@@ -91,36 +91,31 @@ namespace Algorand.Algod.Model
 
         private static KeyPair KeyPairFromSeed(byte[] seed)
         {
-            var privateKey = SeedToPrivateKey(seed);
-            try
-            {
-                return new KeyPair(privateKey); // KeyPair clones the buffer, so the intermediate copy can be wiped
-            }
-            finally
-            {
-                Array.Clear(privateKey, 0, privateKey.Length);
-            }
-        }
-
-        private static byte[] SeedToPrivateKey(byte[] seed)
-        {
             if (seed == null) throw new ArgumentNullException(nameof(seed));
             // 32 bytes = seed, 64 bytes = seed + public key as exported by kmd
             if (seed.Length != KeyPair.SK_SIZE && seed.Length != KeyPair.SK_SIZE * 2)
                 throw new ArgumentException("Seed must be 32 bytes, or 64 bytes (seed + public key)", nameof(seed));
             var privateKey = new byte[KeyPair.SK_SIZE];
-            Array.Copy(seed, privateKey, KeyPair.SK_SIZE);
-            if (seed.Length == KeyPair.SK_SIZE * 2)
+            try
             {
-                // kmd exports seed + public key: reject a mismatched public half instead of ignoring it
-                var derivedPublicKey = new Org.BouncyCastle.Crypto.Parameters.Ed25519PrivateKeyParameters(privateKey, 0).GeneratePublicKey().GetEncoded();
-                for (int i = 0; i < KeyPair.SK_SIZE; i++)
+                Array.Copy(seed, privateKey, KeyPair.SK_SIZE);
+                if (seed.Length == KeyPair.SK_SIZE * 2)
                 {
-                    if (seed[KeyPair.SK_SIZE + i] != derivedPublicKey[i])
-                        throw new ArgumentException("The public key half of the 64-byte seed does not match the private key", nameof(seed));
+                    // kmd exports seed + public key: reject a mismatched public half instead of ignoring it
+                    var derivedPublicKey = new Org.BouncyCastle.Crypto.Parameters.Ed25519PrivateKeyParameters(privateKey, 0).GeneratePublicKey().GetEncoded();
+                    for (int i = 0; i < KeyPair.SK_SIZE; i++)
+                    {
+                        if (seed[KeyPair.SK_SIZE + i] != derivedPublicKey[i])
+                            throw new ArgumentException("The public key half of the 64-byte seed does not match the private key", nameof(seed));
+                    }
                 }
+                return new KeyPair(privateKey); // KeyPair clones the buffer, so the intermediate copy can be wiped
             }
-            return privateKey;
+            finally
+            {
+                // best effort: BouncyCastle's own temporary key objects cannot be wiped from here
+                Array.Clear(privateKey, 0, privateKey.Length);
+            }
         }
 
         /// <summary>

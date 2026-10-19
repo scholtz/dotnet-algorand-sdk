@@ -646,7 +646,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Mitigable by this repo?**: Yes — pin actions to commit SHAs and `algokit` to a version.
 - **Current mitigation status**: Mitigated on 2026-10-19 (branch `fix/audit-2026-10-19`): all workflow
   actions pinned to commit SHAs (tag kept in a comment) and `algokit` pinned to 2.10.2. The publish
-  job's token scoping was not verified beyond the diff; SHA pins need periodic manual bumps.
+  job's token scoping was not verified beyond the diff; `.github/dependabot.yml` (github-actions, weekly) now proposes SHA bumps;
+  the end-of-life `upload-artifact@v3` in `generator_build.yml` was moved to v4.
 - **5-year misuse likelihood**: **2%** — compromises of widely used actions have happened in
   the ecosystem, but exploitation here also needs a release to run during the compromise window.
 - **Impact if realized**: Tampered signing library distributed to many developers; potentially
