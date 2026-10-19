@@ -79,13 +79,13 @@ namespace AVM.ClientGenerator.ABI.ARC32
 
         /// <summary>
         /// The storage key (base64 text in a real spec, so it may hold '+', '/', '=') is written as a C# field name:
-        /// anything that is not an identifier character becomes '_', so key text can never end the declaration or
+        /// anything that is not a letter, digit or '_' becomes '_', so key text can never end the declaration or
         /// start a comment.
         /// </summary>
         private static string ToFieldName(string key)
         {
             if (string.IsNullOrEmpty(key)) return "_";
-            var name = System.Text.RegularExpressions.Regex.Replace(key, "[^A-Za-z0-9_]", "_");
+            var name = System.Text.RegularExpressions.Regex.Replace(key, @"[^\p{L}\p{N}_]", "_");
             return char.IsDigit(name[0]) ? "_" + name : name;
         }
 

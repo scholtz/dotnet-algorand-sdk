@@ -357,6 +357,15 @@ namespace test
             Assert.ThrowsAsync<SpecValidationException>(() => AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString())));
         }
 
+        [TestCase("approval")]
+        [TestCase("clear")]
+        public void Arc56RejectsNonBase64ByteCode(string program)
+        {
+            var spec = GasStation();
+            spec["byteCode"][program] = "!!! not base64 !!!";
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
         [Test]
         public void GenerateRejectsEmptyNamespace()
         {

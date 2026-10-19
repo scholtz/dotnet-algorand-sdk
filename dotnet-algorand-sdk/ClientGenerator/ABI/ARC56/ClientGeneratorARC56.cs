@@ -69,6 +69,8 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         {
             if (Contract == null) return;
             SpecValidator.RequireContractName(Contract.Name);
+            SpecValidator.RequireBase64(Contract.ByteCode?.Approval, "byteCode.approval");
+            SpecValidator.RequireBase64(Contract.ByteCode?.Clear, "byteCode.clear");
             foreach (var method in Contract.Methods ?? new List<Method>())
             {
                 SpecValidator.RequireIdentifier(method.Name, "method name");
