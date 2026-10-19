@@ -700,44 +700,40 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   identifier, normalise the contract name and take `Path.GetFileName` of the output name (and check the
   resolved path stays under `--output`), escape all literal characters, and add hostile-value tests for
   every spec string field in both ARC32 and ARC56.
-- **Current mitigation status**: Mitigated (2026-10-20, branch `fix/audit-2026-10-20`). `SpecValidator`
-  (`ClientGenerator/Extensions/SpecValidator.cs`) requires every spec-supplied contract, method, argument and
-  event name to be a plain ASCII identifier (full-string match; the contract name also may not be a Windows
-  device name), and every method-argument, return, event-argument and struct-field type to use only ABI type
-  characters, when an ARC32 or ARC56 spec is loaded (`SpecValidationException`, not a silent null; ARC32
-  validates before any TEAL is sent to algod). The event signature literal also escapes the backslash; the
-  CLI reports a rejected spec (or an unreadable one) cleanly with a non-zero exit code, and builds the output
-  path from the validated, identifier-only contract name (no separate path-containment check; the validator is
-  the control); the README states that specs are trusted input. Code review of the fix found event-argument types reaching a string
-  literal unvalidated; that is now closed and covered by a Roslyn-based test over struct, field, event and
-  state fields. A second review round found the same class in the ARC32 path (`source.*` strings and declared
-  state variable names, keys and types); `SpecValidator` now checks those too. A third round found that the text between `[` and `]` in an ABI type is
-  copied into generated code as an array-length expression, and that a spec-supplied ARC32 method selector is
-  written into a string literal: ABI types now may only enclose digits in brackets, selectors must be the
-  computed one or printable ASCII without quote/backslash, and a rejected ARC56 spec is no longer kept on the
-  generator instance. A fifth round found that ARC32 `typeDetail` is emitted verbatim as a C# type (and the SDK's own spec
-  generator writes Roslyn type text such as `List<ulong>` there), so it is validated by parsing it as a single
-  C# type (`RequireCSharpType`) instead of as an ABI type; the parser accepts an expression as an array size,
-  so bracket contents are additionally limited to rank commas. Validation runs in the loaders and again at the start of `ToProxy` /
-  `ToSmartContractReference`, so an `AppDescription` deserialised directly with `JsonConvert` or built by
-  hand is checked too; the only exemption is a description built by the Roslyn-based path from the
-  developer's own C# source (`TrustedSource`), whose names may be any legal C# identifier. A sixth round
-  also had the generated-file namespace and name-override arguments (and so the CLI `--namespace` option)
-  validated as dotted identifiers, `source.*` strings as standard base64, and the selector check moved after
-  the type checks. Known remaining gaps, accepted: struct and field names that
-  PascalCase to an empty or colliding identifier, and arguments without a name, produce uncompilable (not
-  malicious) output; ARC32 state keys are not validated; the only place the key is emitted is as a field name in the
-  reference class, where every character that is not a letter, digit or `_` becomes `_` (so distinct keys can
-  collapse to one name), and struct names used as types must
-  be plain identifiers, so a spec using other characters is now rejected. ARC32 arguments named like a C#
-  keyword are not escaped (the ARC56 path escapes them), giving uncompilable output. Regression tests:
-  `test/SpecValidationTests.cs` (hostile names in every position, ARC32 and ARC56, plus a check that the
-  ARC56 specs under `test/Arc56` still load; the ARC32 specs used by the LocalNet tests were checked by hand
-  once and are not in an automated load test). Residual: ARC32 emission was verified by reading and the validator
-  rather than by running the full generator on hostile input; names not covered by the validator (struct
-  names and struct field names, event argument names) are still emitted only after `ToPascalCase` (alphanumeric
-  only), which was established by reading the code (only method names, contract names, argument names and event names were probed); the Roslyn-based path that builds descriptions from compiled C#
-  classes uses names from the developer's own code.
+- **Current mitigation status**: Mitigated (2026-10-20, branch `fix/audit-2026-10-20`), after repeated
+  review rounds that each widened the checked surface. What is enforced now
+  (`ClientGenerator/Extensions/SpecValidator.cs`, `SpecValidationException`, not a silent null):
+  - **Names**: contract, method, argument and event names must be plain ASCII identifiers (full-string
+    match); the contract name may not be a Windows device name. The generated-file namespace, the ARC32
+    name override and the CLI `--namespace` value must be dotted identifiers (CLI validates up front).
+  - **Types**: method-argument, return, event-argument and struct-field types may only use ABI type
+    characters, with brackets enclosing digits only (the bracket text is copied into generated code as an
+    array length) and an optional leading `ref:`; ARC32 `typeDetail` (Roslyn type text from the SDK's own
+    generator) must parse as exactly one C# type with only rank commas in brackets.
+  - **Programs and selectors**: `source.*` (ARC32) and `byteCode.*` (ARC56) must be decodable base64; an ARC32
+    method selector must be the computed one or printable ASCII without quote or backslash. ARC32 state
+    storage keys are not validated; they are only written as a field name where every character that is not
+    a letter, digit or `_` becomes `_`.
+  - **When**: in the loaders (ARC32 before any TEAL is sent to algod for compilation; ARC56 atomically, so a
+    rejected or half-loaded spec is never kept on the generator), and again at the start of ARC32 `ToProxy` /
+    `ToSmartContractReference`, so an `AppDescription` deserialised directly or built by hand is checked too.
+    The only exemption is a description built by the Roslyn-based path from the developer's own C# source
+    (`TrustedSource`), whose names may be any legal C# identifier.
+  - **CLI**: reports a rejected or unreadable spec and write failures on stderr with a non-zero exit code
+    (`--help`/`--version` still exit 0), bounds the `--url` download, and builds the output path from the
+    validated contract name. The event `Signature` literal also escapes backslashes (defence in depth).
+  - The README tells users to generate only from specs they trust and review the output.
+  - **Regression tests**: `test/SpecValidationTests.cs` (hostile values in every checked position for ARC32
+    and ARC56, a Roslyn check that payloads placed in unchecked fields never become identifiers, and a load
+    check of every ARC56 spec under `test/Arc56`; the ARC32 specs used by the LocalNet tests were checked by
+    hand once and are not in an automated load test).
+  - **Known gaps, accepted** (none was found to allow code injection): struct names, struct field names and
+    event argument names are only passed through `ToPascalCase` (alphanumeric only; this was established by
+    reading and by the Roslyn field test), so unusual ones give uncompilable or colliding output; arguments
+    without a name, and ARC32 arguments named like a C# keyword (ARC56 escapes them), give uncompilable
+    output; distinct ARC32 state keys can collapse to one reference field name; the validator is ASCII-only,
+    so a spec or `--namespace` using non-ASCII letters is rejected where it previously worked; ARC32/ARC56
+    validation is two near-duplicate walks that must be kept in step; the CLI does not restrict `--url` hosts.
 - **5-year misuse likelihood**: **1%** (from 3% before the fix) — needs a malicious or tampered spec *and* the validator to be bypassed or removed;
   before the fix it needed only a tampered spec and a developer who compiled
   the output without reading it; ARC56 specs do circulate through repositories, packages and URLs, and the
