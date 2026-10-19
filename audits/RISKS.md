@@ -37,9 +37,10 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   inherently partial.
 - **Impact if realized**: Loss of the specific key(s) held by the compromised process.
 - **First recorded**: 2026-07-16
-- **Last reviewed**: 2026-08-12 — classic `Account`/`KeyPair` unchanged, mitigation
-  intact; note that the new post-quantum `FalconAccount` (added this cycle) has the same
-  class of gap *without* the mitigation — tracked separately as `RISK-015`.
+- **Last reviewed**: 2026-10-19 (`AUDIT-2026-10-19-13228ed.md` K1) — `KeyPair` now clones
+  the caller's key buffer (no aliasing with the caller's array) and `Dispose()` is intact;
+  residual: `Account(byte[] seed)`'s intermediate 32-byte array in `SeedToPrivateKey` is not
+  cleared. Likelihood unchanged at 1%. (Previously 2026-08-12.)
 
 ## RISK-002 — BouncyCastle crypto dependency vendored as an unpinned local DLL
 
@@ -69,10 +70,11 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Impact if realized**: Depending on the nature of a hypothetical crypto flaw, up to
   full key compromise across all consumers on the vulnerable version.
 - **First recorded**: 2026-07-16
-- **Last reviewed**: 2026-08-12 — still on the official pinned `BouncyCastle.Cryptography`
-  2.6.2 NuGet package. Note: the pin is now additionally load-bearing because the new
-  Falcon-1024 keygen reflects into BC internals (`RISK-016`) — a future CVE-driven
-  upgrade needs the Falcon golden-vector tests to pass, not just a version bump.
+- **Last reviewed**: 2026-10-19 (`AUDIT-2026-10-19-13228ed.md` D1) — now `BouncyCastle.Cryptography`
+  2.7.0 (the pin was bumped from 2.6.2; Falcon golden vectors pass on it, and `dotnet list
+  package --vulnerable --include-transitive` reports nothing). The 2.7 bump changed Ed25519
+  key-generation behaviour for fixed random sources — see `RISK-020`. The pin remains
+  load-bearing because Falcon reflects into BC internals (`RISK-016`). (Previously 2026-08-12.)
 
 ## RISK-003 — Exception messages can carry exported key material into application logs
 
@@ -222,7 +224,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   application — impact depends entirely on what that code is made to do, potentially
   significant if it added a hidden network call to a generated client method.
 - **First recorded**: 2026-07-16
-- **Last reviewed**: 2026-07-16
+- **Last reviewed**: 2026-10-19 (`AUDIT-2026-10-19-13228ed.md` G1) — the comment-escape variant
+  of the tampered-spec vector is now closed (`RISK-019`); the Docker registry and
+  untrusted-spec-URL parts are unchanged, still Unmitigated, likelihood unchanged at 2%.
 
 ## RISK-009 — Unity ILRepack build omits the `MessagePack` package
 
@@ -357,8 +361,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   from a denial-of-service (malformed input crash) to, in the worst case, a signing/decoding
   integrity issue affecting consumers who can't upgrade past the vulnerable version.
 - **First recorded**: 2026-07-18
-- **Last reviewed**: 2026-08-12 — still pinned at 0.1.11, still the newest upstream
-  release, no CVE observed; unchanged.
+- **Last reviewed**: 2026-10-19 — still pinned at 0.1.11, still referenced in the csproj,
+  no CVE reported by `dotnet list package --vulnerable`; unchanged at 2%. (Newest upstream
+  release not re-checked on nuget.org this cycle.)
 
 ## RISK-013 — Unused Roslyn `using` in a `MessagePack` formatter (dependency itself confirmed legitimate, not bloat)
 
@@ -455,6 +460,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   state that absorbed the private key is BC-internal and unwipeable from here, and
   `SeedFromEntropy`'s input buffer containing the entropy is not cleared — the first and
   last are SDK-clearable and recommended as a follow-up fix)
+  <br>2026-10-19 (`AUDIT-2026-10-19-13228ed.md` F1) — `FalconAccount.cs` diff is a single
+  comment line; the N1 clearing recommendation is still open. Likelihood unchanged at 1%.
 
 ## RISK-016 — Falcon keygen depends on BouncyCastle 2.6.2 *internal* APIs via reflection
 
@@ -494,6 +501,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   coupling is verified in place, and the golden-test gate is now 4 named tests including
   `DetSignaturesAreBitCompatibleWithAlgokey` and the 50-account dataset test, all in the
   default unit-test pass)
+  <br>2026-10-19 (`AUDIT-2026-10-19-13228ed.md` D1) — the coupling survived the BC 2.6.2 →
+  2.7.0 bump: the golden-vector tests pass on 2.7.0 (PQ tests are part of the 119/119 unit
+  run). The csproj comment now says "exact version" rather than naming 2.6.2.
 
 ## RISK-017 — SDK det1024 Falcon signatures were valid but not bit-identical to go-algorand's, enabling a two-preimage key-leak scenario
 
@@ -542,6 +552,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   the fix was independently re-verified at HEAD: `DetSignCompressed` traced line-by-line
   against the reference det1024 flow, and the golden-vector suite executed, 12/12
   passing including full signed-transaction byte-equality against `algokey pq sign`)
+  <br>2026-10-19 (`AUDIT-2026-10-19-13228ed.md`) — the det1024 signing code is unchanged;
+  the golden-vector signing tests still pass on BouncyCastle 2.7.0. Likelihood unchanged at 2%.
 
 ## RISK-018 — Working Falcon-1024 mnemonics/private keys are committed publicly as test vectors
 
@@ -568,3 +580,66 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   address — no impact on any legitimately generated key.
 - **First recorded**: 2026-08-12
 - **Last reviewed**: 2026-08-12
+  <br>2026-10-19 (`AUDIT-2026-10-19-13228ed.md` F1) — the "publicly known test keys, never fund"
+  comment is still not present in the fixture; unchanged, still <1%.
+
+## RISK-019 — Contract descriptions in an ARC32/ARC56 spec could break out of a comment into generated client code
+
+- **Description**: The client generator copied contract, method, argument and storage
+  descriptions into `///` and `//` comments with `Replace("\n", ...)`. That did not cover `\r` or
+  the Unicode line terminators the C# lexer also recognises (U+0085, U+2028, U+2029), so text
+  following one of them in a description would have been emitted as live code in the generated
+  client. Fixed by `ToDocCommentText`/`ToLineCommentText` (`ClientGenerator/Extensions/StringExtensions.cs`)
+  and a broader `Sanitize` in `ARC4/MethodDescription.cs`. See `AUDIT-2026-10-19-13228ed.md` G1.
+- **Who is exposed**: Developers generating clients from a spec they did not write or review
+  (and their end users).
+- **Mitigable by this repo?**: Yes — done for descriptions. Identifier and string-literal
+  emission paths were not re-audited this cycle.
+- **Current mitigation status**: Mitigated for description fields (code read; no dedicated
+  hostile-input compile test exists yet). Other spec-derived strings: not verified.
+- **5-year misuse likelihood**: **1%** — needs a malicious or tampered spec, a developer who
+  generates from it and does not read the output; the description path is now closed.
+- **Impact if realized**: Attacker-chosen code compiled into the developer's application.
+- **First recorded**: 2026-10-19
+- **Last reviewed**: 2026-10-19
+
+## RISK-020 — Deterministic `Account(seed)` silently produced random keys under BouncyCastle 2.7
+
+- **Description**: `new Account(byte[] seed)` previously went through `FixedSecureRandom` and BC's
+  key generator. Per the commit note in `KeyPair.cs:40-41`, BouncyCastle 2.7's Ed25519
+  generator does not reliably consume a fixed random source. An upgrade without a code change
+  would have returned a random key where the caller expected a seed-derived one (not reproduced
+  here). The fix derives the key directly from the seed, validates its length, rejects a mismatched
+  public half in the 64-byte kmd form, marks `FixedSecureRandom` `[Obsolete]` and makes
+  `KeyPair(SecureRandom)` throw if given one. See `AUDIT-2026-10-19-13228ed.md` K1.
+- **Who is exposed**: Developers deriving accounts from a seed who upgraded the dependency;
+  funds sent to an address whose key was never recorded would be unrecoverable.
+- **Mitigable by this repo?**: Yes — done.
+- **Current mitigation status**: Mitigated. Residual: callers who passed a `FixedSecureRandom`
+  will now get an `ArgumentException` (loud, intended); a third-party `SecureRandom` subclass
+  that mimics a fixed source is not detected.
+- **5-year misuse likelihood**: **1%** — the failure is now loud, not silent; remaining risk is
+  an unusual custom `SecureRandom`.
+- **Impact if realized**: Loss of access to funds sent to an unrecorded key (not theft).
+- **First recorded**: 2026-10-19
+- **Last reviewed**: 2026-10-19
+
+## RISK-021 — Release pipeline supply chain (GitHub Actions and build tooling)
+
+- **Description**: `build-and-test.yml` (now reused by `publish-nuget.yml`) references third-party
+  actions by mutable tag (`actions/checkout@v4`, `actions/setup-dotnet@v4`,
+  `actions/upload-artifact@v4`) and installs `algokit` unpinned with `pipx` in the same job that
+  produces the packages later published. A compromised action or `algokit` release could alter a
+  published package. Mitigations in place: nuget.org Trusted Publishing (no long-lived key),
+  read-only `contents` permission on the build job, the package artefact only uploaded for tag
+  or manual runs. See `AUDIT-2026-10-19-13228ed.md` C1.
+- **Who is exposed**: All consumers of the published `Algorand5` / `Algorand5_Unity` packages.
+- **Mitigable by this repo?**: Yes — pin actions to commit SHAs and `algokit` to a version.
+- **Current mitigation status**: Partially mitigated (the publish job's token scoping was
+  not fully verified beyond the diff).
+- **5-year misuse likelihood**: **2%** — compromises of widely used actions have happened in
+  the ecosystem, but exploitation here also needs a release to run during the compromise window.
+- **Impact if realized**: Tampered signing library distributed to many developers; potentially
+  loss of many keys.
+- **First recorded**: 2026-10-19
+- **Last reviewed**: 2026-10-19
