@@ -29,6 +29,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         /// <returns></returns>
         public bool LoadFromByteArray(byte[] data)
         {
+            Contract = null; // a failed load must never leave the previously loaded spec in place
             var json = Encoding.UTF8.GetString(data);
             Contract = JsonConvert.DeserializeObject<AppDescriptionArc56>(json, new JsonSerializerSettings()
             {

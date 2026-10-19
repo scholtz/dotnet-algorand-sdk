@@ -175,6 +175,7 @@ namespace test
         [TestCase("ufixed64x2")]
         [TestCase("uint64[3][]")]
         [TestCase("UserStruct")]
+        [TestCase("ref:Foo")]
         public void AbiTypeValidatorAcceptsRealTypes(string type)
         {
             Assert.DoesNotThrow(() => SpecValidator.RequireAbiType(type, "type"));

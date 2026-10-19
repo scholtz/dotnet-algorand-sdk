@@ -47,7 +47,7 @@ namespace Algorand.AVM.ClientGenerator.Extensions
         // ABI types ("uint64", "byte[4]", "(uint64,string)[]", "ufixed64x2") and struct names used as types. Some are
         // interpolated into string literals, and the text inside "[...]" is copied into generated code as an array
         // length expression, so brackets may only enclose digits; no quotes, dots, backslashes, braces or semicolons.
-        private static readonly Regex AbiType = new Regex(@"\A(?:[A-Za-z0-9_(), ]|\[[0-9]*\]){1,10000}\z", RegexOptions.CultureInvariant);
+        private static readonly Regex AbiType = new Regex(@"\A(?:ref:)?(?:[A-Za-z0-9_(), ]|\[[0-9]*\]){1,10000}\z", RegexOptions.CultureInvariant);
 
         /// <summary>
         /// Throws unless <paramref name="type"/> only uses characters that occur in ABI type strings. Null/empty is

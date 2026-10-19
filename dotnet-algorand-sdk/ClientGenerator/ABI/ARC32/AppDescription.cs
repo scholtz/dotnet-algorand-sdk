@@ -134,6 +134,18 @@ namespace AVM.ClientGenerator.ABI.ARC32
             }
         }
 
+        private static bool IsComputedSelector(MethodDescription method)
+        {
+            try
+            {
+                return method.Selector.SequenceEqual(method.ToARC4MethodSelector());
+            }
+            catch (Exception)
+            {
+                return false; // cannot be derived from the (odd) types: treat the supplied bytes as untrusted text
+            }
+        }
+
         private static void ValidateStorage(StorageSection section, string scope)
         {
             foreach (var kv in section?.Declared ?? new Dictionary<string, StorageElement>())
@@ -173,7 +185,7 @@ namespace AVM.ClientGenerator.ABI.ARC32
                 SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
                 // a selector that differs from the computed one is written into a string literal of the reference class;
                 // checked after the types it is computed from have been validated
-                if (method.Selector != null && method.Returns != null && method.Args != null && !method.Selector.SequenceEqual(method.ToARC4MethodSelector()))
+                if (method.Selector != null && method.Returns != null && method.Args != null && !IsComputedSelector(method))
                 {
                     SpecValidator.RequireLiteralSafeBytes(method.Selector, $"selector of method '{method.Name}'");
                 }
