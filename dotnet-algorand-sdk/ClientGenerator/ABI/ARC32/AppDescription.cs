@@ -159,7 +159,7 @@ namespace AVM.ClientGenerator.ABI.ARC32
             foreach (var kv in section?.Declared ?? new Dictionary<string, StorageElement>())
             {
                 SpecValidator.RequireIdentifier(kv.Key, $"{scope} state variable name");
-                SpecValidator.RequireSafeToken(kv.Value?.Key, $"key of {scope} state variable '{kv.Key}'");
+                // kv.Value.Key (the storage key, base64 text) is only written as a sanitised field name (StorageSection.ToFieldName)
                 SpecValidator.RequireAbiType(kv.Value?.Type, $"type of {scope} state variable '{kv.Key}'");
                 SpecValidator.RequireCSharpType(kv.Value?.TypeDetail, $"type detail of {scope} state variable '{kv.Key}'");
             }

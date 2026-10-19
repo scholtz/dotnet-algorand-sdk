@@ -205,7 +205,6 @@ namespace test
         }
 
         [TestCase("name")]
-        [TestCase("key")]
         [TestCase("type")]
         [TestCase("typeDetail")]
         public void Arc32RejectsHostileStateVariables(string field)
@@ -364,6 +363,40 @@ namespace test
             var spec = GasStation();
             spec["byteCode"][program] = "!!! not base64 !!!";
             Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [TestCase("abc")]
+        [TestCase("A===")]
+        [TestCase("=A=")]
+        public void Base64ValidatorRequiresADecodableString(string value)
+        {
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireBase64(value, "program"));
+        }
+
+        [TestCase("Cg==")]
+        [TestCase("Y291bnRlcg==")]
+        [TestCase("")]
+        public void Base64ValidatorAcceptsRealPrograms(string value)
+        {
+            Assert.DoesNotThrow(() => SpecValidator.RequireBase64(value, "program"));
+        }
+
+        [Test]
+        public void CSharpTypeValidatorAcceptsMultiLineTupleTypes()
+        {
+            // TypeDetail is Type.ToString() of the contract author's source, which may span lines
+            Assert.DoesNotThrow(() => SpecValidator.RequireCSharpType("(ulong a,\r\n    string b)", "type"));
+        }
+
+        [Test]
+        public async Task Arc32StateKeyTextNeverReachesTheReferenceClassUnsanitised()
+        {
+            var json = JObject.Parse(Arc32("Multiline", "swap", "assetA"));
+            json["state"]["global"]["declared"] = new JObject { ["counter"] = new JObject { ["key"] = "a b/*c*/;d()", ["type"] = "uint64" } };
+            var app = await AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString()));
+            var reference = app.ToSmartContractReference("Probe", "");
+            Assert.That(reference, Does.Not.Contain("/*c*/"));
+            Assert.That(CSharpSyntaxTree.ParseText(reference).GetRoot().DescendantTokens().Any(t => t.Kind() == SyntaxKind.IdentifierToken && t.Text == "a_b__c___d__"), Is.True);
         }
 
         [Test]
