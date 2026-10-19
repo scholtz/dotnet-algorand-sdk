@@ -61,6 +61,22 @@ namespace Algorand.AVM.ClientGenerator.Extensions
             }
         }
 
+        // Base64 text and state-key tokens (letters, digits, '_', '+', '/', '=', '-'): emitted inside string literals
+        // or as field names, so no quotes, backslashes, whitespace or other punctuation.
+        private static readonly Regex SafeToken = new Regex(@"\A[A-Za-z0-9_+/=\-]*\z", RegexOptions.CultureInvariant);
+
+        /// <summary>
+        /// Throws unless <paramref name="value"/> consists only of base64/identifier characters. Null/empty is accepted.
+        /// </summary>
+        public static void RequireSafeToken(string value, string what)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            if (!SafeToken.IsMatch(value))
+            {
+                throw new SpecValidationException($"The {what} contains characters that cannot be used to generate code (\"{Show(value)}\").");
+            }
+        }
+
         /// <summary>
         /// A contract name becomes a class name and the output file name, so on top of being an identifier it must
         /// not be a reserved Windows device name.
@@ -78,6 +94,7 @@ namespace Algorand.AVM.ClientGenerator.Extensions
         // lines or terminal output through the error message.
         public static string Show(string s)
         {
+            if (s == null) return "(null)";
             var sb = new StringBuilder();
             foreach (var c in s.Take(40))
             {

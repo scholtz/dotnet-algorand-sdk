@@ -125,12 +125,31 @@ namespace AVM.ClientGenerator.ABI.ARC32
             }
         }
 
+        private static void ValidateStorage(StorageSection section, string scope)
+        {
+            foreach (var kv in section?.Declared ?? new Dictionary<string, StorageElement>())
+            {
+                SpecValidator.RequireIdentifier(kv.Key, $"{scope} state variable name");
+                SpecValidator.RequireSafeToken(kv.Value?.Key, $"key of {scope} state variable '{kv.Key}'");
+                SpecValidator.RequireAbiType(kv.Value?.Type, $"type of {scope} state variable '{kv.Key}'");
+                SpecValidator.RequireAbiType(kv.Value?.TypeDetail, $"type detail of {scope} state variable '{kv.Key}'");
+            }
+        }
+
         /// <summary>
         /// Rejects any spec-supplied name that would be emitted verbatim into generated code (or the output
         /// file name) and is not a plain identifier. See <see cref="SpecValidator"/>.
         /// </summary>
         public void ValidateSpecNames()
         {
+            // the program and state strings are written into string literals / member names of the generated proxy
+            SpecValidator.RequireSafeToken(Source?.Approval, "source.approval");
+            SpecValidator.RequireSafeToken(Source?.Clear, "source.clear");
+            SpecValidator.RequireSafeToken(Source?.ApprovalAVM, "source.approval-avm");
+            SpecValidator.RequireSafeToken(Source?.ClearAVM, "source.clear-avm");
+            ValidateStorage(State?.Local, "local");
+            ValidateStorage(State?.Global, "global");
+
             if (Contract == null) return;
             SpecValidator.RequireContractName(Contract.Name);
             foreach (var method in Contract.Methods ?? new List<MethodDescription>())

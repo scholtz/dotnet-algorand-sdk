@@ -190,6 +190,53 @@ namespace test
             Assert.Throws<SpecValidationException>(() => SpecValidator.RequireAbiType(type, "type"));
         }
 
+        private const string HostileLiteral = "x\"; Injected_Call(); //";
+
+        [TestCase("approval")]
+        [TestCase("clear")]
+        [TestCase("approval-avm")]
+        [TestCase("clear-avm")]
+        public void Arc32RejectsHostileSourceStrings(string field)
+        {
+            var json = JObject.Parse(Arc32("Multiline", "swap", "assetA"));
+            json["source"][field] = HostileLiteral;
+            Assert.ThrowsAsync<SpecValidationException>(() => AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString())));
+        }
+
+        [TestCase("name")]
+        [TestCase("key")]
+        [TestCase("type")]
+        [TestCase("typeDetail")]
+        public void Arc32RejectsHostileStateVariables(string field)
+        {
+            var element = new JObject { ["key"] = "a2V5", ["type"] = "uint64" };
+            string name = "counter";
+            if (field == "name") name = HostileLiteral; else element[field] = HostileLiteral;
+            var json = JObject.Parse(Arc32("Multiline", "swap", "assetA"));
+            json["state"]["global"]["declared"] = new JObject { [name] = element };
+            Assert.ThrowsAsync<SpecValidationException>(() => AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString())));
+        }
+
+        [Test]
+        public async Task Arc32AcceptsPlainStateVariables()
+        {
+            var json = JObject.Parse(Arc32("Multiline", "swap", "assetA"));
+            json["state"]["global"]["declared"] = new JObject { ["counter"] = new JObject { ["key"] = "Y291bnRlcg==", ["type"] = "uint64" } };
+            var app = await AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString()));
+            Assert.That(app, Is.Not.Null);
+        }
+
+        [Test]
+        public void ValidationMessageHandlesNullNames()
+        {
+            // the error message is built eagerly from names that may be missing
+            Assert.DoesNotThrow(() => SpecValidator.Show(null));
+            var spec = GasStation();
+            spec["structs"]["UserStruct"][0]["name"] = null;
+            spec["structs"]["UserStruct"][0]["type"] = "bad;type";
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
         [Test]
         public void Arc32RejectsHostileAbiType()
         {
@@ -226,7 +273,7 @@ namespace test
   ""bare_call_config"": { ""no_op"": ""NEVER"", ""opt_in"": ""NEVER"", ""close_out"": ""NEVER"", ""update_application"": ""NEVER"", ""delete_application"": ""NEVER"" },
   ""schema"": { ""local"": { ""declared"": {}, ""reserved"": {} }, ""global"": { ""declared"": {}, ""reserved"": {} } },
   ""state"": { ""global"": { ""num_byte_slices"": 0, ""num_uints"": 0 }, ""local"": { ""num_byte_slices"": 0, ""num_uints"": 0 } },
-  ""source"": { ""approval"": ""Cg=="", ""clear"": ""Cg=="", ""approval-avm"": ""#pragma version 10\nint 1"", ""clear-avm"": ""#pragma version 10\nint 1"" },
+  ""source"": { ""approval"": ""Cg=="", ""clear"": ""Cg=="", ""approval-avm"": ""Cg=="", ""clear-avm"": ""Cg=="" },
   ""contract"": {
     ""name"": " + Newtonsoft.Json.JsonConvert.ToString(contractName) + @",
     ""methods"": [ {

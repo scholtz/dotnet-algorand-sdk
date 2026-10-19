@@ -709,7 +709,11 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   CLI reports a rejected spec cleanly and refuses a contract file name that is not a bare file name; the README
   states that specs are trusted input. Code review of the fix found event-argument types reaching a string
   literal unvalidated; that is now closed and covered by a Roslyn-based test over struct, field, event and
-  state fields. Regression tests:
+  state fields. A second review round found the same class in the ARC32 path (`source.*` strings and declared
+  state variable names, keys and types); `SpecValidator` now checks those too. Known remaining gaps, accepted:
+  `ToProxy`/`ToSmartContractReference` namespace and name-override arguments and the CLI `--namespace`
+  option are supplied by the operator, not the spec, and are not validated; struct and field names that
+  PascalCase to an empty or colliding identifier produce uncompilable (not malicious) output. Regression tests:
   `test/SpecValidationTests.cs` (hostile names in every position, ARC32 and ARC56, plus a check that all
   specs shipped in the repo still load). Residual: ARC32 emission was verified by reading and the validator
   rather than by running the full generator on hostile input; names not covered by the validator (struct

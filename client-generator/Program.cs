@@ -88,20 +88,21 @@ namespace client_generator
                         return;
                     }
 
+                    // the file name comes from the (untrusted) spec; it must be a bare file name
+                    var fileName = generator.GetOutputFileName();
+                    if (Path.GetFileName(fileName) != fileName)
+                    {
+                        Console.Error.WriteLine("Error: the contract name would write outside the output folder.");
+                        Environment.ExitCode = 1;
+                        return;
+                    }
+
                     if (!Directory.Exists(opts.Output))
                     {
                         Directory.CreateDirectory(opts.Output);
                     }
                     if (Directory.Exists(opts.Output))
                     {
-                        // the file name comes from the (untrusted) spec; it must be a bare file name
-                        var fileName = generator.GetOutputFileName();
-                        if (Path.GetFileName(fileName) != fileName)
-                        {
-                            Console.Error.WriteLine("Error: the contract name would write outside the output folder.");
-                            Environment.ExitCode = 1;
-                            return;
-                        }
                         var name = Path.Combine(opts.Output, fileName);
                         File.WriteAllText(name, appProxy);
                         Console.WriteLine($"The file was saved to {name}");
