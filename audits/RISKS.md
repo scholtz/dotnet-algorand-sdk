@@ -42,7 +42,7 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   residual: `Account(byte[] seed)`'s intermediate 32-byte array in `SeedToPrivateKey` is not
   cleared. Likelihood unchanged at 1%. (Previously 2026-08-12.)
   <br>Remediation 2026-10-19 (branch `fix/audit-2026-10-19`): `Account(byte[])` now wipes the
-  intermediate private-key array after `KeyPair` clones it (`KeyPairFromSeed`).
+  intermediate private-key array after `KeyPair` clones it (`KeyPairFromSeed`), including when validation throws. Still unwiped: the KeyPair's own clone (wiped on Dispose), BouncyCastle's temporary key objects, and the caller's own seed array.
 
 ## RISK-002 — BouncyCastle crypto dependency vendored as an unpinned local DLL
 
@@ -644,10 +644,12 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   or manual runs. See `AUDIT-2026-10-19-13228ed.md` C1.
 - **Who is exposed**: All consumers of the published `Algorand5` / `Algorand5_Unity` packages.
 - **Mitigable by this repo?**: Yes — pin actions to commit SHAs and `algokit` to a version.
-- **Current mitigation status**: Mitigated on 2026-10-19 (branch `fix/audit-2026-10-19`): all workflow
-  actions pinned to commit SHAs (tag kept in a comment) and `algokit` pinned to 2.10.2. The publish
-  job's token scoping was not verified beyond the diff; `.github/dependabot.yml` (github-actions, weekly) now proposes SHA bumps;
-  the end-of-life `upload-artifact@v3` in `generator_build.yml` was moved to v4.
+- **Current mitigation status**: Partially mitigated (2026-10-19, branch `fix/audit-2026-10-19`): all
+  workflow actions pinned to commit SHAs (tag kept in a comment), `algokit` pinned to 2.10.2 (top-level
+  package only; its transitive dependencies still resolve at install time), and
+  `.github/dependabot.yml` (github-actions, weekly) proposes SHA bumps. `upload-artifact@v3` in
+  `generator_build.yml` moved to v4; other old action versions there (checkout v3, setup-java v2,
+  setup-dotnet v1) remain. The publish job's token scoping was not verified beyond the diff.
 - **5-year misuse likelihood**: **2%** — compromises of widely used actions have happened in
   the ecosystem, but exploitation here also needs a release to run during the compromise window.
 - **Impact if realized**: Tampered signing library distributed to many developers; potentially

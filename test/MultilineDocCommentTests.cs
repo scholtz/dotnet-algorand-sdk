@@ -59,6 +59,7 @@ namespace test
                             .Replace("Method line one", "Method " + JsonConvert.ToString(char.ConvertFromUtf32(codePoint)).Trim('"') + Payload)
                             .Replace("Arg line one", "Arg " + JsonConvert.ToString(char.ConvertFromUtf32(codePoint)).Trim('"') + Payload)
                             .Replace("Return line one", "Return " + JsonConvert.ToString(char.ConvertFromUtf32(codePoint)).Trim('"') + Payload);
+            Assert.That(System.Text.RegularExpressions.Regex.Matches(json, "InjectedByDescription").Count, Is.EqualTo(4), "every description replacement must match the fixture");
             var app = JsonConvert.DeserializeObject<AppDescription>(json, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Ignore });
             AssertOnlyInComments(app.ToSmartContractReference("Multiline", ""));
             AssertOnlyInComments(app.ToProxy("Multiline"));
@@ -72,7 +73,7 @@ namespace test
         public async System.Threading.Tasks.Task Arc56DescriptionsCannotInjectCode(int codePoint)
         {
             var spec = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText("Arc56/GasStation.arc56.json"));
-            spec["description"] = "Banner " + char.ConvertFromUtf32(codePoint) + Payload;
+            spec["desc"] = "Banner " + char.ConvertFromUtf32(codePoint) + Payload;
             foreach (var method in spec["methods"])
             {
                 method["desc"] = "Method " + char.ConvertFromUtf32(codePoint) + Payload;
