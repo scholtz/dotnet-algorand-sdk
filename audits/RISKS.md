@@ -584,7 +584,7 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Impact if realized**: Loss only of whatever was mistakenly sent to a burned test
   address — no impact on any legitimately generated key.
 - **First recorded**: 2026-08-12
-- **Last reviewed**: 2026-08-12
+- **Last reviewed**: 2026-10-19 (remediation, see note below)
   <br>2026-10-19 (`AUDIT-2026-10-19-13228ed.md` F1) — the "publicly known test keys, never fund"
   comment is still not present in the fixture; unchanged, still <1%.
   <br>Remediation 2026-10-19 (branch `fix/audit-2026-10-19`): added `test/TestData/README.md` and a
