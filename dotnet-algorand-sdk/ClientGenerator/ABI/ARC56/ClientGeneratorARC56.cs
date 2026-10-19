@@ -31,33 +31,33 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         {
             Contract = null; // a failed load must never leave the previously loaded spec in place
             var json = Encoding.UTF8.GetString(data);
-            Contract = JsonConvert.DeserializeObject<AppDescriptionArc56>(json, new JsonSerializerSettings()
-            {
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            });
-
-            if (Contract == null) throw new SpecValidationException("The contract spec is empty or not a JSON object.");
-
-            // Some real-world ARC-56 artifacts (e.g. from older/nonstandard build tooling) emit the compiled
-            // bytecode under a snake_case "byte_code" key instead of the spec's camelCase "byteCode" - fall back
-            // to it so ExtraProgramPages (ToProxy below) can still be computed instead of silently staying null.
-            if (Contract != null && Contract.ByteCode == null)
-            {
-                var root = Newtonsoft.Json.Linq.JObject.Parse(json);
-                var byteCodeToken = root["byte_code"];
-                if (byteCodeToken != null)
-                {
-                    Contract.ByteCode = byteCodeToken.ToObject<ProgramSource>();
-                }
-            }
-
             try
             {
+                Contract = JsonConvert.DeserializeObject<AppDescriptionArc56>(json, new JsonSerializerSettings()
+                {
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                });
+
+                if (Contract == null) throw new SpecValidationException("The contract spec is empty or not a JSON object.");
+
+                // Some real-world ARC-56 artifacts (e.g. from older/nonstandard build tooling) emit the compiled
+                // bytecode under a snake_case "byte_code" key instead of the spec's camelCase "byteCode" - fall back
+                // to it so ExtraProgramPages (ToProxy below) can still be computed instead of silently staying null.
+                if (Contract.ByteCode == null)
+                {
+                    var root = Newtonsoft.Json.Linq.JObject.Parse(json);
+                    var byteCodeToken = root["byte_code"];
+                    if (byteCodeToken != null)
+                    {
+                        Contract.ByteCode = byteCodeToken.ToObject<ProgramSource>();
+                    }
+                }
+
                 ValidateSpecNames();
             }
             catch
             {
-                Contract = null; // never leave a rejected spec on the instance for a later ToProxy/GetOutputFileName
+                Contract = null; // never leave an unvalidated or rejected spec on the instance for a later ToProxy/GetOutputFileName
                 throw;
             }
 

@@ -223,6 +223,8 @@ Options:
   --version          Display version information.
 ```
 
+Errors (invalid arguments, an unreadable or rejected spec, a failed write) are written to stderr and the tool exits with a non-zero code; `--help` and `--version` exit with 0.
+
 ## Building and testing from source
 
 ```powershell
