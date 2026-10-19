@@ -166,7 +166,9 @@ namespace Algorand.Gossip
 
         public static byte[] BuildQuery(string serviceName, out ushort transactionId)
         {
-            transactionId = (ushort)new Random().Next(ushort.MinValue, ushort.MaxValue + 1);
+            var idBytes = new byte[2];
+            System.Security.Cryptography.RandomNumberGenerator.Fill(idBytes); // unpredictable DNS ID: harder to spoof a response
+            transactionId = (ushort)((idBytes[0] << 8) | idBytes[1]);
             var bytes = new List<byte>();
 
             // Header: ID, flags (standard query, recursion desired), QDCOUNT=1, ANCOUNT=0, NSCOUNT=0, ARCOUNT=1 (EDNS0 OPT below)
