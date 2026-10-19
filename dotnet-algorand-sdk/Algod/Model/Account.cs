@@ -100,7 +100,7 @@ namespace Algorand.Algod.Model
             if (seed.Length == KeyPair.SK_SIZE * 2)
             {
                 // kmd exports seed + public key: reject a mismatched public half instead of ignoring it
-                var derivedPublicKey = new KeyPair((byte[])privateKey.Clone()).ClearTextPublicKey;
+                var derivedPublicKey = new Org.BouncyCastle.Crypto.Parameters.Ed25519PrivateKeyParameters(privateKey, 0).GeneratePublicKey().GetEncoded();
                 for (int i = 0; i < KeyPair.SK_SIZE; i++)
                 {
                     if (seed[KeyPair.SK_SIZE + i] != derivedPublicKey[i])

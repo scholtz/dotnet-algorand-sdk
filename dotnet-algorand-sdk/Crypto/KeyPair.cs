@@ -23,6 +23,7 @@ namespace Algorand.Crypto
 
         public KeyPair(byte[] privateKey)
         {
+            if (privateKey == null) throw new ArgumentNullException(nameof(privateKey));
             if (privateKey.Length != SK_SIZE)
                 throw new ArgumentException("Incorrect private key length");
 
