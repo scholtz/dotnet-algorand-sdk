@@ -30,7 +30,7 @@ namespace Algorand.Crypto
 
             ed25519PrivateKey = new Ed25519PrivateKeyParameters(ClearTextPrivateKey, 0);
             ed25519PublicKey = ed25519PrivateKey.GeneratePublicKey();
-            Pair = new AsymmetricCipherKeyPair(ed25519PrivateKey, ed25519PublicKey);
+            Pair = new AsymmetricCipherKeyPair(ed25519PublicKey, ed25519PrivateKey);
         }
 
 

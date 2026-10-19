@@ -81,10 +81,10 @@ namespace Algorand.Algod.Model
         }
 
         /// <summary>
-        /// Generate a newc account with seed(master derivation key)
+        /// Generate a new account with seed(master derivation key). Only the first 32 bytes are used, so a 64-byte kmd-exported key (seed + public key) is accepted.
         /// </summary>
         /// <param name="seed">seed(master derivation key)</param>
-        public Account(byte[] seed) : this(new FixedSecureRandom(seed))
+        public Account(byte[] seed) : this(new KeyPair(seed.Length > KeyPair.SK_SIZE ? seed[..KeyPair.SK_SIZE] : seed))
         {
 
         }

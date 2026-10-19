@@ -188,20 +188,20 @@
 		     golden-vector tests green (test/PQSignatureTests.cs: AddressDerivationMatchesAlgokey,
 		     MnemonicRecoveryMatchesAlgokey, AlgokeyGeneratedDatasetOf50AccountsMatches,
 		     DetSignaturesAreBitCompatibleWithAlgokey) - they run in the normal unit-test pass. -->
-		<PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
-		<PackageReference Include="JsonSubTypes" Version="2.0.1" />
-		<PackageReference Include="MessagePack" Version="3.1.8" />
-		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.5" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.14.0" />
+		<PackageReference Include="BouncyCastle.Cryptography" Version="2.7.0" />
+		<PackageReference Include="JsonSubTypes" Version="2.2.0" />
+		<PackageReference Include="MessagePack" Version="3.1.12" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.13" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.9.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.9.0" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="MsgPack.Cli" Version="1.0.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="Newtonsoft.Msgpack" Version="0.1.11" />
-		<PackageReference Include="RestSharp" Version="112.1.0" />
+		<PackageReference Include="RestSharp" Version="114.0.0" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="Websocket.Client" Version="5.5.0" />
+		<PackageReference Include="Websocket.Client" Version="5.5.1" />
 
 	</ItemGroup>
 
