@@ -345,6 +345,7 @@ namespace AVM.ClientGenerator.ABI.ARC32
 
             if (string.IsNullOrWhiteSpace(nameSpace)) nameSpace = "Algorand.Imports";
             SpecValidator.RequireNamespace(nameSpace, "namespace");
+            ValidateSpecNames(); // also covers an AppDescription that was deserialised or built without the Load* methods
             if (!string.IsNullOrWhiteSpace(nameOverride)) SpecValidator.RequireIdentifier(nameOverride, "name override");
 
             string name = Contract.Name;
@@ -408,6 +409,7 @@ $@"{"\t"}///<summary>
         public string ToProxy(string namespaceName)
         {
             SpecValidator.RequireNamespace(namespaceName, "namespace");
+            ValidateSpecNames(); // also covers an AppDescription that was deserialised or built without the Load* methods
             List<string> structs = new List<string>();
 
 

@@ -33,7 +33,13 @@ namespace client_generator
         static async Task Main(string[] args)
         {
             await Parser.Default.ParseArguments<Options>(args)
-                .WithNotParsed(errs => { Console.WriteLine("Invalid arguments. Use --help for usage."); Environment.ExitCode = 1; })
+                .WithNotParsed(errs =>
+                {
+                    // --help and --version are reported as "not parsed" too, but are not failures
+                    if (errs.All(e => e is HelpRequestedError || e is VersionRequestedError || e is HelpVerbRequestedError)) return;
+                    Console.WriteLine("Invalid arguments. Use --help for usage.");
+                    Environment.ExitCode = 1;
+                })
                 .WithParsedAsync(async opts =>
                 {
                     if (!string.IsNullOrEmpty(opts.Url) && !string.IsNullOrEmpty(opts.File))
