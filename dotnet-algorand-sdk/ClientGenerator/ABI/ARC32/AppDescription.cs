@@ -96,6 +96,8 @@ namespace AVM.ClientGenerator.ABI.ARC32
                     MissingMemberHandling = MissingMemberHandling.Ignore
                 });
 
+                cd.ValidateSpecNames(); // before any TEAL is sent to algod for compilation
+
                 if (string.IsNullOrEmpty(cd.Source.ApprovalAVM))
                 {
                     var teal = Convert.FromBase64String(cd.Source.Approval);
@@ -110,7 +112,6 @@ namespace AVM.ClientGenerator.ABI.ARC32
                     cd.Source.ClearAVM = compiled.Result;
                 }
 
-                cd.ValidateSpecNames();
                 return cd;
             }
             catch (SpecValidationException)
@@ -131,14 +132,16 @@ namespace AVM.ClientGenerator.ABI.ARC32
         public void ValidateSpecNames()
         {
             if (Contract == null) return;
-            SpecValidator.RequireIdentifier(Contract.Name, "contract name");
+            SpecValidator.RequireContractName(Contract.Name);
             foreach (var method in Contract.Methods ?? new List<MethodDescription>())
             {
                 SpecValidator.RequireIdentifier(method.Name, "method name");
                 foreach (var arg in method.Args ?? new List<ArgumentDescription>())
                 {
                     SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
+                    SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'");
                 }
+                SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
             }
         }
 

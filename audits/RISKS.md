@@ -702,9 +702,14 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   every spec string field in both ARC32 and ARC56.
 - **Current mitigation status**: Mitigated (2026-10-20, branch `fix/audit-2026-10-20`). `SpecValidator`
   (`ClientGenerator/Extensions/SpecValidator.cs`) requires every spec-supplied contract, method, argument and
-  event name to be a plain ASCII identifier when an ARC32 or ARC56 spec is loaded (`SpecValidationException`,
-  not a silent null); the event signature literal now also escapes `\`; the CLI resolves the output path
-  and refuses a write outside `--output`; the README states that specs are trusted input. Regression tests:
+  event name to be a plain ASCII identifier (full-string match; the contract name also may not be a Windows
+  device name), and every method-argument, return, event-argument and struct-field type to use only ABI type
+  characters, when an ARC32 or ARC56 spec is loaded (`SpecValidationException`, not a silent null; ARC32
+  validates before any TEAL is sent to algod). The event signature literal also escapes the backslash; the
+  CLI reports a rejected spec cleanly and refuses a contract file name that is not a bare file name; the README
+  states that specs are trusted input. Code review of the fix found event-argument types reaching a string
+  literal unvalidated; that is now closed and covered by a Roslyn-based test over struct, field, event and
+  state fields. Regression tests:
   `test/SpecValidationTests.cs` (hostile names in every position, ARC32 and ARC56, plus a check that all
   specs shipped in the repo still load). Residual: ARC32 emission was verified by reading and the validator
   rather than by running the full generator on hostile input; names not covered by the validator (struct

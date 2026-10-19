@@ -1,4 +1,5 @@
 ﻿using Algorand.AVM.ClientGenerator.ABI.ARC56;
+using Algorand.AVM.ClientGenerator.Extensions;
 using System.Text;
 using CommandLine;
 
@@ -74,8 +75,18 @@ namespace client_generator
                     }
 
                     var generator = new ClientGeneratorARC56();
-                    generator.LoadFromByteArray(content);
-                    var appProxy = await generator.ToProxy(opts.Namespace ?? "AVM.ARC56");
+                    string appProxy;
+                    try
+                    {
+                        generator.LoadFromByteArray(content);
+                        appProxy = await generator.ToProxy(opts.Namespace ?? "AVM.ARC56");
+                    }
+                    catch (SpecValidationException ex)
+                    {
+                        Console.Error.WriteLine($"Error: the contract spec was rejected: {ex.Message}");
+                        Environment.ExitCode = 1;
+                        return;
+                    }
 
                     if (!Directory.Exists(opts.Output))
                     {
@@ -83,14 +94,15 @@ namespace client_generator
                     }
                     if (Directory.Exists(opts.Output))
                     {
-                        // the file name comes from the (untrusted) spec: keep the write inside the output folder
-                        var outputDir = Path.GetFullPath(opts.Output).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-                        var name = Path.GetFullPath(Path.Combine(outputDir, generator.GetOutputFileName()));
-                        if (!string.Equals(Path.GetDirectoryName(name), outputDir, StringComparison.Ordinal))
+                        // the file name comes from the (untrusted) spec; it must be a bare file name
+                        var fileName = generator.GetOutputFileName();
+                        if (Path.GetFileName(fileName) != fileName)
                         {
                             Console.Error.WriteLine("Error: the contract name would write outside the output folder.");
+                            Environment.ExitCode = 1;
                             return;
                         }
+                        var name = Path.Combine(opts.Output, fileName);
                         File.WriteAllText(name, appProxy);
                         Console.WriteLine($"The file was saved to {name}");
                     }

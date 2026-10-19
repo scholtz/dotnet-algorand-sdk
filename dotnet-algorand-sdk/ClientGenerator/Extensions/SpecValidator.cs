@@ -1,5 +1,6 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Algorand.AVM.ClientGenerator.Extensions
@@ -20,7 +21,11 @@ namespace Algorand.AVM.ClientGenerator.Extensions
     /// </summary>
     public static class SpecValidator
     {
-        private static readonly Regex Identifier = new Regex("^[A-Za-z_][A-Za-z0-9_]{0,199}$", RegexOptions.CultureInvariant);
+        // \z, not $: in .NET `$` also matches before a trailing '\n', which would let "name\n" through.
+        private static readonly Regex Identifier = new Regex(@"\A[A-Za-z_][A-Za-z0-9_]{0,199}\z", RegexOptions.CultureInvariant);
+
+        // Names Windows treats as devices whatever the extension ("CON.cs" opens the console, not a file).
+        private static readonly Regex WindowsDeviceName = new Regex(@"\A(CON|PRN|AUX|NUL|COM[0-9]|LPT[0-9])\z", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Throws unless <paramref name="name"/> is a plain ASCII identifier. Null/empty is rejected when
@@ -35,16 +40,52 @@ namespace Algorand.AVM.ClientGenerator.Extensions
             }
             if (!Identifier.IsMatch(name))
             {
-                // do not echo the offending value verbatim into logs beyond a short, escaped excerpt
-                var shown = name.Length > 40 ? name.Substring(0, 40) + "..." : name;
-                throw new SpecValidationException($"The {what} '{System.Text.RegularExpressions.Regex.Escape(shown)}' is not a plain identifier ([A-Za-z_][A-Za-z0-9_]*) and cannot be used to generate code.");
+                throw new SpecValidationException($"The {what} \"{Show(name)}\" is not a plain identifier ([A-Za-z_][A-Za-z0-9_]*) and cannot be used to generate code.");
             }
         }
 
-        public static void RequireIdentifiers(IEnumerable<string> names, string what, bool allowEmpty = false)
+        // ABI types ("uint64", "byte[4]", "(uint64,string)[]", "ufixed64x2") and struct names used as types. No quotes,
+        // backslashes, braces or semicolons: some are interpolated into string literals in the generated code.
+        private static readonly Regex AbiType = new Regex(@"\A[A-Za-z0-9_\[\](),<>. ]{1,1000}\z", RegexOptions.CultureInvariant);
+
+        /// <summary>
+        /// Throws unless <paramref name="type"/> only uses characters that occur in ABI type strings. Null/empty is
+        /// accepted (a missing type is reported elsewhere, or means "none").
+        /// </summary>
+        public static void RequireAbiType(string type, string what)
         {
-            if (names == null) return;
-            foreach (var n in names) RequireIdentifier(n, what, allowEmpty);
+            if (string.IsNullOrEmpty(type)) return;
+            if (!AbiType.IsMatch(type))
+            {
+                throw new SpecValidationException($"The {what} \"{Show(type)}\" is not a valid ABI type string and cannot be used to generate code.");
+            }
+        }
+
+        /// <summary>
+        /// A contract name becomes a class name and the output file name, so on top of being an identifier it must
+        /// not be a reserved Windows device name.
+        /// </summary>
+        public static void RequireContractName(string name)
+        {
+            RequireIdentifier(name, "contract name");
+            if (WindowsDeviceName.IsMatch(name))
+            {
+                throw new SpecValidationException($"The contract name \"{name}\" is a reserved device name and cannot be used as an output file name.");
+            }
+        }
+
+        // Short excerpt with every non-printable-ASCII character shown as \uXXXX, so a hostile value cannot forge log
+        // lines or terminal output through the error message.
+        public static string Show(string s)
+        {
+            var sb = new StringBuilder();
+            foreach (var c in s.Take(40))
+            {
+                if (c >= 0x20 && c < 0x7f && c != '"' && c != '\\') sb.Append(c);
+                else sb.Append("\\u").Append(((int)c).ToString("x4"));
+            }
+            if (s.Length > 40) sb.Append("...");
+            return sb.ToString();
         }
     }
 }

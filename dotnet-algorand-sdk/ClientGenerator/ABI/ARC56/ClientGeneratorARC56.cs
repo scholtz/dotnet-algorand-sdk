@@ -59,22 +59,40 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         private void ValidateSpecNames()
         {
             if (Contract == null) return;
-            SpecValidator.RequireIdentifier(Contract.Name, "contract name");
+            SpecValidator.RequireContractName(Contract.Name);
             foreach (var method in Contract.Methods ?? new List<Method>())
             {
                 SpecValidator.RequireIdentifier(method.Name, "method name");
                 foreach (var arg in method.Args ?? new List<MethodArgument>())
                 {
                     SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
+                    SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'");
                 }
+                SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
                 foreach (var evt in method.Events ?? new List<Event>())
                 {
-                    SpecValidator.RequireIdentifier(evt.Name, "event name");
+                    ValidateEvent(evt);
                 }
             }
             foreach (var evt in Contract.Events ?? new List<Event>())
             {
-                SpecValidator.RequireIdentifier(evt.Name, "event name");
+                ValidateEvent(evt);
+            }
+            foreach (var structFields in (Contract.Structs ?? new Dictionary<string, List<StructField>>()).Values)
+            {
+                foreach (var field in structFields ?? new List<StructField>())
+                {
+                    SpecValidator.RequireAbiType(field.Type, $"type of struct field '{SpecValidator.Show(field.Name)}'");
+                }
+            }
+        }
+
+        private static void ValidateEvent(Event evt)
+        {
+            SpecValidator.RequireIdentifier(evt.Name, "event name");
+            foreach (var arg in evt.Args ?? new List<EventArgument>())
+            {
+                SpecValidator.RequireAbiType(arg.Type, $"type of argument '{SpecValidator.Show(arg.Name)}' of event '{evt.Name}'");
             }
         }
 
