@@ -64,7 +64,7 @@ namespace Algorand.AVM.ClientGenerator.Extensions
 
         // C# type text written by the SDK's own spec generator (e.g. "List<ulong>", "ulong?", "Algorand.Address") and
         // emitted verbatim as a type in the generated client, so it must be exactly one well-formed type name.
-        private static readonly Regex CSharpTypeChars = new Regex(@"\A[A-Za-z0-9_<>,.?\[\]() ]{1,2000}\z", RegexOptions.CultureInvariant);
+        private static readonly Regex CSharpTypeChars = new Regex(@"\A[A-Za-z0-9_<>,.?:@\[\]() ]{1,2000}\z", RegexOptions.CultureInvariant);
 
         private static readonly Regex EmptyRank = new Regex(@"\[[, ]*\]", RegexOptions.CultureInvariant);
 
@@ -92,6 +92,34 @@ namespace Algorand.AVM.ClientGenerator.Extensions
         // Base64 text and state-key tokens (letters, digits, '_', '+', '/', '=', '-'): emitted inside string literals
         // or as field names, so no quotes, backslashes, whitespace or other punctuation.
         private static readonly Regex SafeToken = new Regex(@"\A[A-Za-z0-9_+/=\-]*\z", RegexOptions.CultureInvariant);
+
+        private static readonly Regex Base64 = new Regex(@"\A[A-Za-z0-9+/=]*\z", RegexOptions.CultureInvariant);
+        private static readonly Regex DottedName = new Regex(@"\A[A-Za-z_][A-Za-z0-9_]{0,199}(\.[A-Za-z_][A-Za-z0-9_]{0,199}){0,20}\z", RegexOptions.CultureInvariant);
+
+        /// <summary>
+        /// Throws unless <paramref name="value"/> is standard base64 text. Null/empty is accepted.
+        /// </summary>
+        public static void RequireBase64(string value, string what)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            if (!Base64.IsMatch(value))
+            {
+                throw new SpecValidationException($"The {what} is not base64 text (\"{Show(value)}\") and cannot be used to generate code.");
+            }
+        }
+
+        /// <summary>
+        /// Throws unless <paramref name="value"/> is a dotted C# namespace such as "My.Company.Clients". It is written
+        /// verbatim into "namespace {value}" of the generated file.
+        /// </summary>
+        public static void RequireNamespace(string value, string what)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            if (!DottedName.IsMatch(value))
+            {
+                throw new SpecValidationException($"The {what} \"{Show(value)}\" is not a dotted identifier such as 'My.Company.Clients'.");
+            }
+        }
 
         /// <summary>
         /// Throws unless <paramref name="value"/> consists only of base64/identifier characters. Null/empty is accepted.

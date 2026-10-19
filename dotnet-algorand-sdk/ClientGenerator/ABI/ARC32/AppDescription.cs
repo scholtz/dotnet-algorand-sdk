@@ -157,10 +157,10 @@ namespace AVM.ClientGenerator.ABI.ARC32
         public void ValidateSpecNames()
         {
             // the program and state strings are written into string literals / member names of the generated proxy
-            SpecValidator.RequireSafeToken(Source?.Approval, "source.approval");
-            SpecValidator.RequireSafeToken(Source?.Clear, "source.clear");
-            SpecValidator.RequireSafeToken(Source?.ApprovalAVM, "source.approval-avm");
-            SpecValidator.RequireSafeToken(Source?.ClearAVM, "source.clear-avm");
+            SpecValidator.RequireBase64(Source?.Approval, "source.approval");
+            SpecValidator.RequireBase64(Source?.Clear, "source.clear");
+            SpecValidator.RequireBase64(Source?.ApprovalAVM, "source.approval-avm");
+            SpecValidator.RequireBase64(Source?.ClearAVM, "source.clear-avm");
             ValidateStorage(State?.Local, "local");
             ValidateStorage(State?.Global, "global");
 
@@ -169,11 +169,6 @@ namespace AVM.ClientGenerator.ABI.ARC32
             foreach (var method in Contract.Methods ?? new List<MethodDescription>())
             {
                 SpecValidator.RequireIdentifier(method.Name, "method name");
-                // a selector that differs from the computed one is written into a string literal of the reference class
-                if (method.Selector != null && method.Returns != null && method.Args != null && !method.Selector.SequenceEqual(method.ToARC4MethodSelector()))
-                {
-                    SpecValidator.RequireLiteralSafeBytes(method.Selector, $"selector of method '{method.Name}'");
-                }
                 foreach (var arg in method.Args ?? new List<ArgumentDescription>())
                 {
                     SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
@@ -181,6 +176,12 @@ namespace AVM.ClientGenerator.ABI.ARC32
                     SpecValidator.RequireCSharpType(arg.TypeDetail, $"type detail of argument '{arg.Name}' of method '{method.Name}'");
                 }
                 SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
+                // a selector that differs from the computed one is written into a string literal of the reference class;
+                // checked after the types it is computed from have been validated
+                if (method.Selector != null && method.Returns != null && method.Args != null && !method.Selector.SequenceEqual(method.ToARC4MethodSelector()))
+                {
+                    SpecValidator.RequireLiteralSafeBytes(method.Selector, $"selector of method '{method.Name}'");
+                }
                 SpecValidator.RequireCSharpType(method.Returns?.TypeDetail, $"return type detail of method '{method.Name}'");
             }
         }
@@ -343,6 +344,8 @@ namespace AVM.ClientGenerator.ABI.ARC32
         {
 
             if (string.IsNullOrWhiteSpace(nameSpace)) nameSpace = "Algorand.Imports";
+            SpecValidator.RequireNamespace(nameSpace, "namespace");
+            if (!string.IsNullOrWhiteSpace(nameOverride)) SpecValidator.RequireIdentifier(nameOverride, "name override");
 
             string name = Contract.Name;
             if (!string.IsNullOrWhiteSpace(nameOverride)) { name = nameOverride; }
@@ -404,6 +407,7 @@ $@"{"\t"}///<summary>
 
         public string ToProxy(string namespaceName)
         {
+            SpecValidator.RequireNamespace(namespaceName, "namespace");
             List<string> structs = new List<string>();
 
 

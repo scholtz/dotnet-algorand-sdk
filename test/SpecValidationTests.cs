@@ -318,6 +318,42 @@ namespace test
             Assert.ThrowsAsync<SpecValidationException>(() => AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString())));
         }
 
+        [TestCase("X { } class Evil { static Evil() { } } namespace Y")]
+        [TestCase("A..B")]
+        [TestCase("A.1B")]
+        [TestCase("A;B")]
+        [TestCase("A B")]
+        public void GenerateRejectsHostileNamespace(string ns)
+        {
+            var generator = Load(GasStation());
+            Assert.ThrowsAsync<SpecValidationException>(() => generator.ToProxy(ns));
+        }
+
+        [TestCase("Probe")]
+        [TestCase("My.Company.Clients")]
+        [TestCase("AVMGasStation.GeneratedClients")]
+        public async Task GenerateAcceptsDottedNamespace(string ns)
+        {
+            var source = await Load(GasStation()).ToProxy(ns);
+            Assert.That(source, Does.Contain("namespace " + ns));
+        }
+
+        [TestCase("AB-_")]
+        [TestCase("a b")]
+        public void Arc32SourceMustBeStandardBase64(string value)
+        {
+            var json = JObject.Parse(Arc32("Multiline", "swap", "assetA"));
+            json["source"]["approval-avm"] = value;
+            Assert.ThrowsAsync<SpecValidationException>(() => AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString())));
+        }
+
+        [TestCase("global::System.Collections.Generic.List<ulong>")]
+        [TestCase("@event")]
+        public void CSharpTypeValidatorAcceptsQualifiedAndVerbatimNames(string type)
+        {
+            Assert.DoesNotThrow(() => SpecValidator.RequireCSharpType(type, "type"));
+        }
+
         [Test]
         public void Arc32RejectsHostileAbiType()
         {

@@ -113,6 +113,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         public async Task<string> ToProxy(string namespaceName)
         {
             if (Contract == null) throw new Exception("Load the contract first");
+            SpecValidator.RequireNamespace(namespaceName, "namespace");
 
             ResolveAnonymousTuples();
 

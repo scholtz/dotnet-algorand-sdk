@@ -720,9 +720,10 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   C# type (`RequireCSharpType`) instead of as an ABI type; the parser accepts an expression as an array size,
   so bracket contents are additionally limited to rank commas. Validation lives in the loaders: an
   `AppDescription` deserialised directly with `JsonConvert` or built by hand (as the Roslyn-based
-  compile path does for trusted C# source) is not checked. Known remaining gaps, accepted:
-  `ToProxy`/`ToSmartContractReference` namespace and name-override arguments and the CLI `--namespace`
-  option are supplied by the operator, not the spec, and are not validated; struct and field names that
+  compile path does for trusted C# source) is not checked. A sixth round
+  also had the generated-file namespace and name-override arguments (and so the CLI `--namespace` option)
+  validated as dotted identifiers, `source.*` strings as standard base64, and the selector check moved after
+  the type checks. Known remaining gaps, accepted: struct and field names that
   PascalCase to an empty or colliding identifier, and arguments without a name, produce uncompilable (not
   malicious) output; ARC32 state keys must be base64/identifier text as the ARC32 format specifies, and struct
   names used as types must be plain identifiers, so a spec using other characters is now rejected. Regression tests:

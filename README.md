@@ -176,7 +176,7 @@ The SDK includes a generator that turns an [ARC56](https://github.com/algorandfo
 
 > **Specs are trusted input.** The generator writes names from the spec into C# source that you then compile
 > and run, so only generate from a spec you wrote or have reviewed. Contract, method, argument and event names
-> must be plain identifiers (`[A-Za-z_][A-Za-z0-9_]*`), and ABI type strings may only use letters, digits, `_`, `(`, `)`, `,`, spaces and `[digits]`; anything else is rejected with a `SpecValidationException`.
+> must be plain identifiers (`[A-Za-z_][A-Za-z0-9_]*`), the namespace passed to the generator (`--namespace`) must be a dotted identifier, and ABI type strings may only use letters, digits, `_`, `(`, `)`, `,`, spaces and `[digits]`; anything else is rejected with a `SpecValidationException`.
 
 ### In code
 

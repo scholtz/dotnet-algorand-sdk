@@ -33,12 +33,13 @@ namespace client_generator
         static async Task Main(string[] args)
         {
             await Parser.Default.ParseArguments<Options>(args)
-                .WithNotParsed(errs => Console.WriteLine("Invalid arguments. Use --help for usage."))
+                .WithNotParsed(errs => { Console.WriteLine("Invalid arguments. Use --help for usage."); Environment.ExitCode = 1; })
                 .WithParsedAsync(async opts =>
                 {
                     if (!string.IsNullOrEmpty(opts.Url) && !string.IsNullOrEmpty(opts.File))
                     {
                         Console.WriteLine("Error: You cannot specify both --url and --file.");
+                        Environment.ExitCode = 1;
                         return;
                     }
 
@@ -51,6 +52,7 @@ namespace client_generator
                         else
                         {
                             Console.WriteLine("Error: Please specify either --url or --file.");
+                            Environment.ExitCode = 1;
                             return;
                         }
                     }
