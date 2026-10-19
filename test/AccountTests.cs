@@ -412,7 +412,15 @@ namespace test
             Assert.Throws<System.ArgumentException>(() => new Account(new byte[31]));
             Assert.Throws<System.ArgumentException>(() => new Account(new byte[33]));
             Assert.Throws<System.ArgumentException>(() => new Account(new byte[96]));
-            Assert.Throws<System.ArgumentException>(() => new Account(new byte[64]));
+        }
+
+        [Test]
+        public void AccountFromKmdKeyRejectsMismatchedPublicHalf()
+        {
+            var seed = Mnemonic.ToKey("actress tongue harbor tray suspect odor load topple vocal avoid ignore apple lunch unknown tissue museum once switch captain place lemon sail outdoor absent creek");
+            var kmdKey = seed.Concat(new KeyPair(seed).ClearTextPublicKey).ToArray();
+            kmdKey[40] ^= 0xFF;
+            Assert.Throws<System.ArgumentException>(() => new Account(kmdKey));
         }
     }
 }
