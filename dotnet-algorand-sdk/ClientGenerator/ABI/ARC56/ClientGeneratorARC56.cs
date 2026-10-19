@@ -77,7 +77,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 foreach (var arg in method.Args ?? new List<MethodArgument>())
                 {
                     SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
-                    SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'");
+                    SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'", required: true);
                 }
                 SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
                 foreach (var evt in method.Events ?? new List<Event>())
@@ -93,7 +93,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             {
                 foreach (var field in structFields ?? new List<StructField>())
                 {
-                    SpecValidator.RequireAbiType(field.Type, $"type of struct field '{SpecValidator.Show(field.Name)}'");
+                    SpecValidator.RequireAbiType(field.Type, $"type of struct field '{SpecValidator.Show(field.Name)}'", required: true);
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             SpecValidator.RequireIdentifier(evt.Name, "event name");
             foreach (var arg in evt.Args ?? new List<EventArgument>())
             {
-                SpecValidator.RequireAbiType(arg.Type, $"type of argument '{SpecValidator.Show(arg.Name)}' of event '{evt.Name}'");
+                SpecValidator.RequireAbiType(arg.Type, $"type of argument '{SpecValidator.Show(arg.Name)}' of event '{evt.Name}'", required: true);
             }
         }
 

@@ -87,10 +87,11 @@ namespace client_generator
                     {
                         if (!string.IsNullOrEmpty(opts.Url))
                         {
-                            using var client = new HttpClient();
+                            // a contract spec is a small JSON document: bound the time and size of the download
+                            using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30), MaxResponseContentBufferSize = 20 * 1024 * 1024 };
                             var response = await client.GetAsync(opts.Url);
                             response.EnsureSuccessStatusCode();
-                            content = Encoding.UTF8.GetBytes(await response.Content.ReadAsStringAsync());
+                            content = await response.Content.ReadAsByteArrayAsync();
                         }
                         else
                         {

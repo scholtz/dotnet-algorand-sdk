@@ -51,11 +51,15 @@ namespace Algorand.AVM.ClientGenerator.Extensions
 
         /// <summary>
         /// Throws unless <paramref name="type"/> only uses characters that occur in ABI type strings. Null/empty is
-        /// accepted (a missing type is reported elsewhere, or means "none").
+        /// accepted unless <paramref name="required"/> (a missing type is otherwise reported elsewhere, or means "none").
         /// </summary>
-        public static void RequireAbiType(string type, string what)
+        public static void RequireAbiType(string type, string what, bool required = false)
         {
-            if (string.IsNullOrEmpty(type)) return;
+            if (string.IsNullOrEmpty(type))
+            {
+                if (required) throw new SpecValidationException($"The {what} is missing.");
+                return;
+            }
             if (!AbiType.IsMatch(type))
             {
                 throw new SpecValidationException($"The {what} \"{Show(type)}\" is not a valid ABI type string and cannot be used to generate code.");

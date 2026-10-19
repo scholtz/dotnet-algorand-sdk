@@ -187,7 +187,7 @@ namespace AVM.ClientGenerator.ABI.ARC32
                 foreach (var arg in method.Args ?? new List<ArgumentDescription>())
                 {
                     SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
-                    SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'");
+                    SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'", required: true);
                     SpecValidator.RequireCSharpType(arg.TypeDetail, $"type detail of argument '{arg.Name}' of method '{method.Name}'");
                 }
                 SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
@@ -360,9 +360,9 @@ namespace AVM.ClientGenerator.ABI.ARC32
         {
 
             if (string.IsNullOrWhiteSpace(nameSpace)) nameSpace = "Algorand.Imports";
-            SpecValidator.RequireNamespace(nameSpace, "namespace");
+            if (!TrustedSource) SpecValidator.RequireNamespace(nameSpace, "namespace");
             if (!TrustedSource) ValidateSpecNames(); // covers an AppDescription deserialised or built without the Load* methods
-            if (!string.IsNullOrWhiteSpace(nameOverride)) SpecValidator.RequireIdentifier(nameOverride, "name override");
+            if (!TrustedSource && !string.IsNullOrWhiteSpace(nameOverride)) SpecValidator.RequireIdentifier(nameOverride, "name override");
 
             string name = Contract.Name;
             if (!string.IsNullOrWhiteSpace(nameOverride)) { name = nameOverride; }
@@ -424,7 +424,7 @@ $@"{"\t"}///<summary>
 
         public string ToProxy(string namespaceName)
         {
-            SpecValidator.RequireNamespace(namespaceName, "namespace");
+            if (!TrustedSource) SpecValidator.RequireNamespace(namespaceName, "namespace");
             if (!TrustedSource) ValidateSpecNames(); // covers an AppDescription deserialised or built without the Load* methods
             List<string> structs = new List<string>();
 
