@@ -710,7 +710,11 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   states that specs are trusted input. Code review of the fix found event-argument types reaching a string
   literal unvalidated; that is now closed and covered by a Roslyn-based test over struct, field, event and
   state fields. A second review round found the same class in the ARC32 path (`source.*` strings and declared
-  state variable names, keys and types); `SpecValidator` now checks those too. Known remaining gaps, accepted:
+  state variable names, keys and types); `SpecValidator` now checks those too. A third round found that the text between `[` and `]` in an ABI type is
+  copied into generated code as an array-length expression, and that a spec-supplied ARC32 method selector is
+  written into a string literal: ABI types now may only enclose digits in brackets, selectors must be the
+  computed one or printable ASCII without quote/backslash, and a rejected ARC56 spec is no longer kept on the
+  generator instance. Known remaining gaps, accepted:
   `ToProxy`/`ToSmartContractReference` namespace and name-override arguments and the CLI `--namespace`
   option are supplied by the operator, not the spec, and are not validated; struct and field names that
   PascalCase to an empty or colliding identifier produce uncompilable (not malicious) output. Regression tests:

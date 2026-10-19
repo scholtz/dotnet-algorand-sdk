@@ -48,7 +48,15 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 }
             }
 
-            ValidateSpecNames();
+            try
+            {
+                ValidateSpecNames();
+            }
+            catch
+            {
+                Contract = null; // never leave a rejected spec on the instance for a later ToProxy/GetOutputFileName
+                throw;
+            }
 
             return true;
         }

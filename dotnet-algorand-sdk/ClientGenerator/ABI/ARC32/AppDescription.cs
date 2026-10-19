@@ -96,6 +96,7 @@ namespace AVM.ClientGenerator.ABI.ARC32
                     MissingMemberHandling = MissingMemberHandling.Ignore
                 });
 
+                if (cd == null) return null;
                 cd.ValidateSpecNames(); // before any TEAL is sent to algod for compilation
 
                 if (string.IsNullOrEmpty(cd.Source.ApprovalAVM))
@@ -155,12 +156,19 @@ namespace AVM.ClientGenerator.ABI.ARC32
             foreach (var method in Contract.Methods ?? new List<MethodDescription>())
             {
                 SpecValidator.RequireIdentifier(method.Name, "method name");
+                // a selector that differs from the computed one is written into a string literal of the reference class
+                if (method.Selector != null && method.Returns != null && !method.Selector.SequenceEqual(method.ToARC4MethodSelector()))
+                {
+                    SpecValidator.RequireLiteralSafeBytes(method.Selector, $"selector of method '{method.Name}'");
+                }
                 foreach (var arg in method.Args ?? new List<ArgumentDescription>())
                 {
                     SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
                     SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'");
+                    SpecValidator.RequireAbiType(arg.TypeDetail, $"type detail of argument '{arg.Name}' of method '{method.Name}'");
                 }
                 SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
+                SpecValidator.RequireAbiType(method.Returns?.TypeDetail, $"return type detail of method '{method.Name}'");
             }
         }
 

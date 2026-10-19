@@ -44,9 +44,10 @@ namespace Algorand.AVM.ClientGenerator.Extensions
             }
         }
 
-        // ABI types ("uint64", "byte[4]", "(uint64,string)[]", "ufixed64x2") and struct names used as types. No quotes,
-        // backslashes, braces or semicolons: some are interpolated into string literals in the generated code.
-        private static readonly Regex AbiType = new Regex(@"\A[A-Za-z0-9_\[\](),<>. ]{1,1000}\z", RegexOptions.CultureInvariant);
+        // ABI types ("uint64", "byte[4]", "(uint64,string)[]", "ufixed64x2") and struct names used as types. Some are
+        // interpolated into string literals, and the text inside "[...]" is copied into generated code as an array
+        // length expression, so brackets may only enclose digits; no quotes, dots, backslashes, braces or semicolons.
+        private static readonly Regex AbiType = new Regex(@"\A(?:[A-Za-z0-9_(), ]|\[[0-9]*\]){1,1000}\z", RegexOptions.CultureInvariant);
 
         /// <summary>
         /// Throws unless <paramref name="type"/> only uses characters that occur in ABI type strings. Null/empty is
@@ -74,6 +75,22 @@ namespace Algorand.AVM.ClientGenerator.Extensions
             if (!SafeToken.IsMatch(value))
             {
                 throw new SpecValidationException($"The {what} contains characters that cannot be used to generate code (\"{Show(value)}\").");
+            }
+        }
+
+        /// <summary>
+        /// Throws unless every byte is printable ASCII other than the quote and backslash, i.e. the bytes can be
+        /// decoded and written inside a C# string literal without changing its meaning.
+        /// </summary>
+        public static void RequireLiteralSafeBytes(byte[] value, string what)
+        {
+            if (value == null) return;
+            foreach (var b in value)
+            {
+                if (b < 0x20 || b > 0x7e || b == (byte)'"' || b == 0x5c)
+                {
+                    throw new SpecValidationException($"The {what} contains bytes that cannot be used to generate code.");
+                }
             }
         }
 

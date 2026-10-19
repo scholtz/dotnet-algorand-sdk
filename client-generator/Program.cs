@@ -87,15 +87,15 @@ namespace client_generator
                         Environment.ExitCode = 1;
                         return;
                     }
-
-                    // the file name comes from the (untrusted) spec; it must be a bare file name
-                    var fileName = generator.GetOutputFileName();
-                    if (Path.GetFileName(fileName) != fileName)
+                    catch (Exception ex)
                     {
-                        Console.Error.WriteLine("Error: the contract name would write outside the output folder.");
+                        Console.Error.WriteLine($"Error: could not generate a client from the spec: {ex.Message}");
                         Environment.ExitCode = 1;
                         return;
                     }
+
+                    // the file name is the (validated, identifier-only) contract name from the spec
+                    var fileName = generator.GetOutputFileName();
 
                     if (!Directory.Exists(opts.Output))
                     {

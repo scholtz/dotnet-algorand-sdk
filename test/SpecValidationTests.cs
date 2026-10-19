@@ -237,6 +237,52 @@ namespace test
             Assert.Throws<SpecValidationException>(() => Load(spec));
         }
 
+        [TestCase("uint64[System.Environment.ExitCode]")]
+        [TestCase("uint64[1+1]")]
+        [TestCase("byte[x]")]
+        [TestCase("a.b")]
+        [TestCase("List<int>")]
+        public void AbiTypeValidatorRejectsExpressionsInsideBrackets(string type)
+        {
+            // the text between [ and ] is copied into the generated client as an array-length expression
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireAbiType(type, "type"));
+        }
+
+        [Test]
+        public void Arc56HostileArrayLengthIsRejected()
+        {
+            var spec = GasStation();
+            spec["methods"].First(m => m["args"].Any())["args"][0]["type"] = "uint64[System.Environment.ExitCode]";
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
+        public void Arc56RejectedSpecIsNotKeptOnTheGenerator()
+        {
+            var generator = new ClientGeneratorARC56();
+            Assert.DoesNotThrow(() => generator.LoadFromByteArray(Encoding.UTF8.GetBytes(GasStation().ToString())));
+            var bad = GasStation();
+            bad["name"] = "x y";
+            Assert.Throws<SpecValidationException>(() => generator.LoadFromByteArray(Encoding.UTF8.GetBytes(bad.ToString())));
+            Assert.ThrowsAsync<System.Exception>(() => generator.ToProxy("Probe"), "a rejected spec must not be generated from");
+        }
+
+        [Test]
+        public void Arc32RejectsHostileSelector()
+        {
+            var json = JObject.Parse(Arc32("Multiline", "swap", "assetA"));
+            json["contract"]["methods"][0]["selector"] = System.Convert.ToBase64String(Encoding.UTF8.GetBytes("x\"); Injected_Call(); //"));
+            Assert.ThrowsAsync<SpecValidationException>(() => AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString())));
+        }
+
+        [Test]
+        public void Arc32RejectsHostileTypeDetail()
+        {
+            var json = JObject.Parse(Arc32("Multiline", "swap", "assetA"));
+            json["contract"]["methods"][0]["args"][0]["typeDetail"] = HostileLiteral;
+            Assert.ThrowsAsync<SpecValidationException>(() => AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString())));
+        }
+
         [Test]
         public void Arc32RejectsHostileAbiType()
         {
