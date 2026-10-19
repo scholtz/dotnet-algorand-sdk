@@ -367,6 +367,13 @@ namespace test
         }
 
         [Test]
+        public void Arc56NullSpecIsRejected()
+        {
+            var generator = new ClientGeneratorARC56();
+            Assert.Throws<SpecValidationException>(() => generator.LoadFromByteArray(Encoding.UTF8.GetBytes("null")));
+        }
+
+        [Test]
         public void GenerateRejectsEmptyNamespace()
         {
             var generator = Load(GasStation());

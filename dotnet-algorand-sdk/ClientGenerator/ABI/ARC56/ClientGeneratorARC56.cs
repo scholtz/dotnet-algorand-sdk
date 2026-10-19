@@ -36,6 +36,8 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 MissingMemberHandling = MissingMemberHandling.Ignore
             });
 
+            if (Contract == null) throw new SpecValidationException("The contract spec is empty or not a JSON object.");
+
             // Some real-world ARC-56 artifacts (e.g. from older/nonstandard build tooling) emit the compiled
             // bytecode under a snake_case "byte_code" key instead of the spec's camelCase "byteCode" - fall back
             // to it so ExtraProgramPages (ToProxy below) can still be computed instead of silently staying null.
