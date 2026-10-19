@@ -371,5 +371,44 @@ namespace test
         //        Assert.IsTrue(verified);
         //    }
         //
+
+        [Test]
+        public void KeyPairExposesPublicAndPrivateKeysInCorrectSlots()
+        {
+            var seed = Mnemonic.ToKey("actress tongue harbor tray suspect odor load topple vocal avoid ignore apple lunch unknown tissue museum once switch captain place lemon sail outdoor absent creek");
+            var kp = new KeyPair(seed);
+            Assert.That(kp.Pair.Public, Is.InstanceOf<Ed25519PublicKeyParameters>());
+            Assert.That(kp.Pair.Private, Is.InstanceOf<Ed25519PrivateKeyParameters>());
+            Assert.That(((Ed25519PublicKeyParameters)kp.Pair.Public).GetEncoded(), Is.EqualTo(kp.ClearTextPublicKey));
+        }
+
+        [Test]
+        public void AccountFromSeedAcceptsSeedAndKmdExportedKey()
+        {
+            var seed = Mnemonic.ToKey("actress tongue harbor tray suspect odor load topple vocal avoid ignore apple lunch unknown tissue museum once switch captain place lemon sail outdoor absent creek");
+            var expected = new Account(seed.ToArray()).Address.ToString();
+            Assert.That(expected, Is.EqualTo("DPLD3RTSWC5STVBPZL5DIIVE2OC4BSAWTOYBLFN2X6EFLT2ZNF4SMX64UA"));
+
+            var kmdKey = seed.Concat(new Account(seed.ToArray()).KeyPair.ClearTextPublicKey).ToArray();
+            Assert.That(new Account(kmdKey).Address.ToString(), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void AccountFromSeedDoesNotAliasOrZeroCallerBuffer()
+        {
+            var seed = Mnemonic.ToKey("actress tongue harbor tray suspect odor load topple vocal avoid ignore apple lunch unknown tissue museum once switch captain place lemon sail outdoor absent creek");
+            var copy = seed.ToArray();
+            var account = new Account(seed);
+            account.Dispose();
+            Assert.That(seed, Is.EqualTo(copy));
+        }
+
+        [Test]
+        public void AccountFromSeedRejectsInvalidLengths()
+        {
+            Assert.Throws<System.ArgumentException>(() => new Account(new byte[31]));
+            Assert.Throws<System.ArgumentException>(() => new Account(new byte[33]));
+            Assert.Throws<System.ArgumentException>(() => new Account(new byte[96]));
+        }
     }
 }

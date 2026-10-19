@@ -81,14 +81,25 @@ namespace Algorand.Algod.Model
         }
 
         /// <summary>
-        /// Generate a new account with seed(master derivation key). Only the first 32 bytes are used, so a 64-byte kmd-exported key (seed + public key) is accepted.
+        /// Generate a new account with seed(master derivation key). Accepts a 32-byte seed or a 64-byte kmd-exported key (seed + public key).
         /// </summary>
         /// <param name="seed">seed(master derivation key)</param>
-        public Account(byte[] seed) : this(new KeyPair(seed.Length > KeyPair.SK_SIZE ? seed[..KeyPair.SK_SIZE] : seed))
+        public Account(byte[] seed) : this(new KeyPair(SeedToPrivateKey(seed)))
         {
 
         }
 
+
+        private static byte[] SeedToPrivateKey(byte[] seed)
+        {
+            if (seed == null) throw new ArgumentNullException(nameof(seed));
+            // 32 bytes = seed, 64 bytes = seed + public key as exported by kmd
+            if (seed.Length != KeyPair.SK_SIZE && seed.Length != KeyPair.SK_SIZE * 2)
+                throw new ArgumentException("Seed must be 32 bytes, or 64 bytes (seed + public key)", nameof(seed));
+            var privateKey = new byte[KeyPair.SK_SIZE];
+            Array.Copy(seed, privateKey, KeyPair.SK_SIZE);
+            return privateKey;
+        }
 
         /// <summary>
         /// Create a new account with mnemonic

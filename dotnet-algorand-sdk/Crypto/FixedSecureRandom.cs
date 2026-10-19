@@ -2,6 +2,7 @@
 
 namespace Algorand.Utils.Crypto
 {
+    [System.Obsolete("No longer used by the SDK; BouncyCastle 2.7 key generation does not reliably consume a fixed random source. Use new KeyPair(seed) or new Account(seed).")]
     public class FixedSecureRandom : SecureRandom
     {
         private byte[] fixedValue;
