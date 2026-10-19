@@ -326,7 +326,7 @@ namespace Algorand.Algod.Model
         // implementation (and go-algorand's cfalcon.GenerateKey) injects the caller's seed bytes
         // directly. To derive keys byte-identical to algokey's, drive BC's internal keygen (a
         // faithful port of the reference falcon_keygen_make) with a SHAKE256 seeded the reference
-        // way, via reflection. BouncyCastle.Cryptography is pinned to 2.6.2 in the csproj; the
+        // way, via reflection. BouncyCastle.Cryptography is pinned to an exact version in the csproj; the
         // KeygenReflection cache fails fast at first use if these internals ever change shape.
         private static (byte[] pk, byte[] sk) ReferenceKeygen(byte[] seed)
         {

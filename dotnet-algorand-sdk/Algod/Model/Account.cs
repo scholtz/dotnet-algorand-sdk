@@ -5,7 +5,6 @@ namespace Algorand.Algod.Model
 {
     using Algorand.Crypto;
     using Algorand.Utils;
-    using Algorand.Utils.Crypto;
     using MessagePack;
     using Newtonsoft.Json;
     using Org.BouncyCastle.Crypto.Signers;
@@ -81,14 +80,35 @@ namespace Algorand.Algod.Model
         }
 
         /// <summary>
-        /// Generate a newc account with seed(master derivation key)
+        /// Generate a new account with seed(master derivation key). Accepts a 32-byte seed or a 64-byte kmd-exported key (seed + public key).
         /// </summary>
         /// <param name="seed">seed(master derivation key)</param>
-        public Account(byte[] seed) : this(new FixedSecureRandom(seed))
+        public Account(byte[] seed) : this(new KeyPair(SeedToPrivateKey(seed)))
         {
 
         }
 
+
+        private static byte[] SeedToPrivateKey(byte[] seed)
+        {
+            if (seed == null) throw new ArgumentNullException(nameof(seed));
+            // 32 bytes = seed, 64 bytes = seed + public key as exported by kmd
+            if (seed.Length != KeyPair.SK_SIZE && seed.Length != KeyPair.SK_SIZE * 2)
+                throw new ArgumentException("Seed must be 32 bytes, or 64 bytes (seed + public key)", nameof(seed));
+            var privateKey = new byte[KeyPair.SK_SIZE];
+            Array.Copy(seed, privateKey, KeyPair.SK_SIZE);
+            if (seed.Length == KeyPair.SK_SIZE * 2)
+            {
+                // kmd exports seed + public key: reject a mismatched public half instead of ignoring it
+                var derivedPublicKey = new Org.BouncyCastle.Crypto.Parameters.Ed25519PrivateKeyParameters(privateKey, 0).GeneratePublicKey().GetEncoded();
+                for (int i = 0; i < KeyPair.SK_SIZE; i++)
+                {
+                    if (seed[KeyPair.SK_SIZE + i] != derivedPublicKey[i])
+                        throw new ArgumentException("The public key half of the 64-byte seed does not match the private key", nameof(seed));
+                }
+            }
+            return privateKey;
+        }
 
         /// <summary>
         /// Create a new account with mnemonic

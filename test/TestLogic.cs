@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using Algorand.Utils;
 using System.Linq;
-using NUnit.Framework.Legacy;
 
 namespace test
 {

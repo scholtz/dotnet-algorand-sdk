@@ -23,19 +23,26 @@ namespace Algorand.Crypto
 
         public KeyPair(byte[] privateKey)
         {
+            if (privateKey == null) throw new ArgumentNullException(nameof(privateKey));
             if (privateKey.Length != SK_SIZE)
                 throw new ArgumentException("Incorrect private key length");
 
-            ClearTextPrivateKey= privateKey;
+            ClearTextPrivateKey = (byte[])privateKey.Clone(); // own the buffer so Dispose() does not wipe the caller's array
 
             ed25519PrivateKey = new Ed25519PrivateKeyParameters(ClearTextPrivateKey, 0);
             ed25519PublicKey = ed25519PrivateKey.GeneratePublicKey();
-            Pair = new AsymmetricCipherKeyPair(ed25519PrivateKey, ed25519PublicKey);
+            Pair = new AsymmetricCipherKeyPair(ed25519PublicKey, ed25519PrivateKey);
         }
 
 
         public KeyPair(SecureRandom random)
         {
+            // BouncyCastle 2.7's Ed25519 key generation does not reliably consume a fixed random source,
+            // so a deterministic key would silently come out random. Fail loudly instead.
+#pragma warning disable CS0618
+            if (random is Algorand.Utils.Crypto.FixedSecureRandom)
+                throw new ArgumentException("FixedSecureRandom is not supported; use new KeyPair(seed) for deterministic keys", nameof(random));
+#pragma warning restore CS0618
             //TODO - test
             Ed25519KeyPairGenerator keyPairGenerator = new Ed25519KeyPairGenerator();
             keyPairGenerator.Init(new Ed25519KeyGenerationParameters(random));
