@@ -78,10 +78,17 @@ namespace Algorand.AVM.ClientGenerator.Extensions
             var ok = CSharpTypeChars.IsMatch(value);
             if (ok)
             {
-                var parsed = Microsoft.CodeAnalysis.CSharp.SyntaxFactory.ParseTypeName(value);
-                ok = !parsed.ContainsDiagnostics && parsed.FullSpan.Length == value.Length;
-                // the parser accepts an expression as an array size ("int[Call()]"); only rank commas may sit in brackets
-                if (ok) ok = value.IndexOfAny(new[] { '[', ']' }) < 0 || EmptyRank.Replace(value, "").IndexOfAny(new[] { '[', ']' }) < 0;
+                try
+                {
+                    var parsed = Microsoft.CodeAnalysis.CSharp.SyntaxFactory.ParseTypeName(value);
+                    ok = !parsed.ContainsDiagnostics && parsed.FullSpan.Length == value.Length;
+                    // the parser accepts an expression as an array size ("int[Call()]"); only rank commas may sit in brackets
+                    if (ok) ok = value.IndexOfAny(new[] { '[', ']' }) < 0 || EmptyRank.Replace(value, "").IndexOfAny(new[] { '[', ']' }) < 0;
+                }
+                catch (Exception)
+                {
+                    ok = false; // e.g. InsufficientExecutionStackException on pathologically nested input
+                }
             }
             if (!ok)
             {
@@ -109,13 +116,12 @@ namespace Algorand.AVM.ClientGenerator.Extensions
         }
 
         /// <summary>
-        /// Throws unless <paramref name="value"/> is a dotted C# namespace such as "My.Company.Clients". It is written
+        /// Throws unless <paramref name="value"/> is a non-empty dotted C# namespace such as "My.Company.Clients". It is written
         /// verbatim into "namespace {value}" of the generated file.
         /// </summary>
         public static void RequireNamespace(string value, string what)
         {
-            if (string.IsNullOrEmpty(value)) return;
-            if (!DottedName.IsMatch(value))
+            if (string.IsNullOrWhiteSpace(value) || !DottedName.IsMatch(value))
             {
                 throw new SpecValidationException($"The {what} \"{Show(value)}\" is not a dotted identifier such as 'My.Company.Clients'.");
             }

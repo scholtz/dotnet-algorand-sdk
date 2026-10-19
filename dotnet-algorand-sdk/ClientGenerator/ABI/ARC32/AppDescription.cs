@@ -140,11 +140,6 @@ namespace AVM.ClientGenerator.ABI.ARC32
             {
                 SpecValidator.RequireIdentifier(kv.Key, $"{scope} state variable name");
                 SpecValidator.RequireSafeToken(kv.Value?.Key, $"key of {scope} state variable '{kv.Key}'");
-                if (kv.Value?.Key != null && kv.Value.Key.Contains("//"))
-                {
-                    // the key is emitted as a field name in the reference class: "//" would comment out the rest of the line
-                    throw new SpecValidationException($"The key of {scope} state variable '{kv.Key}' contains '//' and cannot be used to generate code.");
-                }
                 SpecValidator.RequireAbiType(kv.Value?.Type, $"type of {scope} state variable '{kv.Key}'");
                 SpecValidator.RequireCSharpType(kv.Value?.TypeDetail, $"type detail of {scope} state variable '{kv.Key}'");
             }

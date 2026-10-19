@@ -70,6 +70,18 @@ namespace client_generator
                     if (!string.IsNullOrEmpty(opts.Namespace))
                         Console.WriteLine($"Namespace: {opts.Namespace}");
 
+                    var targetNamespace = string.IsNullOrWhiteSpace(opts.Namespace) ? "AVM.ARC56" : opts.Namespace;
+                    try
+                    {
+                        SpecValidator.RequireNamespace(targetNamespace, "--namespace value");
+                    }
+                    catch (SpecValidationException ex)
+                    {
+                        Console.Error.WriteLine($"Error: {ex.Message}");
+                        Environment.ExitCode = 1;
+                        return;
+                    }
+
                     byte[] content;
                     try
                     {
@@ -97,7 +109,7 @@ namespace client_generator
                     try
                     {
                         generator.LoadFromByteArray(content);
-                        appProxy = await generator.ToProxy(opts.Namespace ?? "AVM.ARC56");
+                        appProxy = await generator.ToProxy(targetNamespace);
                     }
                     catch (SpecValidationException ex)
                     {

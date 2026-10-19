@@ -725,8 +725,10 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   validated as dotted identifiers, `source.*` strings as standard base64, and the selector check moved after
   the type checks. Known remaining gaps, accepted: struct and field names that
   PascalCase to an empty or colliding identifier, and arguments without a name, produce uncompilable (not
-  malicious) output; ARC32 state keys must be base64/identifier text as the ARC32 format specifies, and struct
-  names used as types must be plain identifiers, so a spec using other characters is now rejected. Regression tests:
+  malicious) output; ARC32 state keys are limited to base64/identifier characters (and are written as a sanitised
+  field name in the reference class, every other character becoming `_`), and struct names used as types must
+  be plain identifiers, so a spec using other characters is now rejected. ARC32 arguments named like a C#
+  keyword are not escaped (the ARC56 path escapes them), giving uncompilable output. Regression tests:
   `test/SpecValidationTests.cs` (hostile names in every position, ARC32 and ARC56, plus a check that the
   ARC56 specs under `test/Arc56` still load; the ARC32 specs used by the LocalNet tests were checked by hand
   once and are not in an automated load test). Residual: ARC32 emission was verified by reading and the validator

@@ -347,6 +347,34 @@ namespace test
             Assert.ThrowsAsync<SpecValidationException>(() => AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString())));
         }
 
+        [Test]
+        public void GenerateRejectsEmptyNamespace()
+        {
+            var generator = Load(GasStation());
+            Assert.ThrowsAsync<SpecValidationException>(() => generator.ToProxy(""));
+        }
+
+        [Test]
+        public void CSharpTypeValidatorRejectsPathologicalNestingWithSpecValidationException()
+        {
+            var deep = new string('(', 1500) + "int" + new string(')', 1500);
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireCSharpType(deep, "type"));
+        }
+
+        [Test]
+        public async Task Arc32StateKeyIsNeverEmittedAsCodeInTheReferenceClass()
+        {
+            // a legitimate base64 key may contain '/', '+' and '=' (here "//8=" for bytes FF FF); it is written as a field name
+            var json = JObject.Parse(Arc32("Multiline", "swap", "assetA"));
+            json["state"]["global"]["declared"] = new JObject { ["counter"] = new JObject { ["key"] = "//8=", ["type"] = "uint64" } };
+            var app = await AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString()));
+            Assert.That(app, Is.Not.Null);
+            var reference = app.ToSmartContractReference("Probe", "");
+            var tree = CSharpSyntaxTree.ParseText(reference);
+            Assert.That(tree.GetRoot().DescendantTokens().Any(t => t.Kind() == SyntaxKind.IdentifierToken && t.Text == "__8_"), Is.True, "the key must become the field name __8_");
+            Assert.That(reference, Does.Not.Contain("//8="));
+        }
+
         [TestCase("global::System.Collections.Generic.List<ulong>")]
         [TestCase("@event")]
         public void CSharpTypeValidatorAcceptsQualifiedAndVerbatimNames(string type)
