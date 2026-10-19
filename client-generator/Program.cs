@@ -1,6 +1,5 @@
 ﻿using Algorand.AVM.ClientGenerator.ABI.ARC56;
 using Algorand.AVM.ClientGenerator.Extensions;
-using System.Text;
 using CommandLine;
 
 namespace client_generator
