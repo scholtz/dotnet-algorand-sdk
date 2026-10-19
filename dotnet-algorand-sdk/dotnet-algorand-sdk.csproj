@@ -179,7 +179,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 			<ExcludeAssets>buildtransitive</ExcludeAssets>
 		</PackageReference>
-		<!-- The 2.6.2 pin is load-bearing beyond normal dependency hygiene:
+		<!-- The exact BouncyCastle pin (re-verified against the Falcon golden vectors on 2.7.0) is load-bearing beyond normal dependency hygiene:
 		     Algod/Model/FalconAccount.cs (FalconReflection) drives BouncyCastle's *internal*
 		     Falcon keygen AND signing types by reflection to stay bit-identical with algokey's
 		     deterministic reference keygen and det1024 signer. Signature bit-identity is a

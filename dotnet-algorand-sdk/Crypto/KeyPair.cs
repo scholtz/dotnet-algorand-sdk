@@ -37,6 +37,12 @@ namespace Algorand.Crypto
 
         public KeyPair(SecureRandom random)
         {
+            // BouncyCastle 2.7's Ed25519 key generation does not reliably consume a fixed random source,
+            // so a deterministic key would silently come out random. Fail loudly instead.
+#pragma warning disable CS0618
+            if (random is Algorand.Utils.Crypto.FixedSecureRandom)
+                throw new ArgumentException("FixedSecureRandom is not supported; use new KeyPair(seed) for deterministic keys", nameof(random));
+#pragma warning restore CS0618
             //TODO - test
             Ed25519KeyPairGenerator keyPairGenerator = new Ed25519KeyPairGenerator();
             keyPairGenerator.Init(new Ed25519KeyGenerationParameters(random));
