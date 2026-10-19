@@ -47,7 +47,7 @@ namespace Algorand.AVM.ClientGenerator.Extensions
         // ABI types ("uint64", "byte[4]", "(uint64,string)[]", "ufixed64x2") and struct names used as types. Some are
         // interpolated into string literals, and the text inside "[...]" is copied into generated code as an array
         // length expression, so brackets may only enclose digits; no quotes, dots, backslashes, braces or semicolons.
-        private static readonly Regex AbiType = new Regex(@"\A(?:[A-Za-z0-9_(), ]|\[[0-9]*\]){1,1000}\z", RegexOptions.CultureInvariant);
+        private static readonly Regex AbiType = new Regex(@"\A(?:[A-Za-z0-9_(), ]|\[[0-9]*\]){1,10000}\z", RegexOptions.CultureInvariant);
 
         /// <summary>
         /// Throws unless <paramref name="type"/> only uses characters that occur in ABI type strings. Null/empty is
@@ -59,6 +59,33 @@ namespace Algorand.AVM.ClientGenerator.Extensions
             if (!AbiType.IsMatch(type))
             {
                 throw new SpecValidationException($"The {what} \"{Show(type)}\" is not a valid ABI type string and cannot be used to generate code.");
+            }
+        }
+
+        // C# type text written by the SDK's own spec generator (e.g. "List<ulong>", "ulong?", "Algorand.Address") and
+        // emitted verbatim as a type in the generated client, so it must be exactly one well-formed type name.
+        private static readonly Regex CSharpTypeChars = new Regex(@"\A[A-Za-z0-9_<>,.?\[\]() ]{1,2000}\z", RegexOptions.CultureInvariant);
+
+        private static readonly Regex EmptyRank = new Regex(@"\[[, ]*\]", RegexOptions.CultureInvariant);
+
+        /// <summary>
+        /// Throws unless <paramref name="value"/> parses, in full and without diagnostics, as a single C# type.
+        /// Null/empty is accepted.
+        /// </summary>
+        public static void RequireCSharpType(string value, string what)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            var ok = CSharpTypeChars.IsMatch(value);
+            if (ok)
+            {
+                var parsed = Microsoft.CodeAnalysis.CSharp.SyntaxFactory.ParseTypeName(value);
+                ok = !parsed.ContainsDiagnostics && parsed.FullSpan.Length == value.Length;
+                // the parser accepts an expression as an array size ("int[Call()]"); only rank commas may sit in brackets
+                if (ok) ok = value.IndexOfAny(new[] { '[', ']' }) < 0 || EmptyRank.Replace(value, "").IndexOfAny(new[] { '[', ']' }) < 0;
+            }
+            if (!ok)
+            {
+                throw new SpecValidationException($"The {what} \"{Show(value)}\" is not a plain C# type name and cannot be used to generate code.");
             }
         }
 

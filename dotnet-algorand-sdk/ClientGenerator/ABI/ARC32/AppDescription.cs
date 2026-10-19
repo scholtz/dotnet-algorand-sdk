@@ -60,6 +60,10 @@ namespace AVM.ClientGenerator.ABI.ARC32
             }));
         }
 
+        /// <summary>
+        /// Loads an ARC32 spec. Returns null if the file is missing or cannot be parsed.
+        /// </summary>
+        /// <exception cref="SpecValidationException">A name, type or program string in the spec cannot be safely used to generate code.</exception>
         public static AppDescription LoadFromFile(string fileName)
         {
 
@@ -87,6 +91,10 @@ namespace AVM.ClientGenerator.ABI.ARC32
             }
             return null;
         }
+        /// <summary>
+        /// Loads an ARC32 spec. Returns null if it cannot be parsed or compiled.
+        /// </summary>
+        /// <exception cref="SpecValidationException">A name, type or program string in the spec cannot be safely used to generate code.</exception>
         public static async Task<AppDescription> LoadFromByteArray(byte[] data, IDefaultApi? algodClient = null)
         {
             try
@@ -132,8 +140,13 @@ namespace AVM.ClientGenerator.ABI.ARC32
             {
                 SpecValidator.RequireIdentifier(kv.Key, $"{scope} state variable name");
                 SpecValidator.RequireSafeToken(kv.Value?.Key, $"key of {scope} state variable '{kv.Key}'");
+                if (kv.Value?.Key != null && kv.Value.Key.Contains("//"))
+                {
+                    // the key is emitted as a field name in the reference class: "//" would comment out the rest of the line
+                    throw new SpecValidationException($"The key of {scope} state variable '{kv.Key}' contains '//' and cannot be used to generate code.");
+                }
                 SpecValidator.RequireAbiType(kv.Value?.Type, $"type of {scope} state variable '{kv.Key}'");
-                SpecValidator.RequireAbiType(kv.Value?.TypeDetail, $"type detail of {scope} state variable '{kv.Key}'");
+                SpecValidator.RequireCSharpType(kv.Value?.TypeDetail, $"type detail of {scope} state variable '{kv.Key}'");
             }
         }
 
@@ -165,10 +178,10 @@ namespace AVM.ClientGenerator.ABI.ARC32
                 {
                     SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
                     SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'");
-                    SpecValidator.RequireAbiType(arg.TypeDetail, $"type detail of argument '{arg.Name}' of method '{method.Name}'");
+                    SpecValidator.RequireCSharpType(arg.TypeDetail, $"type detail of argument '{arg.Name}' of method '{method.Name}'");
                 }
                 SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
-                SpecValidator.RequireAbiType(method.Returns?.TypeDetail, $"return type detail of method '{method.Name}'");
+                SpecValidator.RequireCSharpType(method.Returns?.TypeDetail, $"return type detail of method '{method.Name}'");
             }
         }
 

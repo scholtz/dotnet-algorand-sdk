@@ -104,22 +104,31 @@ namespace client_generator
                         return;
                     }
 
-                    // the file name is the (validated, identifier-only) contract name from the spec
-                    var fileName = generator.GetOutputFileName();
+                    try
+                    {
+                        // the file name is the (validated, identifier-only) contract name from the spec
+                        var fileName = generator.GetOutputFileName();
 
-                    if (!Directory.Exists(opts.Output))
-                    {
-                        Directory.CreateDirectory(opts.Output);
+                        if (!Directory.Exists(opts.Output))
+                        {
+                            Directory.CreateDirectory(opts.Output);
+                        }
+                        if (Directory.Exists(opts.Output))
+                        {
+                            var name = Path.Combine(opts.Output, fileName);
+                            File.WriteAllText(name, appProxy);
+                            Console.WriteLine($"The file was saved to {name}");
+                        }
+                        else
+                        {
+                            Console.Error.WriteLine($"The directory does not exists {opts.Output}");
+                            Environment.ExitCode = 1;
+                        }
                     }
-                    if (Directory.Exists(opts.Output))
+                    catch (Exception ex)
                     {
-                        var name = Path.Combine(opts.Output, fileName);
-                        File.WriteAllText(name, appProxy);
-                        Console.WriteLine($"The file was saved to {name}");
-                    }
-                    else
-                    {
-                        Console.Error.WriteLine($"The directory does not exists {opts.Output}");
+                        Console.Error.WriteLine($"Error: could not write the generated client: {ex.Message}");
+                        Environment.ExitCode = 1;
                     }
                 });
         }

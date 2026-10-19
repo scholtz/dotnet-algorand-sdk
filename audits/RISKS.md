@@ -715,7 +715,12 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   copied into generated code as an array-length expression, and that a spec-supplied ARC32 method selector is
   written into a string literal: ABI types now may only enclose digits in brackets, selectors must be the
   computed one or printable ASCII without quote/backslash, and a rejected ARC56 spec is no longer kept on the
-  generator instance. Known remaining gaps, accepted:
+  generator instance. A fifth round found that ARC32 `typeDetail` is emitted verbatim as a C# type (and the SDK's own spec
+  generator writes Roslyn type text such as `List<ulong>` there), so it is validated by parsing it as a single
+  C# type (`RequireCSharpType`) instead of as an ABI type; the parser accepts an expression as an array size,
+  so bracket contents are additionally limited to rank commas. Validation lives in the loaders: an
+  `AppDescription` deserialised directly with `JsonConvert` or built by hand (as the Roslyn-based
+  compile path does for trusted C# source) is not checked. Known remaining gaps, accepted:
   `ToProxy`/`ToSmartContractReference` namespace and name-override arguments and the CLI `--namespace`
   option are supplied by the operator, not the spec, and are not validated; struct and field names that
   PascalCase to an empty or colliding identifier, and arguments without a name, produce uncompilable (not

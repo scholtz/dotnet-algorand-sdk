@@ -275,6 +275,41 @@ namespace test
             Assert.ThrowsAsync<SpecValidationException>(() => AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString())));
         }
 
+        [TestCase("List<ulong>")]
+        [TestCase("ulong?")]
+        [TestCase("Algorand.Address")]
+        [TestCase("System.Collections.Generic.Dictionary<string, int>")]
+        [TestCase("byte[]")]
+        [TestCase("(int a, string b)")]
+        public void CSharpTypeValidatorAcceptsTypesTheSdkWrites(string type)
+        {
+            // TypeDetail is C# type text produced by the SDK's own spec generator and is emitted verbatim as a type
+            Assert.DoesNotThrow(() => SpecValidator.RequireCSharpType(type, "type"));
+        }
+
+        [TestCase("int x) { Injected_Call(); } void M(int y")]
+        [TestCase("List<int>) Injected_Call(")]
+        [TestCase("int[Injected_Call()]")]
+        [TestCase("int /* c */")]
+        [TestCase("a; b")]
+        [TestCase("a\"b")]
+        [TestCase("int x = 1")]
+        [TestCase("Foo Bar")]
+        public void CSharpTypeValidatorRejectsAnythingButOneTypeName(string type)
+        {
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireCSharpType(type, "type"));
+        }
+
+        [Test]
+        public async Task Arc32AcceptsCSharpTypeDetail()
+        {
+            var json = JObject.Parse(Arc32("Multiline", "swap", "assetA"));
+            json["contract"]["methods"][0]["args"][0]["typeDetail"] = "List<ulong>";
+            json["contract"]["methods"][0]["returns"]["typeDetail"] = "ulong?";
+            var app = await AppDescription.LoadFromByteArray(Encoding.UTF8.GetBytes(json.ToString()));
+            Assert.That(app, Is.Not.Null);
+        }
+
         [Test]
         public void Arc32RejectsHostileTypeDetail()
         {
