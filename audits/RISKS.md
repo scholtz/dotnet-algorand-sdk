@@ -43,6 +43,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   cleared. Likelihood unchanged at 1%. (Previously 2026-08-12.)
   <br>Remediation 2026-10-19 (branch `fix/audit-2026-10-19`): `Account(byte[])` now wipes the
   intermediate private-key array after `KeyPair` clones it (`KeyPairFromSeed`), including when validation throws. Still unwiped: the KeyPair's own clone (wiped on Dispose), BouncyCastle's temporary key objects, and the caller's own seed array.
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` F1) — remediation verified present on `master` (`ffb6406`),
+  `finally`-based clearing read in `Account.cs`. Likelihood unchanged at 1%.
 
 ## RISK-002 — BouncyCastle crypto dependency vendored as an unpinned local DLL
 
@@ -218,10 +220,12 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   checksums, and document that ARC56 spec URLs should only be pointed at trusted
   sources.
 - **Current mitigation status**: Unmitigated
-- **5-year misuse likelihood**: **2%** — requires a specific, uncommon attack (registry
-  tag takeover, or a developer pointing the generator at an untrusted spec URL) and the
-  generator's actual code surface (ABI-to-stub generation) offers little obvious
-  attacker leverage even if triggered, since it doesn't handle key material.
+- **5-year misuse likelihood**: **3%** (up from 2%, 2026-10-20) — requires a specific, uncommon attack
+  (registry tag takeover, or a developer pointing the generator at an untrusted spec URL). The earlier
+  reasoning that the generator "offers little obvious attacker leverage" no longer holds: injection
+  through an argument name, event name and contract name was demonstrated (`RISK-022`), and `--url` makes
+  fetching a spec from a remote location a supported input. Still bounded by needing an untrusted spec
+  and an unreviewed compile.
 - **Impact if realized**: Malicious generated code compiled into a developer's
   application — impact depends entirely on what that code is made to do, potentially
   significant if it added a hidden network call to a generated client method.
@@ -229,6 +233,10 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Last reviewed**: 2026-10-19 (`AUDIT-2026-10-19-13228ed.md` G1) — the comment-escape variant
   of the tampered-spec vector is now closed (`RISK-019`); the Docker registry and
   untrusted-spec-URL parts are unchanged, still Unmitigated, likelihood unchanged at 2%.
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` G2/C1) — the untrusted-spec vector is wider than
+  recorded (`RISK-022`), likelihood raised to 3%. Dockerfile read: runtime stage runs as non-root
+  (`USER $APP_UID`); base images (`dotnet/sdk:8.0`, `runtime:8.0`) are tag-pinned, not digest-pinned; the
+  image is still pushed unsigned. Status stays Unmitigated.
 
 ## RISK-009 — Unity ILRepack build omits the `MessagePack` package
 
@@ -366,6 +374,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Last reviewed**: 2026-10-19 — still pinned at 0.1.11, still referenced in the csproj,
   no CVE reported by `dotnet list package --vulnerable`; unchanged at 2%. (Newest upstream
   release not re-checked on nuget.org this cycle.)
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` D2) — unchanged at 0.1.11, no advisory; newest upstream
+  release again not re-checked. Also noted: `MsgPack.Cli` 1.0.1 is referenced but appears unused in
+  source (grep only) — recommend removal to shrink the serialisation supply chain. Likelihood 2%.
 
 ## RISK-013 — Unused Roslyn `using` in a `MessagePack` formatter (dependency itself confirmed legitimate, not bloat)
 
@@ -467,6 +478,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   <br>Remediation 2026-10-19 (branch `fix/audit-2026-10-19`): `DetSignCompressed` now clears the
   `sign_dyn` `tmp` FFT buffer in its `finally`, and `SeedFromEntropy` clears its entropy-bearing
   input buffer. Residual: BC-internal SHAKE state cannot be wiped from here.
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` F1) — both clearings verified on `master`; the
+  N1 recommendation is closed. Likelihood unchanged at 1%.
 
 ## RISK-016 — Falcon keygen depends on BouncyCastle 2.6.2 *internal* APIs via reflection
 
@@ -590,6 +603,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   <br>Remediation 2026-10-19 (branch `fix/audit-2026-10-19`): added `test/TestData/README.md` and a
   comment at the inline golden mnemonic in `PQSignatureTests.cs`; status now Partially mitigated
   (JSON itself cannot carry a comment).
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` F1) — `test/TestData/README.md` and the inline comment
+  verified on `master`. Likelihood unchanged at <1%.
 
 ## RISK-019 — Contract descriptions in an ARC32/ARC56 spec could break out of a comment into generated client code
 
@@ -603,14 +618,16 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   (and their end users).
 - **Mitigable by this repo?**: Yes — done for descriptions. Identifier and string-literal
   emission paths were not re-audited this cycle.
-- **Current mitigation status**: Mitigated for description fields; regression tests added 2026-10-19
+- **Current mitigation status**: Mitigated for description fields only; regression tests added 2026-10-19
   (`MultilineDocCommentTests.Arc32/Arc56DescriptionsCannotInjectCode`, all five line terminators).
-  Other spec-derived strings (identifiers, literals): not verified.
+  Other spec-derived strings (identifiers, literals) were found NOT mitigated on 2026-10-20 — see `RISK-022`.
 - **5-year misuse likelihood**: **1%** — needs a malicious or tampered spec, a developer who
   generates from it and does not read the output; the description path is now closed.
 - **Impact if realized**: Attacker-chosen code compiled into the developer's application.
 - **First recorded**: 2026-10-19
-- **Last reviewed**: 2026-10-19
+- **Last reviewed**: 2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` G2) — description hardening and its
+  tests verified present and passing; the wider class of the same problem is tracked as `RISK-022`.
+  Likelihood for the description path unchanged at 1%.
 
 ## RISK-020 — Deterministic `Account(seed)` silently produced random keys under BouncyCastle 2.7
 
@@ -650,9 +667,45 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   `.github/dependabot.yml` (github-actions, weekly) proposes SHA bumps. `upload-artifact@v3` in
   `generator_build.yml` moved to v4; other old action versions there (checkout v3, setup-java v2,
   setup-dotnet v1) remain. The publish job's token scoping was not verified beyond the diff.
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` C1) — SHA pinning, the `algokit` pin and Dependabot
+  verified on `master`; `publish-nuget.yml` read in full: `id-token: write` is confined to the `publish`
+  job, which only downloads the artifact and pushes it. Remaining: `algokit`'s transitive dependencies
+  and Docker base images are not pinned/digest-locked, and the build job installs `algokit` before the
+  artifact upload. Likelihood unchanged at 2%.
 - **5-year misuse likelihood**: **2%** — compromises of widely used actions have happened in
   the ecosystem, but exploitation here also needs a release to run during the compromise window.
 - **Impact if realized**: Tampered signing library distributed to many developers; potentially
   loss of many keys.
 - **First recorded**: 2026-10-19
 - **Last reviewed**: 2026-10-19
+
+## RISK-022 — Spec-derived identifiers, event signatures and contract name reach generated code and the output path unescaped
+
+- **Description**: The ARC56 client generator (and, by reading, the ARC32 path) emits several free-form
+  spec strings verbatim into generated C#: method/event **argument names** (the `SafeIdentifier` helper
+  only `@`-escapes C# keywords and does not require a valid identifier), the **event name** inside a
+  string literal (only `"` is escaped, not `\`), and the **contract name** as the class name and as the
+  output file name. Executed on `test/Arc56/GasStation.arc56.json` with hostile values on 2026-10-20: an
+  argument name produced an attacker-chosen method body, an event name produced a new class member with a
+  static initializer, a contract name produced an extra type, and a contract name of `../../../escaped`
+  made `GetOutputFileName()` return `../../../escaped.cs`, which `client-generator/Program.cs` writes with
+  `File.WriteAllText` (path traversal, `.cs` suffix only). ABI `type` strings are validated and rejected;
+  method and struct names pass through `ToPascalCase` and were not injectable. See
+  `AUDIT-2026-10-20-2cad0b5.md` G2. Sibling of `RISK-019` (comments) and `RISK-008` (supply chain).
+- **Who is exposed**: Developers who generate a client from a spec they did not write or review
+  (including via the CLI's `--url`), and the end users of the resulting application; for the path
+  traversal, anyone running the generator or its Docker image with a writable, reachable output tree.
+- **Mitigable by this repo?**: Yes — require `SyntaxFacts.IsValidIdentifier` for every spec-derived
+  identifier, normalise the contract name and take `Path.GetFileName` of the output name (and check the
+  resolved path stays under `--output`), escape all literal characters, and add hostile-value tests for
+  every spec string field in both ARC32 and ARC56.
+- **Current mitigation status**: Unmitigated (found 2026-10-20). Partial context: ABI types are validated,
+  and ARC56 specs are documented as trusted input only informally.
+- **5-year misuse likelihood**: **3%** — needs a malicious or tampered spec and a developer who compiles
+  the output without reading it; ARC56 specs do circulate through repositories, packages and URLs, and the
+  injected text is visible in the generated file, which limits but does not remove the chance.
+  Same band as `RISK-008`.
+- **Impact if realized**: Attacker-chosen code runs in the developer's application (potentially one that
+  holds signing keys); overwrite of a `.cs` file outside the output folder.
+- **First recorded**: 2026-10-20
+- **Last reviewed**: 2026-10-20
