@@ -31,6 +31,14 @@ namespace AVM.ClientGenerator.ABI.ARC32
 
         public StateDescription State { get; set; } = new StateDescription();
 
+        /// <summary>
+        /// True only for a description built from the developer's own C# smart contract source (any legal C#
+        /// identifier, including non-ASCII ones). Everything else is treated as an untrusted spec and validated
+        /// before code is generated from it.
+        /// </summary>
+        [JsonIgnore]
+        internal bool TrustedSource { get; set; }
+
         public CallConfigSpec Bare_call_config { get; set; }
 
         public Dictionary<string, HintSpec> Hints = new Dictionary<string, HintSpec>();
@@ -60,6 +68,10 @@ namespace AVM.ClientGenerator.ABI.ARC32
             }));
         }
 
+        /// <summary>
+        /// Loads an ARC32 spec. Returns null if the file is missing or cannot be parsed.
+        /// </summary>
+        /// <exception cref="SpecValidationException">A name, type or program string in the spec cannot be safely used to generate code.</exception>
         public static AppDescription LoadFromFile(string fileName)
         {
 
@@ -72,7 +84,12 @@ namespace AVM.ClientGenerator.ABI.ARC32
                     {
                         MissingMemberHandling = MissingMemberHandling.Ignore
                     });
+                    cd?.ValidateSpecNames();
                     return cd;
+                }
+                catch (SpecValidationException)
+                {
+                    throw; // an unsafe name is a hard error, not a "could not parse" null
                 }
                 catch
                 {
@@ -82,6 +99,10 @@ namespace AVM.ClientGenerator.ABI.ARC32
             }
             return null;
         }
+        /// <summary>
+        /// Loads an ARC32 spec. Returns null if it cannot be parsed or compiled.
+        /// </summary>
+        /// <exception cref="SpecValidationException">A name, type or program string in the spec cannot be safely used to generate code.</exception>
         public static async Task<AppDescription> LoadFromByteArray(byte[] data, IDefaultApi? algodClient = null)
         {
             try
@@ -90,6 +111,9 @@ namespace AVM.ClientGenerator.ABI.ARC32
                 {
                     MissingMemberHandling = MissingMemberHandling.Ignore
                 });
+
+                if (cd == null) return null;
+                cd.ValidateSpecNames(); // before any TEAL is sent to algod for compilation
 
                 if (string.IsNullOrEmpty(cd.Source.ApprovalAVM))
                 {
@@ -107,10 +131,73 @@ namespace AVM.ClientGenerator.ABI.ARC32
 
                 return cd;
             }
+            catch (SpecValidationException)
+            {
+                throw; // an unsafe name is a hard error, not a "could not parse" null
+            }
             catch
             {
                 System.Diagnostics.Trace.TraceError("Unable to deserialise file to ContractDescription");
                 return null;
+            }
+        }
+
+        private static bool IsComputedSelector(MethodDescription method)
+        {
+            try
+            {
+                return method.Selector.SequenceEqual(method.ToARC4MethodSelector());
+            }
+            catch (Exception)
+            {
+                return false; // cannot be derived from the (odd) types: treat the supplied bytes as untrusted text
+            }
+        }
+
+        private static void ValidateStorage(StorageSection section, string scope)
+        {
+            foreach (var kv in section?.Declared ?? new Dictionary<string, StorageElement>())
+            {
+                SpecValidator.RequireIdentifier(kv.Key, $"{scope} state variable name");
+                // kv.Value.Key (the storage key, base64 text) is only written as a sanitised field name (StorageSection.ToFieldName)
+                SpecValidator.RequireAbiType(kv.Value?.Type, $"type of {scope} state variable '{kv.Key}'");
+                SpecValidator.RequireCSharpType(kv.Value?.TypeDetail, $"type detail of {scope} state variable '{kv.Key}'");
+            }
+        }
+
+        /// <summary>
+        /// Rejects any spec-supplied name that would be emitted verbatim into generated code (or the output
+        /// file name) and is not a plain identifier. See <see cref="SpecValidator"/>.
+        /// </summary>
+        public void ValidateSpecNames()
+        {
+            // the program and state strings are written into string literals / member names of the generated proxy
+            SpecValidator.RequireBase64(Source?.Approval, "source.approval");
+            SpecValidator.RequireBase64(Source?.Clear, "source.clear");
+            SpecValidator.RequireBase64(Source?.ApprovalAVM, "source.approval-avm");
+            SpecValidator.RequireBase64(Source?.ClearAVM, "source.clear-avm");
+            ValidateStorage(State?.Local, "local");
+            ValidateStorage(State?.Global, "global");
+
+            if (Contract == null) return;
+            SpecValidator.RequireContractName(Contract.Name);
+            foreach (var method in Contract.Methods ?? new List<MethodDescription>())
+            {
+                SpecValidator.RequireIdentifier(method.Name, "method name");
+                foreach (var arg in method.Args ?? new List<ArgumentDescription>())
+                {
+                    SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
+                    SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'", required: true);
+                    SpecValidator.RequireCSharpType(arg.TypeDetail, $"type detail of argument '{arg.Name}' of method '{method.Name}'");
+                }
+                SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
+                // a selector that differs from the computed one is written into a string literal of the reference class;
+                // checked after the types it is computed from have been validated
+                if (method.Selector != null && method.Returns != null && method.Args != null && !IsComputedSelector(method))
+                {
+                    SpecValidator.RequireLiteralSafeBytes(method.Selector, $"selector of method '{method.Name}'");
+                }
+                SpecValidator.RequireCSharpType(method.Returns?.TypeDetail, $"return type detail of method '{method.Name}'");
             }
         }
 
@@ -129,6 +216,7 @@ namespace AVM.ClientGenerator.ABI.ARC32
             {
 
                 contractDescription = new AppDescription();
+                contractDescription.TrustedSource = true; // names come from the developer's own C# source, not from a spec
                 contractDescription.Contract.Name = smartContractClass.Identifier.Text;
 
                 if (smartContractClass.HasStructuredTrivia)
@@ -272,6 +360,9 @@ namespace AVM.ClientGenerator.ABI.ARC32
         {
 
             if (string.IsNullOrWhiteSpace(nameSpace)) nameSpace = "Algorand.Imports";
+            if (!TrustedSource) SpecValidator.RequireNamespace(nameSpace, "namespace");
+            if (!TrustedSource) ValidateSpecNames(); // covers an AppDescription deserialised or built without the Load* methods
+            if (!TrustedSource && !string.IsNullOrWhiteSpace(nameOverride)) SpecValidator.RequireIdentifier(nameOverride, "name override");
 
             string name = Contract.Name;
             if (!string.IsNullOrWhiteSpace(nameOverride)) { name = nameOverride; }
@@ -333,6 +424,8 @@ $@"{"\t"}///<summary>
 
         public string ToProxy(string namespaceName)
         {
+            if (!TrustedSource) SpecValidator.RequireNamespace(namespaceName, "namespace");
+            if (!TrustedSource) ValidateSpecNames(); // covers an AppDescription deserialised or built without the Load* methods
             List<string> structs = new List<string>();
 
 

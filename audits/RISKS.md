@@ -375,8 +375,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   no CVE reported by `dotnet list package --vulnerable`; unchanged at 2%. (Newest upstream
   release not re-checked on nuget.org this cycle.)
   <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` D2) — unchanged at 0.1.11, no advisory; newest upstream
-  release again not re-checked. Also noted: `MsgPack.Cli` 1.0.1 is referenced but appears unused in
-  source (grep only) — recommend removal to shrink the serialisation supply chain. Likelihood 2%.
+  release again not re-checked. `MsgPack.Cli` 1.0.1 is a required dependency of `Newtonsoft.Msgpack`
+  (its nuspec), so it is part of this risk's surface, not removable bloat (a draft of the audit said otherwise
+  and was corrected). Likelihood 2%.
 
 ## RISK-013 — Unused Roslyn `using` in a `MessagePack` formatter (dependency itself confirmed legitimate, not bloat)
 
@@ -699,9 +700,42 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   identifier, normalise the contract name and take `Path.GetFileName` of the output name (and check the
   resolved path stays under `--output`), escape all literal characters, and add hostile-value tests for
   every spec string field in both ARC32 and ARC56.
-- **Current mitigation status**: Unmitigated (found 2026-10-20). Partial context: ABI types are validated,
-  and ARC56 specs are documented as trusted input only informally.
-- **5-year misuse likelihood**: **3%** — needs a malicious or tampered spec and a developer who compiles
+- **Current mitigation status**: Mitigated (2026-10-20, branch `fix/audit-2026-10-20`), after repeated
+  review rounds that each widened the checked surface. What is enforced now
+  (`ClientGenerator/Extensions/SpecValidator.cs`, `SpecValidationException`, not a silent null):
+  - **Names**: contract, method, argument and event names must be plain ASCII identifiers (full-string
+    match); the contract name may not be a Windows device name. The generated-file namespace, the ARC32
+    name override and the CLI `--namespace` value must be dotted identifiers (CLI validates up front).
+  - **Types**: method-argument, return, event-argument and struct-field types may only use ABI type
+    characters, with brackets enclosing digits only (the bracket text is copied into generated code as an
+    array length) and an optional leading `ref:`; ARC32 `typeDetail` (Roslyn type text from the SDK's own
+    generator) must parse as exactly one C# type with only rank commas in brackets.
+  - **Programs and selectors**: `source.*` (ARC32) and `byteCode.*` (ARC56) must be decodable base64; an ARC32
+    method selector must be the computed one or printable ASCII without quote or backslash. ARC32 state
+    storage keys are not validated; they are only written as a field name where every character that is not
+    a letter, digit or `_` becomes `_`.
+  - **When**: in the loaders (ARC32 before any TEAL is sent to algod for compilation; ARC56 atomically, so a
+    rejected or half-loaded spec is never kept on the generator), and again at the start of ARC32 `ToProxy` /
+    `ToSmartContractReference`, so an `AppDescription` deserialised directly or built by hand is checked too.
+    The only exemption is a description built by the Roslyn-based path from the developer's own C# source
+    (`TrustedSource`), whose names may be any legal C# identifier.
+  - **CLI**: reports a rejected or unreadable spec and write failures on stderr with a non-zero exit code
+    (`--help`/`--version` still exit 0), bounds the `--url` download, and builds the output path from the
+    validated contract name. The event `Signature` literal also escapes backslashes (defence in depth).
+  - The README tells users to generate only from specs they trust and review the output.
+  - **Regression tests**: `test/SpecValidationTests.cs` (hostile values in every checked position for ARC32
+    and ARC56, a Roslyn check that payloads placed in unchecked fields never become identifiers, and a load
+    check of every ARC56 spec under `test/Arc56`; the ARC32 specs used by the LocalNet tests were checked by
+    hand once and are not in an automated load test).
+  - **Known gaps, accepted** (none was found to allow code injection): struct names, struct field names and
+    event argument names are only passed through `ToPascalCase` (alphanumeric only; this was established by
+    reading and by the Roslyn field test), so unusual ones give uncompilable or colliding output; arguments
+    without a name, and ARC32 arguments named like a C# keyword (ARC56 escapes them), give uncompilable
+    output; distinct ARC32 state keys can collapse to one reference field name; the validator is ASCII-only,
+    so a spec or `--namespace` using non-ASCII letters is rejected where it previously worked; ARC32/ARC56
+    validation is two near-duplicate walks that must be kept in step; the CLI does not restrict `--url` hosts.
+- **5-year misuse likelihood**: **1%** (from 3% before the fix) — needs a malicious or tampered spec *and* the validator to be bypassed or removed;
+  before the fix it needed only a tampered spec and a developer who compiled
   the output without reading it; ARC56 specs do circulate through repositories, packages and URLs, and the
   injected text is visible in the generated file, which limits but does not remove the chance.
   Same band as `RISK-008`.
