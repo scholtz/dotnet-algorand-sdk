@@ -159,7 +159,14 @@ namespace Algorand.Algod.Model
             Array.Copy(prefix, 0, input, 0, prefix.Length);
             Array.Copy(PQSignature.SchemeFalcon1024, 0, input, prefix.Length, 2);
             Array.Copy(entropy, 0, input, prefix.Length + 2, entropy.Length);
-            return Utils.Digester.Digest(input);
+            try
+            {
+                return Utils.Digester.Digest(input);
+            }
+            finally
+            {
+                Array.Clear(input, 0, input.Length); // contains the mnemonic entropy
+            }
         }
 
         /// <summary>
@@ -248,6 +255,7 @@ namespace Algorand.Algod.Model
             var g = new sbyte[n];
             var F = new sbyte[n];
             var G = new sbyte[n];
+            Array tmp = null;
             try
             {
                 int u = 1;
@@ -263,7 +271,7 @@ namespace Algorand.Algod.Model
                 // sign_dyn samples s2, seeding its inner ChaCha8 PRNG from detrng per attempt,
                 // exactly like the reference do_sign_dyn loop.
                 var s2 = new short[n];
-                var tmp = Array.CreateInstance(r.FprType, 10 * n);
+                tmp = Array.CreateInstance(r.FprType, 10 * n);
                 r.SignDyn.Invoke(r.SignInstance,
                     new object[] { s2, 0, detrng, f, 0, g, 0, F, 0, G, 0, hm, 0, logn, tmp, 0 });
 
@@ -282,6 +290,8 @@ namespace Algorand.Algod.Model
                 Array.Clear(g, 0, g.Length);
                 Array.Clear(F, 0, F.Length);
                 Array.Clear(G, 0, G.Length);
+                // sign_dyn's working buffer holds the secret basis in (invertible) FFT form.
+                if (tmp != null) Array.Clear(tmp, 0, tmp.Length);
             }
         }
 

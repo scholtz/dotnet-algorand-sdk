@@ -83,11 +83,24 @@ namespace Algorand.Algod.Model
         /// Generate a new account with seed(master derivation key). Accepts a 32-byte seed or a 64-byte kmd-exported key (seed + public key).
         /// </summary>
         /// <param name="seed">seed(master derivation key)</param>
-        public Account(byte[] seed) : this(new KeyPair(SeedToPrivateKey(seed)))
+        public Account(byte[] seed) : this(KeyPairFromSeed(seed))
         {
 
         }
 
+
+        private static KeyPair KeyPairFromSeed(byte[] seed)
+        {
+            var privateKey = SeedToPrivateKey(seed);
+            try
+            {
+                return new KeyPair(privateKey); // KeyPair clones the buffer, so the intermediate copy can be wiped
+            }
+            finally
+            {
+                Array.Clear(privateKey, 0, privateKey.Length);
+            }
+        }
 
         private static byte[] SeedToPrivateKey(byte[] seed)
         {

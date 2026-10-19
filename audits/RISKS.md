@@ -41,6 +41,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   the caller's key buffer (no aliasing with the caller's array) and `Dispose()` is intact;
   residual: `Account(byte[] seed)`'s intermediate 32-byte array in `SeedToPrivateKey` is not
   cleared. Likelihood unchanged at 1%. (Previously 2026-08-12.)
+  <br>Remediation 2026-10-19 (branch `fix/audit-2026-10-19`): `Account(byte[])` now wipes the
+  intermediate private-key array after `KeyPair` clones it (`KeyPairFromSeed`).
 
 ## RISK-002 — BouncyCastle crypto dependency vendored as an unpinned local DLL
 
@@ -462,6 +464,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   last are SDK-clearable and recommended as a follow-up fix)
   <br>2026-10-19 (`AUDIT-2026-10-19-13228ed.md` F1) — `FalconAccount.cs` diff is a single
   comment line; the N1 clearing recommendation is still open. Likelihood unchanged at 1%.
+  <br>Remediation 2026-10-19 (branch `fix/audit-2026-10-19`): `DetSignCompressed` now clears the
+  `sign_dyn` `tmp` FFT buffer in its `finally`, and `SeedFromEntropy` clears its entropy-bearing
+  input buffer. Residual: BC-internal SHAKE state cannot be wiped from here.
 
 ## RISK-016 — Falcon keygen depends on BouncyCastle 2.6.2 *internal* APIs via reflection
 
@@ -571,8 +576,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Mitigable by this repo?**: Partially — a "publicly known test keys, never fund"
   comment in the JSON/fixture; the vectors themselves must stay (they are the security
   guardrail for `RISK-016`/`RISK-017`).
-- **Current mitigation status**: Unmitigated (comment not yet added; risk inherent to
-  golden-vector testing and accepted)
+- **Current mitigation status**: Partially mitigated 2026-10-19 (README + inline comment added; the JSON
+  itself cannot carry a comment). Risk inherent to golden-vector testing and accepted.
 - **5-year misuse likelihood**: **<1%** — requires someone to deliberately or mistakenly
   fund/reuse a key that is visibly test data inside a test directory; no incident pattern
   in comparable SDKs' golden-vector files.
@@ -582,6 +587,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Last reviewed**: 2026-08-12
   <br>2026-10-19 (`AUDIT-2026-10-19-13228ed.md` F1) — the "publicly known test keys, never fund"
   comment is still not present in the fixture; unchanged, still <1%.
+  <br>Remediation 2026-10-19 (branch `fix/audit-2026-10-19`): added `test/TestData/README.md` and a
+  comment at the inline golden mnemonic in `PQSignatureTests.cs`; status now Partially mitigated
+  (JSON itself cannot carry a comment).
 
 ## RISK-019 — Contract descriptions in an ARC32/ARC56 spec could break out of a comment into generated client code
 
@@ -595,8 +603,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   (and their end users).
 - **Mitigable by this repo?**: Yes — done for descriptions. Identifier and string-literal
   emission paths were not re-audited this cycle.
-- **Current mitigation status**: Mitigated for description fields (code read; no dedicated
-  hostile-input compile test exists yet). Other spec-derived strings: not verified.
+- **Current mitigation status**: Mitigated for description fields; regression tests added 2026-10-19
+  (`MultilineDocCommentTests.Arc32/Arc56DescriptionsCannotInjectCode`, all five line terminators).
+  Other spec-derived strings (identifiers, literals): not verified.
 - **5-year misuse likelihood**: **1%** — needs a malicious or tampered spec, a developer who
   generates from it and does not read the output; the description path is now closed.
 - **Impact if realized**: Attacker-chosen code compiled into the developer's application.
@@ -635,8 +644,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   or manual runs. See `AUDIT-2026-10-19-13228ed.md` C1.
 - **Who is exposed**: All consumers of the published `Algorand5` / `Algorand5_Unity` packages.
 - **Mitigable by this repo?**: Yes — pin actions to commit SHAs and `algokit` to a version.
-- **Current mitigation status**: Partially mitigated (the publish job's token scoping was
-  not fully verified beyond the diff).
+- **Current mitigation status**: Mitigated on 2026-10-19 (branch `fix/audit-2026-10-19`): all workflow
+  actions pinned to commit SHAs (tag kept in a comment) and `algokit` pinned to 2.10.2. The publish
+  job's token scoping was not verified beyond the diff; SHA pins need periodic manual bumps.
 - **5-year misuse likelihood**: **2%** — compromises of widely used actions have happened in
   the ecosystem, but exploitation here also needs a release to run during the compromise window.
 - **Impact if realized**: Tampered signing library distributed to many developers; potentially
