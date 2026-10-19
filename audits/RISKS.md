@@ -375,8 +375,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   no CVE reported by `dotnet list package --vulnerable`; unchanged at 2%. (Newest upstream
   release not re-checked on nuget.org this cycle.)
   <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` D2) — unchanged at 0.1.11, no advisory; newest upstream
-  release again not re-checked. Also noted: `MsgPack.Cli` 1.0.1 is referenced but appears unused in
-  source (grep only) — recommend removal to shrink the serialisation supply chain. Likelihood 2%.
+  release again not re-checked. `MsgPack.Cli` 1.0.1 is a required dependency of `Newtonsoft.Msgpack`
+  (its nuspec), so it is part of this risk's surface, not removable bloat (a draft of the audit said otherwise
+  and was corrected). Likelihood 2%.
 
 ## RISK-013 — Unused Roslyn `using` in a `MessagePack` formatter (dependency itself confirmed legitimate, not bloat)
 
@@ -699,9 +700,19 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   identifier, normalise the contract name and take `Path.GetFileName` of the output name (and check the
   resolved path stays under `--output`), escape all literal characters, and add hostile-value tests for
   every spec string field in both ARC32 and ARC56.
-- **Current mitigation status**: Unmitigated (found 2026-10-20). Partial context: ABI types are validated,
-  and ARC56 specs are documented as trusted input only informally.
-- **5-year misuse likelihood**: **3%** — needs a malicious or tampered spec and a developer who compiles
+- **Current mitigation status**: Mitigated (2026-10-20, branch `fix/audit-2026-10-20`). `SpecValidator`
+  (`ClientGenerator/Extensions/SpecValidator.cs`) requires every spec-supplied contract, method, argument and
+  event name to be a plain ASCII identifier when an ARC32 or ARC56 spec is loaded (`SpecValidationException`,
+  not a silent null); the event signature literal now also escapes `\`; the CLI resolves the output path
+  and refuses a write outside `--output`; the README states that specs are trusted input. Regression tests:
+  `test/SpecValidationTests.cs` (hostile names in every position, ARC32 and ARC56, plus a check that all
+  specs shipped in the repo still load). Residual: ARC32 emission was verified by reading and the validator
+  rather than by running the full generator on hostile input; names not covered by the validator (struct
+  names and struct field names, event argument names) are still emitted only after `ToPascalCase` (alphanumeric
+  only), which was established by reading the code (only method names, contract names, argument names and event names were probed); the Roslyn-based path that builds descriptions from compiled C#
+  classes uses names from the developer's own code.
+- **5-year misuse likelihood**: **1%** (from 3% before the fix) — needs a malicious or tampered spec *and* the validator to be bypassed or removed;
+  before the fix it needed only a tampered spec and a developer who compiled
   the output without reading it; ARC56 specs do circulate through repositories, packages and URLs, and the
   injected text is visible in the generated file, which limits but does not remove the chance.
   Same band as `RISK-008`.

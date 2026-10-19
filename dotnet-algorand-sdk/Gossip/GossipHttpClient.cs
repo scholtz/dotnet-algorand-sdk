@@ -18,8 +18,7 @@ namespace Algorand.Gossip
                 throw new InvalidOperationException("No HTTP clients available.");
 
             var keys = new List<string>(_httpClients.Keys);
-            var random = new Random();
-            var randomKey = keys[random.Next(keys.Count)];
+            var randomKey = keys[System.Security.Cryptography.RandomNumberGenerator.GetInt32(keys.Count)];
             return _httpClients[randomKey];
         }
         public GossipHttpClient(GossipHttpConfiguration config)

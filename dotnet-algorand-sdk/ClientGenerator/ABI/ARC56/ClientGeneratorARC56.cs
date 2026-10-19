@@ -48,8 +48,36 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 }
             }
 
+            ValidateSpecNames();
+
             return true;
         }
+        /// <summary>
+        /// Rejects any spec-supplied name that would be emitted verbatim into generated code (or the output
+        /// file name) and is not a plain identifier. See <see cref="SpecValidator"/>.
+        /// </summary>
+        private void ValidateSpecNames()
+        {
+            if (Contract == null) return;
+            SpecValidator.RequireIdentifier(Contract.Name, "contract name");
+            foreach (var method in Contract.Methods ?? new List<Method>())
+            {
+                SpecValidator.RequireIdentifier(method.Name, "method name");
+                foreach (var arg in method.Args ?? new List<MethodArgument>())
+                {
+                    SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
+                }
+                foreach (var evt in method.Events ?? new List<Event>())
+                {
+                    SpecValidator.RequireIdentifier(evt.Name, "event name");
+                }
+            }
+            foreach (var evt in Contract.Events ?? new List<Event>())
+            {
+                SpecValidator.RequireIdentifier(evt.Name, "event name");
+            }
+        }
+
         public string GetOutputFileName()
         {
             return Contract.Name + ".cs";
@@ -647,7 +675,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
 
                 var eventTop = eventObj.AddChild();
                 eventTop.AddOpeningLine($"public static readonly byte[] Selector = new byte[4] {{ {string.Join(",", selector)} }};");
-                eventTop.AddOpeningLine($"public const string Signature = \"{signature.Replace("\"", "\\\"")}\";");
+                eventTop.AddOpeningLine($"public const string Signature = \"{signature.Replace("\\", "\\\\").Replace("\"", "\\\"")}\";");
                 eventTop.AddOpeningLine("public static bool Matches(byte[] log) { return log != null && log.Length >= 4 && log[0] == Selector[0] && log[1] == Selector[1] && log[2] == Selector[2] && log[3] == Selector[3]; }");
 
                 var args = evt.Args ?? new List<EventArgument>();

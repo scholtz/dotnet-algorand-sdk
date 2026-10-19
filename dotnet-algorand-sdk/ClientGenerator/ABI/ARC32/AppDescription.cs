@@ -72,7 +72,12 @@ namespace AVM.ClientGenerator.ABI.ARC32
                     {
                         MissingMemberHandling = MissingMemberHandling.Ignore
                     });
+                    cd?.ValidateSpecNames();
                     return cd;
+                }
+                catch (SpecValidationException)
+                {
+                    throw; // an unsafe name is a hard error, not a "could not parse" null
                 }
                 catch
                 {
@@ -105,12 +110,35 @@ namespace AVM.ClientGenerator.ABI.ARC32
                     cd.Source.ClearAVM = compiled.Result;
                 }
 
+                cd.ValidateSpecNames();
                 return cd;
+            }
+            catch (SpecValidationException)
+            {
+                throw; // an unsafe name is a hard error, not a "could not parse" null
             }
             catch
             {
                 System.Diagnostics.Trace.TraceError("Unable to deserialise file to ContractDescription");
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Rejects any spec-supplied name that would be emitted verbatim into generated code (or the output
+        /// file name) and is not a plain identifier. See <see cref="SpecValidator"/>.
+        /// </summary>
+        public void ValidateSpecNames()
+        {
+            if (Contract == null) return;
+            SpecValidator.RequireIdentifier(Contract.Name, "contract name");
+            foreach (var method in Contract.Methods ?? new List<MethodDescription>())
+            {
+                SpecValidator.RequireIdentifier(method.Name, "method name");
+                foreach (var arg in method.Args ?? new List<ArgumentDescription>())
+                {
+                    SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
+                }
             }
         }
 

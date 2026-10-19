@@ -83,7 +83,14 @@ namespace client_generator
                     }
                     if (Directory.Exists(opts.Output))
                     {
-                        var name = opts.Output + "/" + generator.GetOutputFileName();
+                        // the file name comes from the (untrusted) spec: keep the write inside the output folder
+                        var outputDir = Path.GetFullPath(opts.Output).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                        var name = Path.GetFullPath(Path.Combine(outputDir, generator.GetOutputFileName()));
+                        if (!string.Equals(Path.GetDirectoryName(name), outputDir, StringComparison.Ordinal))
+                        {
+                            Console.Error.WriteLine("Error: the contract name would write outside the output folder.");
+                            return;
+                        }
                         File.WriteAllText(name, appProxy);
                         Console.WriteLine($"The file was saved to {name}");
                     }

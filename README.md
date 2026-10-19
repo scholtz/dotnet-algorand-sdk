@@ -174,6 +174,10 @@ The test suites double as extensive usage references:
 
 The SDK includes a generator that turns an [ARC56](https://github.com/algorandfoundation/ARCs/blob/main/ARCs/arc-0056.md) contract spec (JSON) into a fully typed C# client proxy — method calls, structs, state, and box accessors included.
 
+> **Specs are trusted input.** The generator writes names from the spec into C# source that you then compile
+> and run, so only generate from a spec you wrote or have reviewed. Contract, method, argument and event names
+> must be plain identifiers (`[A-Za-z_][A-Za-z0-9_]*`); anything else is rejected with a `SpecValidationException`.
+
 ### In code
 
 ```cs
