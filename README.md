@@ -174,6 +174,11 @@ The test suites double as extensive usage references:
 
 The SDK includes a generator that turns an [ARC56](https://github.com/algorandfoundation/ARCs/blob/main/ARCs/arc-0056.md) contract spec (JSON) into a fully typed C# client proxy — method calls, structs, state, and box accessors included.
 
+> **Only generate from specs you trust.** The generator writes names from the spec into C# source that you then
+> compile and run. Names, types and program strings are validated and a hostile spec is rejected, but that is a
+> safety net, not a licence to skip reviewing a spec (and the generated file) from an unknown source. Contract, method, argument and event names
+> must be plain identifiers (`[A-Za-z_][A-Za-z0-9_]*`), the namespace passed to the generator (`--namespace`) must be a dotted identifier, and ABI type strings may only use letters, digits, `_`, `(`, `)`, `,`, spaces, `[digits]` and a leading `ref:`; anything else is rejected with a `SpecValidationException`.
+
 ### In code
 
 ```cs
@@ -217,6 +222,8 @@ Options:
   --help             Display the help screen.
   --version          Display version information.
 ```
+
+Errors (invalid arguments, an unreadable or rejected spec, a failed write) are written to stderr and the tool exits with a non-zero code; `--help` and `--version` exit with 0.
 
 ## Building and testing from source
 

@@ -43,6 +43,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   cleared. Likelihood unchanged at 1%. (Previously 2026-08-12.)
   <br>Remediation 2026-10-19 (branch `fix/audit-2026-10-19`): `Account(byte[])` now wipes the
   intermediate private-key array after `KeyPair` clones it (`KeyPairFromSeed`), including when validation throws. Still unwiped: the KeyPair's own clone (wiped on Dispose), BouncyCastle's temporary key objects, and the caller's own seed array.
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` F1) — remediation verified present on `master` (`ffb6406`),
+  `finally`-based clearing read in `Account.cs`. Likelihood unchanged at 1%.
 
 ## RISK-002 — BouncyCastle crypto dependency vendored as an unpinned local DLL
 
@@ -218,10 +220,12 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   checksums, and document that ARC56 spec URLs should only be pointed at trusted
   sources.
 - **Current mitigation status**: Unmitigated
-- **5-year misuse likelihood**: **2%** — requires a specific, uncommon attack (registry
-  tag takeover, or a developer pointing the generator at an untrusted spec URL) and the
-  generator's actual code surface (ABI-to-stub generation) offers little obvious
-  attacker leverage even if triggered, since it doesn't handle key material.
+- **5-year misuse likelihood**: **3%** (up from 2%, 2026-10-20) — requires a specific, uncommon attack
+  (registry tag takeover, or a developer pointing the generator at an untrusted spec URL). The earlier
+  reasoning that the generator "offers little obvious attacker leverage" no longer holds: injection
+  through an argument name, event name and contract name was demonstrated (`RISK-022`), and `--url` makes
+  fetching a spec from a remote location a supported input. Still bounded by needing an untrusted spec
+  and an unreviewed compile.
 - **Impact if realized**: Malicious generated code compiled into a developer's
   application — impact depends entirely on what that code is made to do, potentially
   significant if it added a hidden network call to a generated client method.
@@ -229,6 +233,10 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Last reviewed**: 2026-10-19 (`AUDIT-2026-10-19-13228ed.md` G1) — the comment-escape variant
   of the tampered-spec vector is now closed (`RISK-019`); the Docker registry and
   untrusted-spec-URL parts are unchanged, still Unmitigated, likelihood unchanged at 2%.
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` G2/C1) — the untrusted-spec vector is wider than
+  recorded (`RISK-022`), likelihood raised to 3%. Dockerfile read: runtime stage runs as non-root
+  (`USER $APP_UID`); base images (`dotnet/sdk:8.0`, `runtime:8.0`) are tag-pinned, not digest-pinned; the
+  image is still pushed unsigned. Status stays Unmitigated.
 
 ## RISK-009 — Unity ILRepack build omits the `MessagePack` package
 
@@ -366,6 +374,10 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Last reviewed**: 2026-10-19 — still pinned at 0.1.11, still referenced in the csproj,
   no CVE reported by `dotnet list package --vulnerable`; unchanged at 2%. (Newest upstream
   release not re-checked on nuget.org this cycle.)
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` D2) — unchanged at 0.1.11, no advisory; newest upstream
+  release again not re-checked. `MsgPack.Cli` 1.0.1 is a required dependency of `Newtonsoft.Msgpack`
+  (its nuspec), so it is part of this risk's surface, not removable bloat (a draft of the audit said otherwise
+  and was corrected). Likelihood 2%.
 
 ## RISK-013 — Unused Roslyn `using` in a `MessagePack` formatter (dependency itself confirmed legitimate, not bloat)
 
@@ -467,6 +479,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   <br>Remediation 2026-10-19 (branch `fix/audit-2026-10-19`): `DetSignCompressed` now clears the
   `sign_dyn` `tmp` FFT buffer in its `finally`, and `SeedFromEntropy` clears its entropy-bearing
   input buffer. Residual: BC-internal SHAKE state cannot be wiped from here.
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` F1) — both clearings verified on `master`; the
+  N1 recommendation is closed. Likelihood unchanged at 1%.
 
 ## RISK-016 — Falcon keygen depends on BouncyCastle 2.6.2 *internal* APIs via reflection
 
@@ -590,6 +604,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   <br>Remediation 2026-10-19 (branch `fix/audit-2026-10-19`): added `test/TestData/README.md` and a
   comment at the inline golden mnemonic in `PQSignatureTests.cs`; status now Partially mitigated
   (JSON itself cannot carry a comment).
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` F1) — `test/TestData/README.md` and the inline comment
+  verified on `master`. Likelihood unchanged at <1%.
 
 ## RISK-019 — Contract descriptions in an ARC32/ARC56 spec could break out of a comment into generated client code
 
@@ -603,14 +619,16 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   (and their end users).
 - **Mitigable by this repo?**: Yes — done for descriptions. Identifier and string-literal
   emission paths were not re-audited this cycle.
-- **Current mitigation status**: Mitigated for description fields; regression tests added 2026-10-19
+- **Current mitigation status**: Mitigated for description fields only; regression tests added 2026-10-19
   (`MultilineDocCommentTests.Arc32/Arc56DescriptionsCannotInjectCode`, all five line terminators).
-  Other spec-derived strings (identifiers, literals): not verified.
+  Other spec-derived strings (identifiers, literals) were found NOT mitigated on 2026-10-20 — see `RISK-022`.
 - **5-year misuse likelihood**: **1%** — needs a malicious or tampered spec, a developer who
   generates from it and does not read the output; the description path is now closed.
 - **Impact if realized**: Attacker-chosen code compiled into the developer's application.
 - **First recorded**: 2026-10-19
-- **Last reviewed**: 2026-10-19
+- **Last reviewed**: 2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` G2) — description hardening and its
+  tests verified present and passing; the wider class of the same problem is tracked as `RISK-022`.
+  Likelihood for the description path unchanged at 1%.
 
 ## RISK-020 — Deterministic `Account(seed)` silently produced random keys under BouncyCastle 2.7
 
@@ -650,9 +668,78 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   `.github/dependabot.yml` (github-actions, weekly) proposes SHA bumps. `upload-artifact@v3` in
   `generator_build.yml` moved to v4; other old action versions there (checkout v3, setup-java v2,
   setup-dotnet v1) remain. The publish job's token scoping was not verified beyond the diff.
+  <br>2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` C1) — SHA pinning, the `algokit` pin and Dependabot
+  verified on `master`; `publish-nuget.yml` read in full: `id-token: write` is confined to the `publish`
+  job, which only downloads the artifact and pushes it. Remaining: `algokit`'s transitive dependencies
+  and Docker base images are not pinned/digest-locked, and the build job installs `algokit` before the
+  artifact upload. Likelihood unchanged at 2%.
 - **5-year misuse likelihood**: **2%** — compromises of widely used actions have happened in
   the ecosystem, but exploitation here also needs a release to run during the compromise window.
 - **Impact if realized**: Tampered signing library distributed to many developers; potentially
   loss of many keys.
 - **First recorded**: 2026-10-19
 - **Last reviewed**: 2026-10-19
+
+## RISK-022 — Spec-derived identifiers, event signatures and contract name reach generated code and the output path unescaped
+
+- **Description**: The ARC56 client generator (and, by reading, the ARC32 path) emits several free-form
+  spec strings verbatim into generated C#: method/event **argument names** (the `SafeIdentifier` helper
+  only `@`-escapes C# keywords and does not require a valid identifier), the **event name** inside a
+  string literal (only `"` is escaped, not `\`), and the **contract name** as the class name and as the
+  output file name. Executed on `test/Arc56/GasStation.arc56.json` with hostile values on 2026-10-20: an
+  argument name produced an attacker-chosen method body, an event name produced a new class member with a
+  static initializer, a contract name produced an extra type, and a contract name of `../../../escaped`
+  made `GetOutputFileName()` return `../../../escaped.cs`, which `client-generator/Program.cs` writes with
+  `File.WriteAllText` (path traversal, `.cs` suffix only). ABI `type` strings are validated and rejected;
+  method and struct names pass through `ToPascalCase` and were not injectable. See
+  `AUDIT-2026-10-20-2cad0b5.md` G2. Sibling of `RISK-019` (comments) and `RISK-008` (supply chain).
+- **Who is exposed**: Developers who generate a client from a spec they did not write or review
+  (including via the CLI's `--url`), and the end users of the resulting application; for the path
+  traversal, anyone running the generator or its Docker image with a writable, reachable output tree.
+- **Mitigable by this repo?**: Yes — require `SyntaxFacts.IsValidIdentifier` for every spec-derived
+  identifier, normalise the contract name and take `Path.GetFileName` of the output name (and check the
+  resolved path stays under `--output`), escape all literal characters, and add hostile-value tests for
+  every spec string field in both ARC32 and ARC56.
+- **Current mitigation status**: Mitigated (2026-10-20, branch `fix/audit-2026-10-20`), after repeated
+  review rounds that each widened the checked surface. What is enforced now
+  (`ClientGenerator/Extensions/SpecValidator.cs`, `SpecValidationException`, not a silent null):
+  - **Names**: contract, method, argument and event names must be plain ASCII identifiers (full-string
+    match); the contract name may not be a Windows device name. The generated-file namespace, the ARC32
+    name override and the CLI `--namespace` value must be dotted identifiers (CLI validates up front).
+  - **Types**: method-argument, return, event-argument and struct-field types may only use ABI type
+    characters, with brackets enclosing digits only (the bracket text is copied into generated code as an
+    array length) and an optional leading `ref:`; ARC32 `typeDetail` (Roslyn type text from the SDK's own
+    generator) must parse as exactly one C# type with only rank commas in brackets.
+  - **Programs and selectors**: `source.*` (ARC32) and `byteCode.*` (ARC56) must be decodable base64; an ARC32
+    method selector must be the computed one or printable ASCII without quote or backslash. ARC32 state
+    storage keys are not validated; they are only written as a field name where every character that is not
+    a letter, digit or `_` becomes `_`.
+  - **When**: in the loaders (ARC32 before any TEAL is sent to algod for compilation; ARC56 atomically, so a
+    rejected or half-loaded spec is never kept on the generator), and again at the start of ARC32 `ToProxy` /
+    `ToSmartContractReference`, so an `AppDescription` deserialised directly or built by hand is checked too.
+    The only exemption is a description built by the Roslyn-based path from the developer's own C# source
+    (`TrustedSource`), whose names may be any legal C# identifier.
+  - **CLI**: reports a rejected or unreadable spec and write failures on stderr with a non-zero exit code
+    (`--help`/`--version` still exit 0), bounds the `--url` download, and builds the output path from the
+    validated contract name. The event `Signature` literal also escapes backslashes (defence in depth).
+  - The README tells users to generate only from specs they trust and review the output.
+  - **Regression tests**: `test/SpecValidationTests.cs` (hostile values in every checked position for ARC32
+    and ARC56, a Roslyn check that payloads placed in unchecked fields never become identifiers, and a load
+    check of every ARC56 spec under `test/Arc56`; the ARC32 specs used by the LocalNet tests were checked by
+    hand once and are not in an automated load test).
+  - **Known gaps, accepted** (none was found to allow code injection): struct names, struct field names and
+    event argument names are only passed through `ToPascalCase` (alphanumeric only; this was established by
+    reading and by the Roslyn field test), so unusual ones give uncompilable or colliding output; arguments
+    without a name, and ARC32 arguments named like a C# keyword (ARC56 escapes them), give uncompilable
+    output; distinct ARC32 state keys can collapse to one reference field name; the validator is ASCII-only,
+    so a spec or `--namespace` using non-ASCII letters is rejected where it previously worked; ARC32/ARC56
+    validation is two near-duplicate walks that must be kept in step; the CLI does not restrict `--url` hosts.
+- **5-year misuse likelihood**: **1%** (from 3% before the fix) — needs a malicious or tampered spec *and* the validator to be bypassed or removed;
+  before the fix it needed only a tampered spec and a developer who compiled
+  the output without reading it; ARC56 specs do circulate through repositories, packages and URLs, and the
+  injected text is visible in the generated file, which limits but does not remove the chance.
+  Same band as `RISK-008`.
+- **Impact if realized**: Attacker-chosen code runs in the developer's application (potentially one that
+  holds signing keys); overwrite of a `.cs` file outside the output folder.
+- **First recorded**: 2026-10-20
+- **Last reviewed**: 2026-10-20

@@ -29,27 +29,86 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         /// <returns></returns>
         public bool LoadFromByteArray(byte[] data)
         {
+            Contract = null; // a failed load must never leave the previously loaded spec in place
             var json = Encoding.UTF8.GetString(data);
-            Contract = JsonConvert.DeserializeObject<AppDescriptionArc56>(json, new JsonSerializerSettings()
+            try
             {
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            });
-
-            // Some real-world ARC-56 artifacts (e.g. from older/nonstandard build tooling) emit the compiled
-            // bytecode under a snake_case "byte_code" key instead of the spec's camelCase "byteCode" - fall back
-            // to it so ExtraProgramPages (ToProxy below) can still be computed instead of silently staying null.
-            if (Contract != null && Contract.ByteCode == null)
-            {
-                var root = Newtonsoft.Json.Linq.JObject.Parse(json);
-                var byteCodeToken = root["byte_code"];
-                if (byteCodeToken != null)
+                Contract = JsonConvert.DeserializeObject<AppDescriptionArc56>(json, new JsonSerializerSettings()
                 {
-                    Contract.ByteCode = byteCodeToken.ToObject<ProgramSource>();
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                });
+
+                if (Contract == null) throw new SpecValidationException("The contract spec is empty or not a JSON object.");
+
+                // Some real-world ARC-56 artifacts (e.g. from older/nonstandard build tooling) emit the compiled
+                // bytecode under a snake_case "byte_code" key instead of the spec's camelCase "byteCode" - fall back
+                // to it so ExtraProgramPages (ToProxy below) can still be computed instead of silently staying null.
+                if (Contract.ByteCode == null)
+                {
+                    var root = Newtonsoft.Json.Linq.JObject.Parse(json);
+                    var byteCodeToken = root["byte_code"];
+                    if (byteCodeToken != null)
+                    {
+                        Contract.ByteCode = byteCodeToken.ToObject<ProgramSource>();
+                    }
                 }
+
+                ValidateSpecNames();
+            }
+            catch
+            {
+                Contract = null; // never leave an unvalidated or rejected spec on the instance for a later ToProxy/GetOutputFileName
+                throw;
             }
 
             return true;
         }
+        /// <summary>
+        /// Rejects any spec-supplied name that would be emitted verbatim into generated code (or the output
+        /// file name) and is not a plain identifier. See <see cref="SpecValidator"/>.
+        /// </summary>
+        private void ValidateSpecNames()
+        {
+            if (Contract == null) return;
+            SpecValidator.RequireContractName(Contract.Name);
+            SpecValidator.RequireBase64(Contract.ByteCode?.Approval, "byteCode.approval");
+            SpecValidator.RequireBase64(Contract.ByteCode?.Clear, "byteCode.clear");
+            foreach (var method in Contract.Methods ?? new List<Method>())
+            {
+                SpecValidator.RequireIdentifier(method.Name, "method name");
+                foreach (var arg in method.Args ?? new List<MethodArgument>())
+                {
+                    SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
+                    SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'", required: true);
+                }
+                SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
+                foreach (var evt in method.Events ?? new List<Event>())
+                {
+                    ValidateEvent(evt);
+                }
+            }
+            foreach (var evt in Contract.Events ?? new List<Event>())
+            {
+                ValidateEvent(evt);
+            }
+            foreach (var structFields in (Contract.Structs ?? new Dictionary<string, List<StructField>>()).Values)
+            {
+                foreach (var field in structFields ?? new List<StructField>())
+                {
+                    SpecValidator.RequireAbiType(field.Type, $"type of struct field '{SpecValidator.Show(field.Name)}'", required: true);
+                }
+            }
+        }
+
+        private static void ValidateEvent(Event evt)
+        {
+            SpecValidator.RequireIdentifier(evt.Name, "event name");
+            foreach (var arg in evt.Args ?? new List<EventArgument>())
+            {
+                SpecValidator.RequireAbiType(arg.Type, $"type of argument '{SpecValidator.Show(arg.Name)}' of event '{evt.Name}'", required: true);
+            }
+        }
+
         public string GetOutputFileName()
         {
             return Contract.Name + ".cs";
@@ -59,6 +118,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         public async Task<string> ToProxy(string namespaceName)
         {
             if (Contract == null) throw new Exception("Load the contract first");
+            SpecValidator.RequireNamespace(namespaceName, "namespace");
 
             ResolveAnonymousTuples();
 
@@ -647,7 +707,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
 
                 var eventTop = eventObj.AddChild();
                 eventTop.AddOpeningLine($"public static readonly byte[] Selector = new byte[4] {{ {string.Join(",", selector)} }};");
-                eventTop.AddOpeningLine($"public const string Signature = \"{signature.Replace("\"", "\\\"")}\";");
+                eventTop.AddOpeningLine($"public const string Signature = \"{signature.Replace("\\", "\\\\").Replace("\"", "\\\"")}\";");
                 eventTop.AddOpeningLine("public static bool Matches(byte[] log) { return log != null && log.Length >= 4 && log[0] == Selector[0] && log[1] == Selector[1] && log[2] == Selector[2] && log[3] == Selector[3]; }");
 
                 var args = evt.Args ?? new List<EventArgument>();
