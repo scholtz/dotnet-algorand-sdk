@@ -401,6 +401,9 @@ namespace test
             var account = new Account(seed);
             account.Dispose();
             Assert.That(seed, Is.EqualTo(copy));
+
+            using (var kp = new KeyPair(seed)) { }
+            Assert.That(seed, Is.EqualTo(copy));
         }
 
         [Test]
@@ -409,6 +412,7 @@ namespace test
             Assert.Throws<System.ArgumentException>(() => new Account(new byte[31]));
             Assert.Throws<System.ArgumentException>(() => new Account(new byte[33]));
             Assert.Throws<System.ArgumentException>(() => new Account(new byte[96]));
+            Assert.Throws<System.ArgumentException>(() => new Account(new byte[64]));
         }
     }
 }

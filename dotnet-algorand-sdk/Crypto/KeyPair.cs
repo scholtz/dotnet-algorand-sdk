@@ -26,7 +26,7 @@ namespace Algorand.Crypto
             if (privateKey.Length != SK_SIZE)
                 throw new ArgumentException("Incorrect private key length");
 
-            ClearTextPrivateKey= privateKey;
+            ClearTextPrivateKey = (byte[])privateKey.Clone(); // own the buffer so Dispose() does not wipe the caller's array
 
             ed25519PrivateKey = new Ed25519PrivateKeyParameters(ClearTextPrivateKey, 0);
             ed25519PublicKey = ed25519PrivateKey.GeneratePublicKey();

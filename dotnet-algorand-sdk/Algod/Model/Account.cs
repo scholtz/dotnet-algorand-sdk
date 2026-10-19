@@ -5,7 +5,6 @@ namespace Algorand.Algod.Model
 {
     using Algorand.Crypto;
     using Algorand.Utils;
-    using Algorand.Utils.Crypto;
     using MessagePack;
     using Newtonsoft.Json;
     using Org.BouncyCastle.Crypto.Signers;
@@ -98,6 +97,16 @@ namespace Algorand.Algod.Model
                 throw new ArgumentException("Seed must be 32 bytes, or 64 bytes (seed + public key)", nameof(seed));
             var privateKey = new byte[KeyPair.SK_SIZE];
             Array.Copy(seed, privateKey, KeyPair.SK_SIZE);
+            if (seed.Length == KeyPair.SK_SIZE * 2)
+            {
+                // kmd exports seed + public key: reject a mismatched public half instead of ignoring it
+                var derivedPublicKey = new KeyPair((byte[])privateKey.Clone()).ClearTextPublicKey;
+                for (int i = 0; i < KeyPair.SK_SIZE; i++)
+                {
+                    if (seed[KeyPair.SK_SIZE + i] != derivedPublicKey[i])
+                        throw new ArgumentException("The public key half of the 64-byte seed does not match the private key", nameof(seed));
+                }
+            }
             return privateKey;
         }
 
