@@ -51,7 +51,7 @@ namespace test
         [Test]
         public void ShippedArc56FixturesStillLoad()
         {
-            foreach (var file in new[] { "Arc56/GasStation.arc56.json" })
+            foreach (var file in Directory.GetFiles("Arc56", "*.arc56.json"))
             {
                 Assert.DoesNotThrow(() => Load(JObject.Parse(File.ReadAllText(file))), file);
             }

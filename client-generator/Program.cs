@@ -63,15 +63,25 @@ namespace client_generator
                         Console.WriteLine($"Namespace: {opts.Namespace}");
 
                     byte[] content;
-                    if (!string.IsNullOrEmpty(opts.Url))
+                    try
                     {
-                        using var client = new HttpClient();
-                        var response = await client.GetAsync(opts.Url);
-                        content = Encoding.UTF8.GetBytes(await response.Content.ReadAsStringAsync());
+                        if (!string.IsNullOrEmpty(opts.Url))
+                        {
+                            using var client = new HttpClient();
+                            var response = await client.GetAsync(opts.Url);
+                            response.EnsureSuccessStatusCode();
+                            content = Encoding.UTF8.GetBytes(await response.Content.ReadAsStringAsync());
+                        }
+                        else
+                        {
+                            content = File.ReadAllBytes(opts.File!);
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        content = File.ReadAllBytes(opts.File!);
+                        Console.Error.WriteLine($"Error: could not read the contract spec: {ex.Message}");
+                        Environment.ExitCode = 1;
+                        return;
                     }
 
                     var generator = new ClientGeneratorARC56();

@@ -157,7 +157,7 @@ namespace AVM.ClientGenerator.ABI.ARC32
             {
                 SpecValidator.RequireIdentifier(method.Name, "method name");
                 // a selector that differs from the computed one is written into a string literal of the reference class
-                if (method.Selector != null && method.Returns != null && !method.Selector.SequenceEqual(method.ToARC4MethodSelector()))
+                if (method.Selector != null && method.Returns != null && method.Args != null && !method.Selector.SequenceEqual(method.ToARC4MethodSelector()))
                 {
                     SpecValidator.RequireLiteralSafeBytes(method.Selector, $"selector of method '{method.Name}'");
                 }

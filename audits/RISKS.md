@@ -706,8 +706,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   device name), and every method-argument, return, event-argument and struct-field type to use only ABI type
   characters, when an ARC32 or ARC56 spec is loaded (`SpecValidationException`, not a silent null; ARC32
   validates before any TEAL is sent to algod). The event signature literal also escapes the backslash; the
-  CLI reports a rejected spec cleanly and refuses a contract file name that is not a bare file name; the README
-  states that specs are trusted input. Code review of the fix found event-argument types reaching a string
+  CLI reports a rejected spec (or an unreadable one) cleanly with a non-zero exit code, and builds the output
+  path from the validated, identifier-only contract name (no separate path-containment check; the validator is
+  the control); the README states that specs are trusted input. Code review of the fix found event-argument types reaching a string
   literal unvalidated; that is now closed and covered by a Roslyn-based test over struct, field, event and
   state fields. A second review round found the same class in the ARC32 path (`source.*` strings and declared
   state variable names, keys and types); `SpecValidator` now checks those too. A third round found that the text between `[` and `]` in an ABI type is
@@ -717,9 +718,12 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   generator instance. Known remaining gaps, accepted:
   `ToProxy`/`ToSmartContractReference` namespace and name-override arguments and the CLI `--namespace`
   option are supplied by the operator, not the spec, and are not validated; struct and field names that
-  PascalCase to an empty or colliding identifier produce uncompilable (not malicious) output. Regression tests:
-  `test/SpecValidationTests.cs` (hostile names in every position, ARC32 and ARC56, plus a check that all
-  specs shipped in the repo still load). Residual: ARC32 emission was verified by reading and the validator
+  PascalCase to an empty or colliding identifier, and arguments without a name, produce uncompilable (not
+  malicious) output; ARC32 state keys must be base64/identifier text as the ARC32 format specifies, and struct
+  names used as types must be plain identifiers, so a spec using other characters is now rejected. Regression tests:
+  `test/SpecValidationTests.cs` (hostile names in every position, ARC32 and ARC56, plus a check that the
+  ARC56 specs under `test/Arc56` still load; the ARC32 specs used by the LocalNet tests were checked by hand
+  once and are not in an automated load test). Residual: ARC32 emission was verified by reading and the validator
   rather than by running the full generator on hostile input; names not covered by the validator (struct
   names and struct field names, event argument names) are still emitted only after `ToPascalCase` (alphanumeric
   only), which was established by reading the code (only method names, contract names, argument names and event names were probed); the Roslyn-based path that builds descriptions from compiled C#
