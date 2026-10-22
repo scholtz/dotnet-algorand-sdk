@@ -64,7 +64,7 @@ namespace Algorand.AVM.ClientGenerator.Extensions
             {
                 throw new SpecValidationException($"The {what} \"{Show(type)}\" is not a valid ABI type string and cannot be used to generate code.");
             }
-            if (MaxParenthesisDepth(type) > MaxAbiTupleDepth || type.Count(c => c == '[') > MaxAbiTupleDepth)
+            if (MaxParenthesisDepth(type) > MaxAbiTupleDepth || MaxArraySuffixRun(type) > MaxAbiTupleDepth)
             {
                 throw new SpecValidationException($"The {what} \"{Show(type)}\" nests tuples or arrays deeper than {MaxAbiTupleDepth} levels and cannot be used to generate code.");
             }
@@ -75,6 +75,23 @@ namespace Algorand.AVM.ClientGenerator.Extensions
         /// cannot be caught and ends the process.
         /// </summary>
         public const int MaxAbiTupleDepth = 32;
+
+        // longest run of consecutive "[n]" suffixes on one element ("uint64[2][2]" is 2); a wide tuple of arrays is fine
+        private static int MaxArraySuffixRun(string type)
+        {
+            int run = 0, max = 0;
+            for (int i = 0; i < type.Length; i++)
+            {
+                if (type[i] == '[')
+                {
+                    run++;
+                    if (run > max) max = run;
+                    while (i < type.Length && type[i] != ']') i++;
+                }
+                else run = 0;
+            }
+            return max;
+        }
 
         private static int MaxParenthesisDepth(string type)
         {

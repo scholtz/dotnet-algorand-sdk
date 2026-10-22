@@ -198,6 +198,34 @@ namespace test
         }
 
         [Test]
+        public void AbiTypeValidatorAcceptsWideTuplesOfArrays()
+        {
+            var wide = "(" + string.Join(",", Enumerable.Repeat("byte[32]", 100)) + ")";
+            Assert.DoesNotThrow(() => SpecValidator.RequireAbiType(wide, "type"));
+        }
+
+        [Test]
+        public void Arc56AcceptsModerateStructChainAndDiamond()
+        {
+            var structs = new JObject();
+            for (int i = 0; i < 10; i++)
+                structs["S" + i] = new JArray(
+                    new JObject { ["name"] = "a", ["type"] = i == 9 ? "uint64" : "S" + (i + 1) },
+                    new JObject { ["name"] = "b", ["type"] = i == 9 ? "uint64" : "S" + (i + 1) + "[]" });
+            var spec = GasStation();
+            spec["structs"] = structs;
+            Assert.DoesNotThrow(() => Load(spec));
+        }
+
+        [Test]
+        public void Arc56RejectsNonIdentifierStructKey()
+        {
+            var spec = GasStation();
+            spec["structs"] = new JObject { ["1A"] = new JArray(new JObject { ["name"] = "x", ["type"] = "1A" }) };
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
         public void Arc56RejectsDeepAcyclicStructChain()
         {
             var structs = new JObject();

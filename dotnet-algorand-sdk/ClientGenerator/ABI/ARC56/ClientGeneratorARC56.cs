@@ -91,15 +91,21 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             {
                 ValidateEvent(evt);
             }
-            foreach (var structFields in (Contract.Structs ?? new Dictionary<string, List<StructField>>()).Values)
+            foreach (var structEntry in Contract.Structs ?? new Dictionary<string, List<StructField>>())
             {
-                foreach (var field in structFields ?? new List<StructField>())
+                SpecValidator.RequireIdentifier(structEntry.Key, "struct name");
+                foreach (var field in structEntry.Value ?? new List<StructField>())
                 {
                     SpecValidator.RequireAbiType(field.Type, $"type of struct field '{SpecValidator.Show(field.Name)}'", required: true);
                 }
             }
             RejectCyclicStructs();
         }
+
+        // Heuristic cap on the fully expanded size (sum of field type lengths, counting shared structs once per use).
+        private const long MaxExpandedStructSize = 100_000;
+
+        private static readonly System.Text.RegularExpressions.Regex StructRefToken = new System.Text.RegularExpressions.Regex("[A-Za-z_][A-Za-z0-9_]*", System.Text.RegularExpressions.RegexOptions.CultureInvariant);
 
         /// <summary>
         /// ABI structs cannot contain themselves; a cyclic graph would make the recursive struct walks in the
@@ -108,8 +114,6 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         /// Acyclic graphs are bounded too: the generator expands nested structs recursively, so both the nesting depth
         /// and the fully expanded size (which is exponential for a diamond-shaped graph) are capped.
         /// </summary>
-        private const long MaxExpandedStructSize = 100_000;
-
         private void RejectCyclicStructs()
         {
             var structs = Contract.Structs;
@@ -121,7 +125,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 var targets = new List<string>();
                 foreach (var field in kv.Value ?? new List<StructField>())
                 {
-                    foreach (System.Text.RegularExpressions.Match m in System.Text.RegularExpressions.Regex.Matches(field.Type ?? "", "[A-Za-z_][A-Za-z0-9_]*"))
+                    foreach (System.Text.RegularExpressions.Match m in StructRefToken.Matches(field.Type ?? ""))
                     {
                         if (structs.ContainsKey(m.Value)) targets.Add(m.Value);
                     }
