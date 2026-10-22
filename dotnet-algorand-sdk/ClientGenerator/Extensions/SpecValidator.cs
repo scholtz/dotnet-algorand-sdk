@@ -64,14 +64,14 @@ namespace Algorand.AVM.ClientGenerator.Extensions
             {
                 throw new SpecValidationException($"The {what} \"{Show(type)}\" is not a valid ABI type string and cannot be used to generate code.");
             }
-            if (MaxParenthesisDepth(type) > MaxAbiTupleDepth)
+            if (MaxParenthesisDepth(type) > MaxAbiTupleDepth || type.Count(c => c == '[') > MaxAbiTupleDepth)
             {
-                throw new SpecValidationException($"The {what} \"{Show(type)}\" nests tuples deeper than {MaxAbiTupleDepth} levels and cannot be used to generate code.");
+                throw new SpecValidationException($"The {what} \"{Show(type)}\" nests tuples or arrays deeper than {MaxAbiTupleDepth} levels and cannot be used to generate code.");
             }
         }
 
         /// <summary>
-        /// The generator recurses once per tuple nesting level; an unbounded depth would overflow the stack, which
+        /// The generator recurses once per tuple nesting level and once per array suffix; an unbounded depth would overflow the stack, which
         /// cannot be caught and ends the process.
         /// </summary>
         public const int MaxAbiTupleDepth = 32;

@@ -190,6 +190,37 @@ namespace test
             Assert.DoesNotThrow(() => SpecValidator.RequireAbiType(atLimit, "type"));
         }
 
+        [Test]
+        public void AbiTypeValidatorRejectsPathologicalArraySuffixes()
+        {
+            var deep = "uint64" + string.Concat(Enumerable.Repeat("[2]", 3000));
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireAbiType(deep, "type"));
+        }
+
+        [Test]
+        public void Arc56RejectsDeepAcyclicStructChain()
+        {
+            var structs = new JObject();
+            for (int i = 0; i < 200; i++)
+                structs["S" + i] = new JArray(new JObject { ["name"] = "n", ["type"] = i == 199 ? "uint64" : "S" + (i + 1) });
+            var spec = GasStation();
+            spec["structs"] = structs;
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
+        public void Arc56RejectsDiamondStructGraphWithExponentialExpansion()
+        {
+            var structs = new JObject();
+            for (int i = 0; i < 30; i++)
+                structs["S" + i] = new JArray(
+                    new JObject { ["name"] = "a", ["type"] = i == 29 ? "uint64" : "S" + (i + 1) },
+                    new JObject { ["name"] = "b", ["type"] = i == 29 ? "uint64" : "S" + (i + 1) });
+            var spec = GasStation();
+            spec["structs"] = structs;
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
         [TestCase("A", "A")]
         [TestCase("A[]", "A")]
         [TestCase("(uint64,A)[2]", "A")]

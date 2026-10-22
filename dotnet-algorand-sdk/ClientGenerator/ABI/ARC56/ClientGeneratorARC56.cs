@@ -105,7 +105,11 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         /// ABI structs cannot contain themselves; a cyclic graph would make the recursive struct walks in the
         /// generator overflow the stack (uncatchable), so reject it up front. A struct field type references another
         /// struct when the struct's name appears as an identifier in it (plain, array-suffixed or inside a tuple).
+        /// Acyclic graphs are bounded too: the generator expands nested structs recursively, so both the nesting depth
+        /// and the fully expanded size (which is exponential for a diamond-shaped graph) are capped.
         /// </summary>
+        private const long MaxExpandedStructSize = 100_000;
+
         private void RejectCyclicStructs()
         {
             var structs = Contract.Structs;
@@ -127,6 +131,8 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
 
             // iterative three-colour DFS: 1 = on the current path, 2 = finished
             var state = new Dictionary<string, int>();
+            var depth = new Dictionary<string, int>();
+            var expandedSize = new Dictionary<string, long>();
             foreach (var root in edges.Keys)
             {
                 if (state.ContainsKey(root)) continue;
@@ -141,6 +147,20 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                     {
                         state[node] = 2;
                         stack.Pop();
+                        int d = 0;
+                        long size = 1;
+                        foreach (var field in structs[node] ?? new List<StructField>()) size += (field.Type ?? "").Length;
+                        foreach (var t in targets)
+                        {
+                            d = Math.Max(d, depth[t]);
+                            size = Math.Min(size + expandedSize[t], long.MaxValue / 4);
+                        }
+                        depth[node] = d + 1;
+                        expandedSize[node] = size;
+                        if (depth[node] > SpecValidator.MaxAbiTupleDepth || size > MaxExpandedStructSize)
+                        {
+                            throw new SpecValidationException($"The struct \"{SpecValidator.Show(node)}\" nests other structs too deeply or too widely and cannot be used to generate code.");
+                        }
                         continue;
                     }
                     stack.Pop();
@@ -434,7 +454,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         /// </summary>
         private bool IsFieldTypeDynamic(string abiType) => IsFieldTypeDynamic(abiType, new HashSet<string>());
 
-        // visiting guards against a cyclic struct graph (also rejected at load time by RejectCyclicStructs).
+        // visiting is a backstop for a cyclic struct graph (normally rejected at load time by RejectCyclicStructs).
         private bool IsFieldTypeDynamic(string abiType, HashSet<string> visiting)
         {
             string trimmed = (abiType ?? "").Trim();
@@ -457,7 +477,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 // Empirically (see ARC-28 event log encoding), Algorand Python/Puya treats a struct as dynamic
                 // only if it actually contains a dynamic component, the same rule as plain tuples - not "any
                 // named struct is always dynamic" as one might expect from the type system alone.
-                if (!visiting.Add(trimmed)) return false;
+                if (!visiting.Add(trimmed)) throw new SpecValidationException($"The struct \"{SpecValidator.Show(trimmed)}\" refers to itself and cannot be used to generate code.");
                 try
                 {
                     return Contract.Structs[trimmed].Any(f => IsFieldTypeDynamic(f.Type, visiting));
