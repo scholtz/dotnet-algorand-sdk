@@ -74,8 +74,12 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             SpecValidator.RequireContractName(Contract.Name);
             SpecValidator.RequireBase64(Contract.ByteCode?.Approval, "byteCode.approval");
             SpecValidator.RequireBase64(Contract.ByteCode?.Clear, "byteCode.clear");
+            if (Contract.Methods != null && Contract.Methods.Any(m => m == null)) throw new SpecValidationException("The methods list contains a null entry.");
+            if (Contract.Events != null && Contract.Events.Any(e => e == null)) throw new SpecValidationException("The events list contains a null entry.");
             foreach (var method in Contract.Methods ?? new List<Method>())
             {
+                if (method.Args != null && method.Args.Any(a => a == null)) throw new SpecValidationException($"The args of method '{SpecValidator.Show(method.Name)}' contain a null entry.");
+                if (method.Events != null && method.Events.Any(e => e == null)) throw new SpecValidationException($"The events of method '{SpecValidator.Show(method.Name)}' contain a null entry.");
                 SpecValidator.RequireIdentifier(method.Name, "method name");
                 foreach (var arg in method.Args ?? new List<MethodArgument>())
                 {
@@ -97,7 +101,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             foreach (var structEntry in Contract.Structs ?? new Dictionary<string, List<StructField>>())
             {
                 SpecValidator.RequireIdentifier(structEntry.Key, "struct name");
-                if (structEntry.Value == null) throw new SpecValidationException($"The struct \"{structEntry.Key}\" has no field list.");
+                if (structEntry.Value == null || structEntry.Value.Any(f => f == null)) throw new SpecValidationException($"The struct \"{SpecValidator.Show(structEntry.Key)}\" has no field list or a null field.");
                 foreach (var field in structEntry.Value)
                 {
                     SpecValidator.RequireAbiType(field.Type, $"type of struct field '{SpecValidator.Show(field.Name)}'", required: true);
@@ -190,6 +194,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         private static void ValidateEvent(Event evt)
         {
             SpecValidator.RequireIdentifier(evt.Name, "event name");
+            if (evt.Args != null && evt.Args.Any(a => a == null)) throw new SpecValidationException($"The args of event '{evt.Name}' contain a null entry.");
             foreach (var arg in evt.Args ?? new List<EventArgument>())
             {
                 SpecValidator.RequireAbiType(arg.Type, $"type of argument '{SpecValidator.Show(arg.Name)}' of event '{evt.Name}'", required: true);

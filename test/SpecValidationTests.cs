@@ -267,6 +267,22 @@ namespace test
         }
 
         [Test]
+        public void Arc56RejectsNullEntries()
+        {
+            var spec = GasStation();
+            spec["structs"] = new JObject { ["A"] = new JArray(JValue.CreateNull()) };
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+
+            spec = GasStation();
+            ((JArray)spec["methods"]).Add(JValue.CreateNull());
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+
+            spec = GasStation();
+            ((JArray)spec["methods"].First(m => m["args"] != null && m["args"].Any())["args"]).Add(JValue.CreateNull());
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
         public void Arc56RejectsStructWithoutFieldList()
         {
             var spec = GasStation();
