@@ -219,13 +219,13 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Mitigable by this repo?**: Partially — pin/sign the Docker image, publish
   checksums, and document that ARC56 spec URLs should only be pointed at trusted
   sources.
-- **Current mitigation status**: Unmitigated
-- **5-year misuse likelihood**: **3%** (up from 2%, 2026-10-20) — requires a specific, uncommon attack
-  (registry tag takeover, or a developer pointing the generator at an untrusted spec URL). The earlier
-  reasoning that the generator "offers little obvious attacker leverage" no longer holds: injection
-  through an argument name, event name and contract name was demonstrated (`RISK-022`), and `--url` makes
-  fetching a spec from a remote location a supported input. Still bounded by needing an untrusted spec
-  and an unreviewed compile.
+- **Current mitigation status**: Partially mitigated — spec input validation (`SpecValidator`), `--url`
+  download time/size bounds (`30s` / `20 MB`), and README trusted-spec warnings are now in place (`477db7d`);
+  Docker base images remain tag-pinned and the published image is unsigned.
+- **5-year misuse likelihood**: **2%** (down from 3%, 2026-10-22) — the spec-string code-injection and
+  path-traversal vectors (`RISK-022`) that caused the bump from 2% to 3% on 2026-10-20 are now mitigated on
+  `master`; residual risk returns to a registry tag takeover, a bypass of `SpecValidator`, or a malicious spec
+  supplying deceptive-but-syntactically-valid bytecode/selectors to an unreviewed compile.
 - **Impact if realized**: Malicious generated code compiled into a developer's
   application — impact depends entirely on what that code is made to do, potentially
   significant if it added a hidden network call to a generated client method.
@@ -237,6 +237,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   recorded (`RISK-022`), likelihood raised to 3%. Dockerfile read: runtime stage runs as non-root
   (`USER $APP_UID`); base images (`dotnet/sdk:8.0`, `runtime:8.0`) are tag-pinned, not digest-pinned; the
   image is still pushed unsigned. Status stays Unmitigated.
+  <br>2026-10-22 (`AUDIT-2026-10-22-ecef80a.md` G2) — `RISK-022` remediation (`477db7d`), `--url` download
+  bounds, and README warning verified on `master`; status updated to Partially mitigated and likelihood
+  returned from 3% to 2%.
 
 ## RISK-009 — Unity ILRepack build omits the `MessagePack` package
 
@@ -378,6 +381,9 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
   release again not re-checked. `MsgPack.Cli` 1.0.1 is a required dependency of `Newtonsoft.Msgpack`
   (its nuspec), so it is part of this risk's surface, not removable bloat (a draft of the audit said otherwise
   and was corrected). Likelihood 2%.
+  <br>2026-10-22 (`AUDIT-2026-10-22-ecef80a.md` D2) — re-checked on nuget.org via `dotnet list package --outdated`:
+  `0.1.11` (`Newtonsoft.Msgpack`) and `1.0.1` (`MsgPack.Cli`) remain the newest published versions, with 0
+  advisories reported by `dotnet list package --vulnerable --include-transitive`. Likelihood unchanged at 2%.
 
 ## RISK-013 — Unused Roslyn `using` in a `MessagePack` formatter (dependency itself confirmed legitimate, not bloat)
 
@@ -629,6 +635,8 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Last reviewed**: 2026-10-20 (`AUDIT-2026-10-20-2cad0b5.md` G2) — description hardening and its
   tests verified present and passing; the wider class of the same problem is tracked as `RISK-022`.
   Likelihood for the description path unchanged at 1%.
+  <br>2026-10-22 (`AUDIT-2026-10-22-ecef80a.md` G2) — sibling `RISK-022` now verified mitigated on `master`
+  (`477db7d`). Likelihood unchanged at 1%.
 
 ## RISK-020 — Deterministic `Account(seed)` silently produced random keys under BouncyCastle 2.7
 
@@ -733,7 +741,10 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
     without a name, and ARC32 arguments named like a C# keyword (ARC56 escapes them), give uncompilable
     output; distinct ARC32 state keys can collapse to one reference field name; the validator is ASCII-only,
     so a spec or `--namespace` using non-ASCII letters is rejected where it previously worked; ARC32/ARC56
-    validation is two near-duplicate walks that must be kept in step; the CLI does not restrict `--url` hosts.
+    validation is two near-duplicate walks that must be kept in step; the CLI does not restrict `--url` hosts;
+    a cyclic `Contract.Structs` definition in `ClientGeneratorARC56.IsFieldTypeDynamic` (which lacks the
+    `visiting` set used by `BuildTupleSignature`) or a deeply nested ABI tuple string (up to 10,000 chars) can
+    cause a `StackOverflowException` process crash (availability/DoS only — see `AUDIT-2026-10-22-ecef80a.md` G3).
 - **5-year misuse likelihood**: **1%** (from 3% before the fix) — needs a malicious or tampered spec *and* the validator to be bypassed or removed;
   before the fix it needed only a tampered spec and a developer who compiled
   the output without reading it; ARC56 specs do circulate through repositories, packages and URLs, and the
@@ -742,4 +753,6 @@ Never delete a row. Mark it Mitigated and keep it for historical traceability.
 - **Impact if realized**: Attacker-chosen code runs in the developer's application (potentially one that
   holds signing keys); overwrite of a `.cs` file outside the output folder.
 - **First recorded**: 2026-10-20
-- **Last reviewed**: 2026-10-20
+- **Last reviewed**: 2026-10-22 (`AUDIT-2026-10-22-ecef80a.md` G2/G3) — `477db7d` remediation and
+  `SpecValidationTests` (177 new cases; 306/306 non-LocalNet unit tests) independently verified on `master`;
+  noted the cyclic-struct / deep-tuple `StackOverflowException` DoS gap (`G3`). Likelihood unchanged at 1%.

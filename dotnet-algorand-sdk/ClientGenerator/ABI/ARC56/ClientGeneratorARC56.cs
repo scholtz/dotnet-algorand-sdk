@@ -30,6 +30,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         public bool LoadFromByteArray(byte[] data)
         {
             Contract = null; // a failed load must never leave the previously loaded spec in place
+            structDynamicCache.Clear();
             var json = Encoding.UTF8.GetString(data);
             try
             {
@@ -73,15 +74,21 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             SpecValidator.RequireContractName(Contract.Name);
             SpecValidator.RequireBase64(Contract.ByteCode?.Approval, "byteCode.approval");
             SpecValidator.RequireBase64(Contract.ByteCode?.Clear, "byteCode.clear");
+            if (Contract.Methods != null && Contract.Methods.Any(m => m == null)) throw new SpecValidationException("The methods list contains a null entry.");
+            if (Contract.Events != null && Contract.Events.Any(e => e == null)) throw new SpecValidationException("The events list contains a null entry.");
             foreach (var method in Contract.Methods ?? new List<Method>())
             {
+                if (method.Args != null && method.Args.Any(a => a == null)) throw new SpecValidationException($"The args of method '{SpecValidator.Show(method.Name)}' contain a null entry.");
+                if (method.Events != null && method.Events.Any(e => e == null)) throw new SpecValidationException($"The events of method '{SpecValidator.Show(method.Name)}' contain a null entry.");
                 SpecValidator.RequireIdentifier(method.Name, "method name");
                 foreach (var arg in method.Args ?? new List<MethodArgument>())
                 {
                     SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
                     SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'", required: true);
+                    SpecValidator.RequireStructRef(arg.Struct, $"struct of argument '{arg.Name}' of method '{method.Name}'");
                 }
                 SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
+                SpecValidator.RequireStructRef(method.Returns?.Struct, $"return struct of method '{method.Name}'");
                 foreach (var evt in method.Events ?? new List<Event>())
                 {
                     ValidateEvent(evt);
@@ -91,11 +98,95 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             {
                 ValidateEvent(evt);
             }
-            foreach (var structFields in (Contract.Structs ?? new Dictionary<string, List<StructField>>()).Values)
+            foreach (var structEntry in Contract.Structs ?? new Dictionary<string, List<StructField>>())
             {
-                foreach (var field in structFields ?? new List<StructField>())
+                SpecValidator.RequireIdentifier(structEntry.Key, "struct name");
+                if (structEntry.Value == null || structEntry.Value.Any(f => f == null)) throw new SpecValidationException($"The struct \"{SpecValidator.Show(structEntry.Key)}\" has no field list or a null field.");
+                foreach (var field in structEntry.Value)
                 {
                     SpecValidator.RequireAbiType(field.Type, $"type of struct field '{SpecValidator.Show(field.Name)}'", required: true);
+                }
+            }
+            RejectCyclicStructs();
+        }
+
+        // Heuristic cap on the fully expanded size (sum of field type lengths, counting shared structs once per use).
+        private const long MaxExpandedStructSize = 100_000;
+
+        private static readonly System.Text.RegularExpressions.Regex StructRefToken = new System.Text.RegularExpressions.Regex("[A-Za-z_][A-Za-z0-9_]*", System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+        /// <summary>
+        /// ABI structs cannot contain themselves; a cyclic graph would make the recursive struct walks in the
+        /// generator overflow the stack (uncatchable), so reject it up front. A struct field type references another
+        /// struct when the struct's name appears as an identifier in it (plain, array-suffixed or inside a tuple).
+        /// Acyclic graphs are bounded too: the generator expands nested structs recursively, so both the nesting depth
+        /// and the fully expanded size (which is exponential for a diamond-shaped graph) are capped.
+        /// </summary>
+        private void RejectCyclicStructs()
+        {
+            var structs = Contract.Structs;
+            if (structs == null || structs.Count == 0) return;
+
+            var edges = new Dictionary<string, List<string>>();
+            foreach (var kv in structs)
+            {
+                var targets = new List<string>();
+                foreach (var field in kv.Value ?? new List<StructField>())
+                {
+                    foreach (System.Text.RegularExpressions.Match m in StructRefToken.Matches(field.Type ?? ""))
+                    {
+                        if (structs.ContainsKey(m.Value)) targets.Add(m.Value);
+                    }
+                }
+                edges[kv.Key] = targets;
+            }
+
+            // iterative three-colour DFS: 1 = on the current path, 2 = finished
+            var state = new Dictionary<string, int>();
+            var depth = new Dictionary<string, int>();
+            var expandedSize = new Dictionary<string, long>();
+            foreach (var root in edges.Keys)
+            {
+                if (state.ContainsKey(root)) continue;
+                var stack = new Stack<KeyValuePair<string, int>>();
+                stack.Push(new KeyValuePair<string, int>(root, 0));
+                state[root] = 1;
+                while (stack.Count > 0)
+                {
+                    var (node, next) = (stack.Peek().Key, stack.Peek().Value);
+                    var targets = edges[node];
+                    if (next >= targets.Count)
+                    {
+                        state[node] = 2;
+                        stack.Pop();
+                        int d = 0;
+                        long size = 1;
+                        foreach (var field in structs[node] ?? new List<StructField>()) size += (field.Type ?? "").Length;
+                        foreach (var t in targets)
+                        {
+                            d = Math.Max(d, depth[t]);
+                            size = Math.Min(size + expandedSize[t], long.MaxValue / 4);
+                        }
+                        depth[node] = d + 1;
+                        expandedSize[node] = size;
+                        if (depth[node] > SpecValidator.MaxAbiTupleDepth || size > MaxExpandedStructSize)
+                        {
+                            throw new SpecValidationException($"The struct \"{SpecValidator.Show(node)}\" nests other structs too deeply or too widely and cannot be used to generate code.");
+                        }
+                        continue;
+                    }
+                    stack.Pop();
+                    stack.Push(new KeyValuePair<string, int>(node, next + 1));
+                    var target = targets[next];
+                    if (!state.TryGetValue(target, out var s))
+                    {
+                        state[target] = 1;
+                        stack.Push(new KeyValuePair<string, int>(target, 0));
+                    }
+                    else if (s == 1)
+                    {
+                        throw new SpecValidationException($"The struct \"{SpecValidator.Show(target)}\" refers to itself, directly or through other structs, and cannot be used to generate code.");
+                    }
                 }
             }
         }
@@ -103,9 +194,11 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         private static void ValidateEvent(Event evt)
         {
             SpecValidator.RequireIdentifier(evt.Name, "event name");
+            if (evt.Args != null && evt.Args.Any(a => a == null)) throw new SpecValidationException($"The args of event '{evt.Name}' contain a null entry.");
             foreach (var arg in evt.Args ?? new List<EventArgument>())
             {
                 SpecValidator.RequireAbiType(arg.Type, $"type of argument '{SpecValidator.Show(arg.Name)}' of event '{evt.Name}'", required: true);
+                SpecValidator.RequireStructRef(arg.Struct, $"struct of argument '{SpecValidator.Show(arg.Name)}' of event '{evt.Name}'");
             }
         }
 
@@ -121,6 +214,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             SpecValidator.RequireNamespace(namespaceName, "namespace");
 
             ResolveAnonymousTuples();
+            structDynamicCache.Clear();
 
             List<string> structs = new List<string>();
 
@@ -366,6 +460,9 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             return "(" + string.Join(",", parts) + ")";
         }
 
+        // struct name -> dynamic-ness; valid for one loaded contract, cleared on load and after anonymous tuples are resolved
+        private readonly Dictionary<string, bool> structDynamicCache = new Dictionary<string, bool>();
+
         /// <summary>
         /// True if the given ABI field type must be offset/tail-addressed when nested inside another tuple,
         /// struct, or ARC-28 event argument list, per ARC4 rules: strings and variable-length arrays are always
@@ -373,7 +470,10 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         /// a plain ABI tuple) is dynamic only if one of its own fields is, checked recursively; everything else
         /// (uintN, byte, bool, address, asset, application, ufixed) is static.
         /// </summary>
-        private bool IsFieldTypeDynamic(string abiType)
+        private bool IsFieldTypeDynamic(string abiType) => IsFieldTypeDynamic(abiType, new HashSet<string>());
+
+        // visiting is a backstop for a cyclic struct graph (normally rejected at load time by RejectCyclicStructs).
+        private bool IsFieldTypeDynamic(string abiType, HashSet<string> visiting)
         {
             string trimmed = (abiType ?? "").Trim();
             if (trimmed.Equals("string", StringComparison.OrdinalIgnoreCase)) return true;
@@ -386,7 +486,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                     string arrayComponent = trimmed.Substring(idx);
                     string bare = trimmed.Substring(0, idx);
                     if (arrayComponent == "[]") return true;
-                    return IsFieldTypeDynamic(bare);
+                    return IsFieldTypeDynamic(bare, visiting);
                 }
             }
 
@@ -395,7 +495,18 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 // Empirically (see ARC-28 event log encoding), Algorand Python/Puya treats a struct as dynamic
                 // only if it actually contains a dynamic component, the same rule as plain tuples - not "any
                 // named struct is always dynamic" as one might expect from the type system alone.
-                return Contract.Structs[trimmed].Any(f => IsFieldTypeDynamic(f.Type));
+                if (structDynamicCache.TryGetValue(trimmed, out var cached)) return cached;
+                if (!visiting.Add(trimmed)) throw new SpecValidationException($"The struct \"{SpecValidator.Show(trimmed)}\" refers to itself and cannot be used to generate code.");
+                try
+                {
+                    var dynamic = Contract.Structs[trimmed].Any(f => IsFieldTypeDynamic(f.Type, visiting));
+                    structDynamicCache[trimmed] = dynamic; // memoised so a diamond-shaped struct graph is walked once, not once per path
+                    return dynamic;
+                }
+                finally
+                {
+                    visiting.Remove(trimmed);
+                }
             }
 
             return false;

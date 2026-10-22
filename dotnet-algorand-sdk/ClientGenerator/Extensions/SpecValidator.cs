@@ -64,6 +64,63 @@ namespace Algorand.AVM.ClientGenerator.Extensions
             {
                 throw new SpecValidationException($"The {what} \"{Show(type)}\" is not a valid ABI type string and cannot be used to generate code.");
             }
+            if (MaxParenthesisDepth(type) > MaxAbiTupleDepth || MaxArraySuffixRun(type) > MaxAbiTupleDepth)
+            {
+                throw new SpecValidationException($"The {what} \"{Show(type)}\" nests tuples or arrays deeper than {MaxAbiTupleDepth} levels and cannot be used to generate code.");
+            }
+        }
+
+        /// <summary>
+        /// The generator recurses once per tuple nesting level and once per array suffix; an unbounded depth would overflow the stack, which
+        /// cannot be caught and ends the process.
+        /// </summary>
+        public const int MaxAbiTupleDepth = 32;
+
+        /// <summary>
+        /// Throws unless <paramref name="value"/> is a struct name optionally followed by array suffixes
+        /// ("MyStruct", "MyStruct[]", "MyStruct[4]"). Null/empty is accepted.
+        /// </summary>
+        public static void RequireStructRef(string value, string what)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            var bare = value.Trim();
+            while (bare.EndsWith("]"))
+            {
+                int idx = bare.LastIndexOf('[');
+                if (idx < 0) break;
+                bare = bare.Substring(0, idx).TrimEnd();
+            }
+            RequireAbiType(value, what);
+            RequireIdentifier(bare, what);
+        }
+
+        // longest run of consecutive "[n]" suffixes on one element ("uint64[2][2]" is 2); a wide tuple of arrays is fine
+        private static int MaxArraySuffixRun(string type)
+        {
+            int run = 0, max = 0;
+            for (int i = 0; i < type.Length; i++)
+            {
+                if (char.IsWhiteSpace(type[i])) continue; // "[2] [2]" nests exactly like "[2][2]"
+                if (type[i] == '[')
+                {
+                    run++;
+                    if (run > max) max = run;
+                    while (i < type.Length && type[i] != ']') i++;
+                }
+                else run = 0;
+            }
+            return max;
+        }
+
+        private static int MaxParenthesisDepth(string type)
+        {
+            int depth = 0, max = 0;
+            foreach (var c in type)
+            {
+                if (c == '(') { depth++; if (depth > max) max = depth; }
+                else if (c == ')' && depth > 0) depth--;
+            }
+            return max;
         }
 
         // C# type text written by the SDK's own spec generator (e.g. "List<ulong>", "ulong?", "Algorand.Address") and

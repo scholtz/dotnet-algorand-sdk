@@ -181,6 +181,169 @@ namespace test
             Assert.DoesNotThrow(() => SpecValidator.RequireAbiType(type, "type"));
         }
 
+        [Test]
+        public void AbiTypeValidatorRejectsPathologicalTupleNesting()
+        {
+            var deep = new string('(', 4000) + "uint64" + new string(')', 4000);
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireAbiType(deep, "type"));
+            var atLimit = new string('(', SpecValidator.MaxAbiTupleDepth) + "uint64" + new string(')', SpecValidator.MaxAbiTupleDepth);
+            Assert.DoesNotThrow(() => SpecValidator.RequireAbiType(atLimit, "type"));
+        }
+
+        [Test]
+        public void AbiTypeValidatorRejectsPathologicalArraySuffixes()
+        {
+            var deep = "uint64" + string.Concat(Enumerable.Repeat("[2]", 3000));
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireAbiType(deep, "type"));
+        }
+
+        [Test]
+        public void AbiTypeValidatorAcceptsWideTuplesOfArrays()
+        {
+            var wide = "(" + string.Join(",", Enumerable.Repeat("byte[32]", 100)) + ")";
+            Assert.DoesNotThrow(() => SpecValidator.RequireAbiType(wide, "type"));
+        }
+
+        [Test]
+        public void Arc56AcceptsModerateStructChainAndDiamond()
+        {
+            var structs = new JObject();
+            for (int i = 0; i < 10; i++)
+                structs["S" + i] = new JArray(
+                    new JObject { ["name"] = "a", ["type"] = i == 9 ? "uint64" : "S" + (i + 1) },
+                    new JObject { ["name"] = "b", ["type"] = i == 9 ? "uint64" : "S" + (i + 1) + "[]" });
+            var spec = GasStation();
+            spec["structs"] = structs;
+            Assert.DoesNotThrow(() => Load(spec));
+        }
+
+        [Test]
+        public void Arc56RejectsHostileStructAnnotation()
+        {
+            var spec = GasStation();
+            var method = spec["methods"].First(m => m["args"] != null && m["args"].Any());
+            method["args"][0]["struct"] = "X(); evil(); //";
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
+        public void AbiTypeValidatorRejectsSpacedArraySuffixes()
+        {
+            var deep = "uint64" + string.Concat(Enumerable.Repeat("[2] ", 3000));
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireAbiType(deep, "type"));
+        }
+
+        [TestCase("MyStruct")]
+        [TestCase("MyStruct[]")]
+        [TestCase("MyStruct[4]")]
+        public void StructRefValidatorAcceptsNamesWithArraySuffix(string value)
+        {
+            Assert.DoesNotThrow(() => SpecValidator.RequireStructRef(value, "struct"));
+        }
+
+        [TestCase("X(); evil(); //")]
+        [TestCase("X[]; evil()")]
+        [TestCase("[]")]
+        public void StructRefValidatorRejectsHostileValues(string value)
+        {
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireStructRef(value, "struct"));
+        }
+
+        [Test]
+        public void Arc56RejectsHostileReturnAndEventStructAnnotations()
+        {
+            var spec = GasStation();
+            var method = spec["methods"].First(m => m["returns"] != null);
+            method["returns"]["struct"] = "X(); evil(); //";
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+
+            spec = GasStation();
+            var evt = spec["events"]?.FirstOrDefault(e => e["args"] != null && e["args"].Any());
+            if (evt != null)
+            {
+                evt["args"][0]["struct"] = "X(); evil(); //";
+                Assert.Throws<SpecValidationException>(() => Load(spec));
+            }
+        }
+
+        [Test]
+        public void Arc56RejectsNullEntries()
+        {
+            var spec = GasStation();
+            spec["structs"] = new JObject { ["A"] = new JArray(JValue.CreateNull()) };
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+
+            spec = GasStation();
+            ((JArray)spec["methods"]).Add(JValue.CreateNull());
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+
+            spec = GasStation();
+            ((JArray)spec["methods"].First(m => m["args"] != null && m["args"].Any())["args"]).Add(JValue.CreateNull());
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
+        public void Arc56RejectsStructWithoutFieldList()
+        {
+            var spec = GasStation();
+            spec["structs"] = new JObject { ["A"] = JValue.CreateNull() };
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
+        public void Arc56RejectsNonIdentifierStructKey()
+        {
+            var spec = GasStation();
+            spec["structs"] = new JObject { ["1A"] = new JArray(new JObject { ["name"] = "x", ["type"] = "1A" }) };
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
+        public void Arc56RejectsDeepAcyclicStructChain()
+        {
+            var structs = new JObject();
+            for (int i = 0; i < 200; i++)
+                structs["S" + i] = new JArray(new JObject { ["name"] = "n", ["type"] = i == 199 ? "uint64" : "S" + (i + 1) });
+            var spec = GasStation();
+            spec["structs"] = structs;
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
+        public void Arc56RejectsDiamondStructGraphWithExponentialExpansion()
+        {
+            var structs = new JObject();
+            for (int i = 0; i < 30; i++)
+                structs["S" + i] = new JArray(
+                    new JObject { ["name"] = "a", ["type"] = i == 29 ? "uint64" : "S" + (i + 1) },
+                    new JObject { ["name"] = "b", ["type"] = i == 29 ? "uint64" : "S" + (i + 1) });
+            var spec = GasStation();
+            spec["structs"] = structs;
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [TestCase("A", "A")]
+        [TestCase("A[]", "A")]
+        [TestCase("(uint64,A)[2]", "A")]
+        public void Arc56RejectsSelfReferentialStruct(string fieldType, string structName)
+        {
+            var spec = GasStation();
+            spec["structs"] = new JObject { [structName] = new JArray(new JObject { ["name"] = "x", ["type"] = fieldType }) };
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
+        public void Arc56RejectsMutuallyRecursiveStructs()
+        {
+            var spec = GasStation();
+            spec["structs"] = new JObject
+            {
+                ["A"] = new JArray(new JObject { ["name"] = "b", ["type"] = "B" }),
+                ["B"] = new JArray(new JObject { ["name"] = "a", ["type"] = "A" }),
+            };
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
         [TestCase("uint64\"); X(); //")]
         [TestCase("a\\b")]
         [TestCase("a;b")]
