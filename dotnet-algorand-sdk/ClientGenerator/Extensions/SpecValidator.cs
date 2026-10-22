@@ -76,12 +76,31 @@ namespace Algorand.AVM.ClientGenerator.Extensions
         /// </summary>
         public const int MaxAbiTupleDepth = 32;
 
+        /// <summary>
+        /// Throws unless <paramref name="value"/> is a struct name optionally followed by array suffixes
+        /// ("MyStruct", "MyStruct[]", "MyStruct[4]"). Null/empty is accepted.
+        /// </summary>
+        public static void RequireStructRef(string value, string what)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            var bare = value.Trim();
+            while (bare.EndsWith("]"))
+            {
+                int idx = bare.LastIndexOf('[');
+                if (idx < 0) break;
+                bare = bare.Substring(0, idx).TrimEnd();
+            }
+            RequireAbiType(value, what);
+            RequireIdentifier(bare, what);
+        }
+
         // longest run of consecutive "[n]" suffixes on one element ("uint64[2][2]" is 2); a wide tuple of arrays is fine
         private static int MaxArraySuffixRun(string type)
         {
             int run = 0, max = 0;
             for (int i = 0; i < type.Length; i++)
             {
+                if (char.IsWhiteSpace(type[i])) continue; // "[2] [2]" nests exactly like "[2][2]"
                 if (type[i] == '[')
                 {
                     run++;

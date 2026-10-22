@@ -227,6 +227,29 @@ namespace test
         }
 
         [Test]
+        public void AbiTypeValidatorRejectsSpacedArraySuffixes()
+        {
+            var deep = "uint64" + string.Concat(Enumerable.Repeat("[2] ", 3000));
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireAbiType(deep, "type"));
+        }
+
+        [TestCase("MyStruct")]
+        [TestCase("MyStruct[]")]
+        [TestCase("MyStruct[4]")]
+        public void StructRefValidatorAcceptsNamesWithArraySuffix(string value)
+        {
+            Assert.DoesNotThrow(() => SpecValidator.RequireStructRef(value, "struct"));
+        }
+
+        [TestCase("X(); evil(); //")]
+        [TestCase("X[]; evil()")]
+        [TestCase("[]")]
+        public void StructRefValidatorRejectsHostileValues(string value)
+        {
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireStructRef(value, "struct"));
+        }
+
+        [Test]
         public void Arc56RejectsNonIdentifierStructKey()
         {
             var spec = GasStation();
