@@ -80,8 +80,10 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 {
                     SpecValidator.RequireIdentifier(arg.Name, $"argument name of method '{method.Name}'", allowEmpty: true);
                     SpecValidator.RequireAbiType(arg.Type, $"type of argument '{arg.Name}' of method '{method.Name}'", required: true);
+                    SpecValidator.RequireIdentifier(arg.Struct, $"struct of argument '{arg.Name}' of method '{method.Name}'", allowEmpty: true);
                 }
                 SpecValidator.RequireAbiType(method.Returns?.Type, $"return type of method '{method.Name}'");
+                SpecValidator.RequireIdentifier(method.Returns?.Struct, $"return struct of method '{method.Name}'", allowEmpty: true);
                 foreach (var evt in method.Events ?? new List<Event>())
                 {
                     ValidateEvent(evt);
@@ -189,6 +191,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             foreach (var arg in evt.Args ?? new List<EventArgument>())
             {
                 SpecValidator.RequireAbiType(arg.Type, $"type of argument '{SpecValidator.Show(arg.Name)}' of event '{evt.Name}'", required: true);
+                SpecValidator.RequireIdentifier(arg.Struct, $"struct of argument '{SpecValidator.Show(arg.Name)}' of event '{evt.Name}'", allowEmpty: true);
             }
         }
 

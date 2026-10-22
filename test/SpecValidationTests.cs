@@ -218,6 +218,15 @@ namespace test
         }
 
         [Test]
+        public void Arc56RejectsHostileStructAnnotation()
+        {
+            var spec = GasStation();
+            var method = spec["methods"].First(m => m["args"] != null && m["args"].Any());
+            method["args"][0]["struct"] = "X(); evil(); //";
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
         public void Arc56RejectsNonIdentifierStructKey()
         {
             var spec = GasStation();
