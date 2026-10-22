@@ -207,6 +207,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             SpecValidator.RequireNamespace(namespaceName, "namespace");
 
             ResolveAnonymousTuples();
+            structDynamicCache.Clear();
 
             List<string> structs = new List<string>();
 
@@ -459,6 +460,8 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         /// a plain ABI tuple) is dynamic only if one of its own fields is, checked recursively; everything else
         /// (uintN, byte, bool, address, asset, application, ufixed) is static.
         /// </summary>
+        private readonly Dictionary<string, bool> structDynamicCache = new Dictionary<string, bool>();
+
         private bool IsFieldTypeDynamic(string abiType) => IsFieldTypeDynamic(abiType, new HashSet<string>());
 
         // visiting is a backstop for a cyclic struct graph (normally rejected at load time by RejectCyclicStructs).
@@ -484,10 +487,13 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 // Empirically (see ARC-28 event log encoding), Algorand Python/Puya treats a struct as dynamic
                 // only if it actually contains a dynamic component, the same rule as plain tuples - not "any
                 // named struct is always dynamic" as one might expect from the type system alone.
+                if (structDynamicCache.TryGetValue(trimmed, out var cached)) return cached;
                 if (!visiting.Add(trimmed)) throw new SpecValidationException($"The struct \"{SpecValidator.Show(trimmed)}\" refers to itself and cannot be used to generate code.");
                 try
                 {
-                    return Contract.Structs[trimmed].Any(f => IsFieldTypeDynamic(f.Type, visiting));
+                    var dynamic = Contract.Structs[trimmed].Any(f => IsFieldTypeDynamic(f.Type, visiting));
+                    structDynamicCache[trimmed] = dynamic; // memoised so a diamond-shaped struct graph is walked once, not once per path
+                    return dynamic;
                 }
                 finally
                 {
