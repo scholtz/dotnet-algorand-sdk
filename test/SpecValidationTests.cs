@@ -181,6 +181,37 @@ namespace test
             Assert.DoesNotThrow(() => SpecValidator.RequireAbiType(type, "type"));
         }
 
+        [Test]
+        public void AbiTypeValidatorRejectsPathologicalTupleNesting()
+        {
+            var deep = new string('(', 4000) + "uint64" + new string(')', 4000);
+            Assert.Throws<SpecValidationException>(() => SpecValidator.RequireAbiType(deep, "type"));
+            var atLimit = new string('(', SpecValidator.MaxAbiTupleDepth) + "uint64" + new string(')', SpecValidator.MaxAbiTupleDepth);
+            Assert.DoesNotThrow(() => SpecValidator.RequireAbiType(atLimit, "type"));
+        }
+
+        [TestCase("A", "A")]
+        [TestCase("A[]", "A")]
+        [TestCase("(uint64,A)[2]", "A")]
+        public void Arc56RejectsSelfReferentialStruct(string fieldType, string structName)
+        {
+            var spec = GasStation();
+            spec["structs"] = new JObject { [structName] = new JArray(new JObject { ["name"] = "x", ["type"] = fieldType }) };
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
+        public void Arc56RejectsMutuallyRecursiveStructs()
+        {
+            var spec = GasStation();
+            spec["structs"] = new JObject
+            {
+                ["A"] = new JArray(new JObject { ["name"] = "b", ["type"] = "B" }),
+                ["B"] = new JArray(new JObject { ["name"] = "a", ["type"] = "A" }),
+            };
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
         [TestCase("uint64\"); X(); //")]
         [TestCase("a\\b")]
         [TestCase("a;b")]

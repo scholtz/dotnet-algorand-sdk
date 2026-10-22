@@ -98,6 +98,65 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                     SpecValidator.RequireAbiType(field.Type, $"type of struct field '{SpecValidator.Show(field.Name)}'", required: true);
                 }
             }
+            RejectCyclicStructs();
+        }
+
+        /// <summary>
+        /// ABI structs cannot contain themselves; a cyclic graph would make the recursive struct walks in the
+        /// generator overflow the stack (uncatchable), so reject it up front. A struct field type references another
+        /// struct when the struct's name appears as an identifier in it (plain, array-suffixed or inside a tuple).
+        /// </summary>
+        private void RejectCyclicStructs()
+        {
+            var structs = Contract.Structs;
+            if (structs == null || structs.Count == 0) return;
+
+            var edges = new Dictionary<string, List<string>>();
+            foreach (var kv in structs)
+            {
+                var targets = new List<string>();
+                foreach (var field in kv.Value ?? new List<StructField>())
+                {
+                    foreach (System.Text.RegularExpressions.Match m in System.Text.RegularExpressions.Regex.Matches(field.Type ?? "", "[A-Za-z_][A-Za-z0-9_]*"))
+                    {
+                        if (structs.ContainsKey(m.Value)) targets.Add(m.Value);
+                    }
+                }
+                edges[kv.Key] = targets;
+            }
+
+            // iterative three-colour DFS: 1 = on the current path, 2 = finished
+            var state = new Dictionary<string, int>();
+            foreach (var root in edges.Keys)
+            {
+                if (state.ContainsKey(root)) continue;
+                var stack = new Stack<KeyValuePair<string, int>>();
+                stack.Push(new KeyValuePair<string, int>(root, 0));
+                state[root] = 1;
+                while (stack.Count > 0)
+                {
+                    var (node, next) = (stack.Peek().Key, stack.Peek().Value);
+                    var targets = edges[node];
+                    if (next >= targets.Count)
+                    {
+                        state[node] = 2;
+                        stack.Pop();
+                        continue;
+                    }
+                    stack.Pop();
+                    stack.Push(new KeyValuePair<string, int>(node, next + 1));
+                    var target = targets[next];
+                    if (!state.TryGetValue(target, out var s))
+                    {
+                        state[target] = 1;
+                        stack.Push(new KeyValuePair<string, int>(target, 0));
+                    }
+                    else if (s == 1)
+                    {
+                        throw new SpecValidationException($"The struct \"{SpecValidator.Show(target)}\" refers to itself, directly or through other structs, and cannot be used to generate code.");
+                    }
+                }
+            }
         }
 
         private static void ValidateEvent(Event evt)
@@ -373,7 +432,10 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         /// a plain ABI tuple) is dynamic only if one of its own fields is, checked recursively; everything else
         /// (uintN, byte, bool, address, asset, application, ufixed) is static.
         /// </summary>
-        private bool IsFieldTypeDynamic(string abiType)
+        private bool IsFieldTypeDynamic(string abiType) => IsFieldTypeDynamic(abiType, new HashSet<string>());
+
+        // visiting guards against a cyclic struct graph (also rejected at load time by RejectCyclicStructs).
+        private bool IsFieldTypeDynamic(string abiType, HashSet<string> visiting)
         {
             string trimmed = (abiType ?? "").Trim();
             if (trimmed.Equals("string", StringComparison.OrdinalIgnoreCase)) return true;
@@ -386,7 +448,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                     string arrayComponent = trimmed.Substring(idx);
                     string bare = trimmed.Substring(0, idx);
                     if (arrayComponent == "[]") return true;
-                    return IsFieldTypeDynamic(bare);
+                    return IsFieldTypeDynamic(bare, visiting);
                 }
             }
 
@@ -395,7 +457,15 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
                 // Empirically (see ARC-28 event log encoding), Algorand Python/Puya treats a struct as dynamic
                 // only if it actually contains a dynamic component, the same rule as plain tuples - not "any
                 // named struct is always dynamic" as one might expect from the type system alone.
-                return Contract.Structs[trimmed].Any(f => IsFieldTypeDynamic(f.Type));
+                if (!visiting.Add(trimmed)) return false;
+                try
+                {
+                    return Contract.Structs[trimmed].Any(f => IsFieldTypeDynamic(f.Type, visiting));
+                }
+                finally
+                {
+                    visiting.Remove(trimmed);
+                }
             }
 
             return false;
