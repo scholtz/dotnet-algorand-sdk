@@ -250,6 +250,31 @@ namespace test
         }
 
         [Test]
+        public void Arc56RejectsHostileReturnAndEventStructAnnotations()
+        {
+            var spec = GasStation();
+            var method = spec["methods"].First(m => m["returns"] != null);
+            method["returns"]["struct"] = "X(); evil(); //";
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+
+            spec = GasStation();
+            var evt = spec["events"]?.FirstOrDefault(e => e["args"] != null && e["args"].Any());
+            if (evt != null)
+            {
+                evt["args"][0]["struct"] = "X(); evil(); //";
+                Assert.Throws<SpecValidationException>(() => Load(spec));
+            }
+        }
+
+        [Test]
+        public void Arc56RejectsStructWithoutFieldList()
+        {
+            var spec = GasStation();
+            spec["structs"] = new JObject { ["A"] = JValue.CreateNull() };
+            Assert.Throws<SpecValidationException>(() => Load(spec));
+        }
+
+        [Test]
         public void Arc56RejectsNonIdentifierStructKey()
         {
             var spec = GasStation();

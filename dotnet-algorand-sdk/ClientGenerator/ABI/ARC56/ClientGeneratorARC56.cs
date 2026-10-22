@@ -30,6 +30,7 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         public bool LoadFromByteArray(byte[] data)
         {
             Contract = null; // a failed load must never leave the previously loaded spec in place
+            structDynamicCache.Clear();
             var json = Encoding.UTF8.GetString(data);
             try
             {
@@ -96,7 +97,8 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             foreach (var structEntry in Contract.Structs ?? new Dictionary<string, List<StructField>>())
             {
                 SpecValidator.RequireIdentifier(structEntry.Key, "struct name");
-                foreach (var field in structEntry.Value ?? new List<StructField>())
+                if (structEntry.Value == null) throw new SpecValidationException($"The struct \"{structEntry.Key}\" has no field list.");
+                foreach (var field in structEntry.Value)
                 {
                     SpecValidator.RequireAbiType(field.Type, $"type of struct field '{SpecValidator.Show(field.Name)}'", required: true);
                 }
@@ -453,6 +455,9 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
             return "(" + string.Join(",", parts) + ")";
         }
 
+        // struct name -> dynamic-ness; valid for one loaded contract, cleared on load and after anonymous tuples are resolved
+        private readonly Dictionary<string, bool> structDynamicCache = new Dictionary<string, bool>();
+
         /// <summary>
         /// True if the given ABI field type must be offset/tail-addressed when nested inside another tuple,
         /// struct, or ARC-28 event argument list, per ARC4 rules: strings and variable-length arrays are always
@@ -460,8 +465,6 @@ namespace Algorand.AVM.ClientGenerator.ABI.ARC56
         /// a plain ABI tuple) is dynamic only if one of its own fields is, checked recursively; everything else
         /// (uintN, byte, bool, address, asset, application, ufixed) is static.
         /// </summary>
-        private readonly Dictionary<string, bool> structDynamicCache = new Dictionary<string, bool>();
-
         private bool IsFieldTypeDynamic(string abiType) => IsFieldTypeDynamic(abiType, new HashSet<string>());
 
         // visiting is a backstop for a cyclic struct graph (normally rejected at load time by RejectCyclicStructs).
