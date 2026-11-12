@@ -106,6 +106,118 @@ namespace test
         }
 
         [Test]
+        public async Task UnknownCharsetDoesNotHideTheStatus()
+        {
+            var algod = CreateAlgod(() =>
+            {
+                var content = new ByteArrayContent(Encoding.UTF8.GetBytes("<html>Bad Gateway</html>"));
+                content.Headers.TryAddWithoutValidation("Content-Type", "text/html; charset=not-a-real-charset");
+                return new HttpResponseMessage(HttpStatusCode.BadGateway) { Content = content };
+            }, false);
+
+            var ex = await Assert.ThrowsAsync<ApiException>(async () => await algod.GetBlockAsync(round: 1));
+
+            Assert.That(ex.StatusCode, Is.EqualTo(502));
+            Assert.That(ex.Response, Is.EqualTo("<html>Bad Gateway</html>"));
+        }
+
+        [Test]
+        public async Task JsonErrorWithTrailingContentIsStillTyped()
+        {
+            var algod = CreateAlgod(() => new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent("{\"message\":\"bad request\"}\n<!-- served by edge-7 -->", Encoding.UTF8, "application/json")
+            }, false);
+
+            var ex = await Assert.ThrowsAsync<ApiException<ErrorResponse>>(async () => await algod.GetBlockAsync(round: 1));
+
+            Assert.That(ex.StatusCode, Is.EqualTo(400));
+            Assert.That(ex.Result.Message, Is.EqualTo("bad request"));
+        }
+
+        [Test]
+        public async Task NonJsonBodyOnOtherSuccessStatusKeepsBody()
+        {
+            // the generated callers treat only 200 as success, so a 202 is read as an error too
+            var algod = CreateAlgod(() => new HttpResponseMessage(HttpStatusCode.Accepted)
+            {
+                Content = new StringContent("queued", Encoding.UTF8, "text/plain")
+            }, false);
+
+            var ex = await Assert.ThrowsAsync<ApiException>(async () => await algod.GetBlockAsync(round: 1));
+
+            Assert.That(ex.StatusCode, Is.EqualTo(202));
+            Assert.That(ex.Response, Is.EqualTo("queued"));
+        }
+
+        [Test]
+        public async Task MsgpackLabelledGarbageIsReportedAsApiException()
+        {
+            var algod = CreateAlgod(() =>
+            {
+                var content = new ByteArrayContent(Encoding.UTF8.GetBytes("Internal Server Error"));
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/msgpack");
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = content };
+            }, false);
+
+            var ex = await Assert.ThrowsAsync<ApiException>(async () => await algod.GetBlockAsync(round: 1, format: Format.Msgpack));
+
+            Assert.That(ex.StatusCode, Is.EqualTo(500));
+            Assert.That(ex.Response, Is.EqualTo("Internal Server Error"));
+        }
+
+        [Test]
+        public async Task HugeErrorBodyIsTruncated()
+        {
+            var algod = CreateAlgod(() => new HttpResponseMessage(HttpStatusCode.ServiceUnavailable)
+            {
+                Content = new StringContent(new string('x', 1024 * 1024), Encoding.UTF8, "text/plain")
+            }, false);
+
+            var ex = await Assert.ThrowsAsync<ApiException>(async () => await algod.GetBlockAsync(round: 1));
+
+            Assert.That(ex.StatusCode, Is.EqualTo(503));
+            Assert.That(ex.Response.Length, Is.EqualTo(64 * 1024));
+        }
+
+        [Test]
+        public async Task ServerControlledReasonPhraseStaysOutOfTheMessage()
+        {
+            var algod = CreateAlgod(() => new HttpResponseMessage(HttpStatusCode.Forbidden)
+            {
+                ReasonPhrase = "tenant-secret-phrase",
+                Content = new StringContent("nope", Encoding.UTF8, "text/plain")
+            }, false);
+
+            var ex = await Assert.ThrowsAsync<ApiException>(async () => await algod.GetBlockAsync(round: 1));
+
+            Assert.That(ex.Message, Does.Contain("HTTP 403 (Forbidden)"));
+            Assert.That(ex.Message, Does.Not.Contain("tenant-secret-phrase"));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task IndexerCommonAndSearchClientsReportPlainTextErrors(bool readResponseAsString)
+        {
+            HttpClient Http() => new HttpClient(new StubHandler(() => new HttpResponseMessage(HttpStatusCode.Forbidden)
+            {
+                Content = new StringContent("Denied", Encoding.UTF8, "text/plain")
+            }))
+            { BaseAddress = new Uri("http://localhost:8980/") };
+
+            var common = new Algorand.Indexer.CommonApi(Http()) { ReadResponseAsString = readResponseAsString };
+            var search = new Algorand.Indexer.SearchApi(Http()) { ReadResponseAsString = readResponseAsString };
+
+            var commonEx = await Assert.ThrowsAsync<ApiException>(async () => await common.makeHealthCheckAsync());
+            var searchEx = await Assert.ThrowsAsync<ApiException>(async () => await search.searchForAssetsAsync());
+
+            Assert.That(commonEx.StatusCode, Is.EqualTo(403));
+            Assert.That(commonEx.Response, Is.EqualTo("Denied"));
+            Assert.That(searchEx.StatusCode, Is.EqualTo(403));
+            Assert.That(searchEx.Response, Is.EqualTo("Denied"));
+        }
+
+        [Test]
         public async Task IndexerPlainTextErrorIsReportedWithStatusAndBody()
         {
             var http = new HttpClient(new StubHandler(() => new HttpResponseMessage((HttpStatusCode)429)

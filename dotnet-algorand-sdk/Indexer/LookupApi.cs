@@ -2014,12 +2014,12 @@ namespace Algorand.Indexer
               return new ObjectResponseResult<T>(default(T), string.Empty);
        }
 
-       // Non-success responses (other than msgpack) go through the shared tolerant reader: the body may be
+       // Error (non-200) responses go through the shared tolerant reader: the body may be
        // plain text or HTML from a proxy/gateway rather than the daemon's JSON error, and must not be lost.
        if (Algorand.ApiErrorResponseReader.ShouldHandle(response))
        {
-           var errorResult = await Algorand.ApiErrorResponseReader.ReadAsync<T>(response, headers, JsonSerializerSettings).ConfigureAwait(false);
-           return new ObjectResponseResult<T>(errorResult.Key, errorResult.Value);
+           var errorResult = await Algorand.ApiErrorResponseReader.ReadAsync<T>(response, headers, JsonSerializerSettings, cancellationToken).ConfigureAwait(false);
+           return new ObjectResponseResult<T>(errorResult.Object, errorResult.Text);
        }
 
        if (ReadResponseAsString)
